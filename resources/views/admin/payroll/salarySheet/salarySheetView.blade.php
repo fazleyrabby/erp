@@ -1,0 +1,293 @@
+@extends('admin.master')
+@section('title')
+Admin Salary Sheet -View
+@endsection
+@section('content')
+
+<style type="text/css">
+
+    h3{
+        color: #66a3ff;
+    }
+</style>
+
+<div class="content-wrapper">
+        <section class="content box-border">
+            <div class="card">
+                <div class="card-header">
+                    <h3 style="float:left;"> Salary Sheet </h3>
+                    <a class="btn btn-primary float-right" onclick="create()"><i class="fa fa-plus circle"></i> Add Salary Sheet</a>
+                </div><!-- /.card-header -->
+
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="manageSalarySheetTable" width="100%" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <td width="6%">SL</td>
+                                <td>Salay Sheet Name</td>
+                                <td width="10%">Status</td>
+                                <td width="8%">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<!-- modal -->
+<div class="modal fade" id="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="SalaySheetFormStore" >
+                <div class="modal-header">
+                    <h4 class="modal-title float-left"> Add Salary Sheet</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                </div> 
+                <div class="modal-body">
+                        @csrf
+                        <div class="form-group col-md-12">
+                            <label for="carousalCaptionOffer" class="col-sm-5 col-form-label">Salary Sheet Name</label>
+                            <input type="text" class="form-control" id="sheet_name" name="sheet_name" placeholder=" Write Salary Sheet Name" required>                                     
+                            <span class="text-danger" id="sheet_nameError"></span>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"><i class="fa fa-close"></i>X Close</button>
+                    <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+<!-- edit modal -->
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editSalarySheetForm" method="POST" enctype="multipart/form-data" action="#">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Salary Sheet</h4>
+                    <button type="button" class="close"data-dismiss="modal" aria-hidden="true"></button>
+                </div> 
+                <div class="modal-body">
+                    <div class="row">
+                        @csrf
+                        <input type="hidden" name="editId" id="editId">
+                        <div class="form-group col-md-6">
+                            <label>Salary Sheet Name</label>
+                            <input class="form-control input-sm" id="editSalary_sheet" type="text" name="editSalary_sheet" required="">
+                            <span class="text-danger" id="editSalary_sheetError"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label> Status</label>
+                            <select id="editStatus" name="editStatus" class="form-control input-sm">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+                    <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save"></i> Update</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+@endsection
+
+
+
+@section('contentJavaScripts')
+
+<script>
+
+            /*Modal Show*/
+            function create() {
+            
+            $("#modal").modal('show');
+            }
+            $('#modal').on('shown.bs.modal', function() {
+                $('#sheet_name').focus();
+            })
+
+
+            
+
+
+            /*get data*/
+            var table;
+                $(document).ready(function() {
+                    table = $('#manageSalarySheetTable').DataTable({
+                        'ajax': "{{route('getSalarySheetData')}}",
+                        processing:true,
+                    });
+                });
+
+
+
+
+                /* store data*/
+                $('#SalaySheetFormStore').submit(function(e){
+                    e.preventDefault();
+                    
+                    var sheet_name = $("#sheet_name").val();
+                    var _token = $('input[name="_token"]').val();
+
+                    var fd = new FormData();
+                    fd.append('sheet_name',sheet_name);
+                    fd.append('_token',_token);
+                    
+                    $.ajax({
+                    url:"{{route('salarySheetStore')}}",
+                    method:"POST",
+                    data:fd,
+                    contentType: false,
+                    processData: false,
+                    datatype:"json",
+                    success:function(result){
+                    $("#modal").modal('hide');
+                    Swal.fire("Saved!",result.success,"success");
+                    table.ajax.reload(null, false);                    
+                    }, 
+                    error: function(response) {
+                        //alert(JSON.stringify(response));
+                        $('#sheet_nameError').text(response.responseJSON.errors.sheet_name);
+                    }, beforeSend: function () {
+                        $('#loading').show();
+                    },complete: function () {
+                        $('#loading').hide();
+                    }
+                })
+            });
+
+
+
+
+
+        function editSalarySheet(id){
+            
+            $.ajax({
+                url:"{{route('editSalarySheet')}}",
+                method:"GET",
+                data:{"id":id},
+                datatype:"json",
+                success:function(result){
+                    $("#editModal").modal('show');
+                    $("#editSalary_sheet").val(result.sheet_name);
+                    $("#editId").val(result.id);
+
+                    if(result.status != ""){
+                        $("#editStatus").val(result.status);
+                    }else{
+                        $("#editStatus").val("Inactive");
+                    }
+                }, beforeSend: function () {
+                    $('#loading').show();
+                },complete: function () {
+                    $('#loading').hide();
+                }
+            });
+        }
+
+
+
+
+
+
+        $("#editSalarySheetForm").submit(function (e){
+        e.preventDefault();
+        
+        var sheet_name = $("#editSalary_sheet").val();
+        var status  =$("#editStatus").val();
+        var _token = $('input[name="_token"]').val();
+        var id = $("#editId").val();
+
+        var fd = new FormData();
+        fd.append('sheet_name',sheet_name);
+        fd.append('status',status);
+        fd.append('id',id);
+        fd.append('_token',_token);
+
+        $.ajax({
+            url:"{{route('sheetUpdate')}}",
+            method:"POST",
+            data:fd,
+            contentType: false,
+            processData: false,
+            success:function(result){
+                
+                $("#editModal").modal('hide');
+                Swal.fire("Updated Sheet!",result.success,"success");
+                table.ajax.reload(null, false);
+            }, error: function(response) {
+                $('#editSalary_sheetError').text(response.responseJSON.errors.sheet_name);              
+            }, beforeSend: function () {
+                $('#loading').show();
+            },complete: function () {
+                $('#loading').hide();
+            }
+        })
+    });
+
+
+
+
+
+    function confirmDelete(id) {
+        Swal.fire({
+            title: "Are you sure ?",
+            text: "You will not be able to recover this imaginary file!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, delete Salary Sheet!",
+            closeOnConfirm: false
+        }).then((result) => {
+        if (result.isConfirmed) {
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url:"{{route('salarySheetDelete')}}",
+                method: "POST",
+                data: {"id":id, "_token":_token},
+                success: function (result) {
+                    Swal.fire("Done!",result.success,"success");
+                    table.ajax.reload(null, false);
+                }, beforeSend: function () {
+                    $('#loading').show();
+                },complete: function () {
+                    $('#loading').hide();
+                }
+            });
+        }else{
+          Swal.fire("Cancelled", "Your imaginary Salary Sheet is safe :)", "error");
+        }
+      })
+        
+    }
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+@endsection

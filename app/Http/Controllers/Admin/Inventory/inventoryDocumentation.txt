@@ -1,0 +1,36 @@
+
+---------------------Ali Technology Inventory Module------------------------
+Sub Modules: 
+	Products
+	Damage
+	Purchase Management:
+			   View Purchase
+	Sale Management:
+			Sale View
+
+
+
+Controllers: 
+	Admin\Inventory\ProductController
+	Admin\Inventory\PurchaseController
+	Admin\Inventory\SaleController
+	
+
+
+Views:
+			admin/inventory/products/view-products
+
+			admin/inventory/damage/view-damage
+
+			admin/inventory/purchase/add-purchase
+			admin/inventory/purchase/purchase-report
+			admin/inventory/purchase/view-purchase
+
+			
+			admin/inventory/sale/add-sale
+			admin/inventory/sale/view-sale
+
+	
+
+Web:
+		Start User Module Web page links

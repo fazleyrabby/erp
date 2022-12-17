@@ -1,0 +1,20 @@
+
+---------------------Ali Technology User management Module------------------------
+Sub Modules: 
+	View UserType
+	View Users
+
+Controllers: 
+	Admin\User\UserController
+
+
+Views:
+	
+	admin/user/view-users
+	admin/user/view-usertype
+
+
+	
+
+Web:
+		Start User Module Web page links

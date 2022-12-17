@@ -1,0 +1,108 @@
+@extends('admin.master')
+@section('title')
+Admin Our Team -View
+@endsection
+@section('content')
+<div class="content-wrapper">
+    <section class="content-header" style="padding: 0px 1.0rem;">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h3>Create Team Member</h3>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{url('/home')}}">Home</a></li>
+                        
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+        
+    </section>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="{{url('/payroll/ourTeam/add')}}" class="btn btn-success btn-icon-split">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                                <span class="text">Add Team Member</span>
+                            </a>
+                            <h3 class="text-center text-success">{{Session::get('message')}}</h3>
+                        </div>
+                      
+
+
+
+                
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="tbl_category" class="table table-bordered table-striped dt_view">
+                            
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Image</th>
+                                        <th>Name</th>
+                                        <th>Desingnation</th>
+                                        <th>Grade</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                        @php
+                                        $serial = 0;
+                                        @endphp
+                                <tbody>
+                                @foreach($members as $emp)
+                                    <tr>
+
+                                        <td>{{  ++$serial}}</td>
+                                        <td><img src = "{{ asset('/frontEnd/images/team/'.trim($emp->member_image)) }}" width="150" height="150" /></td>
+                                        <td>{{ $emp->member_name }}</td>
+                                        <td>{{ $emp->member_desingnation }}</td>
+                                        <td>
+                                        {{ $emp->grade_name }}
+                                        </td>
+                                        <td> {{ $emp->status }} </td>
+                                        <td style="width: 12%;">
+                                              <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="fas fa-cog"></i>  <span class="caret"></span></button>
+                                                    <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
+                             
+                               <li class="action"><a href="{{route('memberEdit', $emp->member_id)}}" class="btn"><i class="fas fa-exchange-alt"></i> Edit </a></li>
+                                
+                          <li class="action"><a href="{{route('changeMemberStatus',$emp->member_id)}}" class="btn" onclick="return confirm('Are you sure you want to change status of this banner?');"><i class="fas fa-exchange-alt"></i> Change Status </a></li>
+                                
+
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            @endforeach
+                                        </tr>
+                                    </tbody>
+                                   
+                                </table>
+                            </div>
+                        </div>
+
+               
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    @endsection
+
+
+
+  

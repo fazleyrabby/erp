@@ -1,0 +1,19 @@
+User Section:    
+
+            Controller:  App\Http\Controllers\Admin\user\UsersController;
+
+            View:        admin\users\users\(users views)
+
+            Web:          /* User List Info Admin panel */
+
+
+
+
+
+Our Team Section:    
+
+            Controller:  App\Http\Controllers\Admin\user\OurTeamController;
+
+            View:        admin\users\ourTeam(Our Team views)
+
+            Web:          //our team Routes Strat////////////////

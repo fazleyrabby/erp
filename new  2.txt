@@ -1,0 +1,80 @@
+
+			$sql = "SELECT tbl_paymentVoucher.amount, voucherType, tbl_paymentVoucher.type, tbl_paymentVoucher.deleted, tbl_paymentVoucher.remarks,tbl_paymentVoucher.voucher_book, ifnull(ifnull(ifnull(ifnull(tbl_repairing_center.repairOrderNo, tbl_sales.salesOrderNo), tbl_purchase.purchaseOrderNo), tbl_purchase_return.purchaseReturnOrderNo), tbl_sales_return.salesReturnOrderNo) as voucherNo, 
+			        (CASE  WHEN tbl_paymentVoucher.paymentMethod = 'CHEQUE' THEN tbl_paymentVoucher.chequeIssueDate 
+                           ELSE tbl_paymentVoucher.paymentDate
+                           END) AS paymentDate, tbl_paymentVoucher.voucherNo as paymentVoucherNo, tbl_paymentVoucher.entryDate
+                    FROM tbl_paymentVoucher 
+                    LEFT OUTER JOIN tbl_purchase ON tbl_paymentVoucher.tbl_purchaseId = tbl_purchase.id AND tbl_purchase.deleted = 'No'
+                    LEFT OUTER JOIN tbl_sales ON tbl_paymentVoucher.tbl_sales_id = tbl_sales.id AND tbl_sales.deleted = 'No'
+                    LEFT OUTER JOIN tbl_purchase_return ON tbl_paymentVoucher.tbl_purchase_return_id = tbl_purchase_return.id AND tbl_purchase_return.deleted = 'No'
+                    LEFT OUTER JOIN tbl_sales_return ON tbl_paymentVoucher.tbl_sales_return_id = tbl_sales_return.id AND tbl_sales_return.deleted = 'No'
+                    LEFT OUTER JOIN tbl_repairing_center ON tbl_paymentVoucher.tbl_repairing_center_id = tbl_repairing_center.id AND tbl_repairing_center.deleted = 'No'
+                    WHERE tbl_paymentVoucher.tbl_partyId = '".$partyId."' AND tbl_paymentVoucher.customerType='Party' AND tbl_paymentVoucher.deleted='No' 
+                    ORDER BY voucher_book
+
+		
+		$query = $conn->query($sql);
+		$weQuantity=0;
+		$i=1;
+		$weQuantitybu=0;
+		$weQuantitybu12=0;
+		while($row12 = $query->fetch_assoc()){
+			$i++;
+			$type=$row12['type'];
+			
+    		    if($type=='paymentReceived'){
+    		        $cr=$row12['amount'];
+    		        $dr= '';
+    		        $balance = $balance + $cr;
+    		    }
+    		    else if($type=='payable'){
+    		        $cr=$row12['amount'];
+    		        $dr= '';
+    		        $balance = $balance + $cr;
+    		    }
+    		    else if($type=='adjustment'){
+    		        $cr=$row12['amount'];
+    		        $dr= '';
+    		        $balance = $balance + $cr;
+    		    }
+    		    else if($type=='partyPayable'){
+    		        $dr=$row12['amount'];
+    		        $cr= '';
+    		        $balance = $balance - $dr;
+    		    }
+    		    else if($type=='payment'){
+    		        $dr=$row12['amount'];
+    		        $cr= '';
+    		        $balance = $balance - $dr;
+    		    }
+    		    else if($type=='paymentAdjustment'){
+    		        $dr=$row12['amount'];
+    		        $cr= '';
+    		        $balance = $balance - $dr;
+    		    }else if($type=='discount'){
+    		        $cr=$row12['amount'];
+    		        $dr= '';
+    		        $balance = $balance + $cr;
+    		    }
+    		    
+		        $drTotal1+=$dr;
+		        $drTotal=$drTotal1+$dr1;
+		        $crTotal1+=$cr;
+		        $crTotal=$crTotal1+$cr1;
+		        //$closingBlance=$drTotal-$crTotal;
+		        //$trialBalance=$closingBlance+$crTotal;
+		        $drClosingBalance = 0;
+		        $crClosingBalance = 0;
+		        $drGrandTotal = 0;
+		        $crGrandTotal = 0;
+		        if($balance >= 0){
+		            $drClosingBalance = $balance;
+		           $trialBalance=$drTotal+$balance;
+		           $drGrandTotal = $drTotal+$drClosingBalance;
+		           $crGrandTotal = $crTotal+$crClosingBalance;
+		        }else{
+		            $crClosingBalance = $balance*(-1);
+		            $trialBalance=$crTotal+$balance;
+		            $drGrandTotal = $drTotal+$drClosingBalance;
+		            $crGrandTotal = $crTotal+$crClosingBalance;
+		        }

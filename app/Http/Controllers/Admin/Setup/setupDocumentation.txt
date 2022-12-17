@@ -1,0 +1,27 @@
+
+---------------------Ali Technology Setup Module------------------------
+Sub Modules: 
+	Category
+	Brand
+	Unit
+	Shop Settings
+
+Controllers: 
+		Admin/Setup/BrandController
+		Admin/Setup/CategoryController
+		Admin/Setup/CompanySettingController
+		Admin/Setup/UnitController
+
+Views:
+	
+	admin/setups/company-settings
+	admin/setups/view-brands
+	admin/setups/view-category
+	admin/setups/view-damage
+	admin/setups/view-products
+	admin/setups/view-units
+	
+	
+
+Web:
+		Setup Module Web page links Start

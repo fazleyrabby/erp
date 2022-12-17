@@ -1,0 +1,10 @@
+<!--DataTable
+  <script src="{{asset('backend/assets/extra-libs/multicheck/datatable-checkbox-init.js')}}"></script>
+  <script src="{{asset('backend/assets/extra-libs/multicheck/jquery.multicheck.js')}}"></script>-->
+  <script src="{{asset('backend/assets/extra-libs/DataTables/datatables.min.js')}}"></script>
+	<!--<script src="https://jafree.alitechbd.com/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="https://jafree.alitechbd.com/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://jafree.alitechbd.com/js/dataTables.buttons.min.js"></script>-->
+  <!--mousetrap ShortCut Keys-->
+  
+<script src="{{asset('backend/jslibrary/mousetrap.min.js')}}"></script>
