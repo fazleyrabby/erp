@@ -3,29 +3,28 @@
 namespace App\Http\Controllers\Admin\Inventory;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\inventory\Category;
-use App\Models\inventory\Product;
 use App\Models\inventory\Brand;
+use App\Models\inventory\Category;
 use App\Models\inventory\Currentstock;
-use App\Models\inventory\Unit;
 use App\Models\inventory\DamageProduct;
+use App\Models\inventory\Product;
 use App\Models\inventory\Productspecification;
 use App\Models\inventory\SerializeProduct;
+use App\Models\inventory\Unit;
 use App\Models\inventory\Warehouse;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\DB;
-use PDF;
 use Carbon\Carbon;
-use Image;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-
+use Image;
+use PDF;
 
 class ProductController extends Controller
 {
-     function __construct()
+    public function __construct()
     {
         $this->middleware('permission:products.view', ['only' => ['index', 'getProducts']]);
         $this->middleware('permission:products.store', ['only' => ['store']]);
@@ -35,21 +34,17 @@ class ProductController extends Controller
         $this->middleware('permission:damage.view', ['only' => ['damageIndex', 'getDamage']]);
         $this->middleware('permission:damage.store', ['only' => ['damageStore']]);
         $this->middleware('permission:damage.delete', ['only' => ['damageDelete']]);
-    } 
+    }
 
     public function index()
     {
-        $data['categories'] = Category::where('deleted', 'No')->where('status','=','Active')->where('name','!=','Service')->get();
-        $data['brands'] = Brand::where('deleted', 'No')->where('status','=','Active')->where('name','!=','Service')->get();
-        $data['units'] = Unit::where('deleted', 'No')->where('status','=','Active')->get();
-        $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status','=','Active')->get();
+        $data['categories'] = Category::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->get();
+        $data['brands'] = Brand::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->get();
+        $data['units'] = Unit::where('deleted', 'No')->where('status', '=', 'Active')->get();
+        $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status', '=', 'Active')->get();
+
         return view('admin.inventory.products.view-products', $data);
     }
-
-
-
-
-
 
     public function getProducts()
     {
@@ -62,63 +57,46 @@ class ProductController extends Controller
             ->where('products.status', 'Active')
             ->orderBy('products.id', 'DESC')
             ->get();
-        $output = array('data' => array());
+        $output = ['data' => []];
         $i = 1;
         foreach ($products as $product) {
-            $status = "";
+            $status = '';
             if ($product->status == 'Active') {
                 $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;"></i></center>';
             } else {
                 $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;"></i></center>';
             }
-            $imageUrl = url('upload/product_images/thumbs/' . $product->image);
-            if($product->type == 'service'){
-                $button = '<td style="width: 12%;">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-cyan dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                        <li class="action liDropDown" onclick="editProduct(' . $product->id . ')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li></li>
-                        <li class="action liDropDown"><a   class="btn"  onclick="confirmDelete(' . $product->id . ')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-                        </li> 
-                        </ul>
-                    </div>
-                </td>';
-            }else{
-                $button = '<td style="width: 12%;">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-cyan dropdown-toggle" data-toggle="dropdown">
-                        <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                        <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                        <li class="action liDropDown" onclick="editProduct(' . $product->id . ')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li></li>
-                        <li class="action liDropDown" onclick="editOpenStock(' . $product->id . ')"  ><a  class="btn" ><i class="fas fa-edit"></i> Update Opening Stock</a></li></li>
-                    </li>
-                        <li class="action liDropDown"><a   class="btn"  onclick="confirmDelete(' . $product->id . ')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-                        </li> 
-                        </ul>
-                    </div>
-                </td>';
+            $imageUrl = url('upload/product_images/thumbs/'.$product->image);
+            $actionItems = '
+                    <a class="dropdown-item" href="#" onclick="editProduct('.$product->id.')"><i class="fas fa-edit me-2"></i> Edit</a>';
+            if ($product->type != 'service') {
+                $actionItems .= '
+                    <a class="dropdown-item" href="#" onclick="editOpenStock('.$product->id.')"><i class="fas fa-edit me-2"></i> Update Opening Stock</a>';
             }
-           
+            $actionItems .= '
+                    <a class="dropdown-item text-danger" href="#" onclick="confirmDelete('.$product->id.')"><i class="fas fa-trash-alt me-2"></i> Delete</a>';
+            $button = '<div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end">'.$actionItems.'
+                    </div>
+                </div>';
 
-            $output['data'][] = array(
-                $i++ . '<input type="hidden" name="id" id="id" value="' . $product->id . '" />',
-                '<b>Name: </b>'.$product->name . '<br><b>Model: </b>' . $product->model_no . '<br><b>Code: </b>' . $product->code,
-                '<b>Category: </b>' . $product->categoryName . ' <br><b>Brand: </b>' . $product->brandName . '<br><b>Unit: </b>' . $product->unitName . '<br><b>Type: </b>' . Str::ucfirst($product->type),
-                '<center><img style="max-width:50px; max-height:80px;" src="' . $imageUrl . '" alt="no image" /></center>',
-                '<b>OS: </b>' . $product->opening_stock . '<br><b>RQ: </b>' . $product->remainder_quantity . '<br><b>Available: </b>' . $product->current_stock,
-                '<b>CP: </b>' . Session::get('companySettings')[0]['currency'] . ' ' . $product->purchase_price . '<br><b>PP: </b>' . Session::get('companySettings')[0]['currency'] . ' ' . $product->sale_price,
+            $output['data'][] = [
+                $i++.'<input type="hidden" name="id" id="id" value="'.$product->id.'" />',
+                '<b>Name: </b>'.$product->name.'<br><b>Model: </b>'.$product->model_no.'<br><b>Code: </b>'.$product->code,
+                '<b>Category: </b>'.$product->categoryName.' <br><b>Brand: </b>'.$product->brandName.'<br><b>Unit: </b>'.$product->unitName.'<br><b>Type: </b>'.Str::ucfirst($product->type),
+                '<center><img style="max-width:50px; max-height:80px;" src="'.$imageUrl.'" alt="no image" /></center>',
+                '<b>OS: </b>'.$product->opening_stock.'<br><b>RQ: </b>'.$product->remainder_quantity.'<br><b>Available: </b>'.$product->current_stock,
+                '<b>CP: </b>'.Session::get('companySettings')[0]['currency'].' '.$product->purchase_price.'<br><b>PP: </b>'.Session::get('companySettings')[0]['currency'].' '.$product->sale_price,
                 $status,
-                $button
-            );
+                $button,
+            ];
         }
+
         return $output;
     }
-
-
-
- 
-
 
     public function getAdvanceSearchProducts(Request $request)
     {
@@ -131,40 +109,41 @@ class ProductController extends Controller
             ->where('products.deleted', 'No')
             ->orderBy('products.id', 'DESC')
             ->get();
-        $output = array('data' => array());
+        $output = ['data' => []];
         $i = 1;
         foreach ($products as $product) {
             $productId = $product->id;
             $specs = DB::table('tbl_productspecification')->where('deleted', 'No')->where('tbl_productsId', $productId)->get();
             $productSpecs = '';
             foreach ($specs as $spec) {
-                $productSpecs .= '<tr><td><b>' . $spec->specificationName . ' : </b></td><td>' . $spec->specificationValue . '</td></tr><br>';
+                $productSpecs .= '<tr><td><b>'.$spec->specificationName.' : </b></td><td>'.$spec->specificationValue.'</td></tr><br>';
             }
-            if ($request->page == "Purchase") {
+            if ($request->page == 'Purchase') {
                 $button = '<td>
                             <div >
-                                <button type="button" class="btn btn-cyan" onclick="warehouseWiseStock(' . $product->id . ');"> <i class="fa fa-eye"> </i> </button>
-                                <button type="button" class="btn btn-cyan" onclick="selectProductWOWarehouse(' . $product->id . ');"> <i class="fa fa-plus"> </i> </button>
+                                <button type="button" class="btn btn-cyan" onclick="warehouseWiseStock('.$product->id.');"> <i class="fa fa-eye"> </i> </button>
+                                <button type="button" class="btn btn-cyan" onclick="selectProductWOWarehouse('.$product->id.');"> <i class="fa fa-plus"> </i> </button>
                             </div>
                             </td>';
             } else {
                 $button = '<td>
                             <div >
-                                <button type="button" class="btn btn-cyan" onclick="warehouseWiseStock(' . $product->id . ');"> <i class="fa fa-eye"> </i> </button>
+                                <button type="button" class="btn btn-cyan" onclick="warehouseWiseStock('.$product->id.');"> <i class="fa fa-eye"> </i> </button>
                             </div>
                             </td>';
             }
 
-            $output['data'][] = array(
-                $i++ . '<input type="hidden" name="id" id="id" value="' . $product->id . '" />',
-                $product->name . ' <br><b>Code: </b>' . $product->code . '<br><b>Barcode: </b>' . $product->barcode_no,
-                '<b>Category: </b>' . $product->categoryName . ' <br><b>Brand: </b>' . $product->brandName . '<br><b>Unit: </b>' . $product->unitName,
+            $output['data'][] = [
+                $i++.'<input type="hidden" name="id" id="id" value="'.$product->id.'" />',
+                $product->name.' <br><b>Code: </b>'.$product->code.'<br><b>Barcode: </b>'.$product->barcode_no,
+                '<b>Category: </b>'.$product->categoryName.' <br><b>Brand: </b>'.$product->brandName.'<br><b>Unit: </b>'.$product->unitName,
                 $productSpecs,
-                '<b>PP: </b>' . Session::get('companySettings')[0]['currency'] . ' ' . $product->purchase_price . '<br><b>SP: </b>' . Session::get('companySettings')[0]['currency'] . ' ' . $product->sale_price . '<br><b>Dis: </b>' . Session::get('companySettings')[0]['currency'] . ' ' . $product->discount,
-                '<h6 class="text-cyan">Stock : ' . $product->current_stock . '</h6><div id="' . $product->id . '"></div>',
-                $button
-            );
+                '<b>PP: </b>'.Session::get('companySettings')[0]['currency'].' '.$product->purchase_price.'<br><b>SP: </b>'.Session::get('companySettings')[0]['currency'].' '.$product->sale_price.'<br><b>Dis: </b>'.Session::get('companySettings')[0]['currency'].' '.$product->discount,
+                '<h6 class="text-cyan">Stock : '.$product->current_stock.'</h6><div id="'.$product->id.'"></div>',
+                $button,
+            ];
         }
+
         return $output;
     }
 
@@ -183,9 +162,10 @@ class ProductController extends Controller
 
         $warehouseWiseStock = '';
         foreach ($currentstocks as $stock) {
-            $warehouseWiseStock .= '<table style="border: 1px solid #ececec;"><tr id="warehouseWise"><td><b id="wrhs_name' . $stock->tbl_wareHouseId . '">' . $stock->wareHouseName . '</b>:</td><td width="25%" >' . $stock->currentStock . '</td><td width="5%"><a href="#" class="btn btn-sm btn-success rounded" onclick="selectProducts(' . $productId . ',' . $stock->tbl_wareHouseId . ')"><i class="fa fa-plus"></i></a></td></tr></table>';
+            $warehouseWiseStock .= '<table style="border: 1px solid #ececec;"><tr id="warehouseWise"><td><b id="wrhs_name'.$stock->tbl_wareHouseId.'">'.$stock->wareHouseName.'</b>:</td><td width="25%" >'.$stock->currentStock.'</td><td width="5%"><a href="#" class="btn btn-sm btn-success rounded" onclick="selectProducts('.$productId.','.$stock->tbl_wareHouseId.')"><i class="fa fa-plus"></i></a></td></tr></table>';
         }
-        return  $warehouseWiseStock;
+
+        return $warehouseWiseStock;
     }
 
     public function brandAndCategoryWise(Request $request)
@@ -194,7 +174,7 @@ class ProductController extends Controller
         $brandId = $request->brandId;
         $warehouseId = $request->warehouseId;
         // Added By Hamid (line: 150 to 161)
-        if ($categoryId != "" && $brandId != "" && $warehouseId != "") {
+        if ($categoryId != '' && $brandId != '' && $warehouseId != '') {
             // WarehouseWise Product(s)
             $product = DB::table('products')
                 ->join('tbl_currentstock', 'products.id', '=', 'tbl_currentstock.tbl_productsId')
@@ -206,7 +186,7 @@ class ProductController extends Controller
                 ->where('products.deleted', 'No')
                 ->get();
             // End Added By Hamid
-        } else if ($categoryId == "" && $brandId == "") {
+        } elseif ($categoryId == '' && $brandId == '') {
             if ($request->type == 'purchase') {
                 $product = Product::where('deleted', 'No')
                     ->where('status', 'Active')
@@ -217,7 +197,7 @@ class ProductController extends Controller
                     ->where('status', 'Active')
                     ->get();
             }
-        } else if ($categoryId == "") {
+        } elseif ($categoryId == '') {
             if ($request->type == 'purchase') {
                 $product = DB::table('products')
                     ->where('deleted', 'No')
@@ -232,7 +212,7 @@ class ProductController extends Controller
                     ->where('current_stock', '>', 0)
                     ->get();
             }
-        } else if ($brandId == "") {
+        } elseif ($brandId == '') {
             if ($request->type == 'purchase') {
                 $product = DB::table('products')
                     ->where('deleted', 'No')
@@ -265,30 +245,21 @@ class ProductController extends Controller
                     ->get();
             }
         }
+
         return $product;
     }
 
-
-
-
-
-
-
-
-
-
-    
     public function store(Request $request)
     {
         $discount = $request->discount;
-        $lastChar = substr($discount, -1); //Get Last Character
+        $lastChar = substr($discount, -1); // Get Last Character
         $isNumber = false;
-        //---If Discount In Percentage(%)---//
-        if ($lastChar == "%") {
-            $discountInNumbmer = substr($discount, 0, -1); //Remove Last Character
+        // ---If Discount In Percentage(%)---//
+        if ($lastChar == '%') {
+            $discountInNumbmer = substr($discount, 0, -1); // Remove Last Character
             $isNumber = is_numeric($discountInNumbmer);
             $lastChar = substr($discount, -1);
-            $request['discount'] =  $discountInNumbmer;
+            $request['discount'] = $discountInNumbmer;
         }
 
         $request->validate([
@@ -305,29 +276,29 @@ class ProductController extends Controller
             'discount' => 'numeric|nullable',
             'type' => 'required',
             'stockCheck' => 'required',
-            'specNames'=>'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'specValues'=>'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'notes'=> 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u'
+            'specNames' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'specValues' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'notes' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
         ]);
-        //--- If Dicount In Percentage(%)---//
-        if ($lastChar == "%") {
-            $discount =  $discountInNumbmer;
-            $salePrice =   $request->sale_price;
+        // --- If Dicount In Percentage(%)---//
+        if ($lastChar == '%') {
+            $discount = $discountInNumbmer;
+            $salePrice = $request->sale_price;
             $amount = ($salePrice / 100);
             $discountAmount = $amount * $discount;
             $request['discount'] = $discountAmount;
         }
 
-        if ($request->type == "serialize") {
+        if ($request->type == 'serialize') {
             $request->validate([
                 'itemsInBox' => 'required',
                 'serialNumbers' => 'required',
-                'stockQuantities' => 'required'
+                'stockQuantities' => 'required',
             ]);
         }
         if ($request->hasFile('image')) {
             $request->validate([
-                'image'   =>  'image|max:2048'
+                'image' => 'image|max:2048',
             ]);
 
             $productImage = $request->file('image');
@@ -335,34 +306,34 @@ class ProductController extends Controller
             $uploadPath = 'upload/product_images/thumbs/';
             $uploadResizePath = 'upload/product_images/resizes/';
             $uploadPathOriginal = 'upload/product_images/';
-            $imageName = time() . $name;
-            $imageUrl = $uploadPath . $imageName;
-            $resizeUrl = $uploadResizePath . $imageName;
-            //--resize image upload in public--//
+            $imageName = time().$name;
+            $imageUrl = $uploadPath.$imageName;
+            $resizeUrl = $uploadResizePath.$imageName;
+            // --resize image upload in public--//
             Image::make($productImage)->resize(360, 360)->save($resizeUrl);
             Image::make($productImage)->resize(100, 100)->save($imageUrl);
-            //--original image upload in public--//
+            // --original image upload in public--//
             $request->image->move(public_path($uploadPathOriginal), $imageName);
 
             // End Image Resize
         } else {
-            $imageName = "no_image.png";
+            $imageName = 'no_image.png';
         }
 
         DB::beginTransaction();
         try {
-            $productCode = Product::where('deleted','=','No')->where('status','=','Active')->max('code');
+            $productCode = Product::where('deleted', '=', 'No')->where('status', '=', 'Active')->max('code');
             $productCode++;
             $productCode = str_pad($productCode, 6, '0', STR_PAD_LEFT);
 
-            $product = new Product();
+            $product = new Product;
             $product->name = $request->name;
             $product->image = $imageName;
             $product->code = $productCode;
 
-            if($request->barcode_no == ''){
+            if ($request->barcode_no == '') {
                 $barcode_no = $productCode;
-            }else{
+            } else {
                 $barcode_no = '';
             }
 
@@ -386,12 +357,12 @@ class ProductController extends Controller
             $product->save();
             $productId = $product->id;
             // Serialize Product
-            if ($request->type == "serialize") {
-                $serialNumbers = explode(",", $request->serialNumbers);
-                $stockQuantities = explode(",", $request->stockQuantities);
+            if ($request->type == 'serialize') {
+                $serialNumbers = explode(',', $request->serialNumbers);
+                $stockQuantities = explode(',', $request->stockQuantities);
                 $k = 0;
                 foreach ($serialNumbers as $serialNumber) {
-                    $serialize = new SerializeProduct();
+                    $serialize = new SerializeProduct;
                     $serialize->tbl_productsId = $productId;
                     $serialize->serial_no = $serialNumber;
                     $serialize->quantity = $stockQuantities[$k];
@@ -402,13 +373,13 @@ class ProductController extends Controller
                     $k++;
                 }
             }
-            $specNames = explode(",", $request->specNames);
-            $specValues = explode(",", $request->specValues);
+            $specNames = explode(',', $request->specNames);
+            $specValues = explode(',', $request->specValues);
             if ($specNames[0] != -1 || $specValues[0] != -1) {
                 $i = 0;
-                foreach ($specNames as  $specName) {
-                    $spec = new Productspecification();
-                    $spec->tbl_productsId  = $productId;
+                foreach ($specNames as $specName) {
+                    $spec = new Productspecification;
+                    $spec->tbl_productsId = $productId;
                     $spec->specificationName = $specName;
                     $spec->specificationValue = $specValues[$i];
                     $spec->lastInsertedBy = auth()->user()->id;
@@ -418,11 +389,12 @@ class ProductController extends Controller
                 }
             }
             // Currentstock
-            if ($request->type == "service") {
+            if ($request->type == 'service') {
                 DB::commit();
+
                 return response()->json(['success' => 'Product saved successfully']);
             }
-            $currentStock = new Currentstock();
+            $currentStock = new Currentstock;
             $currentStock->tbl_productsId = $productId;
             $currentStock->tbl_wareHouseId = $request->stock_warehouse;
             $currentStock->currentStock = $request->opening_stock;
@@ -431,22 +403,14 @@ class ProductController extends Controller
             $currentStock->entryDate = date('Y-m-d H:i:s');
             $currentStock->save();
             DB::commit();
+
             return response()->json(['success' => 'Product saved successfully']);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => "rollBack! Please try again"]);
+
+            return response()->json(['error' => 'rollBack! Please try again']);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     public function servicestore(Request $request)
     {
@@ -454,42 +418,41 @@ class ProductController extends Controller
             'name' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
             'purchase_price' => 'max:7|regex:/^\d+(\.\d{1,2})?$/',
             'sale_price' => 'max:7|regex:/^\d+(\.\d{1,2})?$/',
-            'notes'=> 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'specNames'=>'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'specValues'=>'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u'
+            'notes' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'specNames' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'specValues' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
         ]);
 
-
         $discount = '0.00%';
-        $lastChar = substr($discount, -1); //Get Last Character
+        $lastChar = substr($discount, -1); // Get Last Character
         $isNumber = false;
-        //---If Discount In Percentage(%)---//
-        if ($lastChar == "%") {
-            $discountInNumbmer = substr($discount, 0, -1); //Remove Last Character
+        // ---If Discount In Percentage(%)---//
+        if ($lastChar == '%') {
+            $discountInNumbmer = substr($discount, 0, -1); // Remove Last Character
             $isNumber = is_numeric($discountInNumbmer);
             $lastChar = substr($discount, -1);
-            $request['discount'] =  $discountInNumbmer;
+            $request['discount'] = $discountInNumbmer;
         }
 
-        //--- If Dicount In Percentage(%)---//
-        if ($lastChar == "%") {
-            $discount =  $discountInNumbmer;
-            $salePrice =   $request->sale_price;
+        // --- If Dicount In Percentage(%)---//
+        if ($lastChar == '%') {
+            $discount = $discountInNumbmer;
+            $salePrice = $request->sale_price;
             $amount = ($salePrice / 100);
             $discountAmount = $amount * $discount;
             $request['discount'] = $discountAmount;
         }
 
-        if ($request->type == "serialize") {
+        if ($request->type == 'serialize') {
             $request->validate([
                 'itemsInBox' => 'required',
                 'serialNumbers' => 'required',
-                'stockQuantities' => 'required'
+                'stockQuantities' => 'required',
             ]);
         }
         if ($request->hasFile('image')) {
             $request->validate([
-                'image'   =>  'image|max:2048'
+                'image' => 'image|max:2048',
             ]);
 
             $productImage = $request->file('image');
@@ -497,27 +460,28 @@ class ProductController extends Controller
             $uploadPath = 'upload/product_images/thumbs/';
             $uploadResizePath = 'upload/product_images/resizes/';
             $uploadPathOriginal = 'upload/product_images/';
-            $imageName = time() . $name;
-            $imageUrl = $uploadPath . $imageName;
-            $resizeUrl = $uploadResizePath . $imageName;
-            //--resize image upload in public--//
+            $imageName = time().$name;
+            $imageUrl = $uploadPath.$imageName;
+            $resizeUrl = $uploadResizePath.$imageName;
+            // --resize image upload in public--//
             Image::make($productImage)->resize(360, 360)->save($resizeUrl);
             Image::make($productImage)->resize(100, 100)->save($imageUrl);
-            //--original image upload in public--//
+            // --original image upload in public--//
             $request->image->move(public_path($uploadPathOriginal), $imageName);
 
             // End Image Resize
         } else {
-            $imageName = "no_image.png";
+            $imageName = 'no_image.png';
         }
 
         DB::beginTransaction();
         try {
-            $productCode = Product::where('deleted','=','No')->where('status','=','Active')->max('code');
+            $productCode = Product::where('deleted', '=', 'No')->where('status', '=', 'Active')->max('code');
+
             return $productCode;
             $productCode++;
             $productCode = str_pad($productCode, 6, '0', STR_PAD_LEFT);
-            $product = new Product();
+            $product = new Product;
             $product->name = $request->name;
             $product->image = $imageName;
             $product->code = $productCode;
@@ -535,7 +499,7 @@ class ProductController extends Controller
             $product->remainder_quantity = 0;
             $product->purchase_price = $request->purchase_price;
             $product->sale_price = $request->sale_price;
-            
+
             $product->notes = $request->notes;
             $product->model_no = '0123';
             $product->created_by = auth()->user()->id;
@@ -546,12 +510,12 @@ class ProductController extends Controller
             $product->save();
             $productId = $product->id;
             // Serialize Product
-            if ($request->type == "serialize") {
-                $serialNumbers = explode(",", $request->serialNumbers);
-                $stockQuantities = explode(",", $request->stockQuantities);
+            if ($request->type == 'serialize') {
+                $serialNumbers = explode(',', $request->serialNumbers);
+                $stockQuantities = explode(',', $request->stockQuantities);
                 $k = 0;
                 foreach ($serialNumbers as $serialNumber) {
-                    $serialize = new SerializeProduct();
+                    $serialize = new SerializeProduct;
                     $serialize->tbl_productsId = $productId;
                     $serialize->serial_no = $serialNumber;
                     $serialize->quantity = $stockQuantities[$k];
@@ -562,13 +526,13 @@ class ProductController extends Controller
                     $k++;
                 }
             }
-            $specNames = explode(",", $request->specNames);
-            $specValues = explode(",", $request->specValues);
+            $specNames = explode(',', $request->specNames);
+            $specValues = explode(',', $request->specValues);
             if ($specNames[0] != -1 || $specValues[0] != -1) {
                 $i = 0;
-                foreach ($specNames as  $specName) {
-                    $spec = new Productspecification();
-                    $spec->tbl_productsId  = $productId;
+                foreach ($specNames as $specName) {
+                    $spec = new Productspecification;
+                    $spec->tbl_productsId = $productId;
                     $spec->specificationName = $specName;
                     $spec->specificationValue = $specValues[$i];
                     $spec->lastInsertedBy = auth()->user()->id;
@@ -578,26 +542,17 @@ class ProductController extends Controller
                 }
             }
             // Currentstock
-            
-                DB::commit();
-                return response()->json(['success' => 'Product saved successfully']);
-            
-           
+
+            DB::commit();
+
+            return response()->json(['success' => 'Product saved successfully']);
+
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => "rollBack! Please try again"]);
+
+            return response()->json(['error' => 'rollBack! Please try again']);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     public function edit(Request $request)
     {
@@ -606,8 +561,10 @@ class ProductController extends Controller
             ->where('tbl_productsId', $product->id)
             ->where('deleted', 'No')
             ->get();
+
         return response()->json([$product, $productSpecs]);
     }
+
     public function editOpenStock(Request $request)
     {
         $product = Product::find($request->id);
@@ -627,14 +584,14 @@ class ProductController extends Controller
         $initialStockData = '';
         foreach ($currentStocks as $currentStock) {
             $initialStockData .= '<tr>
-                                    <td>' . $currentStock->wareHouseName . '</td>
-                                    <td>' . $currentStock->initialStock . '</td>
-                                    <td>' . $currentStock->currentStock . '</td>
+                                    <td>'.$currentStock->wareHouseName.'</td>
+                                    <td>'.$currentStock->initialStock.'</td>
+                                    <td>'.$currentStock->currentStock.'</td>
                                 </tr>';
         }
         // Start Serialize Products
         $serializeProductRows = '';
-        if ($product->type == "serialize") {
+        if ($product->type == 'serialize') {
             $serializeProducts = DB::table('tbl_serialize_products')
                 ->select(
                     'tbl_serialize_products.id',
@@ -652,41 +609,35 @@ class ProductController extends Controller
                 ->orderBy('tbl_serialize_products.id', 'ASC')
                 ->get();
 
-            $product_id =  $request->id;
+            $product_id = $request->id;
             if (count($serializeProducts) > 0) {
                 foreach ($serializeProducts as $key => $serializeProduct) {
                     $tblSerializeProductsId = $serializeProduct->id;
-                    $serializeProductRows .= '<tr id="row' . ($key + 1) . '"><td>' . ($key + 1) . '</td>' .
-                        '<td><input class="form-control input-sm serialNo' . $key .
-                        '" id="editSerialNo" type="text" name="serialNo" placeholder=" Serial... " value="' . $serializeProduct->serial_no . '" required></td><td><input class="form-control only-number input-sm stockQuantity' . $key .
-                        '" id="stockQuantity_' . $tblSerializeProductsId . '" type="text" name="stockQuantity" placeholder=" ... " required oninput="updateCalculateTotalQuantity(this.value,' . $product_id . ',' . $serializeProduct->warehouse_id . ',' . $tblSerializeProductsId . ')" onblur="updateCalculateTotalQuantity(' . $product_id . ',' . $serializeProduct->warehouse_id  . ',' . TRUE . ')" value="' . $serializeProduct->quantity  . '"></td></tr>';
+                    $serializeProductRows .= '<tr id="row'.($key + 1).'"><td>'.($key + 1).'</td>'.
+                        '<td><input class="form-control input-sm serialNo'.$key.
+                        '" id="editSerialNo" type="text" name="serialNo" placeholder=" Serial... " value="'.$serializeProduct->serial_no.'" required></td><td><input class="form-control only-number input-sm stockQuantity'.$key.
+                        '" id="stockQuantity_'.$tblSerializeProductsId.'" type="text" name="stockQuantity" placeholder=" ... " required oninput="updateCalculateTotalQuantity(this.value,'.$product_id.','.$serializeProduct->warehouse_id.','.$tblSerializeProductsId.')" onblur="updateCalculateTotalQuantity('.$product_id.','.$serializeProduct->warehouse_id.','.true.')" value="'.$serializeProduct->quantity.'"></td></tr>';
                 }
             } else {
                 $serializeProductRows = '<h5 class="text-dark text-bolder text-center">No Serialize Product Available!</h5>';
             }
         }
+
         // End Serialize Products
         return response()->json(['product' => $product, 'productSpecs' => $productSpecs, 'initialStockData' => $initialStockData, 'serializeProductRows' => $serializeProductRows]);
     }
 
-
-
-
-
-
-
-
     public function update(Request $request)
     {
         $discount = $request->discount;
-        $lastChar = substr($discount, -1); //get last character
+        $lastChar = substr($discount, -1); // get last character
         $isNumber = false;
-        //---if dicount in percentage(%)---//
-        if ($lastChar == "%") {
-            $discountInNumbmer = substr($discount, 0, -1); //remove last character
+        // ---if dicount in percentage(%)---//
+        if ($lastChar == '%') {
+            $discountInNumbmer = substr($discount, 0, -1); // remove last character
             $isNumber = is_numeric($discountInNumbmer);
             $lastChar = substr($discount, -1);
-            $request['discount'] =  $discountInNumbmer;
+            $request['discount'] = $discountInNumbmer;
         }
 
         $request->validate([
@@ -700,15 +651,15 @@ class ProductController extends Controller
             'purchase_price' => 'required|max:10|regex:/^\d+(\.\d{1,2})?$/',
             'sale_price' => 'required|max:10|regex:/^\d+(\.\d{1,2})?$/',
             'discount' => 'numeric|nullable',
-            'specNames'=>'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'specValues'=>'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'notes'=> 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'specNames' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'specValues' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'notes' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
         ]);
 
-        //---if dicount in percentage(%)---//
-        if ($lastChar == "%") {
-            $discount =  $discountInNumbmer;
-            $salePrice =   $request->sale_price;
+        // ---if dicount in percentage(%)---//
+        if ($lastChar == '%') {
+            $discount = $discountInNumbmer;
+            $salePrice = $request->sale_price;
             $amount = ($salePrice / 100);
             $discountAmount = $amount * $discount;
             $request['discount'] = $discountAmount;
@@ -719,20 +670,20 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $request->validate([
-                'image'   =>  'image|max:2048'
+                'image' => 'image|max:2048',
             ]);
             $productImage = $request->file('image');
             $name = $productImage->getClientOriginalName();
             $uploadPath = 'upload/product_images/thumbs/';
             $uploadResizePath = 'upload/product_images/resizes/';
             $uploadPathOriginal = 'upload/product_images/';
-            $imageName = time() . $name;
-            $imageUrl = $uploadPath . $imageName;
-            $resizeUrl = $uploadResizePath . $imageName;
-            //--resize image upload in public--//
+            $imageName = time().$name;
+            $imageUrl = $uploadPath.$imageName;
+            $resizeUrl = $uploadResizePath.$imageName;
+            // --resize image upload in public--//
             Image::make($productImage)->resize(360, 360)->save($resizeUrl);
             Image::make($productImage)->resize(100, 100)->save($imageUrl);
-            //--original image upload in public--//
+            // --original image upload in public--//
             $request->image->move(public_path($uploadPathOriginal), $imageName);
             $product->image = $imageName;
             /*$productImage = $request->file('image');
@@ -743,7 +694,7 @@ class ProductController extends Controller
             $productImage->move($uploadPath, $imageName);
             $product->image = $imageName;*/
         }
-        //$product->code = $request->code;
+        // $product->code = $request->code;
         $product->barcode_no = $request->barcode_no;
         $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
@@ -761,18 +712,18 @@ class ProductController extends Controller
         $product->type = $request->type;
         $product->stock_check = $request->stockCheck;
         $product->save();
-        //Specs
-        $specIds = (explode(",", $request->specIds));
-        $specNames = (explode(",", $request->specNames));
-        $specValues = (explode(",", $request->specValues));
-        //New Specs
-        $newSpecNames = (explode(",", $request->newSpecNames));
-        $newSpecValues = (explode(",", $request->newSpecValues));
-        if ($specIds[0]  != -1) {
+        // Specs
+        $specIds = (explode(',', $request->specIds));
+        $specNames = (explode(',', $request->specNames));
+        $specValues = (explode(',', $request->specValues));
+        // New Specs
+        $newSpecNames = (explode(',', $request->newSpecNames));
+        $newSpecValues = (explode(',', $request->newSpecValues));
+        if ($specIds[0] != -1) {
             for ($i = 0; $i < count($specIds); $i++) {
                 $specId = $specIds[$i];
-                $spec =  Productspecification::find($specId);
-                $spec->tbl_productsId  = $request->id;
+                $spec = Productspecification::find($specId);
+                $spec->tbl_productsId = $request->id;
                 $spec->specificationName = $specNames[$i];
                 $spec->specificationValue = $specValues[$i];
                 $spec->lastUpdatedBy = auth()->user()->id;
@@ -782,8 +733,8 @@ class ProductController extends Controller
         }
         if ($newSpecNames[0] != -1 || $newSpecValues[0] != -1) {
             for ($i = 0; $i < count($newSpecNames); $i++) {
-                $spec = new Productspecification();
-                $spec->tbl_productsId  =  $request->id;
+                $spec = new Productspecification;
+                $spec->tbl_productsId = $request->id;
                 $spec->specificationName = $newSpecNames[$i];
                 $spec->specificationValue = $newSpecValues[$i];
                 $spec->lastInsertedBy = auth()->user()->id;
@@ -791,15 +742,9 @@ class ProductController extends Controller
                 $spec->save();
             }
         }
-        return response()->json(['success' => "Product updated Successfully"]);
+
+        return response()->json(['success' => 'Product updated Successfully']);
     }
-
-
-
-
-
-
-
 
     public function updateProductOpenStock(Request $request)
     {
@@ -819,7 +764,7 @@ class ProductController extends Controller
                 $product->increment('current_stock', $currentDiff);
                 $product->increment('opening_stock', $currentDiff);
             } else {
-                $currentstock_insert = new Currentstock();
+                $currentstock_insert = new Currentstock;
                 $currentstock_insert->tbl_productsId = $request->productId;
                 $currentstock_insert->tbl_wareHouseId = $request->warehouseId;
                 $currentstock_insert->currentStock = $request->openingStock;
@@ -830,8 +775,8 @@ class ProductController extends Controller
                 $product->increment('current_stock', $request->openingStock);
                 $product->increment('opening_stock', $request->openingStock);
             }
-            // Start Serialize Product 
-            if ($product->type == "serialize") {
+            // Start Serialize Product
+            if ($product->type == 'serialize') {
                 $serializeProducts = DB::table('tbl_serialize_products')
                     ->where('tbl_productsId', $product->id)
                     ->where('warehouse_id', $request->warehouseId)
@@ -847,16 +792,16 @@ class ProductController extends Controller
                         ->update([
                             'deleted' => 'Yes',
                             'deleted_by' => Auth::id(),
-                            'deleted_date' => date('Y-m-d H:i:s')
+                            'deleted_date' => date('Y-m-d H:i:s'),
                         ]);
                 }
                 // Serialize Product
-                $serialNumbers = explode(",", $request->editSerialNumbers);
-                $stockQuantities = explode(",", $request->editStockQuantities);
+                $serialNumbers = explode(',', $request->editSerialNumbers);
+                $stockQuantities = explode(',', $request->editStockQuantities);
                 $k = 0;
                 // Insert New
                 foreach ($stockQuantities as $stockQuantity) {
-                    $serialize = new SerializeProduct();
+                    $serialize = new SerializeProduct;
                     $serialize->tbl_productsId = $request->productId;
                     $serialize->serial_no = $serialNumbers[$k];
                     $serialize->quantity = $stockQuantity;
@@ -867,55 +812,50 @@ class ProductController extends Controller
                     $k++;
                 }
             }
-            // End Serialize Product 
+            // End Serialize Product
             DB::commit();
-            return response()->json(['success' => "OpeningStock updated Successfully"]);
+
+            return response()->json(['success' => 'OpeningStock updated Successfully']);
         } catch (Exception $e) {
             DB::rollBack();
+
             return response()->json(['success' => $e]);
         }
     }
-
-
-
-
-
-
-
-
 
     public function delete(Request $request)
     {
         $product = Product::find($request->id);
         $product->deleted = 'Yes';
         $product->status = 'Inactive';
-        $product->name = $product->name . '-Deleted-' . $request->id;
-        $product->code = $product->code . '-Deleted-' . $request->id;
-        $product->barcode_no = $product->barcode_no . '-Deleted-' . $request->id;
+        $product->name = $product->name.'-Deleted-'.$request->id;
+        $product->code = $product->code.'-Deleted-'.$request->id;
+        $product->barcode_no = $product->barcode_no.'-Deleted-'.$request->id;
         $product->deleted_by = auth()->user()->id;
         $product->deleted_date = date('Y-m-d H:i:s');
         $product->save();
+
         return response()->json(['success' => 'Product deleted successfully']);
     }
-  
-
-
 
     public function deleteSpec(Request $request)
     {
-        $spec =  Productspecification::find($request->id);
+        $spec = Productspecification::find($request->id);
         $spec->deleted = 'Yes';
         $spec->deletedBy = auth()->user()->id;
         $spec->deletedDate = date('Y-m-d H:i:s');
         $spec->save();
+
         return response()->json(['success' => 'Product Spec deleted']);
     }
 
     public function damageIndex()
     {
-        $data['products'] = Product::where('deleted', 'No')->where('type','!=','service')->get();
+        $data['products'] = Product::where('deleted', 'No')->where('type', '!=', 'service')->get();
+
         return view('admin.inventory.damage.view-damage', $data);
     }
+
     public function getWarehouseByProductID(Request $request)
     {
         $warehouses = DB::table('tbl_currentstock')
@@ -925,16 +865,21 @@ class ProductController extends Controller
             ->where('tbl_currentstock.tbl_productsId', $request->product_id)
             ->orderBy('tbl_warehouse.id', 'DESC')
             ->get();
+
         return $warehouses;
     }
+
     public function getStockByProductWarehouse(Request $request)
     {
         $currentStock = Currentstock::where('deleted', 'No')->where('tbl_productsId', $request->product_id)->where('tbl_wareHouseId', $request->warehouse_id)->pluck('currentStock');
+
         return $currentStock;
     }
+
     public function findCurrentStock(Request $request)
     {
-        $product = product::find($request->id);
+        $product = Product::find($request->id);
+
         return $product->current_stock;
     }
 
@@ -949,7 +894,7 @@ class ProductController extends Controller
             ->where('damage_products.deleted', 'No')
             ->orderBy('damage_products.id', 'DESC')
             ->get();
-        $output = array('data' => array());
+        $output = ['data' => []];
         $i = 1;
         foreach ($damages as $damage) {
             $button = '<td style="width: 12%;">
@@ -958,23 +903,24 @@ class ProductController extends Controller
 					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
 					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"> 
 				</li>
-				<li class="action" onclick="printPurchase(' . $damage->id . ')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
+				<li class="action" onclick="printPurchase('.$damage->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
 				</li>
-					<li class="action"><a   class="btn"  onclick="confirmDelete(' . $damage->id . ')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
+					<li class="action"><a   class="btn"  onclick="confirmDelete('.$damage->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
 					</li>
 					</ul>
 				</div>
 			</td>';
-            $output['data'][] = array(
-                $i++ . '<input type="hidden" name="id" id="id" value="' . $damage->id . '" />',
+            $output['data'][] = [
+                $i++.'<input type="hidden" name="id" id="id" value="'.$damage->id.'" />',
                 $damage->damage_date,
-                '<b>Damage No: </b>' . $damage->damage_order_no,
-                '<b>Name: </b>'.$damage->name . ' <br><b>Code: </b>' . $damage->code,
-                '<b>Category: </b>' . $damage->categoryName . '<br><b>Brand: </b>' . $damage->brandName,
-                $damage->damage_quantity . ' ' . $damage->unitName,
-                $button
-            );
+                '<b>Damage No: </b>'.$damage->damage_order_no,
+                '<b>Name: </b>'.$damage->name.' <br><b>Code: </b>'.$damage->code,
+                '<b>Category: </b>'.$damage->categoryName.'<br><b>Brand: </b>'.$damage->brandName,
+                $damage->damage_quantity.' '.$damage->unitName,
+                $button,
+            ];
         }
+
         return $output;
     }
 
@@ -983,14 +929,14 @@ class ProductController extends Controller
         $request->validate([
             'damage_quantity' => 'required|max:7|regex:/^\d+(\.\d{1,2})?$/',
             'remarks' => 'nullable|max:190|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'products_id' => 'required'
+            'products_id' => 'required',
         ]);
         DB::beginTransaction();
         try {
             $damageOrderNo = DamageProduct::max('damage_order_no');
             $damageOrderNo++;
             $damageOrderNo = str_pad($damageOrderNo, 6, '0', STR_PAD_LEFT);
-            $DamageProduct = new DamageProduct();
+            $DamageProduct = new DamageProduct;
             $DamageProduct->products_id = $request->products_id;
             $DamageProduct->warehouse_id = $request->warehouse_id;
             $DamageProduct->damage_quantity = $request->damage_quantity;
@@ -1011,7 +957,7 @@ class ProductController extends Controller
                     $stockEntry->decrement('currentStock', $request->damage_quantity);
                     $stockEntry->increment('damageProducts', $request->damage_quantity);
                 } else {
-                    $currentStock = new Currentstock();
+                    $currentStock = new Currentstock;
                     $currentStock->tbl_productsId = $request->products_id;
                     $currentStock->tbl_wareHouseId = $request->warehouse_id;
                     $currentStock->currentStock = -$request->damage_quantity;
@@ -1022,10 +968,12 @@ class ProductController extends Controller
                 }
             }
             DB::commit();
+
             return response()->json(['success' => 'Product damage saved successfully']);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Purchase rollBack ' . $e]);
+
+            return response()->json(['error' => 'Purchase rollBack '.$e]);
         }
     }
 
@@ -1047,7 +995,7 @@ class ProductController extends Controller
                 $stockEntry->increment('currentStock', $DamageProduct->damage_quantity);
                 $stockEntry->increment('damageDelete', $DamageProduct->damage_quantity);
             } else {
-                $currentStock = new Currentstock();
+                $currentStock = new Currentstock;
                 $currentStock->tbl_productsId = $DamageProduct->products_id;
                 $currentStock->tbl_wareHouseId = $DamageProduct->warehouse_id;
                 $currentStock->currentStock = $DamageProduct->damage_quantity;
@@ -1057,9 +1005,11 @@ class ProductController extends Controller
                 $currentStock->save();
             }
             DB::commit();
+
             return response()->json(['success' => 'Damage Product deleted successfully']);
         } catch (Exception $e) {
             DB::rollBack();
+
             return response()->json(['error' => 'Damage Product Delete rollBack ']);
         }
     }
@@ -1074,6 +1024,7 @@ class ProductController extends Controller
             ->where('damage_products.deleted', 'No')
             ->get();
         $pdf = PDF::loadView('admin.inventory.damage.damage-report', compact('invoice'));
-        return $pdf->stream('damage-report-pdf.pdf', array("Attachment" => false));
+
+        return $pdf->stream('damage-report-pdf.pdf', ['Attachment' => false]);
     }
 }

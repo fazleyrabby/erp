@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class SerializeProduct extends Model
 {
     use HasFactory;
+
     protected $table = 'tbl_serialize_products';
 
     public function product()
@@ -18,11 +19,12 @@ class SerializeProduct extends Model
 
     public static function SerializeProducts($productId, $purchaseId)
     {
-        $SerializeProducts =  DB::table('tbl_serialize_products')
+        $SerializeProducts = DB::table('tbl_serialize_products')
             ->where('purchase_id', $purchaseId)
             ->where('tbl_productsId', $productId)
             ->select('serial_no', 'quantity')
             ->get();
-        return  $SerializeProducts;
+
+        return $SerializeProducts;
     }
 }

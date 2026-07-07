@@ -10,8 +10,6 @@ class TempSaleProduct extends Model
     use HasFactory;
 
     protected $table = 'tbl_tsalesproducts';
+
     public $timestamps = false;
-
-
-
 }

@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Admin\RolePermission;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\permission;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionToRoleController extends Controller
 {
-
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:permissionToRole.view', ['only' => ['index', 'getPermission']]);
         $this->middleware('permission:permissionToRole.store', ['only' => ['store']]);
@@ -22,32 +20,30 @@ class PermissionToRoleController extends Controller
 
     public function index()
     {
-        $permissions = Permission::where('deleted', '=', 'No')->get();
+        $permissions = permission::where('deleted', '=', 'No')->get();
         $roles = Role::where('deleted', '=', 'No')->get();
         $permission_groups = User::getPermissionGroups();
+
         return view('admin.rolesPermissions.permission.permissionToRoleList', ['permissions' => $permissions, 'roles' => $roles, 'permission_groups' => $permission_groups]);
     }
-
 
     public function store(Request $request)
     {
 
         $request->validate([
-            'role_id' => 'required'
+            'role_id' => 'required',
         ]);
-
 
         $role = Role::find($request->role_id);
 
         $permissions = $request->input('permissions');
 
-        if (!empty($permissions)) {
+        if (! empty($permissions)) {
             $role->syncPermissions($permissions);
 
-            return  redirect('permission/to/role/view')->with('message', 'Permission Assigned sucessfully');
+            return redirect('permission/to/role/view')->with('message', 'Permission Assigned sucessfully');
         }
     }
-
 
     public function getPermission(Request $request)
     {
@@ -56,7 +52,6 @@ class PermissionToRoleController extends Controller
             ->select('role_has_permissions.*', 'permissions.name as permissionName')
             ->where('role_has_permissions.role_id', '=', $request->id)
             ->get();
-
 
         return $permissions;
     }

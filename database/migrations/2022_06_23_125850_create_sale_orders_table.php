@@ -22,15 +22,15 @@ class CreateSaleOrdersTable extends Migration
             $table->decimal('total_amount', 12, 2);
             $table->decimal('discount', 12, 2)->nullable();
             $table->biginteger('carrying_cost')->nullable();
-            $table->decimal('vat',10,2)->nullable();
-            $table->decimal('ait',10,2)->nullable();
+            $table->decimal('vat', 10, 2)->nullable();
+            $table->decimal('ait', 10, 2)->nullable();
             $table->decimal('grand_total', 12, 2)->nullable();
             $table->decimal('advance_payment', 12, 2)->default(0.00);
             $table->decimal('previous_due', 12, 2);
             $table->decimal('total_with_due', 12, 2);
             $table->decimal('current_payment', 12, 2)->default(0.00);
             $table->decimal('current_balance', 12, 2);
-            $table->enum('sales_type',['walkin_sale','FS','party_sale']);
+            $table->enum('sales_type', ['walkin_sale', 'FS', 'party_sale']);
             // New Fields
             $table->string('work_approval_date', 20)->nullable();
             $table->string('expected_delivery_date', 20)->nullable();
@@ -44,7 +44,7 @@ class CreateSaleOrdersTable extends Migration
             // Common Fields
             $table->enum('order_status', ['Pending', 'Completed'])->default('Pending');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
-            $table->enum('sale_status',['Incomplete','Completed'])->default('Incomplete');
+            $table->enum('sale_status', ['Incomplete', 'Completed'])->default('Incomplete');
             $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();

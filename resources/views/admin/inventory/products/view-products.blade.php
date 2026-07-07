@@ -3,30 +3,20 @@
     {{ Session::get('companySettings')[0]['name'] }} Products
 @endsection
 @section('content')
-    <style type="text/css">
-
-
-    </style>
-    <div class="content-wrapper">
-        <section class="content box-border">
-            <div class="card">
-                <div class="card-header">
-                    <h3 style="float:left;"> Product List </h3>
-                    <a class="btn btn-cyan float-right" onclick="create()"><i class="fa fa-plus circle"></i> Add
-                        Product
-                    </a>
-                    <a class="btn btn-cyan float-right" onclick="createService()" style="margin-right:10px;">
-                        <i class="fa fa-plus circle"></i> 
-                        Add Service
-                    </a>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"> Product List </h3>
+            <div class="card-actions">
+                <a class="btn btn-primary" onclick="create()"><i class="fa fa-plus"></i> Add Product</a>
+                <a class="btn btn-primary" onclick="createService()"><i class="fa fa-plus"></i> Add Service</a>
+            </div>
                     <!-- <a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()">
                         <i class="fas fa-sync"></i> Refresh 
                     </a> -->
-                </div><!-- /.card-header -->
+                </div>
                 <div class="card-body">
-                    <!--data listing table-->
                     <div class="table-responsive">
-                        <table id="manageProductTable" width="100%" class="table table-bordered table-hover ">
+                        <table id="manageProductTable" width="100%" class="table table-vcenter table-bordered">
                             <thead>
                                 <tr>
                                     <td width="5%">SL#</td>
@@ -40,29 +30,22 @@
                                 </tr>
                             </thead>
                         </table>
-                        <!--data listing table-->
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
 
 
-    <!-- modal -->
-    <div class="modal fade" id="modal">
-        <div class="modal-dialog" style="max-width: 80%;" role="document">
-            <!-- style, added by Md Hamid -->
+    <div class="modal fade" id="modal" tabindex="-1">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <div class="modal-header float-left">
-                    <h4 class="modal-title float-left"> Add Product</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                <div class="modal-header">
+                    <h4 class="modal-title"> Add Product</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="productForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="form-group col-md-3">
                                 <label> Category <span class="text-danger"> * </span></label><br>
                                 <select name="category_id" id="category_id" class="form-control input-sm">
@@ -227,7 +210,7 @@
                                                 <span class="text-danger" id="specError"></span>
                                             </div>
                                             <div class=" col-4">
-                                                <button type="button" class="btn btn-cyan btn-md add mt-4 "
+                                                <button type="button" class="btn btn-primary btn-md add mt-4 "
                                                     onclick="addNewSpecRow();"><span class="glyphicon glyphicon-plus"
                                                         style="font-size: 18px; font-weight:800;"><strong>+</strong></span></button>
                                             </div>
@@ -239,9 +222,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x
-                                Close</button>
-                            <button type="submit" class="btn btn-cyan " id="saveProduct"><i class="fa fa-save"></i>
+                            <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveProduct"><i class="fa fa-save"></i>
                                 Save Product</button>
                         </div>
                     </form>
@@ -258,11 +240,9 @@
         <div class="modal-dialog" style="max-width: 80%;" role="document">
             <!-- style, added by Md Hamid -->
             <div class="modal-content">
-                <div class="modal-header float-left">
-                    <h4 class="modal-title float-left"> Add Service</h4>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                <div class="modal-header">
+                    <h4 class="modal-title"> Add Service</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     
@@ -369,7 +349,7 @@
                                 </div>
                                 <div class="form-group col-md-6 d-none" id="showBtn">
                                     <label style="color: white;">.</label>
-                                    <button type="button" class="btn btn-cyan form-control " onclick="checkType()"><i
+                                    <button type="button" class="btn btn-primary form-control " onclick="checkType()"><i
                                             class="fa fa-table"></i>
                                         Show Serialize Table</button>
                                 </div>
@@ -413,7 +393,7 @@
                                                 <span class="text-danger" id="specError"></span>
                                             </div>
                                             <div class=" col-2">
-                                                <button type="button" class="btn btn-cyan btn-md add mt-4 "
+                                                <button type="button" class="btn btn-primary btn-md add mt-4 "
                                                     onclick="addNewSpecRow();"><span class="glyphicon glyphicon-plus"
                                                         style="font-size: 18px; font-weight:800;"><strong>+</strong></span></button>
                                             </div>
@@ -426,9 +406,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x
-                                Close</button>
-                            <button  class="btn btn-cyan "  onclick="saveService()"><i class="fa fa-save"></i>
+                            <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" onclick="saveService()"><i class="fa fa-save"></i>
                                 Save Service</button>
                         </div>
                     
@@ -445,8 +424,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Update Product</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
@@ -597,7 +575,7 @@
                                                 <label> Product Specification</label>
                                             </div>
                                             <div class=" col-2">
-                                                <button type="button" class="btn btn-cyan btn-md add"
+                                                <button type="button" class="btn btn-primary btn-md add"
                                                     onclick="addSpecRowForEdit();"><span class="glyphicon glyphicon-plus"
                                                         style="font-size: 18px; font-weight:800;"><strong>+</strong></span></button>
                                             </div>
@@ -610,10 +588,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x
-                                Close</button>
-                            <button type="submit" class="btn btn-cyan" id="updateProduct"><i
-                                    class="fa fa-save"></i>
+                            <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="updateProduct"><i class="fa fa-save"></i>
                                 Update Product</button>
                         </div>
                     </form>
@@ -629,9 +605,8 @@
         <div class="modal-dialog" style="max-width: 50%;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Update Open Stock Prodcuts</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <h4 class="modal-title">Update Open Stock Products</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editOpenStockProductForm" method="POST" enctype="multipart/form-data" action="#">
@@ -681,9 +656,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x
-                                Close</button>
-                            <button type="submit" class="btn btn-cyan " id="saveStock"><i class="fa fa-save"></i>
+                            <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveStock"><i class="fa fa-save"></i>
                                 Update Opening Stock</button>
                         </div>
                     </form>
@@ -710,8 +684,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Serialize Product</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body card-body">
                     <div class="row">
@@ -732,8 +705,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
-                        <button type="button" class="btn btn-success " onclick="addRow();"> <span
+                        <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="addRow();"> <span
                                 class="glyphicon glyphicon-plus"
                                 style="font-size: 18px; font-weight:800;"><strong>+</strong></span>
                             Add Row </button>

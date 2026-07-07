@@ -1,605 +1,455 @@
-<!-- ============================================================== -->
-<!-- Left Sidebar - style you can find in sidebar.scss  -->
-<!-- ============================================================== -->
-<aside class="left-sidebar" data-sidebarbg="skin5">
-    <!-- Sidebar scroll-->
-    <div class="scroll-sidebar">
-        <!-- Sidebar navigation-->
-        <nav class="sidebar-nav">
-            <ul id="sidebarnav" class="p-t-30">
+<aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                {{-- Start New Sidebar --}}
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                        href="{{ route('dashboard') }}" aria-expanded="false"><i class="fa fa-home"></i><span
-                            class="hide-menu"> Dashboard</span></a></li>
-                    
-                    @if (Auth::guard('web')->user()->can('Inventory'))
-                {{-- Start Inventory Module --}}
-               <!--  <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                        href="javascript:void(0)" aria-expanded="false"><i class="fa fa-th-list"></i> Inventory Module
+        <div class="navbar-brand navbar-brand-autodark">
+            <a href="{{route('dashboard')}}">
+                <span style="font-size:1rem; font-weight:600;">{{Session::get('companySettings')[0]['name']}}</span>
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="sidebar-menu">
+            <ul class="navbar-nav pt-lg-3">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('dashboard') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-home"></i></span>
+                        <span class="nav-link-title">Dashboard</span>
                     </a>
-                    <ul aria-expanded="false" class="collapse  first-level"> -->
-                        <li class="sidebar-item"><a href="javascript:void(0)"
-                                class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false"><i
-                                    class="fa fa-cart-plus"></i><span class="hide-menu"> Inventory
-                                </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                            @if (Auth::guard('web')->user()->can('Products'))
-                                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                        href="{{ route('products.view') }}" aria-expanded="false"><i
-                                            class="fas fa-check-circle"></i><span class="hide-menu">Products</span></a>
-                                </li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('Damage'))
-                                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                        href="{{ route('damage.view') }}" aria-expanded="false"><i
-                                            class="fas fa-check-circle"></i><span class="hide-menu">Damage
-                                            Products</span></a></li>
-                            @endif 
-                            @if (Auth::guard('web')->user()->can('Warehouse'))
-                                <li class="sidebar-item d-none"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                        href="{{ url('warehouse/transfer/') }}" aria-expanded="false"><i
-                                            class="fas fa-check-circle"></i><span class="hide-menu">Warehouse
-                                            Transfer</span></a></li>
-                            @endif
-                            </ul>
-                        </li>
-                        @if (Auth::guard('web')->user()->can('Purchase'))
-                        {{-- Purchase --}}
-                        <li class="sidebar-item"><a href="javascript:void(0)"
-                                class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false">
-                                <i class="fa fa-shopping-cart"></i><span class="hide-menu"> Purchase Management
-                                </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                @if (Auth::guard('web')->user()->can('purchase.view'))
-                                <li class="sidebar-item"><a href="{{ route('purchase.index') }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span class="hide-menu">
-                                            Purchase
-                                        </span></a>
-                                </li>
-                                @endif 
-                                @if (Auth::guard('web')->user()->can('Purchase.return'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('purchase.return.list') }}"
-                                        class="sidebar-link">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span class="hide-menu">Purchase Return </span>
-                                    </a>
-                                </li>
-                                @endif 
-                            </ul>
-                        </li>
-                        @endif
-                        {{-- Sale --}}
-                        @if (Auth::guard('web')->user()->can('Sale'))
-                        <li class="sidebar-item"><a href="javascript:void(0)"
-                                class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false"><i
-                                    class="fa fa-shopping-bag"></i><span class="hide-menu"> Sale Management
-                                </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level">
-                                @if (Auth::guard('web')->user()->can('sale.service.view')) 
-                                <li class="sidebar-item"><a href="{{ route('sale.service.SaleOrders') }} "
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i></i><span
-                                            class="hide-menu"> Service Orders </span></a>
-                                </li>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('walking.sale.view')) 
-                                <li class="sidebar-item"><a
-                                        href="{{ route('sale.sales', ['type' => 'walkin_sale']) }} "
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i></i><span
-                                            class="hide-menu"> WI Sale </span></a></li>
-                                <li class="sidebar-item"><a
-                                        href="{{ route('sale.return.list', ['type' => 'walkin_sale']) }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu">Sale Return </span></a></li>
-                                <li class="sidebar-item"><a
-                                        href="{{ route('sale.sales', ['type' => 'service']) }} "
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i></i><span
-                                            class="hide-menu"> Order Sale View </span></a></li>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('party.sale.view')) 
-                                <li class="sidebar-item d-none"><a
-                                        href="{{ route('sale.sales', ['type' => 'party_sale']) }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu"> Party Sale </span></a></li>
-                                <li class="sidebar-item d-none"><a
-                                        href="{{ route('sale.return.list', ['type' => 'party_sale']) }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu">Party Sale Return </span></a></li>
-                                @endif
-                                
-                                @if (Auth::guard('web')->user()->can('TS.sale.view')) 
-                                <li class="sidebar-item d-none"><a href="{{ route('sale.sales', ['type' => 'ts']) }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu"> TS </span></a></li>
-                                <li class="sidebar-item d-none"><a
-                                        href="{{ route('sale.return.list', ['type' => 'ts']) }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu">TS Return </span></a></li>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('final.sale.view')) 
-                                <li class="sidebar-item d-none"><a href="{{ route('sale.sales', ['type' => 'FS']) }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu"> Final Sale </span></a></li>
-                                <li class="sidebar-item d-none"><a
-                                        href="{{ route('sale.return.list', ['type' => 'FS']) }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu">FS Return </span></a></li>
-                                @endif
-                            </ul>
-                        </li>
-                        @endif
-                    <!-- </ul>
-                </li> -->
-                {{-- End Inventory Module --}}
-                @endif
-                
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="fa fa-credit-card"></i> Voucher</a>
-                    <ul aria-expanded="false" class="collapse  first-level">
-                    
-                        <li class="sidebar-item"><a href="{{url('voucher/payment')}}" class="sidebar-link"><i class="fas fa-bars"></i><span class="hide-menu"> Payment Voucher</span></a></li>
-                        <li class="sidebar-item"><a href="{{url('voucher/payment Received')}}" class="sidebar-link"><i class="fas fa-bars"></i><span class="hide-menu"> Received Voucher </span></a></li>
-                        <li class="sidebar-item"><a href="{{url('voucher/Discount')}}" class="sidebar-link"><i class="fas fa-bars"></i><span class="hide-menu"> Discount Voucher</span></a></li> 
-                    
-                       
-                    </ul>
                 </li>
-                    
-                            
-                @if (Auth::guard('web')->user()->can('user.view'))
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                        href="javascript:void(0)" aria-expanded="false"><i class="fa fa-user-plus"></i> User
-                        management
+
+                @if (Auth::guard('web')->user()->can('Inventory'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-inventory" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-cart-plus"></i></span>
+                        <span class="nav-link-title">Inventory</span>
                     </a>
-                    <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="javascript:void(0)"
-                                class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false"><i
-                                    class="fa fa-tasks"></i><span class="hide-menu"> Roles & Permissions
-                                </span></a>
-                            <ul aria-expanded="false" class="collapse  first-level">
+                    <div class="dropdown-menu">
+                        @if (Auth::guard('web')->user()->can('Products'))
+                        <a class="dropdown-item" href="{{ route('products.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Products
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('Damage'))
+                        <a class="dropdown-item" href="{{ route('damage.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Damage Products
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('Warehouse'))
+                        <a class="dropdown-item d-none" href="{{ url('warehouse/transfer/') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Warehouse Transfer
+                        </a>
+                        @endif
+
+                        @if (Auth::guard('web')->user()->can('Purchase'))
+                        <div class="dropend">
+                            <a class="dropdown-item dropdown-toggle" href="#navbar-purchase" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                                <i class="fa fa-shopping-cart icon-inline me-1"></i> Purchase Management
+                            </a>
+                            <div class="dropdown-menu">
+                                @if (Auth::guard('web')->user()->can('purchase.view'))
+                                <a class="dropdown-item" href="{{ route('purchase.index') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase
+                                </a>
+                                @endif
+                                @if (Auth::guard('web')->user()->can('Purchase.return'))
+                                <a class="dropdown-item" href="{{ route('purchase.return.list') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Return
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+                        @endif
+
+                        @if (Auth::guard('web')->user()->can('Sale'))
+                        <div class="dropend">
+                            <a class="dropdown-item dropdown-toggle" href="#navbar-sale" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                                <i class="fa fa-shopping-bag icon-inline me-1"></i> Sale Management
+                            </a>
+                            <div class="dropdown-menu">
+                                @if (Auth::guard('web')->user()->can('sale.service.view'))
+                                <a class="dropdown-item" href="{{ route('sale.service.SaleOrders') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Service Orders
+                                </a>
+                                @endif
+                                @if (Auth::guard('web')->user()->can('walking.sale.view'))
+                                <a class="dropdown-item" href="{{ route('sale.sales', ['type' => 'walkin_sale']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> WI Sale
+                                </a>
+                                <a class="dropdown-item" href="{{ route('sale.return.list', ['type' => 'walkin_sale']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Sale Return
+                                </a>
+                                <a class="dropdown-item" href="{{ route('sale.sales', ['type' => 'service']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Order Sale View
+                                </a>
+                                @endif
+                                @if (Auth::guard('web')->user()->can('party.sale.view'))
+                                <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'party_sale']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Party Sale
+                                </a>
+                                <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'party_sale']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Party Sale Return
+                                </a>
+                                @endif
+                                @if (Auth::guard('web')->user()->can('TS.sale.view'))
+                                <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'ts']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> TS
+                                </a>
+                                <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'ts']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> TS Return
+                                </a>
+                                @endif
+                                @if (Auth::guard('web')->user()->can('final.sale.view'))
+                                <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'FS']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Final Sale
+                                </a>
+                                <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'FS']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> FS Return
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </li>
+                @endif
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-voucher" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-credit-card"></i></span>
+                        <span class="nav-link-title">Voucher</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{url('voucher/payment')}}">
+                            <i class="fa fa-bars icon-inline me-1"></i> Payment Voucher
+                        </a>
+                        <a class="dropdown-item" href="{{url('voucher/payment Received')}}">
+                            <i class="fa fa-bars icon-inline me-1"></i> Received Voucher
+                        </a>
+                        <a class="dropdown-item" href="{{url('voucher/Discount')}}">
+                            <i class="fa fa-bars icon-inline me-1"></i> Discount Voucher
+                        </a>
+                    </div>
+                </li>
+
+                @if (Auth::guard('web')->user()->can('user.view'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-users" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-user-plus"></i></span>
+                        <span class="nav-link-title">User Management</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="dropend">
+                            <a class="dropdown-item dropdown-toggle" href="#navbar-roles" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                                <i class="fa fa-tasks icon-inline me-1"></i> Roles & Permissions
+                            </a>
+                            <div class="dropdown-menu">
                                 @if (Auth::guard('web')->user()->can('role.view'))
-                                    <li class="sidebar-item"><a href="{{ route('rolesView') }}"
-                                            class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                                class="hide-menu"> Roles</span></a>
-                                    </li>
+                                <a class="dropdown-item" href="{{ route('rolesView') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Roles
+                                </a>
                                 @endif
                                 @if (Auth::guard('web')->user()->can('permission.view'))
-                                    <li class="sidebar-item"><a href="{{ route('permissionView') }}"
-                                            class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                                class="hide-menu"> Permissions</span></a></li>
+                                <a class="dropdown-item" href="{{ route('permissionView') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Permissions
+                                </a>
                                 @endif
                                 @if (Auth::guard('web')->user()->can('permissionToRole.view'))
-                                    <li class="sidebar-item"><a href="{{ route('permissionToRoleList') }}"
-                                            class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                                class="hide-menu"> Give Permission to Role</span></a></li>
+                                <a class="dropdown-item" href="{{ route('permissionToRoleList') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Give Permission to Role
+                                </a>
                                 @endif
-                            </ul>
-                        </li>
+                            </div>
+                        </div>
                         @if (Auth::guard('web')->user()->can('user.view'))
-                            <li class="sidebar-item"><a href="{{ route('users.') }}" class="sidebar-link"><i
-                                        class="fas fa-tasks"></i><span class="hide-menu"> View Users </span></a>
-                            </li>
+                        <a class="dropdown-item" href="{{ route('users.') }}">
+                            <i class="fa fa-tasks icon-inline me-1"></i> View Users
+                        </a>
                         @endif
                         @if (Auth::guard('web')->user()->can('user.changePassword'))
-                            <li class="sidebar-item"><a onclick="ChangePasswordModal()" href="#"
-                                    class="sidebar-link"><i class="fas fa-tasks"></i><span class="hide-menu">
-                                        Change Password </span></a>
-                            </li>
+                        <a class="dropdown-item" onclick="ChangePasswordModal()" href="#">
+                            <i class="fa fa-tasks icon-inline me-1"></i> Change Password
+                        </a>
                         @endif
-                    </ul>
+                    </div>
                 </li>
                 @endif
-
 
                 @if (Auth::guard('web')->user()->can('CRM'))
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                        href="javascript:void(0)" aria-expanded="false"> <i class="fas fa-users"
-                            aria-hidden="true"></i> CRM</a>
-                    <ul aria-expanded="false" class="collapse  first-level">
-
-                         @if (Auth::guard('web')->user()->can('Supplier'))
-                                <li class="sidebar-item"><a href="{{url('parties/view/Supplier')}}" class="sidebar-link"><i class="fas fa-check-circle"></i><span class="hide-menu"> Supplier </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('Customer'))
-                                <li class="sidebar-item"><a href="{{url('parties/view/Customer')}}" class="sidebar-link"><i class="fas fa-check-circle"></i><span class="hide-menu"> Customer </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('Walkin Customer'))
-                                <li class="sidebar-item"><a href="{{url('parties/view/Walkin_Customer')}}" class="sidebar-link"><i class="fas fa-check-circle"></i><span class="hide-menu"> Walkin Customer </span></a></li>
-                            @endif
-                        
-                    </ul>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-crm" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-users"></i></span>
+                        <span class="nav-link-title">CRM</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        @if (Auth::guard('web')->user()->can('Supplier'))
+                        <a class="dropdown-item" href="{{url('parties/view/Supplier')}}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Supplier
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('Customer'))
+                        <a class="dropdown-item" href="{{url('parties/view/Customer')}}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Customer
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('Walkin Customer'))
+                        <a class="dropdown-item" href="{{url('parties/view/Walkin_Customer')}}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Walkin Customer
+                        </a>
+                        @endif
+                    </div>
                 </li>
                 @endif
 
-                
-                
-                
-
-                <!-- Acccounts module start -->
                 @if (Auth::guard('web')->user()->can('Accounts'))
-                <li class="sidebar-item"> 
-                            <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                                <i class="fas fa-calculator"></i>
-                                Accounts
-                            </a>
-                        <ul aria-expanded="false" class="collapse  first-level">
-                            @if (Auth::guard('web')->user()->can('coa.view'))
-                            <li class="sidebar-item">
-                                <a href="{{route('chartOfAccounts') }}" class="sidebar-link">
-                                    <i class="fas fa-chart-pie"></i>
-                                    <span class="hide-menu"> Chart of accounts </span>
-                                </a>
-                            </li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('journal.view'))
-                            <li class="sidebar-item">
-                                <a href="{{ route('journalView') }}" class="sidebar-link">
-                                    <i class="fab fa-gg"></i>
-                                    <span class="hide-menu"> Journal </span>
-                                </a>
-                            </li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('expense.view'))
-                            <li class="sidebar-item">
-                                <a href="{{ route('expenseView') }}" class="sidebar-link">
-                                    <i class=" far fa-money-bill-alt"></i>
-                                    <span class="hide-menu"> Expense </span>
-                                </a>
-                            </li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('bill.view'))
-                            <li class="sidebar-item">
-                                <a href="{{ route('billView') }}" class="sidebar-link">
-                                    <i class="far fa-file-alt"></i>
-                                    <span class="hide-menu"> Bill </span>
-                                </a>
-                            </li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('bank.view'))
-                            <li class="sidebar-item">
-                                <a href="{{ route('bankView') }}" class="sidebar-link">
-                                    <i class="fas fa-university"></i>
-                                    <span class="hide-menu">Banks </span>
-                                </a>
-                            </li>
-                            @endif
-                           
-                        </ul>
-                    </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-accounts" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-calculator"></i></span>
+                        <span class="nav-link-title">Accounts</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        @if (Auth::guard('web')->user()->can('coa.view'))
+                        <a class="dropdown-item" href="{{route('chartOfAccounts')}}">
+                            <i class="fa fa-chart-pie icon-inline me-1"></i> Chart of accounts
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('journal.view'))
+                        <a class="dropdown-item" href="{{ route('journalView') }}">
+                            <i class="fab fa-gg icon-inline me-1"></i> Journal
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('expense.view'))
+                        <a class="dropdown-item" href="{{ route('expenseView') }}">
+                            <i class="far fa-money-bill-alt icon-inline me-1"></i> Expense
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('bill.view'))
+                        <a class="dropdown-item" href="{{ route('billView') }}">
+                            <i class="far fa-file-alt icon-inline me-1"></i> Bill
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('bank.view'))
+                        <a class="dropdown-item" href="{{ route('bankView') }}">
+                            <i class="fas fa-university icon-inline me-1"></i> Banks
+                        </a>
+                        @endif
+                    </div>
+                </li>
                 @endif
 
-
-
-                <!-- reports -->
                 @if (Auth::guard('web')->user()->can('Reports'))
-                <li class="sidebar-item"> 
-                        <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
-                            <i class="fas fa-paste"></i>
-                            Reports
-                        </a>
-                    <ul aria-expanded="false" class="collapse  first-level">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-reports" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-paste"></i></span>
+                        <span class="nav-link-title">Reports</span>
+                    </a>
+                    <div class="dropdown-menu">
                         @if (Auth::guard('web')->user()->can('party.ledger'))
-                        <li class="sidebar-item">
-                            <a href="{{ route('partyLedger') }}" class="sidebar-link">
-                                <i class="fas fa-tasks"></i>
-                                <span class="hide-menu"> Party Ledger </span>
-                            </a>
-                        </li>
+                        <a class="dropdown-item" href="{{ route('partyLedger') }}">
+                            <i class="fa fa-tasks icon-inline me-1"></i> Party Ledger
+                        </a>
                         @endif
                         @if (Auth::guard('web')->user()->can('monthlyAccounts.view'))
-                        <li class="sidebar-item">
-                            <a href="{{ route('accountsLedgerDatewise') }}" class="sidebar-link">
-                                <i class="fas fa-tasks"></i>
-                                <span class="hide-menu"> Income & Expenditure</span>
-                            </a>
-                        </li>
+                        <a class="dropdown-item" href="{{ route('accountsLedgerDatewise') }}">
+                            <i class="fa fa-tasks icon-inline me-1"></i> Income & Expenditure
+                        </a>
                         @endif
-                        <li class="sidebar-item">
-                            <a href="{{ route('dailyAccountsLedger') }}" class="sidebar-link">
-                                <i class="fas fa-tasks"></i>
-                                <span class="hide-menu">Daily  Ledger </span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="{{ route('dailyServiceLedgerReport') }}" class="sidebar-link">
-                                <i class="fas fa-tasks"></i>
-                                <span class="hide-menu">Daily Service Report</span>
-                            </a>
-                        </li>
-                        
-                        <li class="sidebar-item">
-                            <a href="{{ url('report/product-ledger') }}" class="sidebar-link">
-                                <i class="fas fa-tasks"></i>
-                                <span class="hide-menu">Product Ledger</span>
-                            </a>
-                        </li>
-
-                    </ul>
+                        <a class="dropdown-item" href="{{ route('dailyAccountsLedger') }}">
+                            <i class="fa fa-tasks icon-inline me-1"></i> Daily Ledger
+                        </a>
+                        <a class="dropdown-item" href="{{ route('dailyServiceLedgerReport') }}">
+                            <i class="fa fa-tasks icon-inline me-1"></i> Daily Service Report
+                        </a>
+                        <a class="dropdown-item" href="{{ url('report/product-ledger') }}">
+                            <i class="fa fa-tasks icon-inline me-1"></i> Product Ledger
+                        </a>
+                    </div>
                 </li>
                 @endif
 
-
-                     <!-- Acccounts module end -->
-                   
-
-                    <!-- payroll module starts -->
                 @if (Auth::guard('web')->user()->can('Payroll'))
-                <li class="sidebar-item">
-                    <a href="javascript:void(0)" class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false">
-                        <i class="nav-icon fas fa-cubes"></i>
-                        <span class="hide-menu">Payroll</span>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-payroll" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-cubes"></i></span>
+                        <span class="nav-link-title">Payroll</span>
                     </a>
-                    <ul class="collapse  first-level" id="nav_tree">
-
-                        <li class="sidebar-item" style="margin-left:10px;">
-                            <a href="javascript:void(0)" class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false">
-                            <i class="fas fa-user"></i>
-                                <span class="hide-menu">Employee Informations</span>
+                    <div class="dropdown-menu">
+                        <div class="dropend">
+                            <a class="dropdown-item dropdown-toggle" href="#navbar-employees" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                                <i class="fas fa-user icon-inline me-1"></i> Employee Informations
                             </a>
-                            <ul class="collapse  first-level" id="nav_tree">
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('ourTeam') }}" class="sidebar-link">
-                                    <i class="fas fa-id-card"></i>
-                                        <span class="hide-menu"> Employee's </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('gradeIndex') }}" class="sidebar-link">
-                                    <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Grades </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('stepsIndex') }}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Steps </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('groupIndex') }}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Groups </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('facilityIndex') }}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Facilites </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        
-                        <li class="sidebar-item" style="margin-left:10px;">
-                            <a href="javascript:void(0)" class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false">
-                            <i class="fa fa-table"></i>
-                                <span class="hide-menu">Salary Sheet</span>
-                            </a>
-                            <ul class="collapse  first-level" id="nav_tree">
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('SalarySheetView') }}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Salary Sheet </span>
-                                    </a>
-                                </li>
-                                
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{route('finalSheetIndex')}}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Final Salary Sheet </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('SalaryInstructionView') }}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Salary Instruction </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('bonusListView') }}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span class="hide-menu"> Bonus List </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:10px;">
-                                    <a href="{{route('monthlyAmountIndex')}}" class="sidebar-link">
-                                        <i class="fas fa-exchange-alt"></i>
-                                        <span class="hide-menu"> Adjust/Deduct </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:10px;">
-                                    <a href="{{route('loanIndex')}}" class="sidebar-link">
-                                        <i class='fas fa-hand-holding-usd'></i>
-                                        <span class="hide-menu"> Loan Salary </span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        
-                        
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('ourTeam') }}">
+                                    <i class="fas fa-id-card icon-inline me-1"></i> Employee's
+                                </a>
+                                <a class="dropdown-item" href="{{ route('gradeIndex') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Grades
+                                </a>
+                                <a class="dropdown-item" href="{{ route('stepsIndex') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Steps
+                                </a>
+                                <a class="dropdown-item" href="{{ route('groupIndex') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Groups
+                                </a>
+                                <a class="dropdown-item" href="{{ route('facilityIndex') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Facilites
+                                </a>
+                            </div>
+                        </div>
 
-                        <li class="sidebar-item" style="margin-left:10px;">
-                            <a href="javascript:void(0)" class="sidebar-link has-arrow waves-effect waves-dark" aria-expanded="false">
-                            <i class="fas fa-user"></i>
-                                <span class="hide-menu">Attendence Management</span>
+                        <div class="dropend">
+                            <a class="dropdown-item dropdown-toggle" href="#navbar-salary" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                                <i class="fa fa-table icon-inline me-1"></i> Salary Sheet
                             </a>
-                            <ul class="collapse  first-level" id="nav_tree">
-                                
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{route('attendenceIndex')}}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span> Attendence </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{route('monthlyAttendence')}}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span> Employee Attendence </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{route('groupAttendence')}}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span>Group Attendence </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('timeScheduleGroupIndex') }}" class="sidebar-link" >
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span>  Time Schedule Group </span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('userTimeGroupIndex') }}" class="sidebar-link" >
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span>  User Time Group </span>
-                                    </a>
-                                </li>
-                                
-                                <li class="sidebar-item" style="margin-left:15px;">
-                                    <a href="{{  route('leaveIndex') }}" class="sidebar-link">
-                                        <i class="fas fa-th-list nav-icon"></i>
-                                        <span>  Leave Management </span>
-                                    </a>
-                                </li>
-                                
-                            </ul>
-                        </li>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('SalarySheetView') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Salary Sheet
+                                </a>
+                                <a class="dropdown-item" href="{{route('finalSheetIndex')}}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Final Salary Sheet
+                                </a>
+                                <a class="dropdown-item" href="{{ route('SalaryInstructionView') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Salary Instruction
+                                </a>
+                                <a class="dropdown-item" href="{{ route('bonusListView') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Bonus List
+                                </a>
+                                <a class="dropdown-item" href="{{route('monthlyAmountIndex')}}">
+                                    <i class="fas fa-exchange-alt icon-inline me-1"></i> Adjust/Deduct
+                                </a>
+                                <a class="dropdown-item" href="{{route('loanIndex')}}">
+                                    <i class='fas fa-hand-holding-usd icon-inline me-1'></i> Loan Salary
+                                </a>
+                            </div>
+                        </div>
 
-                    </ul>
+                        <div class="dropend">
+                            <a class="dropdown-item dropdown-toggle" href="#navbar-attendance" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                                <i class="fas fa-user icon-inline me-1"></i> Attendence Management
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{route('attendenceIndex')}}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Attendence
+                                </a>
+                                <a class="dropdown-item" href="{{route('monthlyAttendence')}}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Employee Attendence
+                                </a>
+                                <a class="dropdown-item" href="{{route('groupAttendence')}}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Group Attendence
+                                </a>
+                                <a class="dropdown-item" href="{{ route('timeScheduleGroupIndex') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Time Schedule Group
+                                </a>
+                                <a class="dropdown-item" href="{{ route('userTimeGroupIndex') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> User Time Group
+                                </a>
+                                <a class="dropdown-item" href="{{ route('leaveIndex') }}">
+                                    <i class="fas fa-th-list icon-inline me-1"></i> Leave Management
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
                 @endif
-                <!-- payroll module ends -->
-                     
 
-
-                <!-- setting -->
                 @if (Auth::guard('web')->user()->can('Setting'))
-                    <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark"
-                            href="javascript:void(0)" aria-expanded="false"> <i class="fa fa-cogs"
-                                aria-hidden="true"></i>  Setting</a>
-                        <ul aria-expanded="false" class="collapse  first-level">
-                       
-                            @if (Auth::guard('web')->user()->can('companySetting.view'))
-                                    <li class="sidebar-item"><a href="{{ route('company.settings.view') }}"
-                                            class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                                class="hide-menu"> Shop Settings </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('Categories'))
-                                <li class="sidebar-item"><a href="{{ route('categories.view') }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu">
-                                            Category </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('Brands'))
-                                <li class="sidebar-item"><a href="{{ route('brands.view') }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu"> Brand
-                                        </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('units.view'))
-                                <li class="sidebar-item"><a href="{{ route('units.view') }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu"> Unit
-                                        </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('warehouse.view'))
-                                <li class="sidebar-item"><a href="{{ route('warehouse.view') }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu">
-                                            Warehouse </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('transport.view'))
-                                <li class="sidebar-item d-none"><a href="{{ route('transport.view') }}"
-                                        class="sidebar-link"><i class="fas fa-check-circle"></i><span
-                                            class="hide-menu">
-                                            Transport </span></a></li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('accounts.setting'))
-                                <li class="sidebar-item">
-                                    <a href="{{ route('accountSettingView') }}" class="sidebar-link">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span class="hide-menu">
-                                            Account Settings 
-                                        </span>
-                                    </a>
-                                </li>
-                            @endif
-                            @if (Auth::guard('web')->user()->can('payroll.settings'))
-                                <li class="sidebar-item">
-                                    <a href="{{Route('settingIndex')}}" class="sidebar-link">
-                                        <i class="fas fa-check-circle"></i>
-                                        <span class="hide-menu">Payroll Setting</span>
-                                    </a>
-                                </li>
-                            @endif
-                            </ul>
-                           
-                       
-                    </li>
-                @endif 
-
-
-
-                {{-- End New Sidebar --}}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-settings" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-cogs"></i></span>
+                        <span class="nav-link-title">Setting</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        @if (Auth::guard('web')->user()->can('companySetting.view'))
+                        <a class="dropdown-item" href="{{ route('company.settings.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Shop Settings
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('Categories'))
+                        <a class="dropdown-item" href="{{ route('categories.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Category
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('Brands'))
+                        <a class="dropdown-item" href="{{ route('brands.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Brand
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('units.view'))
+                        <a class="dropdown-item" href="{{ route('units.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Unit
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('warehouse.view'))
+                        <a class="dropdown-item" href="{{ route('warehouse.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Warehouse
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('transport.view'))
+                        <a class="dropdown-item d-none" href="{{ route('transport.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Transport
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('accounts.setting'))
+                        <a class="dropdown-item" href="{{ route('accountSettingView') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Account Settings
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('payroll.settings'))
+                        <a class="dropdown-item" href="{{Route('settingIndex')}}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Payroll Setting
+                        </a>
+                        @endif
+                    </div>
+                </li>
+                @endif
 
             </ul>
-        </nav>
-        <!-- End Sidebar navigation -->
+        </div>
     </div>
-    <!-- End Sidebar scroll-->
 </aside>
-<!-- ============================================================== -->
-<!-- End Left Sidebar - style you can find in sidebar.scss  -->
-<!-- ============================================================== -->
-<!-- modal -->
-<div class="modal fade" id="modalUser">
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="modalUser" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header float-left">
-
-                <h4 class="modal-title float-left"> Change User Password</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                        class="fas fa-window-close"></i></button>
+            <div class="modal-header">
+                <h4 class="modal-title">Change User Password</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="userPasswordForm" method="POST" enctype="multipart/form-data" action="#">
                     @csrf
-
                     <input type="hidden" name="id">
                     <div class="row">
-                        <div class="form-group col-md-12">
-                            <label>User Name <span class="text-danger"> * </span></label><br>
-                            <select id="selectUser" name="selectUser" class="form-control input-sm">
+                        <div class="mb-3">
+                            <label class="form-label">User Name <span class="text-danger"> * </span></label>
+                            <select id="selectUser" name="selectUser" class="form-select">
                                 <option value="" disabled selected>Select User</option>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->id }}"> {{ $user->name }} - {{ $user->email }}
-                                    </option>
+                                    <option value="{{ $user->id }}">{{ $user->name }} - {{ $user->email }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group col-md-12">
-                            <label> Password : <span class="text-danger"> * </span></label>
-                            <input class="form-control input-sm" id="userPassword" type="password"
-                                name="userPassword">
+                        <div class="mb-3">
+                            <label class="form-label">Password <span class="text-danger"> * </span></label>
+                            <input class="form-control" id="userPassword" type="password" name="userPassword">
                             <span class="text-danger" id="userPasswordError"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x
-                            Close</button>
-                        <button type="submit" class="btn btn-primary btnSave" id="saveUserPassword">Save</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveUserPassword">Save</button>
+                    </div>
                 </form>
             </div>
         </div>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
+    </div>
+</div>
 
 <script>
-    function ChangePasswordModal(id) {
+    function ChangePasswordModal() {
         $("#modalUser").modal('show');
         $("#userPassword").val("");
 
@@ -607,7 +457,6 @@
             $("#selectUser").select2({
                 width: '100%'
             });
-
         });
     }
 
@@ -635,9 +484,7 @@
                 $("#modalUser").modal('hide');
                 Swal.fire("Updated!", result.success, "success");
             },
-            error: function(response) {
-                //alert(JSON.stringify(response));
-            },
+            error: function(response) {},
             beforeSend: function() {
                 $('#loading').show();
             },

@@ -19,8 +19,8 @@ class CreateTblProductspecificationTable extends Migration
             $table->string('specificationName')->nullable();
             $table->string('specificationValue')->nullable();
             // Common Fields
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('lastInsertedBy')->nullable();
             $table->datetime('insertDate')->nullable();
             $table->biginteger('lastUpdatedBy')->nullable();

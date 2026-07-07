@@ -16,10 +16,10 @@ class CreateMonthlyAmountsTable extends Migration
         Schema::create('monthly_amounts', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->bigInteger('user_id') ->nullable();
-            $table->string('facility_name') ->nullable();
-            $table->string('amount') ->nullable();
-            $table->enum('type',['Add','Deduct'])->nullable();
+            $table->bigInteger('user_id')->nullable();
+            $table->string('facility_name')->nullable();
+            $table->string('amount')->nullable();
+            $table->enum('type', ['Add', 'Deduct'])->nullable();
             $table->longText('cause')->nullable();
 
             $table->bigInteger('created_by')->nullable();

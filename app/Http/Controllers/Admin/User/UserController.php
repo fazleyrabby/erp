@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Admin\User;
 
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\permission;
 use Image;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
+use Spatie\Permission\Models\permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     // Check Permission
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:user.view', ['only' => ['index', 'getUsers', 'add']]);
         $this->middleware('permission:user.store', ['only' => ['store']]);
@@ -26,64 +23,64 @@ class UserController extends Controller
         $this->middleware('permission:user.changePassword', ['only' => ['changePassword']]);
     }
 
-    // View User Page 
+    // View User Page
     public function index()
     {
         $roles = Role::where('deleted', '=', 'No')->get();
+
         return view('admin.user.view-users', ['roles' => $roles]);
     }
 
     // Get All Users
     public function getUsers()
     {
-        $data = "";
+        $data = '';
         $users = User::where('deleted', 'No')->orderBy('id', 'DESC')->get();
         $i = 1;
-        $output = array('data' => array());
+        $output = ['data' => []];
         foreach ($users as $user) {
-            /*Load Image*/
-            if ($user->image != "") {
-                $imageUrl = url('upload/user_images/' . $user->image);
+            /* Load Image */
+            if ($user->image != '') {
+                $imageUrl = url('upload/user_images/'.$user->image);
             } else {
                 $imageUrl = url('upload/user_images/no_image.png');
             }
-            /*Status*/
+            /* Status */
             if ($user->status == 'Active') {
                 $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;"></i></center>';
             } else {
                 $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;"></i></center>';
             }
-            /*Buttons*/
+            /* Buttons */
             /*	$buttonOld = '<button type="button" onclick="userEdit('.$user->id.')" class="btn btn-xs btn-warning btnEdit" title="Edit User" ><i class="fa fa-edit"> </i></button>
                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="confirmDelete('.$user->id.')" title="Delete User"><i class="fa fa-trash"> </i></button>';
         */
-
 
             $button = '<td style="width: 12%;">
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                     <i class="fas fa-cog"></i>  <span class="caret"></span></button>
                     <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                    <li class="action" onclick="userEdit(' . $user->id . ')"><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
+                    <li class="action" onclick="userEdit('.$user->id.')"><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
                     </li>
                 </li>
-                    <li class="action"><a   class="btn" onclick="confirmDelete(' . $user->id . ')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
+                    <li class="action"><a   class="btn" onclick="confirmDelete('.$user->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
                     </li> 
                     </ul>
                 </div>
             </td>';
 
-
-            $output['data'][] = array(
-                $i++ . '<input type="hidden" name="id" id="id" value="' . $user->id . '" />',
-                '<img style="width:70px;" src="' . $imageUrl . '" alt="' . $user->name . '" />',
+            $output['data'][] = [
+                $i++.'<input type="hidden" name="id" id="id" value="'.$user->id.'" />',
+                '<img style="width:70px;" src="'.$imageUrl.'" alt="'.$user->name.'" />',
                 $user->name,
-                $user->email . '<br>' . $user->mobile_no,
-                'Dep: ' . $user->department . '<br>Des: ' . $user->designation . '<br><b>Role:</b>' . $user->role,
+                $user->email.'<br>'.$user->mobile_no,
+                'Dep: '.$user->department.'<br>Des: '.$user->designation.'<br><b>Role:</b>'.$user->role,
                 $status,
-                $button
-            );
+                $button,
+            ];
         }
+
         return $output;
     }
 
@@ -108,29 +105,27 @@ class UserController extends Controller
             'department' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
         ]);
 
-
         $imageName = '';
         if ($request->hasFile('image')) {
             $request->validate([
-                'image'   =>  'image|max:2048'
+                'image' => 'image|max:2048',
             ]);
 
-            //--- Image resize And upload in public 
+            // --- Image resize And upload in public
             $userImage = $request->file('image');
             $name = $userImage->getClientOriginalName();
             $uploadPath = 'upload/user_images/';
             $uploadPathOriginal = 'upload/original_user_images/';
-            $imageName = time() . $name;
-            $imageUrl = $uploadPath . $imageName;
-            $imageOriginalUrl = $uploadPathOriginal . time() . $name;
-            //--resize image upload in public--//
+            $imageName = time().$name;
+            $imageUrl = $uploadPath.$imageName;
+            $imageOriginalUrl = $uploadPathOriginal.time().$name;
+            // --resize image upload in public--//
             Image::make($userImage)->resize(100, 100)->save($imageUrl);
-            //--original image upload in public--//
+            // --original image upload in public--//
             $request->image->move(public_path($uploadPathOriginal), $imageName);
         } else {
-            $imageName = "no_image.png";
+            $imageName = 'no_image.png';
         }
-
 
         if ($request->hasFile('signature')) {
             /*  $request->validate([
@@ -138,23 +133,23 @@ class UserController extends Controller
             ]);
              */
 
-            //--- Image resize And upload in public 
+            // --- Image resize And upload in public
             $userSignature = $request->file('signature');
             $name = $userSignature->getClientOriginalName();
             $uploadPath = 'upload/user_signatures/';
             $uploadPathOriginal = 'upload/original_user_signatures/';
-            $signatureName = time() . $name;
-            $signatureUrl = $uploadPath . $signatureName;
-            $signatureOriginalUrl = $uploadPathOriginal . time() . $name;
-            //--resize signature upload in public--//
+            $signatureName = time().$name;
+            $signatureUrl = $uploadPath.$signatureName;
+            $signatureOriginalUrl = $uploadPathOriginal.time().$name;
+            // --resize signature upload in public--//
             Image::make($userSignature)->resize(100, 100)->save($signatureUrl);
-            //--original signature upload in public--//
+            // --original signature upload in public--//
             $request->signature->move(public_path($uploadPathOriginal), $signatureName);
         } else {
-            $signatureName = "no_signature.png";
+            $signatureName = 'no_signature.png';
         }
 
-        $user = new User();
+        $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->department = $request->department;
@@ -180,6 +175,7 @@ class UserController extends Controller
     public function edit(Request $request)
     {
         $user = User::find($request->id);
+
         return $user;
     }
 
@@ -187,10 +183,10 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:users,name,' . $request->id . '|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-            'email' => 'required|unique:users,email,' . $request->id . '|min:3|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
+            'name' => 'required|unique:users,name,'.$request->id.'|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'email' => 'required|unique:users,email,'.$request->id.'|min:3|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix',
             'role' => 'required',
-            'mobile_no' => 'required|unique:users,mobile_no,' . $request->id . '|max:14|min:11|regex:/^(?:\+?88)?01[11-9]\d{8}$/u',
+            'mobile_no' => 'required|unique:users,mobile_no,'.$request->id.'|max:14|min:11|regex:/^(?:\+?88)?01[11-9]\d{8}$/u',
             'address' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
             'designation' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
             'department' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
@@ -198,41 +194,40 @@ class UserController extends Controller
         $user = User::find($request->id);
         if ($request->file('image')) {
             $request->validate([
-                'image'   =>  'image|max:2048'
+                'image' => 'image|max:2048',
             ]);
 
-            //--- Image resize And upload in public 
+            // --- Image resize And upload in public
             $oldUserImage = $user->image;
             $userImage = $request->file('image');
             $name = $userImage->getClientOriginalName();
             $uploadPath = 'upload/user_images/';
             $uploadPathOriginal = 'upload/original_user_images/';
-            $imageName = time() . $name;
-            $imageUrl = $uploadPath . $imageName;
-            $imageOriginalUrl = $uploadPathOriginal . time() . $name;
-            //--resize image upload in public--//
+            $imageName = time().$name;
+            $imageUrl = $uploadPath.$imageName;
+            $imageOriginalUrl = $uploadPathOriginal.time().$name;
+            // --resize image upload in public--//
             Image::make($userImage)->resize(100, 100)->save($imageUrl);
-            //--original image upload in public--//
+            // --original image upload in public--//
             $request->image->move(public_path($uploadPathOriginal), $imageName);
 
             $user->image = $imageName;
         }
 
-
         if ($request->file('signature')) {
 
-            //--- Image resize And upload in public 
+            // --- Image resize And upload in public
             $oldUserSignature = $user->signature;
             $userSignature = $request->file('signature');
             $name = $userSignature->getClientOriginalName();
             $uploadPath = 'upload/user_signatures/';
             $uploadPathOriginal = 'upload/original_user_signatures/';
-            $signatureName = time() . $name;
-            $signatureUrl = $uploadPath . $signatureName;
-            $signatureOriginalUrl = $uploadPathOriginal . time() . $name;
-            //--resize signature upload in public--//
+            $signatureName = time().$name;
+            $signatureUrl = $uploadPath.$signatureName;
+            $signatureOriginalUrl = $uploadPathOriginal.time().$name;
+            // --resize signature upload in public--//
             Image::make($userSignature)->resize(100, 100)->save($signatureUrl);
-            //--original signature upload in public--//
+            // --original signature upload in public--//
             $request->signature->move(public_path($uploadPathOriginal), $signatureName);
 
             $user->signature = $signatureName;
@@ -251,7 +246,6 @@ class UserController extends Controller
         $user->updated_date = date('Y-m-d H:i:s');
         $user->save();
 
-
         $user->roles()->detach();
         if ($request->role) {
             $user->assignRole($request->role);
@@ -265,16 +259,17 @@ class UserController extends Controller
     {
         $user = User::find($request->id);
         $user->deleted = 'Yes';
-        $user->name = $user->name . 'Deleted' . $request->id;
-        $user->email = $user->email . 'Deleted' . $request->id;
-        $user->mobile_no = $user->mobile_no . 'Deleted' . $request->id;
+        $user->name = $user->name.'Deleted'.$request->id;
+        $user->email = $user->email.'Deleted'.$request->id;
+        $user->mobile_no = $user->mobile_no.'Deleted'.$request->id;
         $user->deleted_by = auth()->user()->id;
         $user->deleted_date = date('Y-m-d H:i:s');
         $user->save();
+
         return response()->json(['Success' => 'Deleted successfully']);
     }
 
-    // Change User Password 
+    // Change User Password
     public function changePassword(Request $request)
     {
         $password = Hash::make($request->password);

@@ -20,8 +20,8 @@ class CreateTblCurrentstockTable extends Migration
             $table->float('currentStock', 8, 2);
             $table->float('purchaseStock', 8, 2)->default(0);
             $table->float('salesStock', 8, 2)->default(0);
-            $table->decimal('purchaseReturnStock', 8,2)->default(0);
-            $table->decimal('salesReturnStock', 8,2)->default(0);
+            $table->decimal('purchaseReturnStock', 8, 2)->default(0);
+            $table->decimal('salesReturnStock', 8, 2)->default(0);
             $table->float('initialStock', 8, 2)->default(0);
             $table->biginteger('purchaseDelete')->default(0);
             $table->biginteger('salesDelete')->default(0);
@@ -34,10 +34,10 @@ class CreateTblCurrentstockTable extends Migration
             $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('entryBy')->nullable();
             $table->datetime('entryDate')->nullable();
-            $table->decimal('purchaseReturnDelete', 8,2)->default(0);
-            $table->decimal('salesReturnDelete', 8,2)->default(0);
+            $table->decimal('purchaseReturnDelete', 8, 2)->default(0);
+            $table->decimal('salesReturnDelete', 8, 2)->default(0);
             $table->biginteger('damageProducts')->default(0);
-            $table->biginteger('damageDelete')->default(0);;
+            $table->biginteger('damageDelete')->default(0);
             $table->biginteger('deletedBy')->nullable();
             $table->biginteger('tbl_transfer_warehouse_id')->nullable();
             $table->biginteger('transfer_stock')->nullable();

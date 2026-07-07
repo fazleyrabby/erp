@@ -21,8 +21,7 @@ class CreateSalaryLoanDetailsTable extends Migration
             $table->dateTime('month_year')->nullable();
             $table->bigInteger('amount')->nullable();
             $table->bigInteger('adjust_amount')->nullable();
-            $table->enum('loan_status',['Pending','Reject','Paid'])->nullable();
-            
+            $table->enum('loan_status', ['Pending', 'Reject', 'Paid'])->nullable();
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();

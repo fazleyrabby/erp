@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +9,6 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\intentoryUsertype;
 
 class User extends Authenticatable
 {
@@ -26,9 +24,9 @@ class User extends Authenticatable
      *
      * @var array
      */
-     protected $fillable = [
-         'name', 'email', 'password',
-     ];
+    protected $fillable = [
+        'name', 'email', 'password',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -60,8 +58,9 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function Usertypes(){
+    public function Usertypes()
+    {
 
-        return $this->belongsTo(Usertype::class,'usertype_id','id');
+        return $this->belongsTo(Usertype::class, 'usertype_id', 'id');
     }
 }

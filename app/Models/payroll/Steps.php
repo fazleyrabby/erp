@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Steps extends Model
 {
     use HasFactory;
+
     protected $primaryKey = 'id';
 }

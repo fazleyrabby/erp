@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class JournalDetails extends Model
 {
     use HasFactory;
-    protected $table="tbl_acc_jornal_details";
-    protected $fillable = ['tbl_acc_coa_id','particular','debit','credit'];
+
+    protected $table = 'tbl_acc_jornal_details';
+
+    protected $fillable = ['tbl_acc_coa_id', 'particular', 'debit', 'credit'];
 }

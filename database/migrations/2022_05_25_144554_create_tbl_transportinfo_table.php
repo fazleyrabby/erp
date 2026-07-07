@@ -22,20 +22,20 @@ class CreateTblTransportinfoTable extends Migration
             $table->string('email')->nullable();
             $table->text('remarks')->nullable();
             // Common Fields
-             $table->enum('status',['Active','Inactive'])->default('Active');
-             $table->enum('deleted',['Yes','No'])->default('No');
-             $table->biginteger('createdBy')->nullable();
-             $table->datetime('createdDate')->nullable();
-             $table->biginteger('deletedBy')->nullable();
-             $table->datetime('deletedDate')->nullable();
-             $table->biginteger('lastUpdatedBy')->nullable();
-             $table->datetime('lastUpdatedDate')->nullable();
-             $table->timestamps();
-             // Not Common Field
-             $table->string('transport_name_bangla')->nullable();
-             $table->string('contact_person_bangla')->nullable();
-             $table->string('contact_number_bangla')->nullable();
-             $table->string('address_bangla')->nullable(); 
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
+            $table->biginteger('createdBy')->nullable();
+            $table->datetime('createdDate')->nullable();
+            $table->biginteger('deletedBy')->nullable();
+            $table->datetime('deletedDate')->nullable();
+            $table->biginteger('lastUpdatedBy')->nullable();
+            $table->datetime('lastUpdatedDate')->nullable();
+            $table->timestamps();
+            // Not Common Field
+            $table->string('transport_name_bangla')->nullable();
+            $table->string('contact_person_bangla')->nullable();
+            $table->string('contact_number_bangla')->nullable();
+            $table->string('address_bangla')->nullable();
         });
     }
 

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Crm\Party;
-use App\Models\inventory\Product;
 use App\Models\inventory\DamageProduct;
+use App\Models\inventory\Product;
 use App\Models\inventory\SaleOrder;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +14,7 @@ class DashboardController extends Controller
     public function index()
     {
 
-         $supplier = Party::where('deleted', '=', 'No')->where('status', '=', 'Active')->where('party_type', '=', 'Supplier')->count();
+        $supplier = Party::where('deleted', '=', 'No')->where('status', '=', 'Active')->where('party_type', '=', 'Supplier')->count();
         $customer = Party::where('deleted', '=', 'No')->where('status', '=', 'Active')->where('party_type', '=', 'Customer')->count();
         $walkin = Party::where('deleted', '=', 'No')->where('status', '=', 'Active')->where('party_type', '=', 'Walkin_Customer')->count();
 
@@ -38,8 +37,8 @@ class DashboardController extends Controller
             'service' => $service,
             'damages' => $damages,
             'pending' => $pending, 'servicing' => $servicing, 'cancelled' => $cancelled,
-            'delivered' => $delivered, 'ready' => $ready, 'completed' => $completed
-        ]); 
+            'delivered' => $delivered, 'ready' => $ready, 'completed' => $completed,
+        ]);
 
         // 29-11-2022
         /*

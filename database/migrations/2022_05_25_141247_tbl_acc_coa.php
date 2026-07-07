@@ -17,21 +17,21 @@ class TblAccCoa extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
-            $table->decimal('amount',10,2)->default(0);
+            $table->decimal('amount', 10, 2)->default(0);
             $table->biginteger('code')->nullable();
             $table->biginteger('our_code')->nullable();
             $table->biginteger('limit_from')->nullable();
             $table->biginteger('limit_to')->nullable();
             $table->biginteger('parent_id')->nullable();
-            $table->enum('unused',['Yes','No'])->default('No');
+            $table->enum('unused', ['Yes', 'No'])->default('No');
 
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->dateTime('deleted_date')->format('d/m/Y')->nullable();
-           
+
             $table->timestamps();
         });
     }

@@ -16,17 +16,17 @@ class CreateMonthlyReportsTable extends Migration
         Schema::create('monthly_reports', function (Blueprint $table) {
             $table->increments('id');
             $table->string('month_year')->nullable();
-            $table->decimal('previous_month_closing',10,2)->nullable();
-            $table->decimal('present_month_closing',10,2)->nullable();
-            $table->decimal('opening_balance',10,2)->nullable();
+            $table->decimal('previous_month_closing', 10, 2)->nullable();
+            $table->decimal('present_month_closing', 10, 2)->nullable();
+            $table->decimal('opening_balance', 10, 2)->nullable();
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->dateTime('deleted_date')->format('d/m/Y')->nullable();
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            
+
             $table->timestamps();
         });
     }

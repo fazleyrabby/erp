@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Accounts\ChartOfAccounts;
+use Illuminate\Database\Seeder;
 
 class CoaSeeder extends Seeder
 {
@@ -24,9 +24,8 @@ class CoaSeeder extends Seeder
             'Purchase',
             'Cash',
             'Cash Amount',
-            'Discount'
+            'Discount',
         ];
-
 
         $slugs = [
             'Asset',
@@ -38,9 +37,8 @@ class CoaSeeder extends Seeder
             'Purchase',
             'cash',
             'cash-amount',
-            'Discount'
+            'Discount',
         ];
-
 
         $ourcodes = [
             '100000000',
@@ -52,10 +50,8 @@ class CoaSeeder extends Seeder
             '401000000',
             '501000000',
             '501010000',
-            '502000000'
+            '502000000',
         ];
-
-       
 
         $limitTo = [
             '199999999',
@@ -67,7 +63,7 @@ class CoaSeeder extends Seeder
             '409900000',
             '509900000',
             '501099000',
-            '509900000'
+            '509900000',
         ];
 
         $parentId = [
@@ -80,7 +76,7 @@ class CoaSeeder extends Seeder
             '4',
             '5',
             '8',
-            '5'
+            '5',
         ];
 
         $status = [
@@ -93,7 +89,7 @@ class CoaSeeder extends Seeder
             'Active',
             'Active',
             'Active',
-            'Active'
+            'Active',
         ];
 
         $deleted = [
@@ -106,7 +102,7 @@ class CoaSeeder extends Seeder
             'No',
             'No',
             'No',
-            'No'
+            'No',
         ];
 
         $created_by = [
@@ -119,27 +115,22 @@ class CoaSeeder extends Seeder
             '0',
             '0',
             '0',
-            '0'
+            '0',
         ];
-        //create permissions
+        // create permissions
         for ($i = 0; $i < count($names); $i++) {
-            $coas = ChartOfAccounts::create([   'name'          =>  $names[$i],
-                                                'slug'          =>  $slugs[$i],
-                                                'code'          =>  $ourcodes[$i],
-                                                'our_code'      =>  $ourcodes[$i],
-                                                'limit_from'    =>  $ourcodes[$i],
-                                                'limit_to'      =>  $limitTo[$i],
-                                                'parent_id'     =>  $parentId[$i],
-                                                'status'        =>  $status[$i],
-                                                'deleted'       =>  $deleted[$i],
-                                                'created_by'    =>  $created_by[$i],
-                                                ]);
+            $coas = ChartOfAccounts::create(['name' => $names[$i],
+                'slug' => $slugs[$i],
+                'code' => $ourcodes[$i],
+                'our_code' => $ourcodes[$i],
+                'limit_from' => $ourcodes[$i],
+                'limit_to' => $limitTo[$i],
+                'parent_id' => $parentId[$i],
+                'status' => $status[$i],
+                'deleted' => $deleted[$i],
+                'created_by' => $created_by[$i],
+            ]);
         }
-        
-    }
 
- 
-       
-    
-    
+    }
 }

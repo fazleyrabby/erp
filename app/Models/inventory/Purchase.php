@@ -2,9 +2,9 @@
 
 namespace App\Models\inventory;
 
+use App\Models\Party;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Party;
 
 class Purchase extends Model
 {
@@ -12,9 +12,10 @@ class Purchase extends Model
 
     protected $table = 'purchases';
 
-    public function supplier(){
+    public function supplier()
+    {
 
-    	return $this->belongsTo(Party::class,'party_id','id');
+        return $this->belongsTo(Party::class, 'party_id', 'id');
     }
 
     public function purchaseSerializeProducts()

@@ -2,18 +2,20 @@
 
 namespace App\Models\inventory;
 
+use App\Models\Party;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Party;
 
 class Sale extends Model
 {
     use HasFactory;
+
     protected $table = 'sales';
 
-    public function supplier(){
+    public function supplier()
+    {
 
-    	return $this->belongsTo(Party::class,'party_id','id');
+        return $this->belongsTo(Party::class, 'party_id', 'id');
     }
 
     public function saleSerializeProducts()

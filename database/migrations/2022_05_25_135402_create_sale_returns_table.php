@@ -33,7 +33,7 @@ class CreateSaleReturnsTable extends Migration
             $table->biginteger('deleted_by')->nullable();
             $table->datetime('deleted_date')->nullable();
             $table->timestamps();
-            $table->enum('sales_type',['walkin_sale','TS','FS','party_sale']); // Not Common Field
+            $table->enum('sales_type', ['walkin_sale', 'TS', 'FS', 'party_sale']); // Not Common Field
         });
     }
 

@@ -19,8 +19,8 @@ class CreateSaleOrderFeedbacksTable extends Migration
             $table->string('date_of_contact', 20)->nullable();
             $table->string('customer_response')->nullable();
             // Common Fields
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

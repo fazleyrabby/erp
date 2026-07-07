@@ -20,10 +20,10 @@ class CreatePartiesTable extends Migration
             $table->string('address');
             $table->string('contact');
             $table->string('alternate_contact')->nullable();
-            $table->decimal('credit_limt',12,2);
-            $table->enum('party_type',['Supplier','Customer']);
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->nullable();
+            $table->decimal('credit_limt', 12, 2);
+            $table->enum('party_type', ['Supplier', 'Customer']);
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

@@ -28,9 +28,9 @@ class CreateCompanySettingsTable extends Migration
             $table->string('terms_conditions')->nullable();
             $table->string('default_party')->nullable();
             $table->string('currency')->nullable();
-            $table->enum('manage_stock_to_sale',['Yes','No'])->default('Yes');
-            $table->enum('barcode_exists',['Yes','No'])->nullable();
-            $table->enum('deleted',['Yes','No'])->nullable();
+            $table->enum('manage_stock_to_sale', ['Yes', 'No'])->default('Yes');
+            $table->enum('barcode_exists', ['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

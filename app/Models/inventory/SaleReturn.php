@@ -10,5 +10,4 @@ class SaleReturn extends Model
     use HasFactory;
 
     protected $table = 'sale_returns';
-
 }

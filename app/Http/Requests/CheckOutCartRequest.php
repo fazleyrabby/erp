@@ -12,7 +12,7 @@ class CheckOutCartRequest extends FormRequest
      * @return bool
      */
 
-     // this is used In SaleController (CheckOutCart Function)
+    // this is used In SaleController (CheckOutCart Function)
     public function authorize()
     {
         return true;
@@ -24,16 +24,16 @@ class CheckOutCartRequest extends FormRequest
             'customerName' => 'required|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
             'customerAddress' => 'nullable|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
             'partyPhoneNumber' => 'required',
-            'category' => 'required'
+            'category' => 'required',
         ];
     }
-    
+
     public function messages()
     {
         return [
             'customerName.required' => 'Party is required',
             'partyPhoneNumber.required' => 'Phone Number is required',
-            'category.required' => 'Category required'
+            'category.required' => 'Category required',
         ];
     }
 }

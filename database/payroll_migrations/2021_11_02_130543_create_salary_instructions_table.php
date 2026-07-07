@@ -18,7 +18,7 @@ class CreateSalaryInstructionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('month_year')->nullable();
             $table->bigInteger('sheet_id')->nullable();
-            $table->decimal('total_amount',10,2)->nullable();
+            $table->decimal('total_amount', 10, 2)->nullable();
             $table->string('bank_name')->nullable();
             $table->string('branch_name')->nullable();
             $table->bigInteger('mother_account_no')->nullable();
@@ -31,7 +31,6 @@ class CreateSalaryInstructionsTable extends Migration
             $table->bigInteger('deleted_by')->nullable();
             $table->dateTime('deleted_date')->format('d/m/Y')->nullable();
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-
 
             $table->timestamps();
         });

@@ -3,47 +3,40 @@
 namespace App\Http\Controllers\Admin\PayRoll\Facility;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\payroll\Email;
 use App\Models\payroll\Facility;
 use App\Models\payroll\Group;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FacilityController extends Controller
 {
-    
+    public function index()
+    {
 
-    public function index(){
+        $groups = Group::where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
 
-        $groups=Group::where('deleted','=','No')->where('status','=','Active')->get();
-
-      
-
-        return view('admin.payroll.facility.facilityView',['groups'=>$groups]);
+        return view('admin.payroll.facility.facilityView', ['groups' => $groups]);
     }
 
-
-
-
-
-    public function getFacilityData(){
+    public function getFacilityData()
+    {
 
         $facilities = DB::table('facilities')
             ->join('groups', 'facilities.group_id', '=', 'groups.id')
             ->select('facilities.*', 'groups.name as groupName')
-            ->where('facilities.deleted','=','No')->orderBy('facilities.id','ASC')->get();
-        
-        $output = array('data' => array());
-        $i=1;
+            ->where('facilities.deleted', '=', 'No')->orderBy('facilities.id', 'ASC')->get();
+
+        $output = ['data' => []];
+        $i = 1;
         foreach ($facilities as $facility) {
-            $status = "";
-            if($facility->status == 'Active'){
+            $status = '';
+            if ($facility->status == 'Active') {
                 $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$facility->status.'"></i></center>';
-            }else{
+            } else {
                 $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$facility->status.'"></i></center>';
             }
-			/*$button = '<button type="button"  class="btn btn-xs btn-warning btnEdit" title="Edit Party" ><i class="fa fa-edit"> </i></button>
+            /*$button = '<button type="button"  class="btn btn-xs btn-warning btnEdit" title="Edit Party" ><i class="fa fa-edit"> </i></button>
                         <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="" title="Delete Party"><i class="fa fa-trash"> </i></button>';*/
             $button = '<div class="btn-grade">
             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -55,106 +48,88 @@ class FacilityController extends Controller
                 </li>
 
                 </ul>
-            </div>';            
-			$output['data'][] = array(
-				$i++. '<input type="hidden" name="id" id="id" value="'.$facility->id.'" />',
-				$facility->facility_name,
+            </div>';
+            $output['data'][] = [
+                $i++.'<input type="hidden" name="id" id="id" value="'.$facility->id.'" />',
+                $facility->facility_name,
                 $facility->groupName,
-				$facility->amount,
+                $facility->amount,
                 $facility->lower_limit,
                 $facility->upper_limit,
                 $facility->location,
-				$status,
-				$button
-			);            
+                $status,
+                $button,
+            ];
         }
+
         return $output;
     }
 
-
-
-
-    public function store(Request $request){
-         $request->validate([
+    public function store(Request $request)
+    {
+        $request->validate([
             'facility_name' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u|unique:grades,grade_name,'.$request->id,
             'note' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
             'amount' => 'required',
-            'location'=>'required'
-         ]); 
-         $facility= new Facility();
-         $facility->facility_name=$request->facility_name;
-         $facility->amount=$request->amount;
-         $facility->group_id=$request->group_id;
-         $facility->lower_limit=$request->lower_limit;
-         $facility->upper_limit=$request->upper_limit;
-         $facility->location=$request->location;
-         $facility->deleted="No";
-         $facility->status="Active";
-         $facility->created_by=Auth::user()->id;
-         $result = $facility->save();
-         return response()->json(['success'=>$request->facility_name.' Saved successfully']);
-     }
+            'location' => 'required',
+        ]);
+        $facility = new Facility;
+        $facility->facility_name = $request->facility_name;
+        $facility->amount = $request->amount;
+        $facility->group_id = $request->group_id;
+        $facility->lower_limit = $request->lower_limit;
+        $facility->upper_limit = $request->upper_limit;
+        $facility->location = $request->location;
+        $facility->deleted = 'No';
+        $facility->status = 'Active';
+        $facility->created_by = Auth::user()->id;
+        $result = $facility->save();
 
+        return response()->json(['success' => $request->facility_name.' Saved successfully']);
+    }
 
+    public function edit(Request $request)
+    {
+        $facilities = Facility::find($request->id);
 
-     
+        return $facilities;
+    }
 
+    public function update(Request $request)
+    {
+        $request->validate([
+            'facility_name' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u|unique:grades,grade_name,'.$request->id,
+            'note' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
+            'amount' => 'required',
+            'location' => 'required',
+        ]);
+        $facility = Facility::find($request->id);
+        $facility->facility_name = $request->facility_name;
+        $facility->amount = $request->amount;
+        $facility->group_id = $request->group_id;
+        $facility->lower_limit = $request->lower_limit;
+        $facility->upper_limit = $request->upper_limit;
+        $facility->location = $request->location;
+        $facility->status = $request->status;
+        $facility->last_updated_by = Auth::user()->id;
+        $result = $facility->save();
 
-public function edit(Request $request){
-    $facilities=Facility::find($request->id);
-    return $facilities;
-}
+        return response()->json(['success' => $request->facility_name.' updated successfully']);
+    }
 
+    public function delete(Request $request)
+    {
 
+        $facilities = Facility::find($request->id);
 
-public function update(Request $request){
-     $request->validate([
-         'facility_name' => 'required|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u|unique:grades,grade_name,'.$request->id,
-         'note' => 'nullable|max:255|regex:/^([a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+\s)*[a-zA-Z0-9_ "\.\-\s\,\;\:\/\&\$\%\(\)]+$/u',
-         'amount' => 'required',
-         'location'=>'required'
-        ]); 
-    $facility= Facility::find($request->id);
-    $facility->facility_name=$request->facility_name;
-    $facility->amount=$request->amount;
-    $facility->group_id=$request->group_id;
-    $facility->lower_limit=$request->lower_limit;
-    $facility->upper_limit=$request->upper_limit;
-    $facility->location=$request->location;
-    $facility->status=$request->status;
-    $facility->last_updated_by=Auth::user()->id;
-     $result =$facility->save();
-     return response()->json(['success'=>$request->facility_name.' updated successfully']);
- }
+        $facilities->facility_name = $facilities->facility_name.'deleted'.$request->id;
+        $facilities->status = 'Inactive';
+        $facilities->deleted = 'Yes';
+        $facilities->deleted_by = Auth::user()->id;
+        $facilities->deleted_date = date('Y-m-d H:i:s');
+        $facilities->save();
 
+        return response()->json(['success' => 'Deleted successfully']);
 
-
- public function delete(Request $request) {
-
-    $facilities = Facility::find($request->id);
-    
-    $facilities->facility_name = $facilities->facility_name.'deleted'.$request->id;
-    $facilities->status = 'Inactive';
-    $facilities->deleted = 'Yes';
-    $facilities->deleted_by = Auth::user()->id;
-    $facilities->deleted_date = date('Y-m-d H:i:s');
-    $facilities->save();
-    return response()->json(['success'=>'Deleted successfully']);
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 }

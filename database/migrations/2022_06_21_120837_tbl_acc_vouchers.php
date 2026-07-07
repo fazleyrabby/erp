@@ -20,15 +20,15 @@ class TblAccVouchers extends Migration
             $table->biginteger('type_no')->nullable();
             $table->biginteger('purchase_id')->nullable();
             $table->biginteger('sales_id')->nullable();
-            $table->decimal('amount',10,2)->nullable();
+            $table->decimal('amount', 10, 2)->nullable();
             $table->string('type')->nullable();
             $table->string('transaction_date')->nullable();
             $table->string('voucher_title')->nullable();
             $table->longtext('particulars')->nullable();
             $table->string('payment_method')->nullable();
-                                                                                                                                    
+
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->bigInteger('last_updated_by')->nullable();

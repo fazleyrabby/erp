@@ -18,9 +18,9 @@ class CreateAccountSettingsTable extends Migration
             $table->bigInteger('tbl_acc_coa_id')->nullable();
             $table->bigInteger('limit_from')->nullable();
             $table->bigInteger('limit_to')->nullable();
-            
+
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->bigInteger('last_updated_by')->nullable();

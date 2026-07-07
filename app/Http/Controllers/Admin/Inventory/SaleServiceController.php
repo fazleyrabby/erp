@@ -3,39 +3,33 @@
 namespace App\Http\Controllers\Admin\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CheckOutCartRequest;
-use Illuminate\Http\Request;
-use App\Models\inventory\Category;
-use App\Models\inventory\Product;
-use App\Models\inventory\PaymentVoucher;
+use App\Models\Accounts\ChartOfAccounts;
+use App\Models\Accounts\Voucher;
+use App\Models\Accounts\VoucherDetails;
 use App\Models\inventory\Brand;
+use App\Models\inventory\Category;
 use App\Models\inventory\Currentstock;
 use App\Models\inventory\Party;
-use App\Models\inventory\Emi_sale;
+use App\Models\inventory\PaymentVoucher;
+use App\Models\inventory\Product;
 use App\Models\inventory\Sale;
 use App\Models\inventory\SaleOrder;
 use App\Models\inventory\SaleOrderFeedback;
 use App\Models\inventory\SaleOrderProduct;
 use App\Models\inventory\SaleProduct;
 use App\Models\inventory\SaleSerializeProduct;
-use App\Models\inventory\TemporarySale;
-use App\Models\inventory\TempSaleProduct;
-use App\Models\inventory\Warehouse;
 use App\Models\inventory\SerializeProduct;
-
-use App\Models\Accounts\Voucher;
-use App\Models\Accounts\VoucherDetails;
-use App\Models\Accounts\AccountConfiguration;
-use App\Models\Accounts\ChartOfAccounts;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use PDF;
+use App\Models\inventory\Warehouse;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use PDF;
 
 class SaleServiceController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:sale.service.view', ['only' => ['viewSaleOrders', 'getSaleOrders']]);
         $this->middleware('permission:sale.service.add', ['only' => ['add', 'addToCart', 'fetchCart', 'checkOutCart']]);
@@ -47,12 +41,11 @@ class SaleServiceController extends Controller
     public function viewSaleOrders()
     {
 
-        $saleType  = "walkin_sale";
+        $saleType = 'walkin_sale';
         session(['type' => $saleType]);
+
         return view('admin.inventory.service.view-sale-orders', compact('saleType'));
     }
-
-
 
     public function changeCustomer(Request $request)
     {
@@ -61,23 +54,13 @@ class SaleServiceController extends Controller
         $saleOrder->customer_id = '52';
         $saleOrder->customer_change_date = Carbon::now();
         $saleOrder->save();
+
         return response()->json();
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public function getSaleOrders()
     {
-        $type = "walkin_sale";
+        $type = 'walkin_sale';
         $saleOrders = DB::table('sale_orders')
             ->join('parties', 'sale_orders.customer_id', '=', 'parties.id')
             ->leftjoin('users', 'users.id', '=', 'sale_orders.created_by')
@@ -119,13 +102,13 @@ class SaleServiceController extends Controller
             ->orderBy('sale_orders.id', 'DESC')
             ->get();
 
-        $output = array('data' => array());
+        $output = ['data' => []];
         $i = 1;
 
         foreach ($saleOrders as $saleOrder) {
-            $order_status = "";
-            $actionButtons = "";
-            $intervalDays = "";
+            $order_status = '';
+            $actionButtons = '';
+            $intervalDays = '';
             $feedback = SaleOrderFeedback::where('tbl_sale_orders_id', $saleOrder->id)
                 ->where('deleted', 'No')
                 ->orderBy('id', 'desc')
@@ -146,19 +129,19 @@ class SaleServiceController extends Controller
                 if ($years == '0') {
                     $yearString = '';
                 } else {
-                    $yearString = $years . ' years';
+                    $yearString = $years.' years';
                 }
                 if ($months == '0') {
                     $monthsString = '';
                 } else {
-                    $monthsString = $months . ' months';
+                    $monthsString = $months.' months';
                 }
                 if ($days == '0') {
                     $daysString = '<span class="text-success">Today arrived</span>';
                 } else {
-                    $daysString = $days . ' days';
+                    $daysString = $days.' days';
                 }
-                $intervalDays = '<center>' . $yearString . ' ' . $monthsString . ' ' . $daysString . '</center>';
+                $intervalDays = '<center>'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
             } elseif ($saleOrder->order_status == 'Servicing') {
                 $date1 = $saleOrder->service_start_date;
                 $date2 = Carbon::now();
@@ -174,19 +157,19 @@ class SaleServiceController extends Controller
                 if ($years == '0') {
                     $yearString = '';
                 } else {
-                    $yearString = $years . ' years';
+                    $yearString = $years.' years';
                 }
                 if ($months == '0') {
                     $monthsString = '';
                 } else {
-                    $monthsString = $months . ' months';
+                    $monthsString = $months.' months';
                 }
                 if ($days == '0') {
                     $daysString = '<span class="text-success">Went to service Today </span>';
                 } else {
-                    $daysString = $days . ' days';
+                    $daysString = $days.' days';
                 }
-                $intervalDays = '<center>' . $yearString . ' ' . $monthsString . ' ' . $daysString . '</center>';
+                $intervalDays = '<center>'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
             } elseif ($saleOrder->order_status == 'Delivered') {
                 $date1 = $saleOrder->delivered_date;
                 $date2 = Carbon::now();
@@ -202,19 +185,19 @@ class SaleServiceController extends Controller
                 if ($years == '0') {
                     $yearString = '';
                 } else {
-                    $yearString = $years . ' years';
+                    $yearString = $years.' years';
                 }
                 if ($months == '0') {
                     $monthsString = '';
                 } else {
-                    $monthsString = $months . ' months';
+                    $monthsString = $months.' months';
                 }
                 if ($days == '0') {
                     $daysString = '<span class="text-danger">Delivered Today </span>';
                 } else {
-                    $daysString = $days . ' days';
+                    $daysString = $days.' days';
                 }
-                $intervalDays = '<center class="text-danger">' . $yearString . ' ' . $monthsString . ' ' . $daysString . '</center>';
+                $intervalDays = '<center class="text-danger">'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
             } elseif ($saleOrder->order_status == 'ReadyToDeliverd') {
                 $date1 = $saleOrder->ready_to_deliver_date;
                 $date2 = Carbon::now();
@@ -230,68 +213,64 @@ class SaleServiceController extends Controller
                 if ($years == '0') {
                     $yearString = '';
                 } else {
-                    $yearString = $years . ' years';
+                    $yearString = $years.' years';
                 }
                 if ($months == '0') {
                     $monthsString = '';
                 } else {
-                    $monthsString = $months . ' months';
+                    $monthsString = $months.' months';
                 }
                 if ($days == '0') {
                     $daysString = '<span class="text-danger">Came from service Today </span>';
                 } else {
-                    $daysString = $days . ' days';
+                    $daysString = $days.' days';
                 }
-                $intervalDays = '<center class="text-danger">' . $yearString . ' ' . $monthsString . ' ' . $daysString . '</center>';
+                $intervalDays = '<center class="text-danger">'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
             }
 
-
-
-
             if ($feedback != null) {
-                $comments =  $feedback->customer_response;
+                $comments = $feedback->customer_response;
             } else {
                 $comments = '';
             }
 
             if ($saleOrder->order_status == 'Pending' || $saleOrder->order_status == 'Servicing') {
-                $actionButtons .= '<li class="action" onclick="editSaleOrder(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-edit"></i> Update Order </a></li>';
-                $order_status = '<center class="text-primary"><i class="fas fa-hourglass-start" font-size:16px;"></i><br> ' . $saleOrder->order_status . '</center>';
+                $actionButtons .= '<li class="action" onclick="editSaleOrder('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Update Order </a></li>';
+                $order_status = '<center class="text-primary"><i class="fas fa-hourglass-start" font-size:16px;"></i><br> '.$saleOrder->order_status.'</center>';
                 if ($saleOrder->order_status == 'Pending') {
-                    $actionButtons .= '<li class="action" onclick="orderInvoice(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Order Invoice </a></li>';
+                    $actionButtons .= '<li class="action" onclick="orderInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Order Invoice </a></li>';
                 }
                 if ($saleOrder->order_status == 'Servicing') {
-                    $order_status = '<center class="text-info"><i class="fa fa-wrench" font-size:16px;"></i> ' . $saleOrder->order_status . '</center>';
-                    $actionButtons .= '<li class="action"  onclick="statusComplete(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-check"></i>  Ready to deliverd </a></li>
-                            <li class="action" onclick="completeInvoice(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
+                    $order_status = '<center class="text-info"><i class="fa fa-wrench" font-size:16px;"></i> '.$saleOrder->order_status.'</center>';
+                    $actionButtons .= '<li class="action"  onclick="statusComplete('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-check"></i>  Ready to deliverd </a></li>
+                            <li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
                 }
-            } else if ($saleOrder->order_status == 'ReadyToDeliverd') {
-                $actionButtons .= '<li class="action" onclick="editSaleOrder(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-edit"></i> Update Order </a></li>
-                                    <li class="action" onclick="completeInvoice(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
+            } elseif ($saleOrder->order_status == 'ReadyToDeliverd') {
+                $actionButtons .= '<li class="action" onclick="editSaleOrder('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Update Order </a></li>
+                                    <li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
                 $order_status = '<center class="text-primary"><i class="fas fa-dolly" style="font-size:16px;"></i><br>Ready for delivery</center>';
             } elseif ($saleOrder->order_status == 'Declined') {
-                $order_status = '<center class="text-primary"><i class="fas fa-hourglass-start" style="font-size:16px;"></i><br>' . $saleOrder->order_status . '</center>';
-                $actionButtons .= '<li class="action" onclick="completeInvoice(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
+                $order_status = '<center class="text-primary"><i class="fas fa-hourglass-start" style="font-size:16px;"></i><br>'.$saleOrder->order_status.'</center>';
+                $actionButtons .= '<li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
             } elseif ($saleOrder->order_status == 'Delivered') {
-                $actionButtons .= '<li class="action" onclick="createOrderToWalkinSale(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-cart-plus"> </i>  Final Service Sale </a></li>
-                                    <li class="action" onclick="completeInvoice(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
-                $order_status = '<center class="text-success"><i class="fas fa-check" style="font-size:16px;"></i><br>' . $saleOrder->order_status . '</center>';
+                $actionButtons .= '<li class="action" onclick="createOrderToWalkinSale('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-cart-plus"> </i>  Final Service Sale </a></li>
+                                    <li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
+                $order_status = '<center class="text-success"><i class="fas fa-check" style="font-size:16px;"></i><br>'.$saleOrder->order_status.'</center>';
             } elseif ($saleOrder->order_status == 'Completed') {
-                $order_status = '<center class="text-success"><i class="fas fa-check-circle" style="font-size:16px;"></i><br>' . $saleOrder->order_status . '</center>';
-                $actionButtons .= '<li class="action" onclick="completeInvoice(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>
-                                    <li class="action" onclick="saleInvoice(' . $saleOrder->sale_id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Sale Invoice </a></li>';
+                $order_status = '<center class="text-success"><i class="fas fa-check-circle" style="font-size:16px;"></i><br>'.$saleOrder->order_status.'</center>';
+                $actionButtons .= '<li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>
+                                    <li class="action" onclick="saleInvoice('.$saleOrder->sale_id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Sale Invoice </a></li>';
             } else {
-                $order_status = '<center class="text-danger"><span  font-size:16px;">X</span> ' . $saleOrder->order_status . '</center>';
-                $actionButtons .= '<li class="action" onclick="completeInvoice(' . $saleOrder->id . ')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
+                $order_status = '<center class="text-danger"><span  font-size:16px;">X</span> '.$saleOrder->order_status.'</center>';
+                $actionButtons .= '<li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
             }
-
 
             $button = '<td style="width: 12%; ">
     			<div class="btn-group">
     				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
     					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
     					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-    					    ' . $actionButtons . '
+    					    '.$actionButtons.'
     					</ul>
     				</div>
     			</td>';
@@ -300,55 +279,31 @@ class SaleServiceController extends Controller
 
             $project = '';
             if ($saleOrder->project_name != null) {
-                $project .= '<b>Project: </b>' . $saleOrder->project_name;
+                $project .= '<b>Project: </b>'.$saleOrder->project_name;
             }
 
-            $output['data'][] = array(
-                $i++ . '<input type="hidden" name="id" id="id" value="' . $saleOrder->id . '" />',
+            $output['data'][] = [
+                $i++.'<input type="hidden" name="id" id="id" value="'.$saleOrder->id.'" />',
                 $saleOrder->sale_no,
-                date("d-m-Y h:i a", strtotime($saleOrder->date)),
-                '<b>Category: </b>' . $saleOrder->coaName . '<br><b>Brand: </b>' . substr(str_pad($saleOrder->brand, 4), 0, 20)  . '<br><b>Model: </b>' . substr(str_pad($saleOrder->model, 4), 0, 20)  . '<br><b>Item: </b>' . substr(str_pad($saleOrder->item, 4), 0, 20) . '<br>' . $project,
-                '<b>Party: </b>' . $saleOrder->name . '<br><b>Contact: </b>' . $saleOrder->contact . '<br><b>Alt. Contact: </b>' . $saleOrder->alternate_contact . '<br><b>Address: </b>' . substr(str_pad($saleOrder->address, 4), 0, 25),
-                '<b>Total: </b>' . $saleOrder->total_amount . '<br><b>Discount: </b>' . $saleOrder->discount . '<br><b>Transport: </b>' . $saleOrder->carrying_cost . '<br><b>GrandTotal: </b>' . $grandTotal . '<br><b>Paid: </b>' . $saleOrder->current_payment,
+                date('d-m-Y h:i a', strtotime($saleOrder->date)),
+                '<b>Category: </b>'.$saleOrder->coaName.'<br><b>Brand: </b>'.substr(str_pad($saleOrder->brand, 4), 0, 20).'<br><b>Model: </b>'.substr(str_pad($saleOrder->model, 4), 0, 20).'<br><b>Item: </b>'.substr(str_pad($saleOrder->item, 4), 0, 20).'<br>'.$project,
+                '<b>Party: </b>'.$saleOrder->name.'<br><b>Contact: </b>'.$saleOrder->contact.'<br><b>Alt. Contact: </b>'.$saleOrder->alternate_contact.'<br><b>Address: </b>'.substr(str_pad($saleOrder->address, 4), 0, 25),
+                '<b>Total: </b>'.$saleOrder->total_amount.'<br><b>Discount: </b>'.$saleOrder->discount.'<br><b>Transport: </b>'.$saleOrder->carrying_cost.'<br><b>GrandTotal: </b>'.$grandTotal.'<br><b>Paid: </b>'.$saleOrder->current_payment,
                 $saleOrder->userName,
-                $order_status . '<br>' . $intervalDays,
-                $button
-            );
+                $order_status.'<br>'.$intervalDays,
+                $button,
+            ];
         }
+
         return $output;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function getPaymentData(Request $request)
     {
         $saleorders = SaleOrder::find($request->id);
-        return  $saleorders;
+
+        return $saleorders;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function add()
     {
@@ -357,47 +312,45 @@ class SaleServiceController extends Controller
         $products = Product::where('deleted', 'No')->where('status', 'Active')->get();
         $warehouses = Warehouse::where('deleted', 'No')->where('status', 'Active')->get();
         $customers = Party::where('deleted', 'No')->where('status', 'Active')->where('party_type', 'Customer')->get();
-        $type = "walkin_sale";
+        $type = 'walkin_sale';
         $coas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->where('parent_id', '=', '31')->get();
+
         return view('admin.inventory.service.add-service-sale', compact('categories', 'brands', 'products', 'coas', 'warehouses', 'customers', 'type'));
     }
 
-
-
-
     public function addToCart(Request $request)
     {
-        $data = "";
+        $data = '';
         $product_type = '';
-        if (Session::get("order_cart_array") != null) {
+        if (Session::get('order_cart_array') != null) {
             $is_available = 0;
-            foreach (Session::get("order_cart_array") as $keys => $values) {
-                if ((Session::get("order_cart_array")[$keys]['product_id'] == $request->id && Session::get("order_cart_array")[$keys]['warehouse_id'] == $request->warehouseId) || (Session::get("order_cart_array")[$keys]['barcode_no'] == $request->barcode && $request->barcode != '')) {
+            foreach (Session::get('order_cart_array') as $keys => $values) {
+                if ((Session::get('order_cart_array')[$keys]['product_id'] == $request->id && Session::get('order_cart_array')[$keys]['warehouse_id'] == $request->warehouseId) || (Session::get('order_cart_array')[$keys]['barcode_no'] == $request->barcode && $request->barcode != '')) {
                     $is_available++;
-                    session()->put("order_cart_array." . $keys . ".product_quantity", Session::get("order_cart_array")[$keys]['product_quantity'] + $request->quantity);
-                    $data = "Success";
+                    session()->put('order_cart_array.'.$keys.'.product_quantity', Session::get('order_cart_array')[$keys]['product_quantity'] + $request->quantity);
+                    $data = 'Success';
                 }
             }
             if ($is_available == 0) {
                 if (isset($request->barcode)) {
                     $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('barcode_no', $request->barcode)->first();
-                } else if (isset($request->id)) {
+                } elseif (isset($request->id)) {
                     $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('id', $request->id)->first();
                 }
-                $isServiceProduct = FALSE;
-                if ($productInfo->type == "service") {
-                    $isServiceProduct = TRUE;
+                $isServiceProduct = false;
+                if ($productInfo->type == 'service') {
+                    $isServiceProduct = true;
                     $available_quantity = 0;
                 } else {
-                    $currentStockInfo = CurrentStock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
+                    $currentStockInfo = Currentstock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
                     if ($currentStockInfo) {
                         $available_quantity = $currentStockInfo->currentStock;
                     } else {
                         $available_quantity = 0;
                     }
                 }
-                //if ($available_quantity > 0 || $isServiceProduct == TRUE) {
-                if ($request->saleType == "walkin_sale") {
+                // if ($available_quantity > 0 || $isServiceProduct == TRUE) {
+                if ($request->saleType == 'walkin_sale') {
                     $salePrice = $productInfo->sale_price; // Sale price is Max price
                 } else {
                     $salePrice = $productInfo->purchase_price; // Sale price is Min price
@@ -406,26 +359,26 @@ class SaleServiceController extends Controller
                     $productDiscount = 0;
                 }
                 $product_type = $productInfo->type;
-                $serializeIdArray = array();
-                $serializeSaleQtyArray = array();
+                $serializeIdArray = [];
+                $serializeSaleQtyArray = [];
                 $item_array = [
-                    'product_id'               =>     $productInfo->id,
-                    'product_name'             =>     $productInfo->name . ' - ' . $productInfo->code,
-                    'product_image'            =>     $productInfo->image,
-                    'available_qty'            =>     $available_quantity,
-                    'product_price'            =>     $salePrice,
-                    'product_quantity'         =>     $request->quantity,
-                    'product_discount'         =>     $productDiscount,
-                    'barcode_no'               =>     $productInfo->barcode_no,
-                    'warehouse_id'               =>     $request->warehouseId,
-                    'warehouse_name'           =>     $request->warehouseName,
-                    'product_type'               =>     $productInfo->type,
-                    'items_in_box'               =>     $productInfo->items_in_box,
-                    'serializeIdArray'         =>  [$serializeIdArray],
-                    'serializeSaleQtyArray'    =>  [$serializeSaleQtyArray]
+                    'product_id' => $productInfo->id,
+                    'product_name' => $productInfo->name.' - '.$productInfo->code,
+                    'product_image' => $productInfo->image,
+                    'available_qty' => $available_quantity,
+                    'product_price' => $salePrice,
+                    'product_quantity' => $request->quantity,
+                    'product_discount' => $productDiscount,
+                    'barcode_no' => $productInfo->barcode_no,
+                    'warehouse_id' => $request->warehouseId,
+                    'warehouse_name' => $request->warehouseName,
+                    'product_type' => $productInfo->type,
+                    'items_in_box' => $productInfo->items_in_box,
+                    'serializeIdArray' => [$serializeIdArray],
+                    'serializeSaleQtyArray' => [$serializeSaleQtyArray],
                 ];
                 Session::push('order_cart_array', $item_array);
-                $data = "Success";
+                $data = 'Success';
                 /*  } else {
                     $data = "This product is out of stock";
                 } */
@@ -434,23 +387,23 @@ class SaleServiceController extends Controller
             $productInfo = [];
             if (isset($request->barcode)) {
                 $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('barcode_no', $request->barcode)->first();
-            } else if (isset($request->id)) {
+            } elseif (isset($request->id)) {
                 $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('id', $request->id)->first();
             }
-            $isServiceProduct = FALSE;
-            if ($productInfo->type == "service") {
-                $isServiceProduct = TRUE;
+            $isServiceProduct = false;
+            if ($productInfo->type == 'service') {
+                $isServiceProduct = true;
                 $available_quantity = 0;
             } else {
-                $currentStockInfo = CurrentStock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
+                $currentStockInfo = Currentstock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
                 if ($currentStockInfo) {
                     $available_quantity = $currentStockInfo->currentStock;
                 } else {
                     $available_quantity = 0;
                 }
             }
-            //if ($available_quantity > 0 || $isServiceProduct == TRUE) {
-            if ($request->saleType == "walkin_sale") {
+            // if ($available_quantity > 0 || $isServiceProduct == TRUE) {
+            if ($request->saleType == 'walkin_sale') {
                 $salePrice = $productInfo->sale_price; // Sale price is Max price
             } else {
                 $salePrice = $productInfo->purchase_price; // Sale price is Min price
@@ -459,30 +412,31 @@ class SaleServiceController extends Controller
                 $productDiscount = 0;
             }
             $product_type = $productInfo->type;
-            $serializeIdArray = array();
-            $serializeSaleQtyArray = array();
+            $serializeIdArray = [];
+            $serializeSaleQtyArray = [];
             $item_array = [
-                'product_id'               =>     $productInfo->id,
-                'product_name'             =>     $productInfo->name . ' - ' . $productInfo->code,
-                'product_image'            =>     $productInfo->image,
-                'available_qty'            =>     $available_quantity,
-                'product_price'            =>     $salePrice,
-                'product_quantity'         =>     $request->quantity,
-                'product_discount'         =>     $productDiscount,
-                'barcode_no'               =>     $productInfo->barcode_no,
-                'warehouse_id'             =>     $request->warehouseId,
-                'warehouse_name'           =>     $request->warehouseName,
-                'product_type'             =>     $productInfo->type,
-                'items_in_box'             =>     $productInfo->items_in_box,
-                'serializeIdArray'         =>  [$serializeIdArray],
-                'serializeSaleQtyArray'    =>  [$request->quantity]
+                'product_id' => $productInfo->id,
+                'product_name' => $productInfo->name.' - '.$productInfo->code,
+                'product_image' => $productInfo->image,
+                'available_qty' => $available_quantity,
+                'product_price' => $salePrice,
+                'product_quantity' => $request->quantity,
+                'product_discount' => $productDiscount,
+                'barcode_no' => $productInfo->barcode_no,
+                'warehouse_id' => $request->warehouseId,
+                'warehouse_name' => $request->warehouseName,
+                'product_type' => $productInfo->type,
+                'items_in_box' => $productInfo->items_in_box,
+                'serializeIdArray' => [$serializeIdArray],
+                'serializeSaleQtyArray' => [$request->quantity],
             ];
             Session::push('order_cart_array', $item_array);
-            $data = "Success";
+            $data = 'Success';
             /* } else {
                 $data = "This product is out of stock";
             } */
         }
+
         return response()->json(['data' => $data, 'productId' => $request->id, 'warehouseId' => $request->warehouseId, 'productType' => $product_type]);
     }
 
@@ -493,38 +447,39 @@ class SaleServiceController extends Controller
         if (Session::get('order_cart_array') != null) {
             $i = 1;
             foreach (Session::get('order_cart_array') as $keys => $values) {
-                $unitPrice = Session::get("order_cart_array")[$keys]["product_price"];
-                $discount = Session::get("order_cart_array")[$keys]["product_discount"];
-                $totalPrice = Session::get("order_cart_array")[$keys]["product_quantity"] * ($unitPrice - $discount);
-                $productId = Session::get("order_cart_array")[$keys]["product_id"];
-                $warehouseId = Session::get("order_cart_array")[$keys]["warehouse_id"];
-                $productType = Session::get("order_cart_array")[$keys]["product_type"];
-                if ($productType == "serialize") {
+                $unitPrice = Session::get('order_cart_array')[$keys]['product_price'];
+                $discount = Session::get('order_cart_array')[$keys]['product_discount'];
+                $totalPrice = Session::get('order_cart_array')[$keys]['product_quantity'] * ($unitPrice - $discount);
+                $productId = Session::get('order_cart_array')[$keys]['product_id'];
+                $warehouseId = Session::get('order_cart_array')[$keys]['warehouse_id'];
+                $productType = Session::get('order_cart_array')[$keys]['product_type'];
+                if ($productType == 'serialize') {
                     $btn = '';
                 } else {
                     $btn = '';
                 }
-                $cart .= '<tr><td>' . $i++ . '
-				            <input type="hidden" name="ids[]" id="id_' . $productId . '_' . $warehouseId . '" value="' . $productId . '" />
-				            <input type="hidden" name="warehouseIds[]" id="warehouse_id_' . $productId . '_' . $warehouseId . '" value="' . $productId . '" />
-				            <input type="hidden" name="productTypes[]" id="product_type_' . $productId . '_' . $warehouseId . '" value="' . $productType . '" />
-				</td>' .
-                    '<td>' . Session::get("order_cart_array")[$keys]["product_name"] . '-' . $productType . ' [' . Session::get("order_cart_array")[$keys]["warehouse_name"] . ']</td>' .
-                    '<td class="text-center"><span class="text-center" id="available_qty_' . $productId . '_' . $warehouseId . '">' . Session::get("order_cart_array")[$keys]["available_qty"] . '</span></td>' .
-                    '<td class=""><input type="number" style="width: 80%;"  min="1" id="quantity_' . $productId . '_' . $warehouseId . '" name="quantity[]" class="text-center" onblur="loadCartandUpdate(' . $productId . ',' . $warehouseId . ')" value="' . Session::get("order_cart_array")[$keys]["product_quantity"] . '" />' . $btn . '</td>' .
-                    '<td><input type="number" style="width: 100%;" min="1" id="unitPrice_' . $productId . '_' . $warehouseId . '"  name="unitPrice[]" class="text-center"  onblur="loadCartandUpdate(' . $productId . ',' . $warehouseId . ')" value="' . $unitPrice . '"/></td>' .
-                    '<td><input type="number" style="width: 100%;" min="0" id="discountPrice_' . $productId . '_' . $warehouseId . '"  name="discountPrice[]" class="text-center"  onblur="loadCartandUpdate(' . $productId . ',' . $warehouseId . ')" value="' . $discount . '" /></td>' .
-                    '<td class="text-right"><span id="totalPrice_' . $productId . '_' . $warehouseId . '">' . $totalPrice . '</span></td>' .
-                    '<td class="text-center"><a href="#" onclick="removeCartProduct(' . Session::get("order_cart_array")[$keys]["product_id"] . ',' . Session::get("order_cart_array")[$keys]["warehouse_id"] . ')" style="color:red;"><i class="fa fa-trash"> </i></a></td></tr>';
+                $cart .= '<tr><td>'.$i++.'
+				            <input type="hidden" name="ids[]" id="id_'.$productId.'_'.$warehouseId.'" value="'.$productId.'" />
+				            <input type="hidden" name="warehouseIds[]" id="warehouse_id_'.$productId.'_'.$warehouseId.'" value="'.$productId.'" />
+				            <input type="hidden" name="productTypes[]" id="product_type_'.$productId.'_'.$warehouseId.'" value="'.$productType.'" />
+				</td>'.
+                    '<td>'.Session::get('order_cart_array')[$keys]['product_name'].'-'.$productType.' ['.Session::get('order_cart_array')[$keys]['warehouse_name'].']</td>'.
+                    '<td class="text-center"><span class="text-center" id="available_qty_'.$productId.'_'.$warehouseId.'">'.Session::get('order_cart_array')[$keys]['available_qty'].'</span></td>'.
+                    '<td class=""><input type="number" style="width: 80%;"  min="1" id="quantity_'.$productId.'_'.$warehouseId.'" name="quantity[]" class="text-center" onblur="loadCartandUpdate('.$productId.','.$warehouseId.')" value="'.Session::get('order_cart_array')[$keys]['product_quantity'].'" />'.$btn.'</td>'.
+                    '<td><input type="number" style="width: 100%;" min="1" id="unitPrice_'.$productId.'_'.$warehouseId.'"  name="unitPrice[]" class="text-center"  onblur="loadCartandUpdate('.$productId.','.$warehouseId.')" value="'.$unitPrice.'"/></td>'.
+                    '<td><input type="number" style="width: 100%;" min="0" id="discountPrice_'.$productId.'_'.$warehouseId.'"  name="discountPrice[]" class="text-center"  onblur="loadCartandUpdate('.$productId.','.$warehouseId.')" value="'.$discount.'" /></td>'.
+                    '<td class="text-right"><span id="totalPrice_'.$productId.'_'.$warehouseId.'">'.$totalPrice.'</span></td>'.
+                    '<td class="text-center"><a href="#" onclick="removeCartProduct('.Session::get('order_cart_array')[$keys]['product_id'].','.Session::get('order_cart_array')[$keys]['warehouse_id'].')" style="color:red;"><i class="fa fa-trash"> </i></a></td></tr>';
                 $grandTotal += $totalPrice;
             }
         }
 
-        $cart .= '<tr><td colspan="6" class="text-right" > Total Tk : </td><td class="text-right " id="grandTotal"> ' . $grandTotal . '</td><td></td</tr>';
-        $data = array(
+        $cart .= '<tr><td colspan="6" class="text-right" > Total Tk : </td><td class="text-right " id="grandTotal"> '.$grandTotal.'</td><td></td</tr>';
+        $data = [
             'cart' => $cart,
-            'totalAmount' => $grandTotal
-        );
+            'totalAmount' => $grandTotal,
+        ];
+
         return response()->json(['data' => $data]);
     }
 
@@ -534,84 +489,71 @@ class SaleServiceController extends Controller
         $warehouse_id = $request->warehouse_id;
         $data = '';
         $cartData = Session::get('order_cart_array');
-        foreach (Session::get("order_cart_array") as $keys => $values) {
-            if (Session::get("order_cart_array")[$keys]['product_id'] == $id && Session::get("order_cart_array")[$keys]['warehouse_id'] == $warehouse_id) {
+        foreach (Session::get('order_cart_array') as $keys => $values) {
+            if (Session::get('order_cart_array')[$keys]['product_id'] == $id && Session::get('order_cart_array')[$keys]['warehouse_id'] == $warehouse_id) {
                 unset($cartData[$keys]);
                 Session::put('order_cart_array', $cartData);
-                $data = "Success";
+                $data = 'Success';
                 break;
             }
         }
-        $data = "Success";
+        $data = 'Success';
+
         return response()->json(['data' => $data]);
     }
-
-
-
-
 
     public function updateCart(Request $request)
     {
 
-        if (Session::get("order_cart_array") != null) {
-            foreach (Session::get("order_cart_array") as $keys => $values) {
+        if (Session::get('order_cart_array') != null) {
+            foreach (Session::get('order_cart_array') as $keys => $values) {
                 $product = Product::find($request->id);
 
-                if (Session::get("order_cart_array")[$keys]['product_id'] == $request->id && Session::get("order_cart_array")[$keys]['warehouse_id'] == $request->warehouse_id) {
-                    session()->put("order_cart_array." . $keys . ".product_quantity", $request->quantity);
+                if (Session::get('order_cart_array')[$keys]['product_id'] == $request->id && Session::get('order_cart_array')[$keys]['warehouse_id'] == $request->warehouse_id) {
+                    session()->put('order_cart_array.'.$keys.'.product_quantity', $request->quantity);
                     if ($product->purchase_price <= $request->unitPrice) {
-                        session()->put("order_cart_array." . $keys . ".product_price", $request->unitPrice);
+                        session()->put('order_cart_array.'.$keys.'.product_price', $request->unitPrice);
                     } else {
                         return response()->json(['exceed' => 'exceeded']);
                     }
-                    session()->put("order_cart_array." . $keys . ".product_discount", $request->discount);
+                    session()->put('order_cart_array.'.$keys.'.product_discount', $request->discount);
                     // Serialize Product
-                    if (Session::get("order_cart_array")[$keys]['product_type'] == "serialize") {
+                    if (Session::get('order_cart_array')[$keys]['product_type'] == 'serialize') {
                         if ($request->has('product_type') && $request->product_type == true) {
                             $serializeId = $request->serializeProductsId;
                             $serializeSaleQty = $request->serializeSaleQuantity;
-                            $serializeIdExist = TRUE;
-                            foreach (Session::get("order_cart_array")[$keys]['serializeIdArray'] as $key => $value) {
+                            $serializeIdExist = true;
+                            foreach (Session::get('order_cart_array')[$keys]['serializeIdArray'] as $key => $value) {
                                 if ($value == $serializeId) {
-                                    session()->put("order_cart_array." . $keys . ".serializeSaleQtyArray." . $key, $serializeSaleQty);
-                                    $serializeIdExist = FALSE;
+                                    session()->put('order_cart_array.'.$keys.'.serializeSaleQtyArray.'.$key, $serializeSaleQty);
+                                    $serializeIdExist = false;
                                 }
                             }
                             if ($serializeIdExist) {
-                                Session::push("order_cart_array." . $keys . ".serializeIdArray", $serializeId);
-                                Session::push("order_cart_array." . $keys . ".serializeSaleQtyArray", $serializeSaleQty);
+                                Session::push('order_cart_array.'.$keys.'.serializeIdArray', $serializeId);
+                                Session::push('order_cart_array.'.$keys.'.serializeSaleQtyArray', $serializeSaleQty);
                             }
                         }
                     }
                     // End Serialize Product
-                    $data = "Success";
+                    $data = 'Success';
                     break;
                 }
             }
         } else {
-            $data = "";
+            $data = '';
         }
+
         return response()->json(['data' => $data]);
     }
-
-
-
 
     public function clearCart(Request $request)
     {
         Session::forget('order_cart_array');
-        $data = "Success";
+        $data = 'Success';
+
         return $data;
     }
-
-
-
-
-
-
-
-
-
 
     public function checkOutCart(Request $request)
     {
@@ -625,7 +567,7 @@ class SaleServiceController extends Controller
             'item' => 'required',
             'vat' => 'required',
             'ait' => 'required',
-            'category' => 'required'
+            'category' => 'required',
         ]);
 
         // Start Temporary Sale
@@ -636,11 +578,11 @@ class SaleServiceController extends Controller
             $customerId = $request->customer_id;
             // If Customer Not Exist, Create New Customer
             if ($customerId == 0) {
-                $partyType = "Walkin_Customer";
+                $partyType = 'Walkin_Customer';
                 $maxCode = Party::where('party_type', $partyType)->where('deleted', 'No')->max('code');
                 $maxCode++;
-                $maxCode = str_pad($maxCode, 6, '0', STR_PAD_LEFT);;
-                $party = new Party();
+                $maxCode = str_pad($maxCode, 6, '0', STR_PAD_LEFT);
+                $party = new Party;
                 $party->name = $request->customerName;
                 $party->code = $maxCode;
                 $party->address = $request->customerAddress;
@@ -659,7 +601,7 @@ class SaleServiceController extends Controller
             $saleNo = SaleOrder::where('deleted', 'No')->max('sale_no');
             $saleNo++;
             $saleNo = str_pad($saleNo, 6, '0', STR_PAD_LEFT);
-            $saleOrder = new SaleOrder();
+            $saleOrder = new SaleOrder;
 
             if ($request->status == '0') {
 
@@ -706,22 +648,22 @@ class SaleServiceController extends Controller
             $saleOrder->save();
             $saleOrderId = $saleOrder->id;
             if (Session::has('order_cart_array')) {
-                foreach (Session::get("order_cart_array") as $keys => $values) {
-                    $product_id = Session::get("order_cart_array")[$keys]["product_id"];
-                    $warehouse_id = Session::get("order_cart_array")[$keys]["warehouse_id"];
-                    $product = product::find($product_id);
+                foreach (Session::get('order_cart_array') as $keys => $values) {
+                    $product_id = Session::get('order_cart_array')[$keys]['product_id'];
+                    $warehouse_id = Session::get('order_cart_array')[$keys]['warehouse_id'];
+                    $product = Product::find($product_id);
                     $unit_id = $product->unit_id;
-                    $unit_price = floatval(Session::get("order_cart_array")[$keys]["product_price"]);
-                    $discount_amount = floatval(Session::get("order_cart_array")[$keys]["product_discount"]);
-                    $quantity = Session::get("order_cart_array")[$keys]["product_quantity"];
-                    //$product->increment('sale_quantity', $quantity);
-                    //$product->decrement('current_stock', $quantity);
+                    $unit_price = floatval(Session::get('order_cart_array')[$keys]['product_price']);
+                    $discount_amount = floatval(Session::get('order_cart_array')[$keys]['product_discount']);
+                    $quantity = Session::get('order_cart_array')[$keys]['product_quantity'];
+                    // $product->increment('sale_quantity', $quantity);
+                    // $product->decrement('current_stock', $quantity);
                     $salePrice = floatval($unit_price - $discount_amount);
                     $subtotal = floatval($salePrice * $quantity);
-                    //$product->increment('total_sale_price', $subtotal);
-                    $lot_no = SaleOrderProduct::where('deleted', 'No')->where("product_id", $product_id)->max('lot_no');
+                    // $product->increment('total_sale_price', $subtotal);
+                    $lot_no = SaleOrderProduct::where('deleted', 'No')->where('product_id', $product_id)->max('lot_no');
                     $lot_no++;
-                    $saleOrderProduct = new SaleOrderProduct();
+                    $saleOrderProduct = new SaleOrderProduct;
                     $saleOrderProduct->tbl_sale_orders_id = $saleOrderId;
                     $saleOrderProduct->product_id = $product_id;
                     $saleOrderProduct->warehouse_id = $warehouse_id;
@@ -741,43 +683,40 @@ class SaleServiceController extends Controller
 
                 $maxCode = PaymentVoucher::where('deleted', 'No')->max(DB::raw('cast(voucherNo AS decimal(6))'));
                 $maxCode++;
-                $maxCode = str_pad($maxCode, 6, '000000', STR_PAD_LEFT);;
-                $paymentVoucher = new PaymentVoucher();
+                $maxCode = str_pad($maxCode, 6, '000000', STR_PAD_LEFT);
+                $paymentVoucher = new PaymentVoucher;
                 $paymentVoucher->party_id = $customerId;
                 $paymentVoucher->voucherNo = $maxCode;
                 $paymentVoucher->order_sale_id = $saleOrderId;
                 $paymentVoucher->amount = floatval($request->current_payment);
                 $paymentVoucher->payment_method = 'Cash';
-                $paymentVoucher->paymentDate  = Carbon::now()->format('Y-m-d');
-                $paymentVoucher->type  = 'Payment Received';
-                $paymentVoucher->voucherType  = 'PartySale';
-                $paymentVoucher->voucherType  = 'PartySale';
-                $paymentVoucher->remarks  = 'Party payment for saleOrder code: ' . $saleOrder->sale_no . ' payment: ' . $saleOrder->grand_total;
-                $paymentVoucher->entryBy  = auth()->user()->id;
+                $paymentVoucher->paymentDate = Carbon::now()->format('Y-m-d');
+                $paymentVoucher->type = 'Payment Received';
+                $paymentVoucher->voucherType = 'PartySale';
+                $paymentVoucher->voucherType = 'PartySale';
+                $paymentVoucher->remarks = 'Party payment for saleOrder code: '.$saleOrder->sale_no.' payment: '.$saleOrder->grand_total;
+                $paymentVoucher->entryBy = auth()->user()->id;
                 $paymentVoucher->save();
 
-                $voucher = new Voucher();
+                $voucher = new Voucher;
                 $voucher->vendor_id = $customerId;
                 $voucher->transaction_date = Carbon::now()->format('Y-m-d');
                 $voucher->payment_method = 'Cash';
                 $voucher->sale_order_id = $saleOrderId;
-                $voucher->deleted = "No";
-                $voucher->status = "Active";
+                $voucher->deleted = 'No';
+                $voucher->status = 'Active';
                 $voucher->created_by = Auth::user()->id;
                 $voucher->created_date = date('Y-m-d h:s');
                 $voucher->save();
                 $voucherId = $voucher->id;
 
-
-
-
-                $voucherDetails = new VoucherDetails();
+                $voucherDetails = new VoucherDetails;
                 $voucherDetails->tbl_acc_voucher_id = $voucherId;
                 $voucherDetails->tbl_acc_coa_id = $request->category;
                 $voucherDetails->debit = floatval($request->current_payment);
-                $voucherDetails->voucher_title = 'Service advance amount paid with Service Code ' . $saleNo;
-                $voucherDetails->deleted = "No";
-                $voucherDetails->status = "Active";
+                $voucherDetails->voucher_title = 'Service advance amount paid with Service Code '.$saleNo;
+                $voucherDetails->deleted = 'No';
+                $voucherDetails->status = 'Active';
                 $voucherDetails->created_by = Auth::user()->id;
                 $voucherDetails->created_date = date('Y-m-d h:s');
                 $voucherDetails->save();
@@ -785,44 +724,36 @@ class SaleServiceController extends Controller
             // End Service Centre Product Sale
             Session::forget('order_cart_array');
             DB::commit();
-            return response()->json(['success' => "Sale order saved successfully.", 'saleOrderId' => $saleOrderId]);
+
+            return response()->json(['success' => 'Sale order saved successfully.', 'saleOrderId' => $saleOrderId]);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' =>  'Sale order rollback!']);
+
+            return response()->json(['error' => 'Sale order rollback!']);
         }
     }
-
-
-
-
-
-
-
-
 
     public function statusComplete(Request $request)
     {
         DB::beginTransaction();
         try {
             $saleOrder = SaleOrder::find($request->id);
-            $saleOrder->order_status = "ReadyToDeliverd";
+            $saleOrder->order_status = 'ReadyToDeliverd';
             $saleOrder->updated_by = auth()->user()->id;
             $saleOrder->updated_date = Carbon::now();
             $saleOrder->ready_to_deliver_date = Carbon::now();
             $saleOrder->save();
             DB::commit();
-            return response()->json(['success' => "Status updated successfully."]);
+
+            return response()->json(['success' => 'Status updated successfully.']);
         } catch (Exception $e) {
             DB::rollBack();
+
             return response()->json(['error' => 'Status updated rollBack!']);
         }
     }
 
-
-
-
-
-    //========== Start Edit Order Service ==========//
+    // ========== Start Edit Order Service ==========//
     public function editSaleOrder($id)
     {
 
@@ -830,7 +761,7 @@ class SaleServiceController extends Controller
             Session::forget('order_cart_array');
         }
         Session::put('saleOrderId', $id);
-        $type = "walkin_sale";
+        $type = 'walkin_sale';
         $saleOrder = SaleOrder::find($id);
         $categories = Category::where('deleted', 'No')->where('status', 'Active')->get();
         $brands = Brand::where('deleted', 'No')->where('status', 'Active')->get();
@@ -844,8 +775,8 @@ class SaleServiceController extends Controller
         } else {
             $jafreeMatched = 'no';
         }
-        //dd($jafreeMatched);
-        if (!Session::has('order_cart_array')) {
+        // dd($jafreeMatched);
+        if (! Session::has('order_cart_array')) {
             $saleOrderProducts = DB::table('sale_order_products')
                 ->join('sale_orders', 'sale_order_products.tbl_sale_orders_id', '=', 'sale_orders.id')
                 ->join('tbl_warehouse', 'sale_order_products.warehouse_id', '=', 'tbl_warehouse.id')
@@ -882,77 +813,67 @@ class SaleServiceController extends Controller
                 )
                 ->get();
             Session::forget('order_cart_array');
-            foreach ($saleOrderProducts as  $productInfo) {
-                $serializeIdArray = array();
-                $serializeSaleQtyArray = array();
+            foreach ($saleOrderProducts as $productInfo) {
+                $serializeIdArray = [];
+                $serializeSaleQtyArray = [];
                 $item_array = [
-                    'product_id'               =>     $productInfo->product_id,
-                    'tbl_sale_order_productsId' =>    $productInfo->tbl_sale_order_productsId,
-                    'product_name'             =>     $productInfo->name . ' - ' . $productInfo->productCode,
-                    'product_image'            =>     $productInfo->image,
-                    'available_qty'            =>     0,
-                    'product_price'            =>     $productInfo->unit_price,
-                    'product_quantity'         =>     $productInfo->quantity,
-                    'product_discount'         =>     $productInfo->unit_discount,
-                    'barcode_no'               =>     $productInfo->productCode,
-                    'warehouse_id'             =>     $productInfo->warehouse_id,
-                    'warehouse_name'           =>     $productInfo->wareHouseName,
-                    'product_type'             =>     "service",
-                    'items_in_box'             =>     0,
-                    'serializeIdArray'         =>  [$serializeIdArray],
-                    'serializeSaleQtyArray'    =>  [$serializeSaleQtyArray]
+                    'product_id' => $productInfo->product_id,
+                    'tbl_sale_order_productsId' => $productInfo->tbl_sale_order_productsId,
+                    'product_name' => $productInfo->name.' - '.$productInfo->productCode,
+                    'product_image' => $productInfo->image,
+                    'available_qty' => 0,
+                    'product_price' => $productInfo->unit_price,
+                    'product_quantity' => $productInfo->quantity,
+                    'product_discount' => $productInfo->unit_discount,
+                    'barcode_no' => $productInfo->productCode,
+                    'warehouse_id' => $productInfo->warehouse_id,
+                    'warehouse_name' => $productInfo->wareHouseName,
+                    'product_type' => 'service',
+                    'items_in_box' => 0,
+                    'serializeIdArray' => [$serializeIdArray],
+                    'serializeSaleQtyArray' => [$serializeSaleQtyArray],
                 ];
                 Session::push('order_cart_array', $item_array);
             }
         }
+
         return view('admin.inventory.service.edit-service-sale', compact('saleOrder', 'coas', 'jafreeMatched', 'advance', 'categories', 'brands', 'products', 'warehouses', 'customer', 'type'));
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public function addToOrderEditCart(Request $request)
     {
-        $data = "";
+        $data = '';
         $product_type = '';
-        if (Session::get("order_cart_array") != null) {
+        if (Session::get('order_cart_array') != null) {
             $is_available = 0;
-            foreach (Session::get("order_cart_array") as $keys => $values) {
-                if ((Session::get("order_cart_array")[$keys]['product_id'] == $request->id && Session::get("order_cart_array")[$keys]['warehouse_id'] == $request->warehouseId) || (Session::get("order_cart_array")[$keys]['barcode_no'] == $request->barcode && $request->barcode != '')) {
+            foreach (Session::get('order_cart_array') as $keys => $values) {
+                if ((Session::get('order_cart_array')[$keys]['product_id'] == $request->id && Session::get('order_cart_array')[$keys]['warehouse_id'] == $request->warehouseId) || (Session::get('order_cart_array')[$keys]['barcode_no'] == $request->barcode && $request->barcode != '')) {
                     $is_available++;
-                    session()->put("order_cart_array." . $keys . ".product_quantity", Session::get("order_cart_array")[$keys]['product_quantity'] + $request->quantity);
-                    $data = "Success";
+                    session()->put('order_cart_array.'.$keys.'.product_quantity', Session::get('order_cart_array')[$keys]['product_quantity'] + $request->quantity);
+                    $data = 'Success';
                 }
             }
 
             if ($is_available == 0) {
                 if (isset($request->barcode)) {
                     $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('barcode_no', $request->barcode)->first();
-                } else if (isset($request->id)) {
+                } elseif (isset($request->id)) {
                     $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('id', $request->id)->first();
                 }
-                $isServiceProduct = FALSE;
-                if ($productInfo->type == "service") {
-                    $isServiceProduct = TRUE;
+                $isServiceProduct = false;
+                if ($productInfo->type == 'service') {
+                    $isServiceProduct = true;
                     $available_quantity = 0;
                 } else {
-                    $currentStockInfo = CurrentStock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
+                    $currentStockInfo = Currentstock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
                     if ($currentStockInfo) {
                         $available_quantity = $currentStockInfo->currentStock;
                     } else {
                         $available_quantity = 0;
                     }
                 }
-                //if ($available_quantity > 0 || $isServiceProduct == TRUE) {
-                if ($request->saleType == "walkin_sale") {
+                // if ($available_quantity > 0 || $isServiceProduct == TRUE) {
+                if ($request->saleType == 'walkin_sale') {
                     $salePrice = $productInfo->sale_price; // Sale price as Max price
                 } else {
                     $salePrice = $productInfo->purchase_price; // Sale price as Min price
@@ -961,27 +882,27 @@ class SaleServiceController extends Controller
                     $productDiscount = 0;
                 }
                 $product_type = $productInfo->type;
-                $serializeIdArray = array();
-                $serializeSaleQtyArray = array();
+                $serializeIdArray = [];
+                $serializeSaleQtyArray = [];
                 $item_array = [
-                    'product_id'               =>     $productInfo->id,
-                    'tbl_sale_order_productsId' =>    0,
-                    'product_name'             =>     $productInfo->name . ' - ' . $productInfo->code,
-                    'product_image'            =>     $productInfo->image,
-                    'available_qty'            =>     $available_quantity,
-                    'product_price'            =>     $salePrice,
-                    'product_quantity'         =>     $request->quantity,
-                    'product_discount'         =>     $productDiscount,
-                    'barcode_no'               =>     $productInfo->barcode_no,
-                    'warehouse_id'               =>     $request->warehouseId,
-                    'warehouse_name'           =>     $request->warehouseName,
-                    'product_type'               =>     $productInfo->type,
-                    'items_in_box'               =>     $productInfo->items_in_box,
-                    'serializeIdArray'         =>  [$serializeIdArray],
-                    'serializeSaleQtyArray'    =>  [$serializeSaleQtyArray]
+                    'product_id' => $productInfo->id,
+                    'tbl_sale_order_productsId' => 0,
+                    'product_name' => $productInfo->name.' - '.$productInfo->code,
+                    'product_image' => $productInfo->image,
+                    'available_qty' => $available_quantity,
+                    'product_price' => $salePrice,
+                    'product_quantity' => $request->quantity,
+                    'product_discount' => $productDiscount,
+                    'barcode_no' => $productInfo->barcode_no,
+                    'warehouse_id' => $request->warehouseId,
+                    'warehouse_name' => $request->warehouseName,
+                    'product_type' => $productInfo->type,
+                    'items_in_box' => $productInfo->items_in_box,
+                    'serializeIdArray' => [$serializeIdArray],
+                    'serializeSaleQtyArray' => [$serializeSaleQtyArray],
                 ];
                 Session::push('order_cart_array', $item_array);
-                $data = "Success";
+                $data = 'Success';
                 /*  } else {
                     $data = "This product is out of stock!";
                 } */
@@ -990,23 +911,23 @@ class SaleServiceController extends Controller
             $productInfo = [];
             if (isset($request->barcode)) {
                 $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('barcode_no', $request->barcode)->first();
-            } else if (isset($request->id)) {
+            } elseif (isset($request->id)) {
                 $productInfo = Product::where('deleted', 'No')->where('status', 'Active')->where('id', $request->id)->first();
             }
-            $isServiceProduct = FALSE;
-            if ($productInfo->type == "service") {
-                $isServiceProduct = TRUE;
+            $isServiceProduct = false;
+            if ($productInfo->type == 'service') {
+                $isServiceProduct = true;
                 $available_quantity = 0;
             } else {
-                $currentStockInfo = CurrentStock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
+                $currentStockInfo = Currentstock::where('deleted', 'No')->where('tbl_productsId', $productInfo->id)->where('tbl_wareHouseId', $request->warehouseId)->first();
                 if ($currentStockInfo) {
                     $available_quantity = $currentStockInfo->currentStock;
                 } else {
                     $available_quantity = 0;
                 }
             }
-            //if ($available_quantity > 0 || $isServiceProduct == TRUE) {
-            if ($request->saleType == "walkin_sale") {
+            // if ($available_quantity > 0 || $isServiceProduct == TRUE) {
+            if ($request->saleType == 'walkin_sale') {
                 $salePrice = $productInfo->sale_price; // Sale price is Max price
             } else {
                 $salePrice = $productInfo->purchase_price; // Sale price is Min price
@@ -1015,29 +936,30 @@ class SaleServiceController extends Controller
                 $productDiscount = 0;
             }
             $product_type = $productInfo->type;
-            $serializeIdArray = array();
-            $serializeSaleQtyArray = array();
+            $serializeIdArray = [];
+            $serializeSaleQtyArray = [];
             $item_array = [
-                'product_id'               =>     $productInfo->id,
-                'tbl_sale_order_productsId' =>    0,
-                'product_name'             =>     $productInfo->name . ' - ' . $productInfo->code,
-                'product_image'            =>     $productInfo->image,
-                'available_qty'            =>     $available_quantity,
-                'product_price'            =>     $salePrice,
-                'product_quantity'         =>     $request->quantity,
-                'product_discount'         =>     $productDiscount,
-                'barcode_no'               =>     $productInfo->barcode_no,
-                'warehouse_id'               =>     $request->warehouseId,
-                'warehouse_name'           =>     $request->warehouseName,
-                'product_type'               =>     $productInfo->type,
-                'items_in_box'               =>     $productInfo->items_in_box,
-                'serializeIdArray'         =>  [$serializeIdArray],
-                'serializeSaleQtyArray'    =>  [$request->quantity]
+                'product_id' => $productInfo->id,
+                'tbl_sale_order_productsId' => 0,
+                'product_name' => $productInfo->name.' - '.$productInfo->code,
+                'product_image' => $productInfo->image,
+                'available_qty' => $available_quantity,
+                'product_price' => $salePrice,
+                'product_quantity' => $request->quantity,
+                'product_discount' => $productDiscount,
+                'barcode_no' => $productInfo->barcode_no,
+                'warehouse_id' => $request->warehouseId,
+                'warehouse_name' => $request->warehouseName,
+                'product_type' => $productInfo->type,
+                'items_in_box' => $productInfo->items_in_box,
+                'serializeIdArray' => [$serializeIdArray],
+                'serializeSaleQtyArray' => [$request->quantity],
             ];
             Session::push('order_cart_array', $item_array);
-            $data = "Success";
-            //}
+            $data = 'Success';
+            // }
         }
+
         return response()->json(['data' => $data, 'productId' => $request->id, 'warehouseId' => $request->warehouseId, 'productType' => $product_type]);
     }
 
@@ -1048,39 +970,36 @@ class SaleServiceController extends Controller
         if (Session::get('order_cart_array') != null) {
             $i = 1;
             foreach (Session::get('order_cart_array') as $keys => $values) {
-                $unitPrice = Session::get("order_cart_array")[$keys]["product_price"];
-                $discount = Session::get("order_cart_array")[$keys]["product_discount"];
-                $totalPrice = Session::get("order_cart_array")[$keys]["product_quantity"] * ($unitPrice - $discount);
-                $productId = Session::get("order_cart_array")[$keys]["product_id"];
-                $warehouseId = Session::get("order_cart_array")[$keys]["warehouse_id"];
-                $productType = Session::get("order_cart_array")[$keys]["product_type"];
-                $cart .= '<tr><td>' . $i++ . '
-				            <input type="hidden" name="ids[]" id="id_' . $productId . '_' . $warehouseId . '" value="' . $productId . '" />
-				            <input type="hidden" name="warehouseIds[]" id="warehouse_id_' . $productId . '_' . $warehouseId . '" value="' . $productId . '" />
-				            <input type="hidden" name="productTypes[]" id="product_type_' . $productId . '_' . $warehouseId . '" value="' . $productType . '" />
-				</td>' .
-                    '<td>' . Session::get("order_cart_array")[$keys]["product_name"] . '-' . $productType . '  [' . Session::get("order_cart_array")[$keys]["warehouse_name"] . ']</td>' .
-                    '<td class="text-center"><span class="text-center" id="available_qty_' . $productId . '_' . $warehouseId . '">' . Session::get("order_cart_array")[$keys]["available_qty"] . '</span></td>' .
-                    '<td class=""><input type="number" style="width: 80%;"  min="1" id="quantity_' . $productId . '_' . $warehouseId . '" name="quantity[]" class="text-center" onblur="loadCartandUpdate(' . $productId . ',' . $warehouseId . ')" value="' . Session::get("order_cart_array")[$keys]["product_quantity"] . '" /></td>' .
-                    '<td><input type="number" style="width: 100%;" min="1" id="unitPrice_' . $productId . '_' . $warehouseId . '"  name="unitPrice[]" class="text-center"  onblur="loadCartandUpdate(' . $productId . ',' . $warehouseId . ')" value="' . $unitPrice . '" /></td>' .
-                    '<td><input type="number" style="width: 100%;" min="0" id="discountPrice_' . $productId . '_' . $warehouseId . '"  name="discountPrice[]" class="text-center"  onblur="loadCartandUpdate(' . $productId . ',' . $warehouseId . ')" value="' . $discount . '" /></td>' .
-                    '<td class="text-right"><span id="totalPrice_' . $productId . '_' . $warehouseId . '">' . $totalPrice . '</span></td>' .
-                    '<td class="text-center"><a href="#" onclick="removeCartProduct(' . Session::get("order_cart_array")[$keys]["product_id"] . ',' . Session::get("order_cart_array")[$keys]["warehouse_id"] . ',' . Session::get("order_cart_array")[$keys]["tbl_sale_order_productsId"] . ')" style="color:red;"><i class="fa fa-trash"> </i></a></td></tr>';
+                $unitPrice = Session::get('order_cart_array')[$keys]['product_price'];
+                $discount = Session::get('order_cart_array')[$keys]['product_discount'];
+                $totalPrice = Session::get('order_cart_array')[$keys]['product_quantity'] * ($unitPrice - $discount);
+                $productId = Session::get('order_cart_array')[$keys]['product_id'];
+                $warehouseId = Session::get('order_cart_array')[$keys]['warehouse_id'];
+                $productType = Session::get('order_cart_array')[$keys]['product_type'];
+                $cart .= '<tr><td>'.$i++.'
+				            <input type="hidden" name="ids[]" id="id_'.$productId.'_'.$warehouseId.'" value="'.$productId.'" />
+				            <input type="hidden" name="warehouseIds[]" id="warehouse_id_'.$productId.'_'.$warehouseId.'" value="'.$productId.'" />
+				            <input type="hidden" name="productTypes[]" id="product_type_'.$productId.'_'.$warehouseId.'" value="'.$productType.'" />
+				</td>'.
+                    '<td>'.Session::get('order_cart_array')[$keys]['product_name'].'-'.$productType.'  ['.Session::get('order_cart_array')[$keys]['warehouse_name'].']</td>'.
+                    '<td class="text-center"><span class="text-center" id="available_qty_'.$productId.'_'.$warehouseId.'">'.Session::get('order_cart_array')[$keys]['available_qty'].'</span></td>'.
+                    '<td class=""><input type="number" style="width: 80%;"  min="1" id="quantity_'.$productId.'_'.$warehouseId.'" name="quantity[]" class="text-center" onblur="loadCartandUpdate('.$productId.','.$warehouseId.')" value="'.Session::get('order_cart_array')[$keys]['product_quantity'].'" /></td>'.
+                    '<td><input type="number" style="width: 100%;" min="1" id="unitPrice_'.$productId.'_'.$warehouseId.'"  name="unitPrice[]" class="text-center"  onblur="loadCartandUpdate('.$productId.','.$warehouseId.')" value="'.$unitPrice.'" /></td>'.
+                    '<td><input type="number" style="width: 100%;" min="0" id="discountPrice_'.$productId.'_'.$warehouseId.'"  name="discountPrice[]" class="text-center"  onblur="loadCartandUpdate('.$productId.','.$warehouseId.')" value="'.$discount.'" /></td>'.
+                    '<td class="text-right"><span id="totalPrice_'.$productId.'_'.$warehouseId.'">'.$totalPrice.'</span></td>'.
+                    '<td class="text-center"><a href="#" onclick="removeCartProduct('.Session::get('order_cart_array')[$keys]['product_id'].','.Session::get('order_cart_array')[$keys]['warehouse_id'].','.Session::get('order_cart_array')[$keys]['tbl_sale_order_productsId'].')" style="color:red;"><i class="fa fa-trash"> </i></a></td></tr>';
                 $grandTotal += $totalPrice;
             }
         }
 
-        $cart .= '<tr><td colspan="6" class="text-right" > Total Tk : </td><td class="text-right " id="grandTotal"> ' . $grandTotal . '</td><td></td</tr>';
-        $data = array(
+        $cart .= '<tr><td colspan="6" class="text-right" > Total Tk : </td><td class="text-right " id="grandTotal"> '.$grandTotal.'</td><td></td</tr>';
+        $data = [
             'cart' => $cart,
-            'totalAmount' => $grandTotal
-        );
+            'totalAmount' => $grandTotal,
+        ];
+
         return response()->json(['data' => $data]);
     }
-
-
-
-
 
     public function removeOrderEditProduct(Request $request)
     {
@@ -1089,99 +1008,83 @@ class SaleServiceController extends Controller
         $tbl_sale_order_productsId = $request->tbl_sale_order_productsId;
         $data = '';
         $cartData = Session::get('order_cart_array');
-        foreach (Session::get("order_cart_array") as $keys => $values) {
-            if (Session::get("order_cart_array")[$keys]['product_id'] == $id && Session::get("order_cart_array")[$keys]['warehouse_id'] == $warehouse_id) {
+        foreach (Session::get('order_cart_array') as $keys => $values) {
+            if (Session::get('order_cart_array')[$keys]['product_id'] == $id && Session::get('order_cart_array')[$keys]['warehouse_id'] == $warehouse_id) {
                 if ($tbl_sale_order_productsId > 0) {
                     SaleOrderProduct::where('id', $tbl_sale_order_productsId)
                         ->where('product_id', $id)
                         ->where('warehouse_id', $warehouse_id)
-                        ->update(['deleted' => "Yes", 'deleted_by' => auth()->user()->id, 'deleted_date' => Carbon::now()]);
+                        ->update(['deleted' => 'Yes', 'deleted_by' => auth()->user()->id, 'deleted_date' => Carbon::now()]);
                 }
 
                 unset($cartData[$keys]);
                 Session::put('order_cart_array', $cartData);
-                $data = "Success";
+                $data = 'Success';
                 break;
             }
         }
-        $data = "Success";
+        $data = 'Success';
+
         return response()->json(['data' => $data]);
     }
 
-
-
-
-
-
     public function updateOrderEditCart(Request $request)
     {
-        if (Session::get("order_cart_array") != null) {
-            foreach (Session::get("order_cart_array") as $keys => $values) {
-                if (Session::get("order_cart_array")[$keys]['product_id'] == $request->id && Session::get("order_cart_array")[$keys]['warehouse_id'] == $request->warehouse_id) {
-                    session()->put("order_cart_array." . $keys . ".product_quantity", $request->quantity);
-                    session()->put("order_cart_array." . $keys . ".product_price", $request->unitPrice);
-                    session()->put("order_cart_array." . $keys . ".product_discount", $request->discount);
+        if (Session::get('order_cart_array') != null) {
+            foreach (Session::get('order_cart_array') as $keys => $values) {
+                if (Session::get('order_cart_array')[$keys]['product_id'] == $request->id && Session::get('order_cart_array')[$keys]['warehouse_id'] == $request->warehouse_id) {
+                    session()->put('order_cart_array.'.$keys.'.product_quantity', $request->quantity);
+                    session()->put('order_cart_array.'.$keys.'.product_price', $request->unitPrice);
+                    session()->put('order_cart_array.'.$keys.'.product_discount', $request->discount);
                     // Serialize Product
-                    if (Session::get("order_cart_array")[$keys]['product_type'] == "serialize") {
+                    if (Session::get('order_cart_array')[$keys]['product_type'] == 'serialize') {
                         if ($request->has('product_type') && $request->product_type == true) {
                             $serializeId = $request->serializeProductsId;
                             $serializeSaleQty = $request->serializeSaleQuantity;
-                            $serializeIdExist = TRUE;
-                            foreach (Session::get("order_cart_array")[$keys]['serializeIdArray'] as $key => $value) {
+                            $serializeIdExist = true;
+                            foreach (Session::get('order_cart_array')[$keys]['serializeIdArray'] as $key => $value) {
                                 if ($value == $serializeId) {
-                                    session()->put("order_cart_array." . $keys . ".serializeSaleQtyArray." . $key, $serializeSaleQty);
-                                    $serializeIdExist = FALSE;
+                                    session()->put('order_cart_array.'.$keys.'.serializeSaleQtyArray.'.$key, $serializeSaleQty);
+                                    $serializeIdExist = false;
                                 }
                             }
                             if ($serializeIdExist) {
-                                Session::push("order_cart_array." . $keys . ".serializeIdArray", $serializeId);
-                                Session::push("order_cart_array." . $keys . ".serializeSaleQtyArray", $serializeSaleQty);
+                                Session::push('order_cart_array.'.$keys.'.serializeIdArray', $serializeId);
+                                Session::push('order_cart_array.'.$keys.'.serializeSaleQtyArray', $serializeSaleQty);
                             }
                         }
                     }
                     // End Serialize Product
-                    $data = "Success";
+                    $data = 'Success';
                     break;
                 }
             }
         } else {
-            $data = "";
+            $data = '';
         }
+
         return response()->json(['data' => $data]);
     }
-
-
-
-
 
     public function clearOrderEditCart(Request $request)
     {
         Session::forget('order_cart_array');
-        $data = "Success";
+        $data = 'Success';
+
         return $data;
     }
-
-
-
-
-
 
     public function checkMinimumPrice(Request $request)
     {
         return $request->id;
     }
 
-
-
-
-
-
     public function updatOrderSale(Request $request)
     {
 
         if ($request->customer_id == 52) {
             $request->validate([
-                'project_name' => 'required'
+                'project_name' => 'required',
             ]);
         }
         $request->validate([
@@ -1201,7 +1104,6 @@ class SaleServiceController extends Controller
             }else{
                 $configId=ChartOfAccounts::where('name','=','Sales')->first();
             } */
-
 
             $customerId = $request->customer_id;
             // Start Service Centre Product Sale
@@ -1244,7 +1146,6 @@ class SaleServiceController extends Controller
                 $saleOrder->increment('advance_payment', $request->current_payment);
             }
 
-
             $saleOrder->dues_amount = $request->totalDue;
             $saleOrder->updated_by = auth()->user()->id;
             $saleOrder->updated_date = Carbon::now();
@@ -1261,24 +1162,24 @@ class SaleServiceController extends Controller
             $saleOrder->other_accessories = $request->otherAccessories;
             $saleOrder->save();
             if (Session::has('order_cart_array')) {
-                foreach (Session::get("order_cart_array") as $keys => $values) {
-                    $product_id = Session::get("order_cart_array")[$keys]["product_id"];
-                    $warehouse_id = Session::get("order_cart_array")[$keys]["warehouse_id"];
-                    $product = product::find($product_id);
+                foreach (Session::get('order_cart_array') as $keys => $values) {
+                    $product_id = Session::get('order_cart_array')[$keys]['product_id'];
+                    $warehouse_id = Session::get('order_cart_array')[$keys]['warehouse_id'];
+                    $product = Product::find($product_id);
 
                     $unit_id = $product->unit_id;
-                    $unit_price = floatval(Session::get("order_cart_array")[$keys]["product_price"]);
-                    $discount_amount = floatval(Session::get("order_cart_array")[$keys]["product_discount"]);
-                    $quantity = Session::get("order_cart_array")[$keys]["product_quantity"];
-                    //$product->increment('sale_quantity', $quantity);
-                    //$product->decrement('current_stock', $quantity);
+                    $unit_price = floatval(Session::get('order_cart_array')[$keys]['product_price']);
+                    $discount_amount = floatval(Session::get('order_cart_array')[$keys]['product_discount']);
+                    $quantity = Session::get('order_cart_array')[$keys]['product_quantity'];
+                    // $product->increment('sale_quantity', $quantity);
+                    // $product->decrement('current_stock', $quantity);
                     $salePrice = floatval($unit_price - $discount_amount);
                     $subtotal = floatval($salePrice * $quantity);
-                    //$product->increment('total_sale_price', $subtotal);
+                    // $product->increment('total_sale_price', $subtotal);
 
-                    $lot_no = SaleOrderProduct::where("product_id", $product_id)->max('lot_no');
+                    $lot_no = SaleOrderProduct::where('product_id', $product_id)->max('lot_no');
                     $lot_no++;
-                    $saleOrderProduct = new SaleOrderProduct();
+                    $saleOrderProduct = new SaleOrderProduct;
                     $saleOrderProduct->tbl_sale_orders_id = $saleOrderId;
                     $saleOrderProduct->product_id = $product_id;
                     $saleOrderProduct->warehouse_id = $warehouse_id;
@@ -1294,54 +1195,53 @@ class SaleServiceController extends Controller
                     $saleOrderProduct->created_date = $created_date;
                     $saleOrderProduct->save();
 
-                    $tbl_sale_order_productsId = Session::get("order_cart_array")[$keys]["tbl_sale_order_productsId"];
+                    $tbl_sale_order_productsId = Session::get('order_cart_array')[$keys]['tbl_sale_order_productsId'];
                     if ($tbl_sale_order_productsId > 0) {
                         SaleOrderProduct::where('id', $tbl_sale_order_productsId)
                             ->where('product_id', $product_id)
                             ->where('warehouse_id', $warehouse_id)
-                            ->update(['deleted' => "Yes", 'deleted_by' => auth()->user()->id, 'deleted_date' => Carbon::now()]);
+                            ->update(['deleted' => 'Yes', 'deleted_by' => auth()->user()->id, 'deleted_date' => Carbon::now()]);
                     }
                 }
             }
 
-
-            /*  */
+            /* */
             if ($request->status == 'Delivered') {
 
-                //return "deliverd";
+                // return "deliverd";
                 if (floatval($request->grand_total) > 0) {
 
                     $maxCode = PaymentVoucher::max(DB::raw('cast(voucherNo AS decimal(6))'));
                     $maxCode++;
-                    $maxCode = str_pad($maxCode, 6, '000000', STR_PAD_LEFT);;
-                    $paymentVoucher = new PaymentVoucher();
+                    $maxCode = str_pad($maxCode, 6, '000000', STR_PAD_LEFT);
+                    $paymentVoucher = new PaymentVoucher;
                     $paymentVoucher->party_id = $customerId;
                     $paymentVoucher->voucherNo = $maxCode;
                     $paymentVoucher->order_sale_id = $saleOrder->id;
                     $paymentVoucher->amount = floatval($request->grand_total);
                     $paymentVoucher->payment_method = 'Cash';
-                    $paymentVoucher->paymentDate  = Carbon::now()->format('Y-m-d');
-                    $paymentVoucher->type  = 'Party Payable';
-                    $paymentVoucher->voucherType  = 'PartySale';
-                    $paymentVoucher->voucherType  = 'PartySale';
-                    $paymentVoucher->remarks  = 'Party Payable for saleOrder code: ' . $saleOrder->sale_no . ' payment: ' . $saleOrder->grand_total;
-                    $paymentVoucher->entryBy  = auth()->user()->id;
+                    $paymentVoucher->paymentDate = Carbon::now()->format('Y-m-d');
+                    $paymentVoucher->type = 'Party Payable';
+                    $paymentVoucher->voucherType = 'PartySale';
+                    $paymentVoucher->voucherType = 'PartySale';
+                    $paymentVoucher->remarks = 'Party Payable for saleOrder code: '.$saleOrder->sale_no.' payment: '.$saleOrder->grand_total;
+                    $paymentVoucher->entryBy = auth()->user()->id;
                     $paymentVoucher->save();
                     if (floatval($request->current_payment) > 0) {
                         $maxCode = PaymentVoucher::max(DB::raw('cast(voucherNo AS decimal(6))'));
                         $maxCode++;
-                        $maxCode = str_pad($maxCode, 6, '0', STR_PAD_LEFT);;
-                        $paymentVoucher = new PaymentVoucher();
+                        $maxCode = str_pad($maxCode, 6, '0', STR_PAD_LEFT);
+                        $paymentVoucher = new PaymentVoucher;
                         $paymentVoucher->party_id = $customerId;
                         $paymentVoucher->voucherNo = $maxCode;
                         $paymentVoucher->order_sale_id = $saleOrder->id;
                         $paymentVoucher->amount = floatval($request->current_payment);
                         $paymentVoucher->payment_method = 'Cash';
-                        $paymentVoucher->paymentDate  = Carbon::now()->format('Y-m-d');
-                        $paymentVoucher->type  = 'Payment Received';
-                        $paymentVoucher->voucherType  = 'PartySale';
-                        $paymentVoucher->remarks  = 'Party payment for saleOrder code: ' . $saleOrder->sale_no . ' payment: ' . $saleOrder->grand_total;
-                        $paymentVoucher->entryBy  = auth()->user()->id;
+                        $paymentVoucher->paymentDate = Carbon::now()->format('Y-m-d');
+                        $paymentVoucher->type = 'Payment Received';
+                        $paymentVoucher->voucherType = 'PartySale';
+                        $paymentVoucher->remarks = 'Party payment for saleOrder code: '.$saleOrder->sale_no.' payment: '.$saleOrder->grand_total;
+                        $paymentVoucher->entryBy = auth()->user()->id;
                         $paymentVoucher->save();
                     }
                 }
@@ -1353,14 +1253,14 @@ class SaleServiceController extends Controller
                 $voucherIdFind = Voucher::where('sale_order_id', '=', $saleOrderId)->first();
 
                 if ($voucherIdFind == null) {
-                    $voucher =  new Voucher();
+                    $voucher = new Voucher;
                     $voucher->vendor_id = $customerId;
                     $voucher->transaction_date = Carbon::now()->format('Y-m-d');
                     $voucher->sale_order_id = $saleOrderId;
                     $voucher->amount = floatval($request->grand_total);
                     $voucher->payment_method = 'Cash';
-                    $voucher->deleted = "No";
-                    $voucher->status = "Active";
+                    $voucher->deleted = 'No';
+                    $voucher->status = 'Active';
                     $voucher->created_by = Auth::user()->id;
                     $voucher->created_date = date('Y-m-d h:s');
                     $voucher->save();
@@ -1369,67 +1269,66 @@ class SaleServiceController extends Controller
                     $voucher = Voucher::find($voucherIdFind->id);
                     $voucher->amount = floatval($request->grand_total);
                     $voucher->sale_order_id = $saleOrderId;
-                    $voucher->deleted = "No";
-                    $voucher->status = "Active";
+                    $voucher->deleted = 'No';
+                    $voucher->status = 'Active';
                     $voucher->last_updated_by = Auth::user()->id;
                     $voucher->updated_date = date('Y-m-d h:s');
                     $voucher->save();
                     $voucherId = $voucher->id;
                 }
 
-
-                $voucherDetails = new VoucherDetails();
+                $voucherDetails = new VoucherDetails;
                 $voucherDetails->tbl_acc_voucher_id = $voucherId;
                 $voucherDetails->tbl_acc_coa_id = $request->category;
                 $voucherDetails->credit = floatval($request->grand_total);
-                $voucherDetails->voucher_title = 'Service created with Service code ' . $saleOrder->sale_no;
-                $voucherDetails->deleted = "No";
-                $voucherDetails->status = "Active";
+                $voucherDetails->voucher_title = 'Service created with Service code '.$saleOrder->sale_no;
+                $voucherDetails->deleted = 'No';
+                $voucherDetails->status = 'Active';
                 $voucherDetails->created_by = Auth::user()->id;
                 $voucherDetails->created_date = date('Y-m-d H:i:s');
                 $voucherDetails->save();
 
                 if ($request->current_payment > 0) {
-                    $voucherDetails = new VoucherDetails();
+                    $voucherDetails = new VoucherDetails;
                     $voucherDetails->tbl_acc_voucher_id = $voucherId;
                     $voucherDetails->tbl_acc_coa_id = $request->category;
                     $voucherDetails->debit = floatval($request->current_payment);
-                    $voucherDetails->voucher_title = 'Service Sale final amount paid with Service code ' . $saleOrder->sale_no . ' after delivery';
-                    $voucherDetails->deleted = "No";
-                    $voucherDetails->status = "Active";
+                    $voucherDetails->voucher_title = 'Service Sale final amount paid with Service code '.$saleOrder->sale_no.' after delivery';
+                    $voucherDetails->deleted = 'No';
+                    $voucherDetails->status = 'Active';
                     $voucherDetails->created_by = Auth::user()->id;
                     $voucherDetails->created_date = date('Y-m-d h:s');
                     $voucherDetails->save();
                 }
             } else {
                 if (floatval($request->current_payment) > 0) {
-                    //return "not deliverd";
+                    // return "not deliverd";
                     $maxCode = PaymentVoucher::max(DB::raw('cast(voucherNo AS decimal(6))'));
                     $maxCode++;
-                    $maxCode = str_pad($maxCode, 6, '000000', STR_PAD_LEFT);;
-                    $paymentVoucher = new PaymentVoucher();
+                    $maxCode = str_pad($maxCode, 6, '000000', STR_PAD_LEFT);
+                    $paymentVoucher = new PaymentVoucher;
                     $paymentVoucher->party_id = $customerId;
                     $paymentVoucher->voucherNo = $maxCode;
                     $paymentVoucher->order_sale_id = $saleOrderId;
                     $paymentVoucher->amount = floatval($request->current_payment);
                     $paymentVoucher->payment_method = 'Cash';
-                    $paymentVoucher->paymentDate  = Carbon::now()->format('Y-m-d');
-                    $paymentVoucher->type  = 'Payment Received';
-                    $paymentVoucher->voucherType  = 'PartySale';
-                    $paymentVoucher->voucherType  = 'PartySale';
-                    $paymentVoucher->remarks  = 'Party payment for saleOrder code: ' . $saleOrder->sale_no . ' payment: ' . $saleOrder->grand_total;
-                    $paymentVoucher->entryBy  = auth()->user()->id;
+                    $paymentVoucher->paymentDate = Carbon::now()->format('Y-m-d');
+                    $paymentVoucher->type = 'Payment Received';
+                    $paymentVoucher->voucherType = 'PartySale';
+                    $paymentVoucher->voucherType = 'PartySale';
+                    $paymentVoucher->remarks = 'Party payment for saleOrder code: '.$saleOrder->sale_no.' payment: '.$saleOrder->grand_total;
+                    $paymentVoucher->entryBy = auth()->user()->id;
                     $paymentVoucher->save();
 
                     $voucherIdfind = Voucher::where('sale_order_id', '=', $saleOrderId)->first();
                     if ($voucherIdfind == null) {
-                        $voucher = new Voucher();
+                        $voucher = new Voucher;
                         $voucher->vendor_id = $customerId;
                         $voucher->transaction_date = Carbon::now()->format('Y-m-d');
                         $voucher->payment_method = 'Cash';
                         $voucher->sale_order_id = $saleOrderId;
-                        $voucher->deleted = "No";
-                        $voucher->status = "Active";
+                        $voucher->deleted = 'No';
+                        $voucher->status = 'Active';
                         $voucher->created_by = Auth::user()->id;
                         $voucher->created_date = date('Y-m-d h:s');
                         $voucher->save();
@@ -1438,14 +1337,13 @@ class SaleServiceController extends Controller
                         $voucherId = $voucherIdfind->id;
                     }
 
-
-                    $voucherDetails = new VoucherDetails();
+                    $voucherDetails = new VoucherDetails;
                     $voucherDetails->tbl_acc_voucher_id = $voucherId;
                     $voucherDetails->tbl_acc_coa_id = $request->category;
                     $voucherDetails->debit = floatval($request->current_payment);
-                    $voucherDetails->voucher_title = 'Service advance amount paid with Service code ' . $saleOrder->sale_no;
-                    $voucherDetails->deleted = "No";
-                    $voucherDetails->status = "Active";
+                    $voucherDetails->voucher_title = 'Service advance amount paid with Service code '.$saleOrder->sale_no;
+                    $voucherDetails->deleted = 'No';
+                    $voucherDetails->status = 'Active';
                     $voucherDetails->created_by = Auth::user()->id;
                     $voucherDetails->created_date = date('Y-m-d h:s');
                     $voucherDetails->save();
@@ -1456,22 +1354,16 @@ class SaleServiceController extends Controller
             Session::forget('order_cart_array');
             Session::forget('saleOrderId');
             DB::commit();
-            return response()->json(['success' => "sale order updated successfully.", 'saleOrderId' => $saleOrderId]);
+
+            return response()->json(['success' => 'sale order updated successfully.', 'saleOrderId' => $saleOrderId]);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' =>  'sale order updated rollback!']);
+
+            return response()->json(['error' => 'sale order updated rollback!']);
         }
     }
 
-
-
-
-
-
-
-
-
-    //=== Start Order Feedbacks ===//
+    // === Start Order Feedbacks ===//
     public function getOrderFeedbacks(Request $request)
     {
         $saleOrderId = $request->id;
@@ -1482,14 +1374,16 @@ class SaleServiceController extends Controller
         $rows = '';
         $i = 1;
         foreach ($saleOrderFeedbacks as $saleOrderFeedback) {
-            $rows .= '<tr><td>' . $i++ . '</td><td>' . $saleOrderFeedback->date_of_contact . '</td>
-                <td>' . $saleOrderFeedback->customer_response . '</td>
-                    <td><a href="#" onclick="removeOrderFeedback(' . $saleOrderFeedback->id . ')" style="color:red;"><i class="fa fa-trash"></i></a></td>
+            $rows .= '<tr><td>'.$i++.'</td><td>'.$saleOrderFeedback->date_of_contact.'</td>
+                <td>'.$saleOrderFeedback->customer_response.'</td>
+                    <td><a href="#" onclick="removeOrderFeedback('.$saleOrderFeedback->id.')" style="color:red;"><i class="fa fa-trash"></i></a></td>
                 </td>
             </tr>';
         }
+
         return response()->json(['orderFeedbackTable' => $rows]);
     }
+
     public function addOrderFeedback(Request $request)
     {
         $request->validate([
@@ -1497,36 +1391,28 @@ class SaleServiceController extends Controller
             'dateOfContact' => 'required',
             'customerResponse' => 'required',
         ]);
-        $saleOrderFeedback = new SaleOrderFeedback();
+        $saleOrderFeedback = new SaleOrderFeedback;
         $saleOrderFeedback->tbl_sale_orders_id = $request->saleOrderId;
         $saleOrderFeedback->date_of_contact = $request->dateOfContact;
         $saleOrderFeedback->customer_response = $request->customerResponse;
         $saleOrderFeedback->created_by = auth()->user()->id;
         $saleOrderFeedback->created_date = Carbon::now();
         $saleOrderFeedback->save();
-        return response()->json(['data' => "Success"]);
+
+        return response()->json(['data' => 'Success']);
     }
-
-
-
 
     public function removeOrderFeedback(Request $request)
     {
         $saleOrderId = $request->id;
         $saleOrderFeedback = SaleOrderFeedback::find($saleOrderId);
-        $saleOrderFeedback->deleted = "Yes";
+        $saleOrderFeedback->deleted = 'Yes';
         $saleOrderFeedback->deleted_by = auth()->user()->id;
         $saleOrderFeedback->deleted_date = Carbon::now();
         $saleOrderFeedback->save();
-        return response()->json(['data' => "Success"]);
+
+        return response()->json(['data' => 'Success']);
     }
-
-
-
-
-
-
-
 
     public function createOrderToWalkinSale($id)
     {
@@ -1570,31 +1456,31 @@ class SaleServiceController extends Controller
         if (Session::has('sale_cart_array') && count(Session::get('sale_cart_array')) > 0) {
             Session::forget('sale_cart_array');
         }
-        foreach ($saleOrderProducts as  $productInfo) {
-            $serializeIdArray = array();
-            $serializeSaleQtyArray = array();
-            $currentStockInfo = CurrentStock::where('deleted', 'No')->where('tbl_productsId', $productInfo->product_id)->where('tbl_wareHouseId', $productInfo->warehouse_id)->first();
+        foreach ($saleOrderProducts as $productInfo) {
+            $serializeIdArray = [];
+            $serializeSaleQtyArray = [];
+            $currentStockInfo = Currentstock::where('deleted', 'No')->where('tbl_productsId', $productInfo->product_id)->where('tbl_wareHouseId', $productInfo->warehouse_id)->first();
             if ($currentStockInfo) {
                 $available_quantity = $currentStockInfo->currentStock;
             } else {
                 $available_quantity = 0;
             }
             $item_array = [
-                'product_id'               =>     $productInfo->product_id,
-                'tbl_sale_order_productsId' =>    $productInfo->tbl_sale_order_productsId,
-                'product_name'             =>     $productInfo->name . ' - ' . $productInfo->productCode,
-                'product_image'            =>     $productInfo->image,
-                'available_qty'            =>     $available_quantity,
-                'product_price'            =>     $productInfo->purchase_price,
-                'product_quantity'         =>     $productInfo->quantity,
-                'product_discount'         =>     $productInfo->unit_discount,
-                'barcode_no'               =>     $productInfo->productCode,
-                'warehouse_id'             =>     $productInfo->warehouse_id,
-                'warehouse_name'           =>     $productInfo->wareHouseName,
-                'product_type'             =>     $productInfo->type,
-                'items_in_box'             =>     0,
-                'serializeIdArray'         =>  [$serializeIdArray],
-                'serializeSaleQtyArray'    =>  [$serializeSaleQtyArray]
+                'product_id' => $productInfo->product_id,
+                'tbl_sale_order_productsId' => $productInfo->tbl_sale_order_productsId,
+                'product_name' => $productInfo->name.' - '.$productInfo->productCode,
+                'product_image' => $productInfo->image,
+                'available_qty' => $available_quantity,
+                'product_price' => $productInfo->purchase_price,
+                'product_quantity' => $productInfo->quantity,
+                'product_discount' => $productInfo->unit_discount,
+                'barcode_no' => $productInfo->productCode,
+                'warehouse_id' => $productInfo->warehouse_id,
+                'warehouse_name' => $productInfo->wareHouseName,
+                'product_type' => $productInfo->type,
+                'items_in_box' => 0,
+                'serializeIdArray' => [$serializeIdArray],
+                'serializeSaleQtyArray' => [$serializeSaleQtyArray],
             ];
             Session::push('sale_cart_array', $item_array);
         }
@@ -1602,22 +1488,15 @@ class SaleServiceController extends Controller
         $brands = Brand::where('deleted', 'No')->where('status', 'Active')->get();
         $products = Product::where('deleted', 'No')->where('status', 'Active')->get();
         $warehouses = Warehouse::where('deleted', 'No')->where('status', 'Active')->get();
-        $type = "walkin_sale";
+        $type = 'walkin_sale';
         $saleOrder = SaleOrder::find($id);
         // dd($saleOrder);
-        if ($saleOrder->order_status == "Delivered") {
+        if ($saleOrder->order_status == 'Delivered') {
             return view('admin.inventory.service.createOrderToWalkinSale', compact('categories', 'brands', 'products', 'warehouses', 'type', 'saleOrder'));
         } else {
             return redirect()->route('sale.service.SaleOrders');
         }
     }
-
-
-
-
-
-
-
 
     public function completeOrderCheckOutCart(Request $request)
     {
@@ -1626,8 +1505,6 @@ class SaleServiceController extends Controller
             'customerName' => 'required',
         ]);
 
-
-
         $saleType = $request->saleType;
         DB::beginTransaction();
         try {
@@ -1635,7 +1512,7 @@ class SaleServiceController extends Controller
             $saleNo = Sale::where('sales_type', $saleType)->max('sale_no');
             $saleNo++;
             $saleNo = str_pad($saleNo, 6, '0', STR_PAD_LEFT);
-            $sale = new Sale();
+            $sale = new Sale;
             $sale->customer_id = $customerId;
             $sale->sale_no = $saleNo;
             $sale->tbl_sale_order_id = $request->saleOrderId;
@@ -1666,33 +1543,34 @@ class SaleServiceController extends Controller
             $sale_id = $sale->id;
 
             if (Session::has('sale_cart_array') && count(Session::get('sale_cart_array')) > 0) {
-                foreach (Session::get("sale_cart_array") as $keys => $values) {
-                    $product_id = Session::get("sale_cart_array")[$keys]["product_id"];
-                    $warehouse_id = Session::get("sale_cart_array")[$keys]["warehouse_id"];
-                    $quantity = Session::get("sale_cart_array")[$keys]["product_quantity"];
+                foreach (Session::get('sale_cart_array') as $keys => $values) {
+                    $product_id = Session::get('sale_cart_array')[$keys]['product_id'];
+                    $warehouse_id = Session::get('sale_cart_array')[$keys]['warehouse_id'];
+                    $quantity = Session::get('sale_cart_array')[$keys]['product_quantity'];
 
                     $checkCurrentstock = Currentstock::where('tbl_productsId', $product_id)->first();
                     if ($checkCurrentstock != '') {
-                        if ($quantity  > $checkCurrentstock->currentStock) {
+                        if ($quantity > $checkCurrentstock->currentStock) {
                             DB::rollBack();
-                            return response()->json(['mismatch' => "NotAvailable"]);
+
+                            return response()->json(['mismatch' => 'NotAvailable']);
                         }
                     }
 
-                    $product = product::find($product_id);
+                    $product = Product::find($product_id);
                     $unit_id = $product->unit_id;
-                    $unit_price = floatval(Session::get("sale_cart_array")[$keys]["product_price"]);
-                    $discount_amount = floatval(Session::get("sale_cart_array")[$keys]["product_discount"]);
+                    $unit_price = floatval(Session::get('sale_cart_array')[$keys]['product_price']);
+                    $discount_amount = floatval(Session::get('sale_cart_array')[$keys]['product_discount']);
                     $product->increment('sale_quantity', $quantity);
-                    if (Session::get("sale_cart_array")[$keys]["product_type"] != "service") {
+                    if (Session::get('sale_cart_array')[$keys]['product_type'] != 'service') {
                         $product->decrement('current_stock', $quantity);
                     }
                     $salePrice = floatval($unit_price - $discount_amount);
                     $subtotal = floatval($salePrice * $quantity);
                     $product->increment('total_sale_price', $subtotal);
-                    $lot_no = SaleProduct::where("product_id", $product_id)->max('lot_no');
+                    $lot_no = SaleProduct::where('product_id', $product_id)->max('lot_no');
                     $lot_no++;
-                    $sale_products = new SaleProduct();
+                    $sale_products = new SaleProduct;
                     $sale_products->sale_id = $sale_id;
                     $sale_products->product_id = $product_id;
                     $sale_products->warehouse_id = $warehouse_id;
@@ -1708,10 +1586,10 @@ class SaleServiceController extends Controller
                     $sale_products->save();
 
                     // Serialize Product
-                    if (Session::get("sale_cart_array")[$keys]["product_type"] == "serialize") {
+                    if (Session::get('sale_cart_array')[$keys]['product_type'] == 'serialize') {
                         $quantity = 0;
-                        foreach (Session::get("sale_cart_array")[$keys]["serializeIdArray"] as $key => $serializeId) {
-                            $serializeSaleQtyArray = Session::get("sale_cart_array")[$keys]["serializeSaleQtyArray"];
+                        foreach (Session::get('sale_cart_array')[$keys]['serializeIdArray'] as $key => $serializeId) {
+                            $serializeSaleQtyArray = Session::get('sale_cart_array')[$keys]['serializeSaleQtyArray'];
                             if (empty($serializeId)) {
                                 continue;
                             }
@@ -1720,12 +1598,12 @@ class SaleServiceController extends Controller
                                 $totalSerializeQuantity = ($serializeProduct->used_quantity + $serializeSaleQtyArray[$key]);
                                 $serializeProduct->used_quantity = $totalSerializeQuantity;
                                 if ($serializeProduct->quantity == $totalSerializeQuantity) {
-                                    $serializeProduct->is_sold = "OFF";
+                                    $serializeProduct->is_sold = 'OFF';
                                 }
                                 $serializeProduct->save();
                                 $quantity += $serializeSaleQtyArray[$key];
 
-                                $saleSerializeProduct = new SaleSerializeProduct();
+                                $saleSerializeProduct = new SaleSerializeProduct;
                                 $saleSerializeProduct->sale_id = $sale_id;
                                 $saleSerializeProduct->product_id = $product_id;
                                 $saleSerializeProduct->warehouse_id = $warehouse_id;
@@ -1737,17 +1615,17 @@ class SaleServiceController extends Controller
                             }
                         }
                     } // End Serialize Product
-                    if (Session::get("sale_cart_array")[$keys]["product_type"] == "service") {
+                    if (Session::get('sale_cart_array')[$keys]['product_type'] == 'service') {
                         continue;
                     }
-                    $Currentstock = Currentstock::where("tbl_productsId", $product_id)
-                        ->where("tbl_wareHouseId", $warehouse_id)
-                        ->where("deleted", 'No');
+                    $Currentstock = Currentstock::where('tbl_productsId', $product_id)
+                        ->where('tbl_wareHouseId', $warehouse_id)
+                        ->where('deleted', 'No');
                     if ($Currentstock->first()) {
                         $Currentstock->decrement('currentStock', $quantity);
                         $Currentstock->increment('salesStock', $quantity);
                     } else {
-                        $Currentstock_insert = new Currentstock();
+                        $Currentstock_insert = new Currentstock;
                         $Currentstock_insert->tbl_productsId = $product_id;
                         $Currentstock_insert->tbl_wareHouseId = $warehouse_id;
                         $Currentstock_insert->currentStock = -$quantity;
@@ -1760,8 +1638,8 @@ class SaleServiceController extends Controller
             }
             // Update Order Sale
             $saleOrder = SaleOrder::find($request->saleOrderId);
-            $saleOrder->order_status = "Completed";
-            $saleOrder->sale_status = "Completed";
+            $saleOrder->order_status = 'Completed';
+            $saleOrder->sale_status = 'Completed';
             $saleOrder->final_sale_amount = $request->grand_total;
             $saleOrder->sale_id = $sale_id;
             $saleOrder->completed_date = date('Y-m-d');
@@ -1776,25 +1654,16 @@ class SaleServiceController extends Controller
             } */
             /* */
 
-
             Session::forget('sale_cart_array');
             DB::commit();
-            return response()->json(['success' => "Sale saved successfully.", 'saleId' => $sale_id]);
+
+            return response()->json(['success' => 'Sale saved successfully.', 'saleId' => $sale_id]);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['error' =>  'sale  rollback!']);
+
+            return response()->json(['error' => 'sale  rollback!']);
         }
     }
-
-
-
-
-
-
-
-
-
-
 
     public function orderInvoice($id)
     {
@@ -1862,19 +1731,10 @@ class SaleServiceController extends Controller
         $saleOrders = DB::table('sale_orders')
             ->where('id', $id)
             ->first();
-        $pdf = PDF::loadView('admin.inventory.service.sale-service-order-invoice',  ['invoice' => $invoice, 'saleOrders' => $saleOrders, 'saleOrderFeedbacks' => $saleOrderFeedbacks]);
-        return $pdf->stream('sale-report-pdf.pdf', array("Attachment" => false));
+        $pdf = PDF::loadView('admin.inventory.service.sale-service-order-invoice', ['invoice' => $invoice, 'saleOrders' => $saleOrders, 'saleOrderFeedbacks' => $saleOrderFeedbacks]);
+
+        return $pdf->stream('sale-report-pdf.pdf', ['Attachment' => false]);
     }
-
-
-
-
-
-
-
-
-
-
 
     public function completeInvoice($id)
     {
@@ -1959,7 +1819,8 @@ class SaleServiceController extends Controller
             ->where('type', '=', 'Payment Received')
             ->get();
 
-        $pdf = PDF::loadView('admin.inventory.service.sale-service-completeInvoice',  ['invoice' => $invoice, 'saleOrders' => $saleOrders, 'saleOrderFeedbacks' => $saleOrderFeedbacks, 'payments' => $payments]);
-        return $pdf->stream('Service-center-report-pdf.pdf', array("Attachment" => false));
+        $pdf = PDF::loadView('admin.inventory.service.sale-service-completeInvoice', ['invoice' => $invoice, 'saleOrders' => $saleOrders, 'saleOrderFeedbacks' => $saleOrderFeedbacks, 'payments' => $payments]);
+
+        return $pdf->stream('Service-center-report-pdf.pdf', ['Attachment' => false]);
     }
 }

@@ -17,10 +17,10 @@ class CreateBillPaymentDetailsTable extends Migration
             $table->increments('id');
             $table->biginteger('tbl_acc_bill_id')->nullable();
             $table->biginteger('tbl_acc_billPayment_id')->nullable();
-            $table->decimal('amount',10,2)->nullable();
+            $table->decimal('amount', 10, 2)->nullable();
 
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->bigInteger('last_updated_by')->nullable();

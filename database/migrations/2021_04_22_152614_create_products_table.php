@@ -25,13 +25,13 @@ class CreateProductsTable extends Migration
             $table->biginteger('unit_id');
             $table->integer('opening_stock');
             $table->integer('remainder_quantity')->default(0);
-            $table->decimal('purchase_price',12,2);
-            $table->decimal('sale_price',12,2);
-            $table->decimal('discount',10,2)->nullable();
+            $table->decimal('purchase_price', 12, 2);
+            $table->decimal('sale_price', 12, 2);
+            $table->decimal('discount', 10, 2)->nullable();
             $table->string('notes')->nullable();
             $table->string('model_no')->nullable();
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();
@@ -41,12 +41,12 @@ class CreateProductsTable extends Migration
             $table->datetime('deleted_date')->nullable();
             $table->integer('current_stock')->default(0);
             $table->integer('sale_quantity')->default(0);
-            $table->decimal('total_purchase_price',12,2)->default(0);
-            $table->decimal('total_sale_price',12,2)->default(0);
-            $table->decimal('remaining_price',12,2)->default(0);
+            $table->decimal('total_purchase_price', 12, 2)->default(0);
+            $table->decimal('total_sale_price', 12, 2)->default(0);
+            $table->decimal('remaining_price', 12, 2)->default(0);
             $table->timestamps();
-            $table->enum('type',['regular','serialize','service'])->default('regular');
-            $table->enum('stock_check',['Yes','No'])->nullable();
+            $table->enum('type', ['regular', 'serialize', 'service'])->default('regular');
+            $table->enum('stock_check', ['Yes', 'No'])->nullable();
             $table->integer('items_in_box')->nullable();
         });
     }

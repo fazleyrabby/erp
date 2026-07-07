@@ -21,15 +21,15 @@ class CreateLeavesTable extends Migration
             $table->string('leave_type')->nullable();
             $table->longText('leave_reason')->nullable();
             $table->longText('admin_remarks')->nullable();
-            $table->enum('leave_status',['Approved','Pending','Reject'])->nullable();
+            $table->enum('leave_status', ['Approved', 'Pending', 'Reject'])->nullable();
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->dateTime('deleted_date')->format('d/m/Y')->nullable();
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            
+
             $table->timestamps();
         });
     }

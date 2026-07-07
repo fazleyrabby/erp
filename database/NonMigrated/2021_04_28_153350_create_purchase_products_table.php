@@ -24,9 +24,9 @@ class CreatePurchaseProductsTable extends Migration
             $table->biginteger('subtotal');
             $table->date('expired_date')->nullable();
             $table->biginteger('sell_quantity');
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('sell_status',['On','Off'])->default('Active')->nullable();
-            $table->enum('deleted',['Yes','No'])->nullable();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('sell_status', ['On', 'Off'])->default('Active')->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->datetime('deleted_date')->nullable();
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();

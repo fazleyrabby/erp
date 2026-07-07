@@ -17,8 +17,7 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Create a newly registered user.
      *
-     * @param  array  $input
-     * @return \App\Models\User
+     * @return User
      */
     public function create(array $input)
     {
@@ -28,6 +27,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
+
         return DB::transaction(function () use ($input) {
             return tap(User::create([
                 'name' => $input['name'],
@@ -44,14 +44,13 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Create a personal team for the user.
      *
-     * @param  \App\Models\User  $user
      * @return void
      */
     protected function createTeam(User $user)
     {
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0] . "'s Team",
+            'name' => explode(' ', $user->name, 2)[0]."'s Team",
             'personal_team' => true,
         ]));
     }

@@ -10,5 +10,4 @@ class Purchase_Return extends Model
     use HasFactory;
 
     protected $table = 'purchase_returns';
-
 }

@@ -18,13 +18,13 @@ class CreateTblSerializeProductsTable extends Migration
             $table->biginteger('tbl_productsId');
             $table->biginteger('warehouse_id');
             $table->biginteger('purchase_id')->nullable();
-            $table->string('serial_no',20);
+            $table->string('serial_no', 20);
             $table->biginteger('quantity')->nullable();
             $table->biginteger('used_quantity')->default(0);
-            $table->enum('is_sold',['ON','OFF'])->default('ON');
-            // Common Fields      
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('is_sold', ['ON', 'OFF'])->default('ON');
+            // Common Fields
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

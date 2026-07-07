@@ -21,11 +21,11 @@ class CreateSaleProductReturnsTable extends Migration
             $table->biginteger('warehouse_id');
             $table->biginteger('return_qty')->nullable();
             $table->biginteger('remaining_qty')->nullable();
-            $table->decimal('unit_price',10,2)->nullable();
-            $table->decimal('total_price',10,2)->nullable();
+            $table->decimal('unit_price', 10, 2)->nullable();
+            $table->decimal('total_price', 10, 2)->nullable();
             // Common Fields
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();
@@ -33,7 +33,7 @@ class CreateSaleProductReturnsTable extends Migration
             $table->biginteger('deleted_by')->nullable();
             $table->datetime('deleted_date')->nullable();
             $table->timestamps();
-            $table->enum('sales_type',['walkin_sale','TS','FS','party_sale']); // Not Common Field
+            $table->enum('sales_type', ['walkin_sale', 'TS', 'FS', 'party_sale']); // Not Common Field
         });
     }
 

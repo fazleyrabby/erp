@@ -5,18 +5,19 @@ namespace App\Http\Controllers\Admin\Inventory;
 use App\Http\Controllers\Controller;
 use App\Models\inventory\TransportInfo;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class TransportController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('permission:transport.view', ['only' => ['index', 'getTransports']]);
         $this->middleware('permission:transport.store', ['only' => ['store']]);
         $this->middleware('permission:transport.edit', ['only' => ['edit', 'udpate']]);
         $this->middleware('permission:transport.delete', ['only' => ['delete']]);
     }
-    
+
     public function index()
     {
         return view('admin.inventory.transport.transport');
@@ -28,10 +29,10 @@ class TransportController extends Controller
             ->where('tbl_transportinfo.deleted', 'No')
             ->orderBy('tbl_transportinfo.id', 'DESC')
             ->get();
-        $output = array('data' => array());
+        $output = ['data' => []];
         $i = 1;
         foreach ($transports as $transport) {
-            $status = "";
+            $status = '';
             if ($transport->status == 'Active') {
                 $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;"></i></center>';
             } else {
@@ -43,24 +44,25 @@ class TransportController extends Controller
                             <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                 <i class="fas fa-cog"></i>  <span class="caret"></span></button>
                                 <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                                <li class="action liDropDown" onclick="editTransportInfo(' . $transport->id . ')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
+                                <li class="action liDropDown" onclick="editTransportInfo('.$transport->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
                                 </li>
                             </li>
-                                <li class="action liDropDown"><a   class="btn"  onclick="confirmDelete(' . $transport->id . ')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
+                                <li class="action liDropDown"><a   class="btn"  onclick="confirmDelete('.$transport->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
                                 </li> 
                                 </ul>
                             </div>
                         </td>';
 
-            $output['data'][] = array(
-                $i++ . '<input type="hidden" name="id" id="id" value="' . $transport->id . '" />',
+            $output['data'][] = [
+                $i++.'<input type="hidden" name="id" id="id" value="'.$transport->id.'" />',
                 $transport->transportName,
                 $transport->address,
                 'Contact Person: '.$transport->contactPerson.'<br>Contact No: '.$transport->contactNo,
                 $status,
-                $button
-            );
+                $button,
+            ];
         }
+
         return $output;
     }
 
@@ -71,22 +73,24 @@ class TransportController extends Controller
             'address' => 'required',
             'contactNumber' => 'required|max:15',
         ]);
-        $transport = new TransportInfo();
+        $transport = new TransportInfo;
         $transport->transportName = $request->transportName;
         $transport->contactPerson = $request->contactPerson;
         $transport->contactNo = $request->contactNumber;
         $transport->email = $request->contactEmail;
         $transport->address = $request->address;
         $transport->remarks = $request->remarks;
-        $transport->createdDate  = date('Y-m-d H:i:s');
-        $transport->createdBy  = auth()->user()->id;
+        $transport->createdDate = date('Y-m-d H:i:s');
+        $transport->createdBy = auth()->user()->id;
         $transport->save();
-        return response()->json("Transport saved successfulluy!");
+
+        return response()->json('Transport saved successfulluy!');
     }
 
     public function edit(Request $request)
     {
         $transportInfo = TransportInfo::find($request->id);
+
         return response()->json($transportInfo);
     }
 
@@ -99,7 +103,7 @@ class TransportController extends Controller
             'contactNumber' => 'required|max:15',
             'status' => 'required',
         ]);
-        $transport =  TransportInfo::find($request->id);
+        $transport = TransportInfo::find($request->id);
         $transport->transportName = $request->transportName;
         $transport->contactPerson = $request->contactPerson;
         $transport->contactNo = $request->contactNumber;
@@ -107,25 +111,27 @@ class TransportController extends Controller
         $transport->address = $request->address;
         $transport->remarks = $request->remarks;
         $transport->status = $request->status;
-        $transport->lastUpdatedDate  = date('Y-m-d H:i:s');
-        $transport->lastUpdatedBy  = auth()->user()->id;
+        $transport->lastUpdatedDate = date('Y-m-d H:i:s');
+        $transport->lastUpdatedBy = auth()->user()->id;
         $transport->save();
-        return response()->json("Transport udpated successfulluy!");
+
+        return response()->json('Transport udpated successfulluy!');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function delete(Request $request)
     {
-        $transport =  TransportInfo::find($request->id);
+        $transport = TransportInfo::find($request->id);
         $transport->deleted = 'Yes';
         $transport->deletedDate = date('Y-m-d H:i:s');
         $transport->deletedBy = auth()->user()->id;
         $transport->save();
-        return response()->json("Transport Info Deleted!");
+
+        return response()->json('Transport Info Deleted!');
     }
 }

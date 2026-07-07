@@ -19,10 +19,10 @@ class TblAccExpenses extends Migration
             $table->biginteger('tbl_crm_vendor_id')->nullable();
             $table->string('vendor_name')->nullable();
             $table->longtext('address')->nullable();
-            $table->decimal('amount',10,2)->nullable();
+            $table->decimal('amount', 10, 2)->nullable();
             $table->string('transaction_date')->nullable();
             $table->string('transaction_no')->nullable();
-            $table->decimal('transaction_charge',10,2)->nullable();
+            $table->decimal('transaction_charge', 10, 2)->nullable();
             $table->string('payment_method')->nullable();
             $table->string('reference')->nullable();
             $table->string('particulars')->nullable();
@@ -31,14 +31,14 @@ class TblAccExpenses extends Migration
             $table->biginteger('trnsaction_by')->nullable();
 
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
             $table->dateTime('updated_date')->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->dateTime('deleted_date')->nullable();
-           
+
             $table->timestamps();
         });
     }

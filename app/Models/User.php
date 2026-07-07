@@ -2,27 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Admin\Usertype;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\Admin\Usertype;
-use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
+    use HasRoles;
     use HasTeams;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -71,22 +70,22 @@ class User extends Authenticatable
         return $this->belongsTo(Usertype::class, 'usertype_id', 'id');
     }
 
-
     public static function getPermissionGroups()
     {
-        $permissionGroups =  DB::table('permissions')
+        $permissionGroups = DB::table('permissions')
             ->select('group_name as name')
             ->groupBy('group_name')
             ->get();
-        return  $permissionGroups;
-    }
 
+        return $permissionGroups;
+    }
 
     public static function getPermissionsByGroupName($groupName)
     {
-        $getPermissionsByGroupName =  DB::table('permissions')
+        $getPermissionsByGroupName = DB::table('permissions')
             ->where('group_name', $groupName)
             ->get();
-        return  $getPermissionsByGroupName;
+
+        return $getPermissionsByGroupName;
     }
 }

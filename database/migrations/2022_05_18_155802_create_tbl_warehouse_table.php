@@ -17,8 +17,8 @@ class CreateTblWarehouseTable extends Migration
             $table->bigIncrements('id');
             $table->string('wareHouseName');
             $table->string('wareHouseAddress')->nullable();
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->datetime('createdDate')->nullable();
             $table->biginteger('createdBy')->nullable();
             $table->datetime('lastUpdatedDate')->nullable();

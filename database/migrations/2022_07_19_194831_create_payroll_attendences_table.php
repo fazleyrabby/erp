@@ -25,14 +25,14 @@ class CreatePayrollAttendencesTable extends Migration
             $table->string('time_in_difference')->nullable();
             $table->string('time_out_difference')->nullable();
             $table->string('working_hour')->nullable();
-            $table->enum('shift_status',['Completed','Incomlete'])->nullable();
+            $table->enum('shift_status', ['Completed', 'Incomlete'])->nullable();
             $table->biginteger('machine_id')->nullable();
             $table->biginteger('group_id')->nullable();
-	        $table->longtext('note')->nullable();
+            $table->longtext('note')->nullable();
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->dateTime('deleted_date')->format('d/m/Y')->nullable();
             $table->enum('status', ['Active', 'Inactive'])->nullable();

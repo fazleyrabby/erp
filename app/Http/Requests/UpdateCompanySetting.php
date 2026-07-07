@@ -34,7 +34,7 @@ class UpdateCompanySetting extends FormRequest
     {
         return [
             'companyName.required' => 'Please Enter Company Name',
-            'companyStockManage.required' => 'Please Select CompanyStockManage'
+            'companyStockManage.required' => 'Please Select CompanyStockManage',
         ];
     }
 }

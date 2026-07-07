@@ -3,38 +3,32 @@
 namespace App\Http\Controllers\Admin\Reports;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Journal\Journal;
-use App\Models\Journal\JournalDetails;
 use App\Models\Accounts\ChartOfAccounts;
-use App\Models\Report\DailyReport;
-use App\Models\Crm\Party;
-use App\Models\Accounts\Voucher;
-use App\Models\Accounts\VoucherDetails;
 use App\Models\Accounts\MonthlyReport;
-use App\Models\Accounts\PaymentVoucher;
+use App\Models\Accounts\Voucher;
+use App\Models\Crm\Party;
 use App\Models\inventory\Purchase;
-use App\Models\inventory\SaleOrder;
-use App\Models\inventory\Sale;
 use App\Models\inventory\Purchase_Return;
+use App\Models\inventory\Sale;
+use App\Models\inventory\SaleOrder;
 use App\Models\inventory\SaleReturn;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use PDF;
-use Exception;
+use App\Models\Report\DailyReport;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use PDF;
 
 class ReportController extends Controller
 {
-
     public function index()
     {
         $suppliers = Party::where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
+
         return view('admin.reports.partyLedger', ['suppliers' => $suppliers]);
     }
-
-
 
     public function generateVoucher(Request $request)
     {
@@ -62,7 +56,6 @@ class ReportController extends Controller
             $debit += $array->debit;
         }
 
-
         $credit = 0;
         $openingCreditArray = DB::table('tbl_acc_voucher_details')
             ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
@@ -77,7 +70,6 @@ class ReportController extends Controller
         }
         $debitToCredit = $debit - $credit;
 
-
         $data = '';
         $table = '';
         $total = '';
@@ -89,9 +81,9 @@ class ReportController extends Controller
 
         $table .= '<tr>
                         <td colspan="5" class="text-right"><b>Opening Balance:</b></td>
-                            <td class="text-right"><b>' . $debit . '.00</b></td>
-                        <td class="text-right"><b>' . $credit . '.00</b></td>
-                        <td class="text-right"><b>' . $debitToCredit . '.00</b></td>
+                            <td class="text-right"><b>'.$debit.'.00</b></td>
+                        <td class="text-right"><b>'.$credit.'.00</b></td>
+                        <td class="text-right"><b>'.$debitToCredit.'.00</b></td>
                     </tr>';
 
         foreach ($vouchers as $voucher) {
@@ -101,14 +93,14 @@ class ReportController extends Controller
                 $balance -= $voucher->credit;
             }
             $table .= '<tr>
-                            <td class="text-center">' . $i++ . '</td>
-                            <td class="text-center">' . $voucher->transaction_date . '</td>
-                            <td>' . $voucher->voucher_title . '</td>
-                            <td class="text-center"># ' . $voucher->voucherId . '</td>
-                            <td>' . $voucher->particulars . '</td>
-                            <td class="text-right">' . $voucher->debit . '</td>
-                            <td class="text-right">' . $voucher->credit . '</td>
-                            <td class="text-right">' . $balance . '</td>
+                            <td class="text-center">'.$i++.'</td>
+                            <td class="text-center">'.$voucher->transaction_date.'</td>
+                            <td>'.$voucher->voucher_title.'</td>
+                            <td class="text-center"># '.$voucher->voucherId.'</td>
+                            <td>'.$voucher->particulars.'</td>
+                            <td class="text-right">'.$voucher->debit.'</td>
+                            <td class="text-right">'.$voucher->credit.'</td>
+                            <td class="text-right">'.$balance.'</td>
                         </tr>';
             $totalDebit += $voucher->debit;
             $totalCredit += $voucher->credit;
@@ -116,9 +108,9 @@ class ReportController extends Controller
         $due = $totalDebit - $totalCredit;
         $total .= '<tr>
                             <td colspan="5" class="text-right"><b>Total:</b></td>
-                             <td class="text-right"><b>' . $totalDebit . '</b></td>
-                            <td class="text-right"><b>' . $totalCredit . '</b></td>
-                            <td class="text-right"><b>' . $due . '</b></td>
+                             <td class="text-right"><b>'.$totalDebit.'</b></td>
+                            <td class="text-right"><b>'.$totalCredit.'</b></td>
+                            <td class="text-right"><b>'.$due.'</b></td>
                         </tr>';
 
         if ($totalDebit < $totalCredit) {
@@ -134,8 +126,8 @@ class ReportController extends Controller
 
         $total .= '<tr>
                             <td colspan="5" class="text-right"><b>Closing Balance:</b></td>
-                             <td class="text-right"><b>' . $aDebit . '</b></td>
-                            <td class="text-right"><b>' . $aCredit . '</b></td>
+                             <td class="text-right"><b>'.$aDebit.'</b></td>
+                            <td class="text-right"><b>'.$aCredit.'</b></td>
                             <td></td>
                         </tr>';
 
@@ -144,25 +136,20 @@ class ReportController extends Controller
 
         $total .= '<tr>
                         <td colspan="5" class="text-right"></td>
-                         <td class="text-right"><b>' . $totalDebitWithDue . '</b></td>
-                        <td class="text-right"><b>'  . $totalCreditWithDue . '</b></td>
+                         <td class="text-right"><b>'.$totalDebitWithDue.'</b></td>
+                        <td class="text-right"><b>'.$totalCreditWithDue.'</b></td>
                         <td></td>
                     </tr>';
 
         $button .= '<button class="btn btn-primary float-right" onclick="generateVoucherPdf()"><i class="fa fa-file-pdf"></i> Get pdf</button>';
-        $data = array(
+        $data = [
             'table' => $table,
             'total' => $total,
-            'button' => $button
-        );
+            'button' => $button,
+        ];
 
         return $data;
     }
-
-
-
-
-
 
     public function generatePdf($vendor_id, $date_from, $date_to)
     {
@@ -189,7 +176,6 @@ class ReportController extends Controller
             $debit += $array->debit;
         }
 
-
         $credit = 0;
         $openingCreditArray = DB::table('tbl_acc_voucher_details')
             ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
@@ -205,11 +191,9 @@ class ReportController extends Controller
         $debitToCredit = $debit - $credit;
 
         $pdf = PDF::loadView('admin.reports.partyLedgerPdf', ['vouchers' => $vouchers, 'party' => $party, 'date_from' => $date_from, 'date_to' => $date_to, 'debit' => $debit, 'credit' => $credit, 'debitToCredit' => $debitToCredit]);
-        return $pdf->stream('party-ledger-pdf.pdf', array("Attachment" => false));
+
+        return $pdf->stream('party-ledger-pdf.pdf', ['Attachment' => false]);
     }
-
-
-
 
     public function accountsSummaryView()
     {
@@ -220,10 +204,9 @@ class ReportController extends Controller
     {
 
         $time = strtotime($request->date_from);
-        $month = date("F", $time);
-        $year = date("Y", $time);
-        $monthYear = date("F Y", $time);
-
+        $month = date('F', $time);
+        $year = date('Y', $time);
+        $monthYear = date('F Y', $time);
 
         $income = ChartOfAccounts::where('name', '=', 'Income')->where('deleted', 'No')->first();
         $incomeId = $income->id;
@@ -242,7 +225,7 @@ class ReportController extends Controller
         $purchaseId = $purchase->id;
         $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get();
 
-        $backDateFrom = date('0' . (date("m", strtotime($request->date_from)) - 1) . '-d-Y');
+        $backDateFrom = date('0'.(date('m', strtotime($request->date_from)) - 1).'-d-Y');
 
         $CashInHandFrom = DB::table('tbl_acc_voucher_details')
             ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
@@ -303,15 +286,14 @@ class ReportController extends Controller
                 ->where('tbl_acc_vouchers.status', '=', 'Active')
                 ->get();
 
-
             $amountDebitSum = 0;
 
             foreach ($incomeAmounts as $amount) {
                 $amountDebitSum += $amount->debit;
             }
             $table .= '<tr>
-                            <td width="70%">' . $income->name . '</td>
-                            <td width="30%" class="text-right">' . number_format($amountDebitSum) . '</td>
+                            <td width="70%">'.$income->name.'</td>
+                            <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
                         </tr>';
             $totalIncome += $amountDebitSum;
         }
@@ -338,7 +320,7 @@ class ReportController extends Controller
             $totalSaleReturnAmount = 0;
             $setBracket = '';
             $setBracket2 = '';
-            if ($sale->slug == "sales-ruturn") {
+            if ($sale->slug == 'sales-ruturn') {
                 $amountDebitSum = SaleReturn::whereBetween('sale_return_date', [$request->date_from, $request->date_to])->where('deleted', 'No')->where('coa_id', $sale->id)->sum('grand_total');
                 $totalSaleReturnAmount = $amountDebitSum;
                 $setBracket = '(';
@@ -349,9 +331,9 @@ class ReportController extends Controller
                 $netSalesAmount = $totalSales - $totalSaleReturnAmount;
             }
             $table .= '<tr>
-                           <td width="50%">' . $sale->name . '</td>
-                           <td width="25%" class="text-right">' . $setBracket . $amountDebitSum . $setBracket2 . '</td>
-                           <td width="25%" class="text-right">' . $netSalesAmount . '</td>
+                           <td width="50%">'.$sale->name.'</td>
+                           <td width="25%" class="text-right">'.$setBracket.$amountDebitSum.$setBracket2.'</td>
+                           <td width="25%" class="text-right">'.$netSalesAmount.'</td>
                        </tr>';
         }
 
@@ -372,7 +354,7 @@ class ReportController extends Controller
 
         $table .= '<tr class="font-weight-bold text-center bg-primary text-white"><td colspan="3"> Expenditure </td></tr>';
 
-        foreach ($allpurchases as $key =>  $purchase) {
+        foreach ($allpurchases as $key => $purchase) {
             $purchaseAmounts = DB::table('tbl_acc_voucher_details')
                 ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
                 ->select('tbl_acc_voucher_details.*', 'tbl_acc_vouchers.transaction_date', 'tbl_acc_vouchers.type')
@@ -388,7 +370,7 @@ class ReportController extends Controller
             $setBracket = '';
             $setBracket2 = '';
             $totalPurchaseReturnAmount = 0;
-            if ($purchase->slug == "purchase-return") {
+            if ($purchase->slug == 'purchase-return') {
                 $amountSum = Purchase_Return::whereBetween('purchase_return_date', [$request->date_from, $request->date_to])
                     ->where('deleted', 'No')->where('coa_id', $purchase->id)->sum('grand_total');
                 $totalPurchaseReturnAmount = $amountSum;
@@ -401,9 +383,9 @@ class ReportController extends Controller
             }
 
             $table .= '<tr style="border-bottom: 10px solid red;">
-                           <td width="50%">' . $purchase->name . '</td>
-                           <td width="25%" class="text-right">' . $setBracket . $amountSum . $setBracket2 . '</td>
-                           <td width="25%" class="text-right">' . $netPurchaseAmount . '</td>
+                           <td width="50%">'.$purchase->name.'</td>
+                           <td width="25%" class="text-right">'.$setBracket.$amountSum.$setBracket2.'</td>
+                           <td width="25%" class="text-right">'.$netPurchaseAmount.'</td>
                         </tr>';
             if ($purchase->id != 43) {
                 $purchaseSum += $amountSum;
@@ -414,7 +396,7 @@ class ReportController extends Controller
         $expenseSum = 0;
         $totalExpenses = 0;
         $count = count($allExpense) - 1;
-        foreach ($allExpense as $key =>  $expense) {
+        foreach ($allExpense as $key => $expense) {
             $incomeAmounts = DB::table('tbl_acc_voucher_details')
                 ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
                 ->select('tbl_acc_voucher_details.*', 'tbl_acc_vouchers.transaction_date', 'tbl_acc_vouchers.type')
@@ -434,9 +416,9 @@ class ReportController extends Controller
             }
 
             $table .= '<tr>
-                           <td width="50%">' . $expense->name . '</td>
-                           <td width="25%" class="text-right">' . number_format($amountSum) . '</td>
-                           <td width="25%" class="text-right">' . $tempTotalExpenses . '</td>
+                           <td width="50%">'.$expense->name.'</td>
+                           <td width="25%" class="text-right">'.number_format($amountSum).'</td>
+                           <td width="25%" class="text-right">'.$tempTotalExpenses.'</td>
                         </tr>';
             $expenseSum += $amountSum;
         }
@@ -458,7 +440,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr class="font-weight-bold">
                                         <td width="70%">Total Income: </td>
-                                        <td width="30%" class="text-right">' . number_format($totalIncomeWithOpening) . '</td>
+                                        <td width="30%" class="text-right">'.number_format($totalIncomeWithOpening).'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -468,7 +450,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr class="font-weight-bold">
                                         <td width="70%">Total Expense: </td>
-                                        <td width="30%" class="text-right">' . number_format($totalExpense) . '</td>
+                                        <td width="30%" class="text-right">'.number_format($totalExpense).'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -488,9 +470,9 @@ class ReportController extends Controller
 
         $totalIncomeWithDue = $totalIncomeWithOpening - $incomeClosing;
         $totalExpenseWithDue = $totalExpense + $expenseClosing;
-        $clss = "bg-success";
+        $clss = 'bg-success';
         if ($totalIncomeWithOpening < $totalExpense) {
-            $clss = "bg-danger";
+            $clss = 'bg-danger';
         }
         $table .= '<tr>
                         <td>
@@ -498,7 +480,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr class="font-weight-bold">
                                         <td width="70%">Balance Closing: </td>
-                                        <td width="30%" class="text-right"><strong>' . number_format($expenseClosing) . '</strong></td>
+                                        <td width="30%" class="text-right"><strong>'.number_format($expenseClosing).'</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -526,15 +508,15 @@ class ReportController extends Controller
                             <tbody>
                                 <tr class="font-weight-bold">
                                     <td width="70%"> Voucher Recipient </td>
-                                    <td width="30%" class="text-right"><strong>' . $voucherSummary->totalVoucherRcvAmount . '</strong></td>
+                                    <td width="30%" class="text-right"><strong>'.$voucherSummary->totalVoucherRcvAmount.'</strong></td>
                                 </tr>
                                 <tr class="font-weight-bold">
                                     <td width="70%"> Payment Voucher </td>
-                                    <td width="30%" class="text-right"><strong>' .  $voucherSummary->totalVoucherPaymentAmount  . '</strong></td>
+                                    <td width="30%" class="text-right"><strong>'.$voucherSummary->totalVoucherPaymentAmount.'</strong></td>
                                 </tr>
                                 <tr class="font-weight-bold">
                                     <td width="70%"> Cash In Hand </td>
-                                    <td width="30%" class="text-right"><strong>' . number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)) . '</strong></td>
+                                    <td width="30%" class="text-right"><strong>'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -544,11 +526,11 @@ class ReportController extends Controller
 
         $lastTwoChar = substr(($request->date_to), -2);
         $time = strtotime($request->date_to);
-        $month = date("F", $time);
-        $year = date("Y", $time);
-        $monthYear = date("F Y", $time);
+        $month = date('F', $time);
+        $year = date('Y', $time);
+        $monthYear = date('F Y', $time);
 
-        $month_value = date("m", strtotime($month));
+        $month_value = date('m', strtotime($month));
         $month_days_count = cal_days_in_month(CAL_GREGORIAN, $month_value, $year);
 
         if ($lastTwoChar == $month_days_count) {
@@ -558,25 +540,24 @@ class ReportController extends Controller
         }
         $pdf = '';
         $pdf = '<button class="btn btn-primary mt-2" onclick="generateAccountsSummaryPdf()"><i class="fas fa-print"></i> Print PDF</button>';
+
         /* $data = array(
             'table' => $table,
             'monthYearHeader' => $monthYearHeader,
             'closingBtn' => $closingBtn,
             'pdf' => $pdf
         ); */
-        return response()->json(['table' => $table, "monthYearHeader" => $monthYearHeader, "closingBtn" => $closingBtn, "pdf" => $pdf]);
+        return response()->json(['table' => $table, 'monthYearHeader' => $monthYearHeader, 'closingBtn' => $closingBtn, 'pdf' => $pdf]);
     }
-
-
 
     public function closingBalanceStore(Request $request)
     {
 
         $lastTwoChar = substr(($request->date_to), -2);
         $time = strtotime($request->date_to);
-        $month = date("F", $time);
-        $year = date("Y", $time);
-        $monthYear = date("F Y", $time);
+        $month = date('F', $time);
+        $year = date('Y', $time);
+        $monthYear = date('F Y', $time);
 
         $checkPreviousMonthYear = '';
         $checkPreviousMonthYear = MonthlyReport::where('month_year', '=', $monthYear)->first();
@@ -589,9 +570,10 @@ class ReportController extends Controller
             $checkPreviousMonthYear->present_month_closing = $request->presentClosingBalance;
             $checkPreviousMonthYear->last_updated_by = Auth::user()->id;
             $checkPreviousMonthYear->save();
+
             return response()->json(['success' => 'Closing balance updated successfully']);
         } else {
-            $closing = new MonthlyReport();
+            $closing = new MonthlyReport;
             $closing->from_date = $request->date_from;
             $closing->to_date = $request->date_to;
             $closing->previous_month_closing = $request->previousMonthClosing;
@@ -602,19 +584,17 @@ class ReportController extends Controller
             $closing->deleted = 'No';
             $closing->status = 'Active';
             $closing->save();
+
             return response()->json(['success' => 'Closing balance saved successfully']);
         }
     }
 
-
-
     public function generateAccountsSummaryPdf($date_from, $date_to)
     {
         $time = strtotime($date_from);
-        $month = date("F", $time);
-        $year = date("Y", $time);
-        $monthYear = date("F Y", $time);
-
+        $month = date('F', $time);
+        $year = date('Y', $time);
+        $monthYear = date('F Y', $time);
 
         $income = ChartOfAccounts::where('name', '=', 'Income')->where('deleted', 'No')->first();
         $incomeId = $income->id;
@@ -633,7 +613,7 @@ class ReportController extends Controller
         $purchaseId = $purchase->id;
         $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get();
 
-        $backDateFrom = date('0' . (date("m", strtotime($date_from)) - 1) . '-d-Y');
+        $backDateFrom = date('0'.(date('m', strtotime($date_from)) - 1).'-d-Y');
 
         $CashInHandFrom = DB::table('tbl_acc_voucher_details')
             ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
@@ -694,15 +674,14 @@ class ReportController extends Controller
                 ->where('tbl_acc_vouchers.status', '=', 'Active')
                 ->get();
 
-
             $amountDebitSum = 0;
 
             foreach ($incomeAmounts as $amount) {
                 $amountDebitSum += $amount->debit;
             }
             $table .= '<tr width="100%">
-                            <td width="70%">' . $income->name . '</td>
-                            <td width="30%" class="text-right">' . number_format($amountDebitSum) . '</td>
+                            <td width="70%">'.$income->name.'</td>
+                            <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
                         </tr>';
             $totalIncome += $amountDebitSum;
         }
@@ -728,7 +707,7 @@ class ReportController extends Controller
             $totalSaleReturnAmount = 0;
             $setBracket = '';
             $setBracket2 = '';
-            if ($sale->slug == "sales-ruturn") {
+            if ($sale->slug == 'sales-ruturn') {
                 $amountDebitSum = SaleReturn::whereBetween('sale_return_date', [$date_from, $date_to])
                     ->where('deleted', 'No')->where('coa_id', $sale->id)->sum('grand_total');
 
@@ -742,9 +721,9 @@ class ReportController extends Controller
             }
 
             $table .= '<tr width="100%">
-                           <td width="50%">' . $sale->name . '</td>
-                           <td width="25%" class="text-right">' . $setBracket . $amountDebitSum . $setBracket2 . '</td>
-                           <td width="25%" class="text-right">' . $netSalesAmount . '</td>
+                           <td width="50%">'.$sale->name.'</td>
+                           <td width="25%" class="text-right">'.$setBracket.$amountDebitSum.$setBracket2.'</td>
+                           <td width="25%" class="text-right">'.$netSalesAmount.'</td>
                        </tr>';
         }
 
@@ -764,7 +743,7 @@ class ReportController extends Controller
 
         $table .= '<tr class=" text-center font-weight-bold"><td colspan="3"> Expenditure </td></tr>';
 
-        foreach ($allpurchases as $key =>  $purchase) {
+        foreach ($allpurchases as $key => $purchase) {
             $purchaseAmounts = DB::table('tbl_acc_voucher_details')
                 ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
                 ->select('tbl_acc_voucher_details.*', 'tbl_acc_vouchers.transaction_date', 'tbl_acc_vouchers.type')
@@ -780,7 +759,7 @@ class ReportController extends Controller
             $setBracket = '';
             $setBracket2 = '';
             $totalPurchaseReturnAmount = 0;
-            if ($purchase->slug == "purchase-return") {
+            if ($purchase->slug == 'purchase-return') {
                 $amountSum = Purchase_Return::whereBetween('purchase_return_date', [$date_from, $date_to])->where('deleted', 'No')->where('coa_id', $purchase->id)->sum('grand_total');
                 $totalPurchaseReturnAmount = $amountSum;
                 $setBracket = '(';
@@ -792,9 +771,9 @@ class ReportController extends Controller
             }
 
             $table .= '<tr  width="100%">
-                           <td width="50%">' . $purchase->name . '</td>
-                           <td width="25%" class="text-right">' . $setBracket . $amountSum . $setBracket2 . '</td>
-                           <td width="25%" class="text-right">' . $netPurchaseAmount . '</td>
+                           <td width="50%">'.$purchase->name.'</td>
+                           <td width="25%" class="text-right">'.$setBracket.$amountSum.$setBracket2.'</td>
+                           <td width="25%" class="text-right">'.$netPurchaseAmount.'</td>
                         </tr>';
             if ($purchase->id != 43) {
                 $purchaseSum += $amountSum;
@@ -806,7 +785,7 @@ class ReportController extends Controller
         $expenseSum = 0;
         $totalExpenses = 0;
         $count = count($allExpense) - 1;
-        foreach ($allExpense as $key =>  $expense) {
+        foreach ($allExpense as $key => $expense) {
             $incomeAmounts = DB::table('tbl_acc_voucher_details')
                 ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
                 ->select('tbl_acc_voucher_details.*', 'tbl_acc_vouchers.transaction_date', 'tbl_acc_vouchers.type')
@@ -826,9 +805,9 @@ class ReportController extends Controller
             }
 
             $table .= '<tr>
-                           <td width="50%">' . $expense->name . '</td>
-                           <td width="25%" class="text-right">' . number_format($amountSum) . '</td>
-                           <td width="25%" class="text-right">' . $tempTotalExpenses . '</td>
+                           <td width="50%">'.$expense->name.'</td>
+                           <td width="25%" class="text-right">'.number_format($amountSum).'</td>
+                           <td width="25%" class="text-right">'.$tempTotalExpenses.'</td>
                         </tr>';
             $expenseSum += $amountSum;
         }
@@ -845,10 +824,10 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr class=" font-weight-bold">
                                         <td width="65%">Total Income: </td>
-                                        <td width="35%" class="text-right">' . number_format($totalIncomeWithOpening) . '</td>
+                                        <td width="35%" class="text-right">'.number_format($totalIncomeWithOpening).'</td>
 
                                         <td width="70%">Total Expense: </td>
-                                        <td width="30%" class="text-right font-weight-bold">' . number_format($totalExpense) . '</td>
+                                        <td width="30%" class="text-right font-weight-bold">'.number_format($totalExpense).'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -868,9 +847,9 @@ class ReportController extends Controller
 
         $totalIncomeWithDue = $totalIncomeWithOpening - $incomeClosing;
         $totalExpenseWithDue = $totalExpense + $expenseClosing;
-        $clss = "bg-success";
+        $clss = 'bg-success';
         if ($totalIncomeWithOpening < $totalExpense) {
-            $clss = "bg-danger";
+            $clss = 'bg-danger';
         }
         $table .= '<tr>
                         <td>
@@ -878,13 +857,12 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr class="font-weight-bold">
                                         <td width="70%">Balance Closing: </td>
-                                        <td width="30%" class="text-right"><strong>' . number_format($expenseClosing) . '</strong></td>
+                                        <td width="30%" class="text-right"><strong>'.number_format($expenseClosing).'</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </td>
                     </tr>';
-
 
         // Start Voucher Section
         $voucherSummary = DB::table('payment_vouchers')
@@ -907,15 +885,15 @@ class ReportController extends Controller
                             <tbody>
                                 <tr class="">
                                     <td width="70%"> Voucher Recipient </td>
-                                    <td width="30%" class="text-right"><strong>' . number_format($voucherSummary->totalVoucherRcvAmount) . '</strong></td>
+                                    <td width="30%" class="text-right"><strong>'.number_format($voucherSummary->totalVoucherRcvAmount).'</strong></td>
                                 </tr>
                                 <tr class="">
                                     <td width="70%"> Payment Voucher </td>
-                                    <td width="30%" class="text-right"><strong>' .  number_format($voucherSummary->totalVoucherPaymentAmount)  . '</strong></td>
+                                    <td width="30%" class="text-right"><strong>'.number_format($voucherSummary->totalVoucherPaymentAmount).'</strong></td>
                                 </tr>
                                 <tr class="">
                                     <td width="70%"> Cash In Hand </td>
-                                    <td width="30%" class="text-right"><strong>' . number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)) . '</strong></td>
+                                    <td width="30%" class="text-right"><strong>'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -925,11 +903,11 @@ class ReportController extends Controller
 
         $lastTwoChar = substr(($date_to), -2);
         $time = strtotime($date_to);
-        $month = date("F", $time);
-        $year = date("Y", $time);
-        $monthYear = date("F Y", $time);
+        $month = date('F', $time);
+        $year = date('Y', $time);
+        $monthYear = date('F Y', $time);
 
-        $month_value = date("m", strtotime($month));
+        $month_value = date('m', strtotime($month));
         $month_days_count = cal_days_in_month(CAL_GREGORIAN, $month_value, $year);
 
         if ($lastTwoChar == $month_days_count) {
@@ -939,12 +917,12 @@ class ReportController extends Controller
         }
         $pdf = '';
         $pdf = '<button class="btn btn-primary mt-2" onclick="generateAccountsSummaryPdf()"><i class="fas fa-print"></i> Print PDF</button>';
-        $data = array(
+        $data = [
             'table' => $table,
             'date_from' => $date_from,
             'date_to' => $date_to,
 
-        );
+        ];
 
         $pdf = PDF::loadView(
             'admin.reports.accountsSummaryPdf',
@@ -953,19 +931,17 @@ class ReportController extends Controller
                 'monthYear' => $monthYear,
             ]
         );
-        return $pdf->stream('accounts-summary-pdf.pdf', array("Attachment" => false));
 
-        ////////////////===========================End===========================================////////////////
+        return $pdf->stream('accounts-summary-pdf.pdf', ['Attachment' => false]);
+
+        // //////////////===========================End===========================================////////////////
     }
-
-
 
     public function dailyAccountsLedger()
     {
         $lastDailyReport = DailyReport::where('deleted', 'No')->where('status', 'Active')->get()->last();
         if ($lastDailyReport != '') {
             $date = $lastDailyReport->date;
-
 
             $checkTransaction = DB::table('payment_vouchers')
                 ->join('daily_reports', 'payment_vouchers.paymentDate', '!=', 'daily_reports.date')
@@ -992,15 +968,15 @@ class ReportController extends Controller
         } else {
             $dateArray = [];
         }
+
         return view('admin.reports.accountsDailySummary', ['dateArray' => $dateArray]);
 
     }
 
-
     public function getDailyReport(Request $request)
     {
         $date = $request->date;
-        $minusDaysFromDate =  date_create($date)->modify('-1 days')->format('Y-m-d');
+        $minusDaysFromDate = date_create($date)->modify('-1 days')->format('Y-m-d');
 
         $openingData = DailyReport::where('deleted', 'No')->where('date', '<', $date)->orderBy('date', 'DESC')->first();
         if ($openingData != null) {
@@ -1009,7 +985,7 @@ class ReportController extends Controller
             $lastDailyReport = 0;
         }
 
-        //-----today payment, expense , payment received-------//
+        // -----today payment, expense , payment received-------//
         $todayReport = DB::table('payment_vouchers')
             ->leftjoin('purchases', 'payment_vouchers.purchase_id', '=', 'purchases.id')
             ->leftjoin('sales', 'payment_vouchers.sales_id', '=', 'sales.id')
@@ -1031,15 +1007,15 @@ class ReportController extends Controller
         $expanseAmount = 0;
 
         foreach ($todayReport as $report) {
-            if ($report->purchase_id > 0 && $report->type == "Payment") {
+            if ($report->purchase_id > 0 && $report->type == 'Payment') {
                 $purchasePaymentTotal += $report->amount;
-            } else if ($report->expense_id > 0 && $report->type == "Payment") {
+            } elseif ($report->expense_id > 0 && $report->type == 'Payment') {
                 $expanseAmount += $report->amount;
-            } else if ($report->sales_id > 0 && $report->type == "Payment Received") {
+            } elseif ($report->sales_id > 0 && $report->type == 'Payment Received') {
                 $saleReceivedTotal += $report->amount;
-            } else if ($report->type == "Payment") {
+            } elseif ($report->type == 'Payment') {
                 $paymentVoucher += $report->amount;
-            } else if ($report->type == "Payment Received") {
+            } elseif ($report->type == 'Payment Received') {
                 $paymentReceivedVoucher += $report->amount;
             }
         }
@@ -1047,72 +1023,68 @@ class ReportController extends Controller
         $todayBalance = ($saleReceivedTotal + $paymentReceivedVoucher) - ($TotalPayment + $expanseAmount);
         $todayReportArray = [$purchasePaymentTotal, $saleReceivedTotal, $expanseAmount,  $todayBalance];
 
-
-        $todayReportTable = '<tr><td>Purchase Payment(-)</td><td>' . number_format($TotalPayment, 2) . '</td></tr>
-       <tr><td>Expense(-)</td><td>' . number_format($expanseAmount, 2) . '</td></tr>
-       <tr><td>Payment Received(+)</td><td>' . number_format($saleReceivedTotal + $paymentReceivedVoucher, 2) . '</td></tr>
-       <tr><td>Balance </td><td>' . number_format($todayBalance, 2) . '</td></tr>';
-        //-----End today payment, expense , payment received-------//
+        $todayReportTable = '<tr><td>Purchase Payment(-)</td><td>'.number_format($TotalPayment, 2).'</td></tr>
+       <tr><td>Expense(-)</td><td>'.number_format($expanseAmount, 2).'</td></tr>
+       <tr><td>Payment Received(+)</td><td>'.number_format($saleReceivedTotal + $paymentReceivedVoucher, 2).'</td></tr>
+       <tr><td>Balance </td><td>'.number_format($todayBalance, 2).'</td></tr>';
+        // -----End today payment, expense , payment received-------//
 
         return response()->json([$todayReportTable, $lastDailyReport, $todayReportArray]);
     }
-  
+
     public function saveTodayReport(Request $request)
     {
-       DB::beginTransaction();
-       try {
- 
-          $date = $request->date;
- 
-          $dailyReport = DailyReport::where('date', $date)->where('deleted', 'No')->where('status', 'Active')->get()->last();
-          if ($dailyReport) {
-             $dailyReportId = $dailyReport->id;
-             $isTodayDate = $dailyReport->date;
-             if ($isTodayDate = $date) {
-                $dailyReport = DailyReport::find($dailyReportId);
+        DB::beginTransaction();
+        try {
+
+            $date = $request->date;
+
+            $dailyReport = DailyReport::where('date', $date)->where('deleted', 'No')->where('status', 'Active')->get()->last();
+            if ($dailyReport) {
+                $dailyReportId = $dailyReport->id;
+                $isTodayDate = $dailyReport->date;
+                if ($isTodayDate = $date) {
+                    $dailyReport = DailyReport::find($dailyReportId);
+                    $dailyReport->date = $date;
+                    $dailyReport->previous_closing = $request->openingBalance; // (previous) openingBalance as (today) previous_closing
+                    $dailyReport->today_closing = $request->totalAmount; // today credit
+                    $dailyReport->opening_balance = $request->closingAmount;
+                    $dailyReport->created_at = Carbon::now();
+                    $dailyReport->created_by = auth()->user()->id;
+                    $dailyReport->save();
+                }
+            } else {
+                $dailyReport = new DailyReport;
                 $dailyReport->date = $date;
-                $dailyReport->previous_closing = $request->openingBalance; //(previous) openingBalance as (today) previous_closing
+                $dailyReport->previous_closing = $request->openingBalance; // (previous) openingBalance as (today) previous_closing
                 $dailyReport->today_closing = $request->totalAmount; // today credit
                 $dailyReport->opening_balance = $request->closingAmount;
+                $dailyReport->status = 'Active';
+                $dailyReport->deleted = 'No';
                 $dailyReport->created_at = Carbon::now();
                 $dailyReport->created_by = auth()->user()->id;
                 $dailyReport->save();
-             }
-          } else {
-             $dailyReport = new DailyReport();
-             $dailyReport->date =  $date;
-             $dailyReport->previous_closing = $request->openingBalance; //(previous) openingBalance as (today) previous_closing
-             $dailyReport->today_closing = $request->totalAmount; // today credit
-             $dailyReport->opening_balance = $request->closingAmount;
-             $dailyReport->status = "Active";
-             $dailyReport->deleted = "No";
-             $dailyReport->created_at = Carbon::now();
-             $dailyReport->created_by = auth()->user()->id;
-             $dailyReport->save();
-          }
- 
-          DB::commit();
-          return response()->json(['success' => "report saved successfully."]);
-       } catch (Exception $e) {
-          DB::rollBack();
-          return response()->json(['error' => 'report rollBack ' . $e]);
-       }
+            }
+
+            DB::commit();
+
+            return response()->json(['success' => 'report saved successfully.']);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['error' => 'report rollBack '.$e]);
+        }
     }
- 
-
-
-
 
     public function generateDailySummaryReport(Request $request)
     {
 
         $time = strtotime($request->date_from);
-        $month = date("m", $time);
-        $year = date("Y", $time);
-        $day = date("d", $time);
+        $month = date('m', $time);
+        $year = date('Y', $time);
+        $day = date('d', $time);
 
-        $date =  $year . '-' . $month . '-' . $day;
-
+        $date = $year.'-'.$month.'-'.$day;
 
         $income = ChartOfAccounts::where('name', '=', 'Income')->where('deleted', 'No')->first();
         $incomeId = $income->id;
@@ -1133,7 +1105,6 @@ class ReportController extends Controller
         $purchaseId = $purchase->id;
         $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get();
 
-
         $backDate = DailyReport::where('date', '<', $date)
             ->where('deleted', '=', 'No')
             ->where('status', '=', 'Active')
@@ -1142,9 +1113,8 @@ class ReportController extends Controller
         if ($backDate != null) {
             $backDateFrom = $backDate->date;
         } else {
-            $backDateFrom = date('Y-m-d', strtotime($date . ' -1 day'));
+            $backDateFrom = date('Y-m-d', strtotime($date.' -1 day'));
         }
-
 
         $CashInHandFrom = DB::table('tbl_acc_voucher_details')
             ->join('tbl_acc_vouchers', 'tbl_acc_voucher_details.tbl_acc_voucher_id', '=', 'tbl_acc_vouchers.id')
@@ -1182,7 +1152,7 @@ class ReportController extends Controller
         }
         $openingCash = $salesCashFrom - $salesCashTo;
         $todayDateHeader = '';
-        $todayDateHeader .= '<h4>Accounts summary of ' . $date . '</h4>';
+        $todayDateHeader .= '<h4>Accounts summary of '.$date.'</h4>';
         $table = '';
         $closingBtn = '';
         $table .= '<table class="table table-bordered table-hover dataTable no-footer"  width="100%">
@@ -1191,10 +1161,9 @@ class ReportController extends Controller
                             <table class="table table-bordered table-hover dataTable no-footer">
                             <tbody>';
 
-
         $table .= '<tr>
                                             <td width="70%">Cash in hand</td>
-                                            <td width="30%" class="text-right"><input type="hidden" id="previousDayClosing" value=' . $openingbalance . '>' . number_format($openingbalance) . '</td>
+                                            <td width="30%" class="text-right"><input type="hidden" id="previousDayClosing" value='.$openingbalance.'>'.number_format($openingbalance).'</td>
                                         </tr>';
         $totalIncome = 0;
         foreach ($allIncomes as $income) {
@@ -1213,15 +1182,13 @@ class ReportController extends Controller
             }
 
             $table .= '<tr>
-                                                <td width="70%">' . $income->name . '</td>
-                                                <td width="30%" class="text-right">' . number_format($amountDebitSum) . '</td>
+                                                <td width="70%">'.$income->name.'</td>
+                                                <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
                                             </tr>';
             $totalIncome += $amountDebitSum;
         }
 
-
-
-        // 
+        //
         $totalSales = 0;
         foreach ($allsales as $sale) {
             $saleAmounts = DB::table('tbl_acc_voucher_details')
@@ -1237,15 +1204,13 @@ class ReportController extends Controller
                 $amountDebitSum += $amount->debit;
             }
             $table .= '<tr>
-                                                <td width="70%">' . $sale->name . '</td>
-                                                <td width="30%" class="text-right">' . number_format($amountDebitSum) . '</td>
+                                                <td width="70%">'.$sale->name.'</td>
+                                                <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
                                             </tr>';
             $totalSales += $amountDebitSum;
         }
 
-
         $totalIncomeWithOpening = $openingbalance + $totalIncome + $totalSales;
-
 
         $table .= '</tbody>
                             </table>
@@ -1262,10 +1227,10 @@ class ReportController extends Controller
             ->get();
         foreach ($billpayments as $bill) {
             $billAmount += $bill->amount;
-        };
+        }
         $table .= '<tr>
                                                 <td width="70%">Bill</td>
-                                                <td width="30%" class="text-right">' . number_format($billAmount) . '</td>
+                                                <td width="30%" class="text-right">'.number_format($billAmount).'</td>
                                             </tr>';
 
         $purchaseSum = 0;
@@ -1284,8 +1249,8 @@ class ReportController extends Controller
             }
 
             $table .= '<tr>
-                                                <td width="70%">' . $purchase->name . '</td>
-                                                <td width="30%" class="text-right">' . number_format($amountSum) . '</td>
+                                                <td width="70%">'.$purchase->name.'</td>
+                                                <td width="30%" class="text-right">'.number_format($amountSum).'</td>
                                             </tr>';
             $purchaseSum += $amountSum;
         }
@@ -1307,8 +1272,8 @@ class ReportController extends Controller
             }
 
             $table .= '<tr>
-                                                <td width="70%">' . $expense->name . '</td>
-                                                <td width="30%" class="text-right">' . number_format($amountSum) . '</td>
+                                                <td width="70%">'.$expense->name.'</td>
+                                                <td width="30%" class="text-right">'.number_format($amountSum).'</td>
                                             </tr>';
             $expenseSum += $amountSum;
         }
@@ -1324,7 +1289,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total Income: </td>
-                                        <td width="30%" class="text-right">' . number_format($totalIncomeWithOpening) . '</td>
+                                        <td width="30%" class="text-right">'.number_format($totalIncomeWithOpening).'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1334,7 +1299,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total Expense: </td>
-                                        <td width="30%" class="text-right">' . number_format($totalExpense) . '</td>
+                                        <td width="30%" class="text-right">'.number_format($totalExpense).'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1357,8 +1322,8 @@ class ReportController extends Controller
                             <table class="table table-bordered table-hover dataTable no-footer">
                                 <tbody>
                                     <tr>
-                                        <td width="70%">Balance Closing: </td> <input type="hidden" id="due" value=' . $due . '>
-                                        <td width="30%" class="text-right">' . number_format($incomeClosing) . Session::get('companySettings')[0]['currency'] . '</td>
+                                        <td width="70%">Balance Closing: </td> <input type="hidden" id="due" value='.$due.'>
+                                        <td width="30%" class="text-right">'.number_format($incomeClosing).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1368,7 +1333,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Balance Closing: </td>
-                                        <td width="30%" class="text-right">' . number_format($expenseClosing) . Session::get('companySettings')[0]['currency'] . '</td>
+                                        <td width="30%" class="text-right">'.number_format($expenseClosing).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1382,7 +1347,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total : </td>
-                                        <td width="30%" class="text-right">' . number_format($totalIncomeWithDue) . Session::get('companySettings')[0]['currency'] . '</td>
+                                        <td width="30%" class="text-right">'.number_format($totalIncomeWithDue).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1392,7 +1357,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total : </td>
-                                        <td width="30%" class="text-right">' . number_format($totalExpenseWithDue) . Session::get('companySettings')[0]['currency'] . '</td>
+                                        <td width="30%" class="text-right">'.number_format($totalExpenseWithDue).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1401,11 +1366,11 @@ class ReportController extends Controller
                 </table>';
         $lastTwoChar = substr(($request->date_to), -2);
         $time = strtotime($request->date_to);
-        $month = date("F", $time);
-        $year = date("Y", $time);
-        $monthYear = date("F Y", $time);
+        $month = date('F', $time);
+        $year = date('Y', $time);
+        $monthYear = date('F Y', $time);
 
-        $month_value = date("m", strtotime($month));
+        $month_value = date('m', strtotime($month));
         $month_days_count = cal_days_in_month(CAL_GREGORIAN, $month_value, $year);
 
         /* if($lastTwoChar == $month_days_count){ */
@@ -1415,17 +1380,15 @@ class ReportController extends Controller
             } */
         $pdf = '';
         $pdf = '<button class="btn btn-primary" onclick="generateAccountsSummaryPdf()"><i class="fas fa-print"></i> Print PDF</button>';
-        $data = array(
+        $data = [
             'table' => $table,
             'todayDateHeader' => $todayDateHeader,
             'closingBtn' => $closingBtn,
-            'pdf' => $pdf
-        );
+            'pdf' => $pdf,
+        ];
+
         return $data;
     }
-
-
-
 
     public function closingDayBalanceStore(Request $request)
     {
@@ -1441,9 +1404,10 @@ class ReportController extends Controller
             $checkPreviousDate->opening_balance = $request->presentClosingBalance;
             $checkPreviousDate->last_updated_by = Auth::user()->id;
             $checkPreviousDate->save();
+
             return response()->json(['success' => 'Closing balance updated successfully']);
         } else {
-            $closing = new DailyReport();
+            $closing = new DailyReport;
             $closing->date = $date;
             $closing->previous_closing = $request->previousDayClosing;
             $closing->opening_balance = $request->presentClosingBalance;
@@ -1452,20 +1416,18 @@ class ReportController extends Controller
             $closing->deleted = 'No';
             $closing->status = 'Active';
             $closing->save();
+
             return response()->json(['success' => 'Closing balance saved successfully']);
         }
     }
-
-
-
 
     public function generateDailyAccountsSummaryPdf($date)
     {
 
         $time = strtotime($date);
-        $month = date("m", $time);
-        $year = date("Y", $time);
-        $day = date("d", $time);
+        $month = date('m', $time);
+        $year = date('Y', $time);
+        $day = date('d', $time);
 
         $income = ChartOfAccounts::where('name', '=', 'Income')->first();
         $incomeId = $income->id;
@@ -1483,7 +1445,6 @@ class ReportController extends Controller
         $purchaseId = $purchase->id;
         $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->get();
 
-
         $backDate = DailyReport::where('date', '<', $date)
             ->where('deleted', '=', 'No')
             ->where('status', '=', 'Active')
@@ -1492,9 +1453,8 @@ class ReportController extends Controller
         if ($backDate != null) {
             $backDateFrom = $backDate->date;
         } else {
-            $backDateFrom = date('Y-m-d', strtotime($date . ' -1 day'));
+            $backDateFrom = date('Y-m-d', strtotime($date.' -1 day'));
         }
-
 
         /* start from here */
         $openings = DailyReport::where('date', '=', $backDateFrom)->where('deleted', '=', 'No')->where('status', '=', 'Active')->first();
@@ -1540,10 +1500,7 @@ class ReportController extends Controller
         $billAmount = 0;
         foreach ($billpayments as $bill) {
             $billAmount += $bill->amount;
-        };
-
-
-
+        }
 
         $pdf = PDF::loadView(
             'admin.reports.accountsDailySummaryPdf',
@@ -1558,36 +1515,14 @@ class ReportController extends Controller
                 'allExpense' => $allExpense,
             ]
         );
-        return $pdf->stream('accounts-daily-summary-pdf.pdf', array("Attachment" => false));
+
+        return $pdf->stream('accounts-daily-summary-pdf.pdf', ['Attachment' => false]);
     }
-
-
-
-
-
-
-
-
-
-
 
     public function dailyServiceLedgerReport()
     {
         return view('admin.reports.serviceCenterDailySummary');
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function generateDailyServiceReport(Request $request)
     {
@@ -1624,14 +1559,14 @@ class ReportController extends Controller
         foreach ($complete_orders as $order) {
             $coa = ChartOfAccounts::find($order->category);
             $table .= '<tr>
-                        <td>' . $i++ . '</td>
-                        <td>' . $order->sale_no . '</td>
-                        <td>' . $coa->name . '</td>
-                        <td>Name: ' . $order->partyName . '<br>Contact: ' . $order->contact . '</td>
-                        <td class="text-right">' . number_format($order->grand_total) . ' ' . session::get('companySettings')[0]['currency'] . '</td>
-                        <td class="text-right">' . number_format($order->final_sale_amount) . ' ' . session::get('companySettings')[0]['currency'] . '</td>
-                        <td class="text-right">' . number_format(($order->grand_total) - ($order->final_sale_amount)) . ' ' . session::get('companySettings')[0]['currency'] . '</td>
-                        <td class="text-center">' . $order->order_status . '</td>
+                        <td>'.$i++.'</td>
+                        <td>'.$order->sale_no.'</td>
+                        <td>'.$coa->name.'</td>
+                        <td>Name: '.$order->partyName.'<br>Contact: '.$order->contact.'</td>
+                        <td class="text-right">'.number_format($order->grand_total).' '.Session::get('companySettings')[0]['currency'].'</td>
+                        <td class="text-right">'.number_format($order->final_sale_amount).' '.Session::get('companySettings')[0]['currency'].'</td>
+                        <td class="text-right">'.number_format(($order->grand_total) - ($order->final_sale_amount)).' '.Session::get('companySettings')[0]['currency'].'</td>
+                        <td class="text-center">'.$order->order_status.'</td>
                     </tr>';
             $total_amount_sum += $order->grand_total;
             $total_sale_amount_sum += $order->final_sale_amount;
@@ -1639,18 +1574,15 @@ class ReportController extends Controller
 
         $table .= '<tr>
                         <td colspan="4" class="text-right"><b>Total: </b></td>
-                        <td class="text-right"><b>' . number_format($total_amount_sum) . ' ' . session::get('companySettings')[0]['currency'] . '</b></td>
-                        <td class="text-right"><b>' . number_format($total_sale_amount_sum) . ' ' . session::get('companySettings')[0]['currency'] . '</b></td>
-                        <td class="text-right"><b>' . number_format(($total_amount_sum - $total_sale_amount_sum)) . ' ' . session::get('companySettings')[0]['currency'] . '</b></td>
+                        <td class="text-right"><b>'.number_format($total_amount_sum).' '.Session::get('companySettings')[0]['currency'].'</b></td>
+                        <td class="text-right"><b>'.number_format($total_sale_amount_sum).' '.Session::get('companySettings')[0]['currency'].'</b></td>
+                        <td class="text-right"><b>'.number_format(($total_amount_sum - $total_sale_amount_sum)).' '.Session::get('companySettings')[0]['currency'].'</b></td>
                         <td></td>
                   </tr>';
 
         $table .= '</tbody>';
 
-
         $table .= '</table>';
-
-
 
         $table .= '<h3 class="text-center" style="padding-top:30px;">Other Jobs</h3>';
         $table .= '<table class="table table-bordered table-hover dataTable no-footer">';
@@ -1683,26 +1615,23 @@ class ReportController extends Controller
         foreach ($other_orders as $order) {
             $coa = ChartOfAccounts::find($order->category);
             $table .= '<tr>
-                    <td>' . $i++ . '</td>
-                    <td>' . $order->sale_no . '</td>
-                    <td>' . $coa->name . '</td>
-                    <td>Name: ' . $order->partyName . '<br>Contact: ' . $order->contact . '</td>
-                    <td class="text-right">' . $order->grand_total . ' ' . session::get('companySettings')[0]['currency'] . '</td>
-                    <td class="text-center">' . $order->order_status . '</td>
+                    <td>'.$i++.'</td>
+                    <td>'.$order->sale_no.'</td>
+                    <td>'.$coa->name.'</td>
+                    <td>Name: '.$order->partyName.'<br>Contact: '.$order->contact.'</td>
+                    <td class="text-right">'.$order->grand_total.' '.Session::get('companySettings')[0]['currency'].'</td>
+                    <td class="text-center">'.$order->order_status.'</td>
                     <td></td>
             </tr>';
             $totalSum += $order->grand_total;
         }
         $table .= '<tr> 
                     <td colspan="4" class="text-right"><b>Total : </b></td>
-                    <td class="text-right">' . number_format($totalSum) . ' ' . session::get('companySettings')[0]['currency'] . '</td>
+                    <td class="text-right">'.number_format($totalSum).' '.Session::get('companySettings')[0]['currency'].'</td>
                     <td colspan="2" ></td>
                 </tr>';
         $table .= '<tbody>';
         $table .= '</table>';
-
-
-
 
         $table .= '<h3 class="text-center" style="padding-top:30px;">WI Sales</h3>';
         $table .= '<table class="table table-bordered table-hover dataTable no-footer">';
@@ -1732,26 +1661,23 @@ class ReportController extends Controller
         $paidTotalSum = 0;
         foreach ($sales as $sale) {
             $table .= '<tr>
-                <td>' . $i++ . '</td>
-                <td class="text-center">' . $sale->sale_no . '</td>
-                <td class="text-center">' . $sale->coaName . '</td>
-                <td >Name: ' . $sale->partyName . '<br>Contact: ' . $sale->contact . '</td>
-                <td class="text-right">' . $sale->grand_total . ' ' . session::get('companySettings')[0]['currency'] . '</td>
-                <td class="text-right">' . $sale->current_payment . ' ' . session::get('companySettings')[0]['currency'] . '</td>
+                <td>'.$i++.'</td>
+                <td class="text-center">'.$sale->sale_no.'</td>
+                <td class="text-center">'.$sale->coaName.'</td>
+                <td >Name: '.$sale->partyName.'<br>Contact: '.$sale->contact.'</td>
+                <td class="text-right">'.$sale->grand_total.' '.Session::get('companySettings')[0]['currency'].'</td>
+                <td class="text-right">'.$sale->current_payment.' '.Session::get('companySettings')[0]['currency'].'</td>
             </tr>';
             $grandTotalSum += $sale->grand_total;
             $paidTotalSum += $sale->current_payment;
         }
         $table .= '<tr>
                 <td colspan="4" class="text-right">Total :</td>
-                <td class="text-right">' . $grandTotalSum . ' ' . session::get('companySettings')[0]['currency'] . '</td>
-                <td class="text-right">' . $paidTotalSum . ' ' . session::get('companySettings')[0]['currency'] . '</td>
+                <td class="text-right">'.$grandTotalSum.' '.Session::get('companySettings')[0]['currency'].'</td>
+                <td class="text-right">'.$paidTotalSum.' '.Session::get('companySettings')[0]['currency'].'</td>
             </tr>';
         $table .= '</tbody>';
         $table .= '</table>';
-
-
-
 
         $coas = ChartOfAccounts::where('parent_id', '=', 31)->where('name', '!=', 'Sales')->get();
         $table .= '<h3 class="text-center" style="padding-top:30px;">Total Jobs</h3>';
@@ -1776,31 +1702,26 @@ class ReportController extends Controller
             $totalCompleted = SaleOrder::where('order_status', '=', 'Completed')->where('category', '=', $coa->id)->where('completed_date', '=', $request->date_from)->count();
 
             $table .= '<tr>
-                <td>' . $coa->name . '</td>
-                <td class="text-center">' . $totalPending . '</td>
-                <td class="text-center">' . $totalServicing . '</td>
-                <td class="text-center">' . $totalReady . '</td>
-                <td class="text-center">' . $totalDelivered . '</td>
-                <td class="text-center">' . $totalCompleted . '</td>
+                <td>'.$coa->name.'</td>
+                <td class="text-center">'.$totalPending.'</td>
+                <td class="text-center">'.$totalServicing.'</td>
+                <td class="text-center">'.$totalReady.'</td>
+                <td class="text-center">'.$totalDelivered.'</td>
+                <td class="text-center">'.$totalCompleted.'</td>
             </tr>';
         }
         $table .= '</tbody>';
         $table .= '</table>';
 
-
         $pdfButton .= '<br><button class="btn btn-primary" onclick="generatePdf()"><i class="fas fa-print"></i> Generate</button>';
 
-        $array = array('table' => $table, 'pdf' => $pdfButton);
+        $array = ['table' => $table, 'pdf' => $pdfButton];
 
         return $array;
     }
 
-
-
-
     public function ServiceLedgerReportPdf($date)
     {
-
 
         $orders = DB::table('sale_orders')
             ->leftjoin('parties', 'sale_orders.customer_id', '=', 'parties.id')
@@ -1820,16 +1741,16 @@ class ReportController extends Controller
             ->where('sale_orders.status', '=', 'Active')
             ->get();
 
-
         $coas = ChartOfAccounts::where('parent_id', '=', 31)->where('name', '!=', 'Sales')->get();
         $pdf = PDF::loadView(
             'admin.reports.serviceCenterDailyPdf',
             [
                 'orders' => $orders, 'date' => $date,
                 'other_orders' => $other_orders,
-                'coas' => $coas
+                'coas' => $coas,
             ]
         );
-        return $pdf->stream('accounts-daily-summary-pdf.pdf', array("Attachment" => false));
+
+        return $pdf->stream('accounts-daily-summary-pdf.pdf', ['Attachment' => false]);
     }
 }

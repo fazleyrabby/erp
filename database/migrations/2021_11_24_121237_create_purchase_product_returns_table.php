@@ -25,8 +25,8 @@ class CreatePurchaseProductReturnsTable extends Migration
             $table->biginteger('unit_price')->nullable();
             $table->biginteger('total_price')->nullable();
             // Common Fields
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

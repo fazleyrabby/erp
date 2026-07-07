@@ -19,16 +19,16 @@ class CreatePurchaseProductsTable extends Migration
             $table->biginteger('product_id');
             $table->biginteger('warehouse_id');
             $table->biginteger('unit_id');
-            $table->decimal('unit_price',12,2);
+            $table->decimal('unit_price', 12, 2);
             $table->integer('quantity');
             $table->biginteger('lot_no');
-            $table->decimal('subtotal',12,2);
+            $table->decimal('subtotal', 12, 2);
             $table->date('expired_date')->nullable();
             $table->biginteger('sell_quantity')->default(0);
-            
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('sell_status',['On','Off'])->default('On');
-            $table->enum('deleted',['Yes','No'])->default('No');
+
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('sell_status', ['On', 'Off'])->default('On');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

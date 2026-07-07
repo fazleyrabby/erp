@@ -22,8 +22,8 @@ class CreateDamageProductsTable extends Migration
             $table->date('damage_date');
             $table->string('damage_order_no')->nullable();
             // Common Fields
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

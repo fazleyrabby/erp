@@ -16,8 +16,8 @@ class CreateExpenseTypesTable extends Migration
         Schema::create('expense_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->nullable();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

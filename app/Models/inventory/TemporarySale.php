@@ -10,7 +10,6 @@ class TemporarySale extends Model
     use HasFactory;
 
     protected $table = 'tbl_temporary_sale';
+
     public $timestamps = false;
-
-
 }

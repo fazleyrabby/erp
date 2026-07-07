@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -16,12 +15,12 @@ class RolePermissionSeeder extends Seeder
      */
     public function run()
     {
-        //Create Role
+        // Create Role
         $roleSuperAdmin = Role::create(['name' => 'Super Admin']);
         $roleManager = Role::create(['name' => 'Manager']);
         $roleSalesMan = Role::create(['name' => 'Sales Man']);
 
-        //Create Permissions
+        // Create Permissions
         $permissions = [
 
             'dashboard.view',
@@ -102,7 +101,7 @@ class RolePermissionSeeder extends Seeder
             'transport.edit',
             'transport.update',
             'transport.delete',
-            
+
             'PaymentVoucher.view',
             'PaymentVoucher.store',
             'PaymentVoucher.edit',
@@ -120,7 +119,6 @@ class RolePermissionSeeder extends Seeder
             'DiscountVoucher.edit',
             'DiscountVoucher.update',
             'DiscountVoucher.delete',
-            
 
             'sale.service.view',
             'sale.service.add',
@@ -128,16 +126,15 @@ class RolePermissionSeeder extends Seeder
             'sale.service.statusComplete',
             'sale.service.createOrderToWalkinSale',
 
-
         ];
 
-        //Create Permissions
+        // Create Permissions
         $countLen = count($permissions);
         for ($i = 0; $i < $countLen; $i++) {
-            $permission = Permission::create(['name' =>  $permissions[$i]]);
+            $permission = Permission::create(['name' => $permissions[$i]]);
             $roleSuperAdmin->givePermissionTo($permission);
             $permission->assignRole($roleSuperAdmin);
         }
-        
+
     }
 }

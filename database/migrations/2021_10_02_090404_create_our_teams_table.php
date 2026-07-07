@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateOurTeamsTable extends Migration
 {
@@ -25,10 +25,10 @@ class CreateOurTeamsTable extends Migration
             $table->bigInteger('group_id')->nullable();
             $table->bigInteger('sheet_id')->nullable();
             $table->bigInteger('account_no')->nullable();
-            $table->decimal('amount',12,2)->nullable();
-            $table->decimal('laundry',12,2)->nullable();
-            $table->decimal('phone_bill',12,2)->nullable();
-            $table->decimal('ta_da' ,12,2)->nullable();
+            $table->decimal('amount', 12, 2)->nullable();
+            $table->decimal('laundry', 12, 2)->nullable();
+            $table->decimal('phone_bill', 12, 2)->nullable();
+            $table->decimal('ta_da', 12, 2)->nullable();
             $table->longtext('address')->nullable();
             $table->string('member_image')->nullable();
             $table->string('job_location')->nullable();
@@ -40,13 +40,13 @@ class CreateOurTeamsTable extends Migration
             $table->longtext('short_note')->nullable();
             $table->date('joining_date')->format('d/m/Y')->nullable();
             $table->date('job_left_date')->format('d/m/Y')->nullable();
-            
+
             $table->integer('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
             $table->enum('deleted', ['YES', 'NO']);
             $table->bigInteger('deleted_by')->nullable();
             $table->date('deleted_date')->format('d/m/Y')->nullable();
-            
+
             $table->string('referred_by')->nullable();
             $table->string('status')->nullable();
             $table->decimal('salary', 10, 2)->nullable();

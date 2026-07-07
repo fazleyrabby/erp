@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Accounts\AccountConfiguration;
+use Illuminate\Database\Seeder;
 
 class accountsConfiguration extends Seeder
 {
@@ -21,7 +21,7 @@ class accountsConfiguration extends Seeder
             'Expense',
             'Bank',
             'Sales',
-            'Purchase'
+            'Purchase',
         ];
 
         $coaId = [
@@ -31,18 +31,13 @@ class accountsConfiguration extends Seeder
             '4',
             '5',
             '205',
-            '206'
+            '206',
         ];
 
-        //create permissions
+        // create permissions
         for ($i = 0; $i < count($names); $i++) {
-            $configs = AccountConfiguration::create(['name' =>  $names[$i],'tbl_acc_coa_id'=>$coaId[$i]]);
+            $configs = AccountConfiguration::create(['name' => $names[$i], 'tbl_acc_coa_id' => $coaId[$i]]);
         }
-        
-    }
 
- 
-       
-    
-    
+    }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\PermissionRegistrar;
 
 class CreatePermissionTables extends Migration
@@ -19,10 +19,10 @@ class CreatePermissionTables extends Migration
         $teams = config('permission.teams');
 
         if (empty($tableNames)) {
-            throw new \Exception('Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.');
+            throw new Exception('Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.');
         }
         if ($teams && empty($columnNames['team_foreign_key'] ?? null)) {
-            throw new \Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
+            throw new Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
         }
 
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
@@ -31,8 +31,8 @@ class CreatePermissionTables extends Migration
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->string('group_name')->nullable();
             $table->timestamps();
-            $table->enum('deleted',['Yes','No'])->default('No');
-            $table->enum('status',['Active','Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
             $table->unique(['name', 'guard_name']);
@@ -46,8 +46,8 @@ class CreatePermissionTables extends Migration
             }
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
-            $table->enum('deleted',['Yes','No'])->default('No');
-            $table->enum('status',['Active','Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);
@@ -62,8 +62,8 @@ class CreatePermissionTables extends Migration
             $table->string('model_type');
             $table->unsignedBigInteger($columnNames['model_morph_key']);
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_permissions_model_id_model_type_index');
-            $table->enum('deleted',['Yes','No'])->default('No');
-            $table->enum('status',['Active','Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
 
             $table->foreign(PermissionRegistrar::$pivotPermission)
                 ->references('id')
@@ -88,8 +88,8 @@ class CreatePermissionTables extends Migration
             $table->string('model_type');
             $table->unsignedBigInteger($columnNames['model_morph_key']);
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_roles_model_id_model_type_index');
-            $table->enum('deleted',['Yes','No'])->default('No');
-            $table->enum('status',['Active','Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
 
             $table->foreign(PermissionRegistrar::$pivotRole)
                 ->references('id')
@@ -110,8 +110,8 @@ class CreatePermissionTables extends Migration
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
             $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
-            $table->enum('deleted',['Yes','No'])->default('No');
-            $table->enum('status',['Active','Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
 
             $table->foreign(PermissionRegistrar::$pivotPermission)
                 ->references('id')
@@ -141,7 +141,7 @@ class CreatePermissionTables extends Migration
         $tableNames = config('permission.table_names');
 
         if (empty($tableNames)) {
-            throw new \Exception('Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.');
+            throw new Exception('Error: config/permission.php not found and defaults could not be merged. Please publish the package configuration before proceeding, or drop the tables manually.');
         }
 
         Schema::drop($tableNames['role_has_permissions']);

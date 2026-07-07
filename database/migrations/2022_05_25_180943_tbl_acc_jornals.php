@@ -26,14 +26,14 @@ class TblAccJornals extends Migration
             $table->decimal('voucher_amount')->nullable();
 
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
             $table->dateTime('updated_date')->nullable();
             $table->bigInteger('deleted_by')->nullable();
             $table->dateTime('deleted_date')->nullable();
-           
+
             $table->timestamps();
         });
     }

@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class FinalSalarySheet extends Model
 {
     use HasFactory;
+
     protected $primaryKey = 'saved_sheet_id';
 }

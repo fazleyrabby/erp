@@ -21,8 +21,8 @@ class CreateTblTemporarySaleTable extends Migration
             $table->string('paymentType')->nullable();
             $table->text('inv_remarks')->nullable();
             $table->text('remarks')->nullable();
-            // Common Fields            
-            $table->enum('deleted',['Yes','No'])->default('No');
+            // Common Fields
+            $table->enum('deleted', ['Yes', 'No'])->default('No');
             $table->biginteger('createdBy')->nullable();
             $table->datetime('createdDate')->nullable();
             $table->biginteger('lastUpdatedBy')->nullable();
@@ -34,7 +34,7 @@ class CreateTblTemporarySaleTable extends Migration
             $table->biginteger('tbl_userId')->nullable();
             $table->string('requisitionNo')->nullable();
             $table->biginteger('tbl_wareHouseId')->nullable();
-            $table->enum('status',['Running','Adjusted'])->default('Running');
+            $table->enum('status', ['Running', 'Adjusted'])->default('Running');
             $table->string('referenceInfo')->nullable();
             $table->datetime('dbInsertDate')->nullable();
             $table->biginteger('print_count')->nullable();

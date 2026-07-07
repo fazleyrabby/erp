@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SaleOrderFeedback extends Model
 {
     use HasFactory;
+
     protected $table = 'sale_order_feedbacks';
 }

@@ -14,7 +14,7 @@ class CreateSaleReturnsTable extends Migration
     public function up()
     {
         Schema::create('sale_returns', function (Blueprint $table) {
-            $table->bigIncrements('id'); 
+            $table->bigIncrements('id');
             $table->string('sale_return_no')->nullable();
             $table->string('sale_no')->nullable();
             $table->datetime('sale_return_date')->nullable();
@@ -23,12 +23,12 @@ class CreateSaleReturnsTable extends Migration
             $table->string('customer_id')->nullable();
             $table->biginteger('discount')->nullable();
             $table->biginteger('grand_total')->nullable();
-            $table->enum('status',['Active','Inactive'])->default('Active');
-            $table->enum('deleted',['Yes','No'])->nullable();
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->biginteger('created_by')->nullable();
             $table->biginteger('updated_by')->nullable();
             $table->biginteger('deleted_by')->nullable();
-            $table->datetime('deleted_date')->nullable();           
+            $table->datetime('deleted_date')->nullable();
             $table->timestamps();
         });
     }

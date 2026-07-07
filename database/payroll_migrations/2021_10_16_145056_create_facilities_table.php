@@ -14,13 +14,13 @@ class CreateFacilitiesTable extends Migration
     public function up()
     {
         Schema::create('facilities', function (Blueprint $table) {
-            
+
             $table->bigIncrements('id');
             $table->string('facility_name')->nullable();
             $table->bigInteger('group_id')->nullable();
             $table->string('amount')->nullable();
-            $table->decimal('lower_limit',10,2)->nullable();
-            $table->decimal('upper_limit',10,2)->nullable();
+            $table->decimal('lower_limit', 10, 2)->nullable();
+            $table->decimal('upper_limit', 10, 2)->nullable();
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();

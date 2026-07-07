@@ -2,13 +2,12 @@
 
 namespace App\Providers;
 
-use View;
-use DB;
+use App\Models\CompanySetting;
 use App\Models\Team;
 use App\Policies\TeamPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Models\CompanySetting;
 use Illuminate\Support\Facades\Session;
+use View;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,14 +27,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::composer('auth.login',  function($view){
+        View::composer('auth.login', function ($view) {
 
             $companySettings = CompanySetting::first();
             Session::forget('companySettings');
-            Session::push('companySettings', $companySettings); 
+            Session::push('companySettings', $companySettings);
 
-            $view->with('companySettings',$companySettings);
-            
+            $view->with('companySettings', $companySettings);
+
         });
         $this->registerPolicies();
 

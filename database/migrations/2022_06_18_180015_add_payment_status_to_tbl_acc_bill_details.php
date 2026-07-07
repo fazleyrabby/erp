@@ -25,8 +25,6 @@ class AddPaymentStatusToTblAccBillDetails extends Migration
      */
     public function down()
     {
-        Schema::table('tbl_acc_bill_details', function (Blueprint $table) {
-            
-        });
+        Schema::table('tbl_acc_bill_details', function (Blueprint $table) {});
     }
 }

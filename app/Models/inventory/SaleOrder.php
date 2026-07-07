@@ -16,10 +16,8 @@ class SaleOrder extends Model
         return $this->hasMany(SaleOrderFeedback::class, 'tbl_sale_orders_id');
     }
 
-    
     public function saleOrderProducts()
     {
         return $this->hasMany(SaleOrderProduct::class, 'tbl_sale_orders_id');
     }
-
 }

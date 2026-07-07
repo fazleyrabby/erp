@@ -14,7 +14,7 @@ class CreateGradesTable extends Migration
     public function up()
     {
         Schema::create('grades', function (Blueprint $table) {
-            
+
             $table->bigIncrements('id');
             $table->string('grade_name')->nullable();
             $table->text('note')->nullable();
@@ -27,7 +27,6 @@ class CreateGradesTable extends Migration
             $table->dateTime('deleted_date')->format('d/m/Y')->nullable();
             $table->enum('status', ['Active', 'Inactive'])->nullable();
 
-            
             $table->timestamps();
         });
     }

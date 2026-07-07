@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\inventory\Brand;
 use App\Models\inventory\Category;
-use App\Models\inventory\Product;
 use App\Models\inventory\Unit;
 use App\Models\inventory\Warehouse;
 use Illuminate\Database\Seeder;

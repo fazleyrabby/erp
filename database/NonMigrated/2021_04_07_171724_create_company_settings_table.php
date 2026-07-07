@@ -25,9 +25,9 @@ class CreateCompanySettingsTable extends Migration
             $table->text('report_header')->nullable();
             $table->text('report_footer')->nullable();
             $table->string('watermark')->nullable();
-            $table->enum('manage_stock_to_sale',['Yes','No'])->default('Yes');
-            $table->enum('barcode_exists',['Yes','No'])->nullable();
-            $table->enum('deleted',['Yes','No'])->nullable();
+            $table->enum('manage_stock_to_sale', ['Yes', 'No'])->default('Yes');
+            $table->enum('barcode_exists', ['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->biginteger('created_by')->nullable();
             $table->datetime('created_date')->nullable();
             $table->biginteger('updated_by')->nullable();

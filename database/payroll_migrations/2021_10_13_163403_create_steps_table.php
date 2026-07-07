@@ -17,11 +17,11 @@ class CreateStepsTable extends Migration
 
             $table->bigIncrements('id');
             $table->string('step_name')->nullable();
-            $table->decimal('salary_amount',10,2)->nullable();
+            $table->decimal('salary_amount', 10, 2)->nullable();
             $table->biginteger('grade_id')->nullable();
             $table->text('note')->nullable();
             $table->integer('priority')->nullable();
-            
+
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();
             $table->enum('deleted', ['Yes', 'No'])->nullable();

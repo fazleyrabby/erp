@@ -19,7 +19,6 @@ class CreateSavedSalarySheetsTable extends Migration
             $table->string('month_year')->nullable();
             $table->bigInteger('sheet_id')->nullable();
             $table->decimal('company_payable_net_salary')->nullable();
-          
 
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('last_updated_by')->nullable();

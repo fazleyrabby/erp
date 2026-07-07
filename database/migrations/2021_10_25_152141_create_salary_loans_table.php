@@ -23,8 +23,8 @@ class CreateSalaryLoansTable extends Migration
             $table->string('percent')->nullable();
             $table->decimal('tenure')->nullable();
             $table->text('applicable_from')->nullable();
-            $table->decimal('adjustment',12,2)->nullable();
-            $table->decimal('installment',12,2)->nullable();
+            $table->decimal('adjustment', 12, 2)->nullable();
+            $table->decimal('installment', 12, 2)->nullable();
             $table->longText('cause')->nullable();
 
             $table->bigInteger('created_by')->nullable();

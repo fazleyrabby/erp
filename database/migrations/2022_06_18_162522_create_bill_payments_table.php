@@ -21,10 +21,10 @@ class CreateBillPaymentsTable extends Migration
             $table->string('reference')->nullable();
             $table->string('payment_method')->nullable();
             $table->string('account_status')->nullable();
-            $table->decimal('amount',10,2)->nullable();
+            $table->decimal('amount', 10, 2)->nullable();
 
             $table->enum('status', ['Active', 'Inactive'])->nullable();
-            $table->enum('deleted',['Yes', 'No'])->nullable();
+            $table->enum('deleted', ['Yes', 'No'])->nullable();
             $table->bigInteger('created_by')->nullable();
             $table->dateTime('created_date')->nullable();
             $table->bigInteger('last_updated_by')->nullable();

@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase_Product_Return extends Model
 {
     use HasFactory;
-    protected $table = 'purchase_product_returns';
 
+    protected $table = 'purchase_product_returns';
 }
