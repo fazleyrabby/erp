@@ -202,7 +202,7 @@
     <header>
             <div class="row2">
                 <div class="column2">
-                    <img src="{{ 'upload/images/' . Session::get('companySettings')[0]['logo'] }}" width='205' height='105'>
+                    <h4>{{Session::get('companySettings')[0]['name']}}</h4>
                 </div>
                 <div class="column2">
                 @if ($saleOrders->deleted == 'No')

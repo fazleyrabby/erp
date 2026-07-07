@@ -41,9 +41,9 @@
         <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
             <div class="auth-box bg-dark border-top border-secondary">
                 <div id="loginform">
-                    <div class="text-center p-b-20">
-                        <span class="db"><img src="{{url('upload/images/16679969471667815468WhatsApp.jpg')}}" alt="logo" style="width:100%; max-height:120px;" /></span>
-                    </div>
+<div class="text-center p-b-20">
+    <h3 class="db text-white">{{Session::get('companySettings')[0]['name'] ?? 'ERP'}}</h3>
+</div>
                     <!-- Form -->
                     <form class="form-horizontal m-t-20" method="post" action="{{url('login')}}">
                       @csrf

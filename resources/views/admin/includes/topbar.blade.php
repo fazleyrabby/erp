@@ -12,7 +12,7 @@
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                     <!-- Dark Logo icon -->
                     
-                    <div><img src="{{asset('upload/images/'.Session::get('companySettings')[0]['vertical_logo'])}}" alt="homepage" width="60" height="55" class="light-logo" /> {{Session::get('companySettings')[0]['name']}}</div>
+                    <div class="text-white" style="font-size:15px; font-weight:700;">{{Session::get('companySettings')[0]['name']}}</div>
                     <!-- <img src="{{asset('backend/assets/images/logo-icon.png')}}" alt="homepage" class="light-logo" /> -->
 
                 </b>
@@ -118,5 +118,5 @@
     </nav>
 </header>
 <div id="loading" style="display:none;">
-    <img id="loading-image" src="{{url('upload/images/loader.gif')}}" alt="Loading..."  />
+    <div class="lds-ripple"><div class="lds-pos"></div><div class="lds-pos"></div></div>
 </div>

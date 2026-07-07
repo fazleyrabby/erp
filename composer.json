@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "jtsc/erp",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": [
@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.1",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
@@ -37,7 +37,11 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "audit": {
+            "ignore": ["PKSA-qstp-ffwg-8hp6", "PKSA-5vz3-q51h-7mg4", "PKSA-7ztm-rpt3-qqzk", "PKSA-4jrs-y99s-q8j6", "PKSA-hbk6-2vfz-8f8n", "PKSA-kj9c-tr41-t8mj", "PKSA-872h-8556-2chm", "PKSA-99tj-gg5v-4g74", "PKSA-qsyb-3psh-f1t3", "PKSA-3dsp-r6t7-8xmz", "PKSA-cwpj-dtf9-6fg1"],
+            "block-insecure": false
+        }
     },
     "extra": {
         "laravel": {

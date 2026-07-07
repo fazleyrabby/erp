@@ -728,7 +728,7 @@
 
     function openproject_name() {
         Swal.fire({
-            title: "Are you sure you want to switch customer to Jafree Traders?",
+            title: "Are you sure you want to switch customer?",
             text: "You will not be able to recover this imaginary file!",
             type: "warning",
             showCancelButton: true,

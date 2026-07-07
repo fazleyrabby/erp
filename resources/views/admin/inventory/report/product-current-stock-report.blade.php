@@ -134,7 +134,7 @@
 <body>
     <!-- Content Wrapper. Contains page content -->
     <header>
-        <img src="{{ 'upload/images/' . Session::get('companySettings')[0]['logo'] }}" width='100' height='55'>
+        <h4>{{Session::get('companySettings')[0]['name']}}</h4>
         <div class="supAddressFont">
             {!! Session::get('companySettings')[0]['report_header'] !!}
         </div>

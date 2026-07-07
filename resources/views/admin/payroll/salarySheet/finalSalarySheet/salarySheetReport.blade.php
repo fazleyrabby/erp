@@ -66,7 +66,7 @@
     <header>
         <!-- Content Header (Page header) -->
 
-            <div><img src="{{'upload/images/'.Session::get('companySettings')[0]['logo']}}" width='320' height='125'></div>
+            <h4>{{Session::get('companySettings')[0]['name']}}</h4>
         <p> {!!Session::get('companySettings')[0]["report_header"]!!}</p>  
         <hr/>
         

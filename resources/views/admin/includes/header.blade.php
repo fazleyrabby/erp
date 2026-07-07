@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('upload/images/'.Session::get('companySettings')[0]['vertical_logo'])}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('backend/assets/images/favicon.png')}}">
     <title>@yield('title')</title>
     <!-- Custom CSS -->
     <link href="{{asset('backend/assets/libs/flot/css/float-chart.css')}}" rel="stylesheet">

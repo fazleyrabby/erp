@@ -51,7 +51,7 @@
         <!-- Content Wrapper. Contains page content -->
         <header>
             <div class="supAddressFont">
-            <img src="{{'upload/images/'.Session::get('companySettings')[0]['logo']}}" width='150' height='60'>
+            <h4>{{Session::get('companySettings')[0]['name']}}</h4>
             {!!Session::get("companySettings")[0]["report_header"]!!}
             </div>
         </header>
