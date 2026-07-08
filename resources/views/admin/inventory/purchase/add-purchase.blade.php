@@ -19,14 +19,14 @@
                             @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
                                 <div class="form-group col-md-6">
                                     <label>Barcode: </label>
-                                    <input class="form-control input-sm" id="barcode" type="text" name="barcode"
+                                    <input class="form-control form-control-sm" id="barcode" type="text" name="barcode"
                                         onkeyup="findProduct()">
                                     <span class="text-danger" id="barcodeError"></span>
                                 </div>
                             @endif
                             <div class="form-group col-md-2">
                                 <label>Date: <span class="text-danger">*</span></label>
-                                <input type="date" id="purchaseDate" name="purchaseDate" class="form-control input-sm"
+                                <input type="date" id="purchaseDate" name="purchaseDate" class="form-control form-control-sm"
                                     value="{{ date('Y-m-d') }}" />
                             </div>
                             <div class="form-group col-md-4">
@@ -43,7 +43,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Supplier Name: <span class="text-danger">*</span></label>
-                                <select id="supplier" name="supplier" class="form-control input-sm">
+                                <select id="supplier" name="supplier" class="form-control form-control-sm">
                                     <option value="">Select Supplier</option>
                                     @foreach ($suppliers as $supplier)
                                         <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
@@ -79,13 +79,13 @@
                             </div>
                             <div class="form-group col-md-6 d-none">
                                 <label>Brand: </label>
-                                <select id="brand" name="brand" class="form-control input-sm" style="width:100%">
+                                <select id="brand" name="brand" class="form-control form-control-sm" style="width:100%">
                                     <option value="">Select Brand</option>
                                 </select>
                             </div>
                             <div class="input-group col-md-12">
                                 <label>Product Search : <span class="text-danger">*</span></label>
-                                <select id="products" name="products" class="form-control input-sm" style="width:96%">
+                                <select id="products" name="products" class="form-control form-control-sm" style="width:96%">
                                     <option value=""> Product Search </option>
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}">
@@ -104,7 +104,8 @@
 
                             <div class="form-group col-md-12"><br>
                                 <label>Cart Details: </label>
-                                <table border="1" style="font-size: 13px; width:100%;" class="table-bordered">
+                                <div class="table-responsive">
+                                <table class="table table-vcenter table-bordered text-nowrap">
                                     <thead>
                                         <tr>
                                             <th>SL</th>
@@ -119,60 +120,60 @@
                                     </thead>
                                     <tbody id="manageCartTable"></tbody>
                                     <tr>
-                                        <td colspan="5" class="text-right"> Discount
+                                        <td colspan="5" class="text-end align-middle"> Discount
                                             {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                        <td class="text-right font-weight-bold"> <input type="text" class="text-right "
+                                        <td class="text-end font-weight-bold"> <input type="text" class="form-control text-end"
                                                 id="discount" name="discount" onblur="calculateTotal()" /> </td>
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5" class="text-right">Transport
+                                        <td colspan="5" class="text-end align-middle">Transport
                                             {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                        <td class="text-right font-weight-bold"><input type="text"
-                                                class="text-right only-number" id="transport" name="transport"
+                                        <td class="text-end font-weight-bold"><input type="text"
+                                                class="form-control text-end only-number" id="transport" name="transport"
                                                 onblur="calculateTotal()" /></td>
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5" class="text-right">Grand Total
+                                        <td colspan="5" class="text-end align-middle">Grand Total
                                             {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                        <td class="text-right"><span class="btn btn-light text-right viewPurchase"
-                                                id="grandTotal" style="padding: 0;"> 0 </span></td>
+                                        <td class="text-end"><span class="form-control-plaintext text-end fw-bold"
+                                                id="grandTotal"> 0 </span></td>
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5" class="text-right">Payment Method : </td>
+                                        <td colspan="5" class="text-end align-middle">Payment Method : </td>
                                         <td>
                                             <select id="paymentMethod" name="paymentMethod"
-                                                class="form-control text-center">
+                                                class="form-select text-center">
                                                 <option value="Cash" selected>Cash</option>
                                             </select>
                                         </td>
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5" class="text-right">Paid Amount
+                                        <td colspan="5" class="text-end align-middle">Paid Amount
                                             {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                        <td><input type="text" class="text-right only-number" value="0"
+                                        <td><input type="text" class="form-control text-end only-number" value="0"
                                                 id="payment" name="payment" /></td>
                                         <td></td>
                                     </tr>
                                 </table>
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <a class="check-out-btn float-left" href="#" onclick="clearCart()"> <i
-                                    class="fa fa-trash"></i><span class="check-out-text"> Clear Cart</span> </a>
-                        </div>
-                        <div class="col-md-8"></div>
-                        <div class="col-md-2">
-                            <a class="check-out-btn btn-block " href="#" onclick="checkOutCart()"> <i
-                                    class="fa fa-save"></i><span class="check-out-text"> Save Purchase</span>  </a>
-                        </div>
+                    <div class="d-flex">
+                        <a class="btn btn-outline-danger" href="#" onclick="clearCart()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="4" y1="7" x2="20" y2="7" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                            Clear Cart
+                        </a>
+                        <a class="btn btn-primary ms-auto" href="#" onclick="checkOutCart()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" /><circle cx="12" cy="14" r="2" /><polyline points="14 4 14 8 8 8 8 4" /></svg>
+                            Save Purchase
+                        </a>
                     </div>
                 </div>
             </div>
@@ -462,11 +463,11 @@
             let rows = '';
             rows += '<tr id="row' + trId + '">' +
                 '<td>' + (trId + 1) + '</td>' +
-                '<td><input class="form-control input-sm stockQuantity' + trId +
+                '<td><input class="form-control form-control-sm stockQuantity' + trId +
                 '" id="stockQuantity" type="text" name="stockQuantity" placeholder=" Quantity... " required oninput="calculateTotalQuantity()" onblur="loadCartandUpdate(' +
                 id + ',' + warehouseId + ',' + true + ')"></td>';
             rows +=
-                '<td><input class="form-control input-sm serialNo' + trId +
+                '<td><input class="form-control form-control-sm serialNo' + trId +
                 '" id="serialNo" type="text" name="serialNo" placeholder=" Serial... " required value=' + serialNo +
                 '><td><a href="#" onclick="removeRow(' +
                 trId + ')" style="color:red;"><i class="fa fa-trash"> </i> </a></td></td></tr>';

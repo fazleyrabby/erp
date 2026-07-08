@@ -44,14 +44,14 @@
                                     @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
                                         <div class="form-group col-md-12">
                                             <label>Barcode: </label>
-                                            <input class="form-control input-sm" id="barcode" type="text"
+                                            <input class="form-control form-control-sm" id="barcode" type="text"
                                                 name="barcode" onkeyup="findProduct()">
                                             <span class="text-danger" id="barcodeError"></span>
                                         </div>
                                     @endif
                                     <div class="form-group col-md-2">
                                         <label>Date : <span class="text-danger">*</span></label>
-                                        <input type="date" id="saleDate" name="saleDate" class="form-control input-sm"
+                                        <input type="date" id="saleDate" name="saleDate" class="form-control form-control-sm"
                                             value="{{ todayDate() }}" />
                                     </div>
                                     @if ($type != 'walkin_sale')
@@ -73,7 +73,7 @@
                                             <label>Phone: </label>
                                             <div class="d-flex">
                                                 <input type="text" id="partyPhoneNumber" name="partyPhoneNumber"
-                                                    class="form-control input-sm" placeholder=" Phone Number" readonly />
+                                                    class="form-control form-control-sm" placeholder=" Phone Number" readonly />
                                             </div>
                                             <span class="text-danger" id="partyPhoneNumberError"></span>
                                         </div>
@@ -86,7 +86,7 @@
                                             <div class="d-flex">
                                                 <input type="text" id="partyPhoneNumber" name="partyPhoneNumber"
                                                     onchange="getCustomerInfo(0,'Walkin_Customer')"
-                                                    class="form-control input-sm" placeholder=" Phone Number"
+                                                    class="form-control form-control-sm" placeholder=" Phone Number"
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
                                                 <a class="btn btn-primary"
                                                     onclick="getCustomerInfo(0,'Walkin_Customer')"><i
@@ -110,13 +110,13 @@
                                     <div class="form-group col-md-6 ">
                                         <label>Name: <span class="text-danger">*</span></label>
                                         <input type="text" id="customerName" name="customerName"
-                                            class="form-control input-sm" />
+                                            class="form-control form-control-sm" />
                                         <span class="text-danger" id="customerNameError"></span>
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Address: </label>
                                         <input type="text" id="customerAddress" name="customerAddress"
-                                            class="form-control input-sm" />
+                                            class="form-control form-control-sm" />
                                         <span class="text-danger" id="customerAddressError"></span>
                                     </div>
                                     <input type="hidden" id="category_id" name="category" value="42">
@@ -146,7 +146,7 @@
 
                                     <div class="form-group col-md-6 d-none">
                                         <label>Category: </label>
-                                        <select id="category" name="category" class="form-control input-sm">
+                                        <select id="category" name="category" class="form-control form-control-sm">
                                             <option value="">Select Category</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -155,7 +155,7 @@
                                     </div>
                                     <div class="form-group col-md-6 d-none">
                                         <label>Brand : </label>
-                                        <select id="brand" name="brand" class="form-control input-sm">
+                                        <select id="brand" name="brand" class="form-control form-control-sm">
                                             <option value="">Select Brand</option>
                                             @foreach ($brands as $brand)
                                                 <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -166,7 +166,7 @@
                                     <div class="form-group col-md-12">
                                         <label>Product Search : <span class="text-danger">*</span></label>
                                         <div class="d-flex">
-                                            <select id="products" name="products" class="form-control input-sm"
+                                            <select id="products" name="products" class="form-control form-control-sm"
                                                 style="width:96%">
                                                 <option value=""> Product Search </option>
                                                 @foreach ($products as $product)
@@ -180,8 +180,8 @@
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>Cart Details: </label>
-                                        <table border="1" style="font-size: 13px; width:100%;"
-                                            class="table-bordered">
+                                        <div class="table-responsive">
+                                        <table class="table table-vcenter table-bordered text-nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>SL</th>
@@ -196,82 +196,80 @@
                                             </thead>
                                             <tbody id="manageCartTable"></tbody>
                                             <tr>
-                                                <td colspan="6" class="text-right"> Discount
+                                                <td colspan="6" class="text-end align-middle"> Discount
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                                <td class="text-right font-weight-bold"> <input type="text"
+                                                <td class="text-end font-weight-bold"> <input type="text"
                                                         id="discount" name="discount" onblur="calculateTotal()"
-                                                        class="input-sm text-right" /> </td>
+                                                        class="form-control text-end" /> </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Transport
+                                                <td colspan="6" class="text-end align-middle">Transport
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                                <td class="text-right font-weight-bold"><input type="text"
+                                                <td class="text-end font-weight-bold"><input type="text"
                                                         id="transport" name="transport" onblur="calculateTotal()"
-                                                        class="input-sm text-right" /></td>
+                                                        class="form-control text-end" /></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Vat
+                                                <td colspan="6" class="text-end align-middle">Vat
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                                <td class="text-right font-weight-bold"><input type="text"
+                                                <td class="text-end font-weight-bold"><input type="text"
                                                         id="vat" name="vat" onblur="calculateTotal()"
-                                                        class="input-sm text-right" /></td>
+                                                        class="form-control text-end" /></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Ait
+                                                <td colspan="6" class="text-end align-middle">Ait
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                                <td class="text-right font-weight-bold"><input type="text"
+                                                <td class="text-end font-weight-bold"><input type="text"
                                                         id="ait" name="ait" onblur="calculateTotal()"
-                                                        class="input-sm text-right" /></td>
+                                                        class="form-control text-end" /></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Grand Total
+                                                <td colspan="6" class="text-end align-middle">Grand Total
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                                <td class="text-right"><span class="btn btn-light text-right viewPurchase"
+                                                <td class="text-end"><span class="form-control-plaintext text-end fw-bold"
                                                         id="grandSum">0</span>
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Payment Method : </td>
+                                                <td colspan="6" class="text-end align-middle">Payment Method : </td>
                                                 <td>
                                                     <select id="paymentMethod" name="paymentMethod"
-                                                        class="form-control text-center">
+                                                        class="form-select text-center">
                                                         <option value="Cash" selected>Cash</option>
                                                     </select>
                                                 </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6" class="text-right">Paid Amount
+                                                <td colspan="6" class="text-end align-middle">Paid Amount
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
                                                 <td>
                                                     <input type="text" id="payment" name="payment"
-                                                        class="input-sm text-right" value="0"
+                                                        class="form-control text-end" value="0"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
                                                 </td>
                                                 <td></td>
                                             </tr>
                                         </table>
-                                        </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <a class="check-out-btn float-left" href="#" onclick="clearCart()"> <i
-                                                class="fa fa-trash"></i> <span class="check-out-text">  Clear Cart</span> </a>
-                                    </div>
-                                    <div class="col-md-8"></div>
-                                    <div class="col-md-2">
-                                        <button type="button" id="checkOutCart"
-                                            class="check-out-btn my_button float-right btn-block"><i
-                                                class="fa fa-save"> <span class="check-out-text"> Place Order</span>  </i> </button>
-                                    </div>
+                                <div class="d-flex">
+                                    <a class="btn btn-outline-danger" href="#" onclick="clearCart()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="4" y1="7" x2="20" y2="7" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                        Clear Cart
+                                    </a>
+                                    <button type="button" id="checkOutCart" class="btn btn-primary ms-auto">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" /><circle cx="12" cy="14" r="2" /><polyline points="14 4 14 8 8 8 8 4" /></svg>
+                                        Place Order
+                                    </button>
                                 </div>
                             </div>
                             <!-- /.card -->
