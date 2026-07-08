@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\PayRoll\LeaveManagement;
 
 use App\Http\Controllers\Controller;
-use App\Models\PayRoll\Leave;
-use App\Models\PayRoll\OurTeam;
+use App\Models\payroll\Leave;
+use App\Models\payroll\OurTeam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

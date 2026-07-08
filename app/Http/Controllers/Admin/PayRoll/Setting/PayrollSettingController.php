@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\PayRoll\Setting;
 
 use App\Http\Controllers\Controller;
-use App\Models\PayRoll\payrollSetting;
+use App\Models\payroll\PayrollSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
