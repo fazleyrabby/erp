@@ -77,7 +77,7 @@ Admin Our Team -View
                               
                               <a class="dropdown-item" href="{{route('memberEdit', $emp->member_id)}}"><i class="fas fa-exchange-alt me-2"></i> Edit </a>
                                  
-                          <a class="dropdown-item" href="{{route('changeMemberStatus',$emp->member_id)}}" onclick="return confirm('Are you sure you want to change status of this banner?');"><i class="fas fa-exchange-alt me-2"></i> Change Status </a>
+                          <a class="dropdown-item" href="{{route('changeMemberStatus',$emp->member_id)}}" onclick="return swalConfirmLink(event, this)" data-item="banner" data-action="status"><i class="fas fa-exchange-alt me-2"></i> Change Status </a>
 
                                                     </div>
                                                 </div>

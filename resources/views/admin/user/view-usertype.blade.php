@@ -243,40 +243,15 @@
 	});
 
 	function confirmDelete(id) {
-		Swal.fire({
-			title: "Are you sure ?",
-			text: "You will not be able to recover this imaginary file!",
-			type: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "Yes, delete Usertype!",
-			closeOnConfirm: false
-		}).then((result) => {
-			if (result.isConfirmed) {
-				var _token = $('meta[name="csrf-token"]').attr('content');
-				$.ajax({
-					url:"{{route('userTypeDelete')}}",
-					method: "POST",
-					data: {"id":id, "_token":_token},
-					beforeSend: function() {
-						$("#loading").show();
-					},
-					success: function (result) {
-						Swal.fire("Done!",result.success,"success");
-						location.reload();
-					},
-					complete: function() {
-						$("#loading").hide();
-					}, 
-					error: function(response) {
-						$('#nameError').text(response);
-					}
-				});
-			}else{
-			  Swal.fire("Cancelled", "Your imaginary UserType is safe :)", "error");
-			}
-		})
-	}
+        confirmDeleteSwal({
+            url      : "{{route('userTypeDelete')}}",
+            id       : id,
+            itemName : 'Usertype',
+            onError  : function(response) {
+                $('#nameError').text(response);
+            },
+        });
+    }
 	Mousetrap.bind('ctrl+shift+n', function(e) {
 		e.preventDefault();
 		if($('#modal.in, #modal.show').length){

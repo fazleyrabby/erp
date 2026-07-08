@@ -64,7 +64,8 @@
                                                      <!--  <a class="dropdown-item" href="#" onclick="editProduct({{ $role->id }})"><i class="fa fa-edit me-2"></i>Edit</a> -->
 
                                                      <a class="dropdown-item" href="{{ route('roleDelete', $role->id) }}"
-                                                             onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                             onclick="return swalConfirmLink(event, this)"
+                                                             data-item="Role" data-action="delete"><i
                                                                  class="fas fa-trash me-2"></i> Delete</a>
 
                                                  </div>

@@ -1003,47 +1003,17 @@
         }
 
         function deleteSpec(id) {
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this Spec!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete Product Spec!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var productId = $("#editId").val();
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    var fd = new FormData();
-                    fd.append('id', id);
-                    fd.append('productId', productId);
-                    fd.append('_token', _token);
-                    $.ajax({
-                        url: "{{ route('deleteSpec') }}",
-                        method: "POST",
-                        data: fd,
-                        contentType: false,
-                        processData: false,
-                        success: function(result) {
-                            $('#' + id).remove();
-                            Swal.fire("Done!", result.success, "success");
-                        },
-                        error: function(response) {
-                            //alert(JSON.stringify(response));
-                        },
-                        beforeSend: function() {
-                            $('#loading').show();
-                        },
-                        complete: function() {
-                            $('#loading').hide();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary Product is safe :)", "error");
-                }
-            })
-
+            confirmDeleteSwal({
+                url         : "{{ route('deleteSpec') }}",
+                id          : id,
+                itemName    : 'Product Spec',
+                useFormData : true,
+                data        : { productId: $("#editId").val() },
+                onSuccess   : function(result) {
+                    $('#' + id).remove();
+                    Swal.fire("Done!", result.success, "success");
+                },
+            });
         } // End delete editSpecRow
 
         //=========== End Spec  ===========//
@@ -1822,44 +1792,11 @@
         })
 
         function confirmDelete(id) {
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete Product!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: "{{ route('products.delete') }}",
-                        method: "POST",
-                        data: {
-                            "id": id,
-                            "_token": _token
-                        },
-                        success: function(result) {
-                            Swal.fire("Done!", result.success, "success").then(function(){
-                              location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            //alert(JSON.stringify(response));
-                        },
-                        beforeSend: function() {
-                            $('#loading').show();
-                        },
-                        complete: function() {
-                            $('#loading').hide();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary Product is safe :)", "error");
-                }
-            })
-
+            confirmDeleteSwal({
+                url      : "{{ route('products.delete') }}",
+                id       : id,
+                itemName : 'product',
+            });
         }
 
         $(document).ready(function() {

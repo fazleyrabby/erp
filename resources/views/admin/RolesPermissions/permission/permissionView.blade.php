@@ -21,6 +21,9 @@
                 @if (Session::has('message'))
                 <div class="card-footer text-success text-center">{{ Session::get('message') }}</div>
                 @endif
+                @if (Session::has('error'))
+                <div class="card-footer text-danger text-center">{{ Session::get('error') }}</div>
+                @endif
                 <div class="card-body">
                     <x-filter-bar
                         route="{{ route('permissionView') }}"
@@ -65,7 +68,8 @@
 
                                                          <a class="dropdown-item"
                                                                  href="{{ route('permissionDelete', $permission->id) }}"
-                                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                                 onclick="return swalConfirmLink(event, this)"
+                                                                 data-item="Permission" data-action="delete"><i
                                                                      class="fas fa-trash me-2"></i> Delete</a>
 
                                                      </div>

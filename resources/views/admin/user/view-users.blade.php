@@ -92,8 +92,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Add User</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="userForm" method="POST" action="#">
                     <div class="modal-body">
@@ -197,8 +196,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Edit User</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="editUserForm" method="POST" enctype="multipart/form-data" action="#">
                     <div class="modal-body">
@@ -518,34 +516,11 @@
         });
 
         function confirmDelete(id) {
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete User!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: "{{ route('users.delete') }}",
-                        method: "POST",
-                        data: {
-                            "id": id,
-                            "_token": _token
-                        },
-                        success: function(result) {
-                            Swal.fire(" Deleted! ", result.success, "success");
-                            location.reload();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary User is safe :)", "error");
-                }
-            })
-
+            confirmDeleteSwal({
+                url      : "{{ route('users.delete') }}",
+                id       : id,
+                itemName : 'User',
+            });
         }
 
         $(document).ready(function() {

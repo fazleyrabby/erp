@@ -46,7 +46,7 @@ Final Salary Sheet -View
                                         </button>
                                             <div class="dropdown-menu dropdown-menu-end">               
                                                 <a class="dropdown-item" href="{{route('finalSalarySheetView',$sheet->id)}}"><i class="fas fa-calendar-alt me-2"></i> View</a>
-                                                <a class="dropdown-item" href="{{route('finalSalarySheetDelete',$sheet->id)}}" onclick="return confirm('Are you sure you want to delete this Sheet?');"><i class="fas fa-trash me-2"></i> Delete </a>
+                                                <a class="dropdown-item" href="{{route('finalSalarySheetDelete',$sheet->id)}}" onclick="return swalConfirmLink(event, this)" data-item="Sheet" data-action="delete"><i class="fas fa-trash me-2"></i> Delete </a>
                                             </div>                                               
                                     </div>
 

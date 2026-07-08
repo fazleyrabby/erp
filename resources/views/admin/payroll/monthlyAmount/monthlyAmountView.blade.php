@@ -75,7 +75,7 @@ Admin Monthly Amount -View
             <form id="MonthlyAmountFormStore" >
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Monthly Amount</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 </div> 
                 <div class="modal-body">
@@ -160,7 +160,7 @@ Admin Monthly Amount -View
                 @csrf
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Monthly Amount</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
 
@@ -424,35 +424,11 @@ Admin Monthly Amount -View
 
         /*delete*/
     function confirmDelete(id) {
-        Swal.fire({
-            title: "Are you sure ?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete amount!",
-            closeOnConfirm: false
-        }).then((result) => {
-        if (result.isConfirmed) {
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                url:"{{route('amountDelete')}}",
-                method: "POST",
-                data: {"id":id, "_token":_token},
-                success: function (result) {
-                    Swal.fire("Done!",result.success,"success");
-                    location.reload();
-                }, beforeSend: function () {
-                    $('#loading').show();
-                },complete: function () {
-                    $('#loading').hide();
-                }
-            });
-        }else{
-          Swal.fire("Cancelled", "Your imaginary amount is safe :)", "error");
-        }
-      })
-        
+        confirmDeleteSwal({
+            url      : "{{route('amountDelete')}}",
+            id       : id,
+            itemName : 'amount',
+        });
     }
 
 

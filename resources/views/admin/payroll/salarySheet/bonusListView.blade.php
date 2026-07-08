@@ -93,7 +93,7 @@ Admin Bonus Sheet -View
             <form id="bonusSheetFormStore">
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Bonus Sheet</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 </div> 
                 <div class="modal-body">
@@ -410,35 +410,11 @@ Admin Bonus Sheet -View
 
 
     function confirmDelete(id) {
-        Swal.fire({
-            title: "Are you sure ?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete bonus!",
-            closeOnConfirm: false
-        }).then((result) => {
-        if (result.isConfirmed) {
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                url:"{{route('bonusListDelete')}}",
-                method: "POST",
-                data: {"id":id, "_token":_token},
-                success: function (result) {
-                    Swal.fire("Done!",result.success,"success");
-                    location.reload();
-                }, beforeSend: function () {
-                    $('#loading').show();
-                },complete: function () {
-                    $('#loading').hide();
-                }
-            });
-        }else{
-          Swal.fire("Cancelled", "Your imaginary bonus is safe :)", "error");
-        }
-      })
-        
+        confirmDeleteSwal({
+            url      : "{{route('bonusListDelete')}}",
+            id       : id,
+            itemName : 'bonus',
+        });
     }
 
 

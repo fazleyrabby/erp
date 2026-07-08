@@ -21,6 +21,7 @@
     </div>
 
     @include('admin.includes.js')
+    @include('admin.includes.swal-delete')
     @yield('javascript')
     @yield('contentJavaScripts')
     @stack('javascript')

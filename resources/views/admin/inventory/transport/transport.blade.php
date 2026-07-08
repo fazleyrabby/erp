@@ -90,8 +90,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Add New Transport Info</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="transportForm" method="POST" action="#">
@@ -154,8 +153,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Update Transport Info</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="editTransportForm" method="POST" action="#">
@@ -363,43 +361,11 @@
         });
 
         function confirmDelete(id) {
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this record!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete Transport!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: "{{ route('transport.delete') }}",
-                        method: "GET",
-                        data: {
-                            "id": id,
-                            "_token": _token
-                        },
-                        success: function(result) {
-                            Swal.fire("Done!", result.success, "success").then(function() {
-                                location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            alert(JSON.stringify(response));
-                        },
-                        beforeSend: function() {
-                            $('#loading').show();
-                        },
-                        complete: function() {
-                            $('#loading').hide();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary record is safe :)", "error");
-                }
-            })
+            confirmDeleteSwal({
+                url      : "{{ route('transport.delete') }}",
+                id       : id,
+                itemName : 'Transport',
+            });
         }
 
         function clearErroMessage(type) {

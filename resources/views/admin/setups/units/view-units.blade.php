@@ -251,37 +251,14 @@
 	});
 
 	function confirmDelete(id) {
-		Swal.fire({
-			title: "Are you sure ?",
-			text: "You will not be able to recover this imaginary file!",
-			type: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#DD6B55",
-			confirmButtonText: "Yes, delete Unit!",
-			closeOnConfirm: false
-		}).then((result) => {
-			if (result.isConfirmed) {
-				var _token = $('meta[name="csrf-token"]').attr('content');
-				$.ajax({
-					url:"{{route('units.delete')}}",
-					method: "POST",
-					data: {"id":id, "_token":_token},
-					success: function (result) {
-						Swal.fire("Deleted!",result.success,"success").then(function(){
-						  location.reload();
-						});
-					}, error: function(response) {
-						Swal.fire("Error!",response,"error");
-					}, beforeSend: function () {
-						$('#loading').show();
-					},complete: function () {
-						$('#loading').hide();
-					}
-				});
-			}else{
-				Swal.fire("Cancelled", "Your imaginary Unit is safe :)", "error");
-			}
-		})
+		confirmDeleteSwal({
+			url      : "{{route('units.delete')}}",
+			id       : id,
+			itemName : 'Unit',
+			onError  : function(response) {
+				Swal.fire("Error!", response, "error");
+			},
+		});
     }
 	Mousetrap.bind('ctrl+shift+n', function(e) {
 		e.preventDefault();

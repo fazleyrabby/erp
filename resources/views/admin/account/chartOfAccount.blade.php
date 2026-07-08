@@ -81,8 +81,7 @@ Admin COA List
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Add COA</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-                                    <i class="fas fa-window-close"></i></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group">
@@ -148,8 +147,7 @@ Admin COA List
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Edit COA</h5>
-                                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-                                    <i class="fas fa-window-close"></i></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <input type="hidden" id="editId">
@@ -432,39 +430,15 @@ Admin COA List
 
 
     function confirmDelete(id) {
-        Swal.fire({
-            title: "Are you sure ?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete COA!",
-            closeOnConfirm: false
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var _token = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    url: "{{route('coaDelete')}}",
-                    method: "POST",
-                    data: {
-                        "id": id,
-                        "_token": _token
-                    },
-                    success: function(result) {
-                        Swal.fire("Done!", result.success, "success");
-                        location.reload();
-                    },
-                    beforeSend: function() {
-                        $('#loading').show();
-                    },
-                    complete: function() {
-                        $('#loading').hide();
-                    }
-                });
-            } else {
-                Swal.fire("Cancelled", "Your imaginary COA is safe :)", "error");
-            }
-        })
+        confirmDeleteSwal({
+            url      : "{{route('coaDelete')}}",
+            id       : id,
+            itemName : 'COA',
+            onSuccess: function(result) {
+                Swal.fire("Done!", result.success, "success");
+                location.reload();
+            },
+        });
     }
 </script>
 @endsection

@@ -151,42 +151,23 @@
 <script>
 
 	function confirmDelete(id) {
-        Swal.fire({
-            title: "Are you sure ?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete category!",
-            closeOnConfirm: false
-        }).then((result) => {
-			if (result.isConfirmed) {
-				var _token = $('meta[name="csrf-token"]').attr('content');
-				$.ajax({
-					url:"{{route('saleDelete')}}",
-					method: "POST",
-					data: {"id":id, "_token":_token},
-					success: function (result) {
-						if(result == "Success"){
-							Swal.fire("Deleted!",result.success,"success");
-							location.reload();
-						}else{
-							Swal.fire("Cancelled", result, "error");
-						}
-					  
-					}, error: function(response) {
-					  $('#editNameError').text(response.responseJSON.errors.name);
-					  $('#editImageError').text(response.responseJSON.errors.image);
-					}, beforeSend: function () {
-						$('#loading').show();
-					},complete: function () {
-						$('#loading').hide();
-					}
-				});
-			}else{
-			  Swal.fire("Cancelled", "Your imaginary Category is safe :)", "error");
-			}
-        })
+        confirmDeleteSwal({
+            url      : "{{route('saleDelete')}}",
+            id       : id,
+            itemName : 'Sale',
+            onSuccess: function(result) {
+                if (result == "Success") {
+                    Swal.fire("Deleted!", result.success, "success");
+                    location.reload();
+                } else {
+                    Swal.fire("Cancelled", result, "error");
+                }
+            },
+            onError: function(response) {
+                $('#editNameError').text(response.responseJSON.errors.name);
+                $('#editImageError').text(response.responseJSON.errors.image);
+            },
+        });
     }
 
 

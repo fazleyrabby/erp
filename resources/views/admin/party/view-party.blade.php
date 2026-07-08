@@ -152,9 +152,7 @@
                 <form id="partyForm" method="POST" enctype="multipart/form-data" action="#">
                     <div class="modal-header">
                         <h4 class="modal-title float-left"> Add {{ $type }}</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
-                                class="fa fa-times" aria-hidden="true"></i>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                     </div>
                     <div class="modal-body">
@@ -555,9 +553,7 @@
                 <form id="editPartyForm" method="POST" enctype="multipart/form-data" action="#">
                     <div class="modal-header">
                         <h4 class="modal-title">Edit {{ $type }}</h4>
-                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
-                                class="fa fa-times" aria-hidden="true"></i>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
@@ -1280,40 +1276,15 @@
             })
         })
         function confirmDelete(id) {
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete Party!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: "{{ route('partyDelete') }}",
-                        method: "POST",
-                        data: {
-                            "id": id,
-                            "_token": _token
-                        },
-                        success: function(result) {
-                            Swal.fire("Done!", result.success, "success");
-                            location.reload();
-                        },
-                        beforeSend: function() {
-                            $('#loading').show();
-                        },
-                        complete: function() {
-                            $('#loading').hide();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary Party is safe :)", "error");
-                }
-            })
-
+            confirmDeleteSwal({
+                url      : "{{ route('partyDelete') }}",
+                id       : id,
+                itemName : 'Party',
+                onSuccess: function(result) {
+                    Swal.fire("Done!", result.success, "success");
+                    location.reload();
+                },
+            });
         }
 
         Mousetrap.bind('ctrl+shift+n', function(e) {

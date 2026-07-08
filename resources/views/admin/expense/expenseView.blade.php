@@ -82,8 +82,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Edit COA</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
-                                        <i class="fas fa-window-close"></i></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" id="editId">

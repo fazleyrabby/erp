@@ -47,7 +47,7 @@ Admin Our Team -View
                                          <i class="fas fa-cog"></i></button>
                                          <div class="dropdown-menu dropdown-menu-end">
                                              <a class="dropdown-item" href="{{route('memberEdit', $emp->id)}}"><i class="fas fa-edit me-2"></i> Edit</a>
-                                             <a class="dropdown-item" href="{{route('changeMemberStatus',$emp->id)}}" onclick="return confirm('Are you sure you want to change status of this employee?');"><i class="fas fa-exchange-alt me-2"></i> Change Status</a>
+                                             <a class="dropdown-item" href="{{route('changeMemberStatus',$emp->id)}}" onclick="return swalConfirmLink(event, this)" data-item="employee" data-action="status"><i class="fas fa-exchange-alt me-2"></i> Change Status</a>
                                          </div>
                                      </div>
                                 </td>

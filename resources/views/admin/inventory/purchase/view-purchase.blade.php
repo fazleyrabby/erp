@@ -104,50 +104,15 @@
         $(document).ready(function() {});
 
         function confirmDelete(id) {
-
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete purchase!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-
-                    var fd = new FormData();
-                    fd.append('_token', _token);
-                    fd.append('id', id);
-                    $.ajax({
-                        url: "{{ route('purchase.delete') }}",
-                        method: "POST",
-                        data: fd,
-                        contentType: false,
-                        processData: false,
-                        datatype: "json",
-                        success: function(result) {
-                            Swal.fire("Deleted!", result.Success, "success").then(function(){
-                              location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            alert(JSON.stringify(response));
-                            $('#editNameError').text(response.responseJSON.errors.name);
-                            $('#editImageError').text(response.responseJSON.errors.image);
-                        },
-                        beforeSend: function() {
-                            $('#loading').show();
-                        },
-                        complete: function() {
-                            $('#loading').hide();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary purchase is safe :)", "error");
-                }
-            })
+            confirmDeleteSwal({
+                url         : "{{ route('purchase.delete') }}",
+                id          : id,
+                itemName    : 'purchase',
+                useFormData : true,
+                onError     : function(response) {
+                    alert(JSON.stringify(response));
+                },
+            });
         }
 
         function reloadDt() {

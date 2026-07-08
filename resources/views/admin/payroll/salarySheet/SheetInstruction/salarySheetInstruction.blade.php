@@ -289,35 +289,11 @@ Admin Salary Sheet Instruction -View
 
 
     function confirmDelete(id) {
-        Swal.fire({
-            title: "Are you sure ?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete Sheet!",
-            closeOnConfirm: false
-        }).then((result) => {
-        if (result.isConfirmed) {
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                url:"{{route('sheetInstructionDelete')}}",
-                method: "POST",
-                data: {"id":id, "_token":_token},
-                success: function (result) {
-                    Swal.fire("Done!",result.success,"success");
-                    location.reload();
-                }, beforeSend: function () {
-                    $('#loading').show();
-                },complete: function () {
-                    $('#loading').hide();
-                }
-            });
-        }else{
-          Swal.fire("Cancelled", "Your imaginary Sheet is safe :)", "error");
-        }
-      })
-        
+        confirmDeleteSwal({
+            url      : "{{route('sheetInstructionDelete')}}",
+            id       : id,
+            itemName : 'Sheet',
+        });
     }
 
 

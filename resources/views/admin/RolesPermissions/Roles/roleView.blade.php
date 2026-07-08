@@ -31,13 +31,12 @@
                     />
 
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover dataTable no-footer" id="data_Table" width="100%">
+                            <table class="table table-bordered table-hover" id="data_Table" width="100%">
                             <thead>
                                 <tr class="bg-light">
-                                    <td width="5%" class="text-center">Sl</td>
-                                    <td width="72%" class="text-center">Name</td>
-
-                                    <td width="8%" class="text-center">Action</td>
+                                    <th width="5%" class="text-center">Sl</th>
+                                    <th width="72%" class="text-center">Name</th>
+                                    <th width="8%" class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,7 +55,8 @@
                                                  <div class="dropdown-menu dropdown-menu-end">
 
                                                      <a class="dropdown-item" href="{{ route('roleDelete', $role->id) }}"
-                                                             onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                             onclick="return swalConfirmLink(event, this)"
+                                                             data-item="Role" data-action="delete"><i
                                                                  class="fas fa-trash me-2"></i> Delete</a>
 
                                                  </div>
@@ -70,40 +70,39 @@
 
                     {{ $roles->links() }}
                 </div><!-- Card Content end -->
+            </div><!-- Card end -->
 
-                <!-- create Model Start -->
-                <div class="card-body btn-page">
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Add Role</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-
-                                <form action="{{ route('roleStore') }}" method="post" enctype="multipart/form-data">
-                                    <div class="modal-body">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label class="col-form-label">Role Name</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                placeholder="Role Name">
-                                            <span
-                                                class="text-danger">{{ $errors->has('title') ? $errors->first('title') : '' }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary me-auto" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn  btn-primary"><i class="fa fa-save"></i>
-                                            Save</button>
-                                    </div>
-                                </form>
-
-                            </div>
+            <!-- create Modal Start -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Role</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+
+                        <form action="{{ route('roleStore') }}" method="post" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                @csrf
+                                <div class="form-group">
+                                    <label class="col-form-label">Role Name</label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        placeholder="Role Name">
+                                    <span
+                                        class="text-danger">{{ $errors->has('title') ? $errors->first('title') : '' }}</span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary me-auto" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn  btn-primary"><i class="fa fa-save"></i>
+                                    Save</button>
+                            </div>
+                        </form>
+
                     </div>
-                </div><!-- create model End -->
+                </div>
+            </div><!-- create modal End -->
         </section>
     </div><!-- pc-container end -->
 @endsection

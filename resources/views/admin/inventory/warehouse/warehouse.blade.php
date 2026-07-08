@@ -285,44 +285,11 @@
         });
 
         function confirmDelete(id) {
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this record!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete Warehouse!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: "{{ route('warehouse.delete') }}",
-                        method: "GET",
-                        data: {
-                            "id": id,
-                            "_token": _token
-                        },
-                        success: function(result) {
-                            Swal.fire("Done!", result.success, "success").then(function(){
-                              location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            alert(JSON.stringify(response));
-                        },
-                        beforeSend: function() {
-                            $('#loading').show();
-                        },
-                        complete: function() {
-                            $('#loading').hide();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary record is safe :)", "error");
-                }
-            })
-
+            confirmDeleteSwal({
+                url      : "{{ route('warehouse.delete') }}",
+                id       : id,
+                itemName : 'Warehouse',
+            });
         }
 
 

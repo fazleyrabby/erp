@@ -113,9 +113,7 @@
 				
                 <div class="modal-header">
                 <h4 class="modal-title float-left"> Add Transaction</h4>
-                    <button type="button" class="close"
-                            data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                    
                 </div> 
                 <div class="modal-body">
@@ -522,38 +520,11 @@ $(function() {
     
 
     function confirmDelete(id) {
-        Swal.fire({
-            title: "Are you sure ?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete transaction!",
-            closeOnConfirm: false
-        }).then((result) => {
-        if (result.isConfirmed) {
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                url:"{{route('transactionDelete')}}",
-                method: "POST",
-                data: {"id":id, "_token":_token},
-                success: function (result) {
-                    //alert(JSON.stringify(result));
-                    Swal.fire("Done!",result.success,"success");
-                    location.reload();
-                }, beforeSend: function () {
-                    $('#loading').show();
-                },complete: function () {
-                    $('#loading').hide();
-                }, error: function(response) {
-                    //alert(JSON.stringify(response));
-			    }
-            });
-        }else{
-          Swal.fire("Cancelled", "Your imaginary transaction is safe :)", "error");
-        }
-      })
-        
+        confirmDeleteSwal({
+            url      : "{{route('transactionDelete')}}",
+            id       : id,
+            itemName : 'transaction',
+        });
     }
 	
 	Mousetrap.bind('ctrl+shift+n', function(e) {

@@ -41,25 +41,53 @@ class PermissionController extends Controller
 
     public function store(Request $request)
     {
-
-        $permissionExist = permission::where('group_name', $request->group_name)->first();
-        if (! $permissionExist) {
-            $permission = permission::create([
-                'name' => $request->group_name,
-                'group_name' => $request->group_name,
-                'deleted' => 'No',
-                'status' => 'Active',
-            ]);
-        }
-        $permissions = permission::create([
-            'name' => $request->name,
-            'group_name' => $request->group_name,
-            'deleted' => 'No',
-            'status' => 'Active',
+        $request->validate([
+            'name'       => 'required|string|max:255',
+            'group_name' => 'required|string|max:255',
         ]);
 
-        return redirect('permission/view')->with('message', $request->name.' saved sucessfully');
+        try {
+            // Create the group-level permission if it doesn't exist yet
+            $permissionExist = permission::where('group_name', $request->group_name)
+                ->where('name', $request->group_name)
+                ->first();
+
+            if (! $permissionExist) {
+                permission::create([
+                    'name'       => $request->group_name,
+                    'group_name' => $request->group_name,
+                    'deleted'    => 'No',
+                    'status'     => 'Active',
+                ]);
+            }
+
+            // Check if the exact permission name already exists
+            $alreadyExists = permission::where('name', $request->name)->exists();
+
+            if ($alreadyExists) {
+                return redirect('permission/view')
+                    ->with('error', 'Permission "' . $request->name . '" already exists.');
+            }
+
+            permission::create([
+                'name'       => $request->name,
+                'group_name' => $request->group_name,
+                'deleted'    => 'No',
+                'status'     => 'Active',
+            ]);
+
+            return redirect('permission/view')
+                ->with('message', $request->name . ' saved successfully');
+
+        } catch (\Spatie\Permission\Exceptions\PermissionAlreadyExists $e) {
+            return redirect('permission/view')
+                ->with('error', 'Permission "' . $request->name . '" already exists.');
+        } catch (\Exception $e) {
+            return redirect('permission/view')
+                ->with('error', 'An error occurred: ' . $e->getMessage());
+        }
     }
+
 
     public function edit(Request $request)
     {

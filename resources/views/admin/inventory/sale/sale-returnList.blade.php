@@ -94,43 +94,11 @@
 @section('javascript')
     <script>
         function confirmDelete(id) {
-            Swal.fire({
-                title: "Are you sure ?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete!",
-                closeOnConfirm: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url: "{{ route('sale.deleteSaleReturn') }}",
-                        method: "POST",
-                        data: {
-                            "id": id,
-                            "_token": _token
-                        },
-                        success: function(result) {
-                            Swal.fire("Deleted!", result.success, "success").then(function() {
-                                location.reload();
-                            });
-                        },
-                        error: function(response) {
-                            alert(JSON.stringify(response));
-                        },
-                        beforeSend: function() {
-                            $('#loading').show();
-                        },
-                        complete: function() {
-                            $('#loading').hide();
-                        }
-                    });
-                } else {
-                    Swal.fire("Cancelled", "Your imaginary record is safe :)", "error");
-                }
-            })
+            confirmDeleteSwal({
+                url      : "{{ route('sale.deleteSaleReturn') }}",
+                id       : id,
+                itemName : 'Sale Return',
+            });
         }
 
         function printPurchase(id) {

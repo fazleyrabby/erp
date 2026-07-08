@@ -334,8 +334,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Serialize Product</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
-                            class="fas fa-window-close"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body card-body">
                     <form id="serializeProductForm">

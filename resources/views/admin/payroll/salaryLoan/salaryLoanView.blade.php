@@ -90,7 +90,7 @@ Admin Loan Salary -View
                 @csrf
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Loan Amount</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">	
                         <input type="hidden" name="editId" id="editId">
@@ -155,7 +155,7 @@ Admin Loan Salary -View
             <div class="modal-header">
                
                 <h4 class="modal-title">Tenure Details</h4>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
@@ -321,39 +321,12 @@ Admin Loan Salary -View
 
         /*delete*/
         function confirmDelete(id) {
-            
-                Swal.fire({
-                    title: "Are you sure ?",
-                    text: "You will not be able to recover this imaginary file!",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Yes, delete Loan!",
-                    closeOnConfirm: false
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    var _token = $('meta[name="csrf-token"]').attr('content');
-                    $.ajax({
-                        url:"{{route('loanDelete')}}",
-                        method: "POST",
-                        data: {"id":id, "_token":_token},
-                        
-                        success: function (result) {
-                            
-                            Swal.fire("Done!",result.success,"success");
-                            location.reload();
-                        }, beforeSend: function () {
-                            $('#loading').show();
-                        },complete: function () {
-                            $('#loading').hide();
-                        }
-                    });
-                }else{
-                Swal.fire("Cancelled", "Your imaginary Amount is safe :)", "error");
-                }
-            })
-                
-            }
+            confirmDeleteSwal({
+                url      : "{{route('loanDelete')}}",
+                id       : id,
+                itemName : 'Loan',
+            });
+        }
 
 
                

@@ -302,40 +302,19 @@
         });
 
 	function confirmDelete(id) {
-        Swal.fire({
-            title: "Are you sure ?",
-            text: "You will not be able to recover this imaginary file!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, delete Brand!",
-            closeOnConfirm: false
-        }).then((result) => {
-        if (result.isConfirmed) {
-            var _token = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                url:"{{route('brands.delete')}}",
-                method: "POST",
-                data: {"id":id, "_token":_token},
-                success: function (result) {
-                    Swal.fire("Done!","Brand was succesfully deleted!","success").then(function(){
-                      location.reload();
-                    });
-                }, error: function(response) {
-                  Swal.fire("Cancelled", result, "error");
-                  $('#editNameError').text(response.responseJSON.errors.name);
-                  $('#editImageError').text(response.responseJSON.errors.image);
-                }, beforeSend: function () {
-                    $('#loading').show();
-                },complete: function () {
-                    $('#loading').hide();
-                }
-            });
-        }else{
-          Swal.fire("Cancelled", "Your imaginary Brand is safe :)", "error");
-        }
-      })
-        
+        confirmDeleteSwal({
+            url      : "{{route('brands.delete')}}",
+            id       : id,
+            itemName : 'Brand',
+            onSuccess: function(result) {
+                Swal.fire("Done!", "Brand was successfully deleted!", "success").then(function() {
+                    location.reload();
+                });
+            },
+            onError  : function(response) {
+                Swal.fire("Error!", JSON.stringify(response), "error");
+            },
+        });
     }
 	function removeImage(){
 		Swal.fire({
