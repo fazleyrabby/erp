@@ -80,10 +80,10 @@ class ReportController extends Controller
         $balance = 0;
 
         $table .= '<tr>
-                        <td colspan="5" class="text-right"><b>Opening Balance:</b></td>
-                            <td class="text-right"><b>'.$debit.'.00</b></td>
-                        <td class="text-right"><b>'.$credit.'.00</b></td>
-                        <td class="text-right"><b>'.$debitToCredit.'.00</b></td>
+                        <td colspan="5" class="text-end"><b>Opening Balance:</b></td>
+                            <td class="text-end"><b>'.$debit.'.00</b></td>
+                        <td class="text-end"><b>'.$credit.'.00</b></td>
+                        <td class="text-end"><b>'.$debitToCredit.'.00</b></td>
                     </tr>';
 
         foreach ($vouchers as $voucher) {
@@ -98,19 +98,19 @@ class ReportController extends Controller
                             <td>'.$voucher->voucher_title.'</td>
                             <td class="text-center"># '.$voucher->voucherId.'</td>
                             <td>'.$voucher->particulars.'</td>
-                            <td class="text-right">'.$voucher->debit.'</td>
-                            <td class="text-right">'.$voucher->credit.'</td>
-                            <td class="text-right">'.$balance.'</td>
+                            <td class="text-end">'.$voucher->debit.'</td>
+                            <td class="text-end">'.$voucher->credit.'</td>
+                            <td class="text-end">'.$balance.'</td>
                         </tr>';
             $totalDebit += $voucher->debit;
             $totalCredit += $voucher->credit;
         }
         $due = $totalDebit - $totalCredit;
         $total .= '<tr>
-                            <td colspan="5" class="text-right"><b>Total:</b></td>
-                             <td class="text-right"><b>'.$totalDebit.'</b></td>
-                            <td class="text-right"><b>'.$totalCredit.'</b></td>
-                            <td class="text-right"><b>'.$due.'</b></td>
+                            <td colspan="5" class="text-end"><b>Total:</b></td>
+                             <td class="text-end"><b>'.$totalDebit.'</b></td>
+                            <td class="text-end"><b>'.$totalCredit.'</b></td>
+                            <td class="text-end"><b>'.$due.'</b></td>
                         </tr>';
 
         if ($totalDebit < $totalCredit) {
@@ -125,9 +125,9 @@ class ReportController extends Controller
         }
 
         $total .= '<tr>
-                            <td colspan="5" class="text-right"><b>Closing Balance:</b></td>
-                             <td class="text-right"><b>'.$aDebit.'</b></td>
-                            <td class="text-right"><b>'.$aCredit.'</b></td>
+                            <td colspan="5" class="text-end"><b>Closing Balance:</b></td>
+                             <td class="text-end"><b>'.$aDebit.'</b></td>
+                            <td class="text-end"><b>'.$aCredit.'</b></td>
                             <td></td>
                         </tr>';
 
@@ -135,9 +135,9 @@ class ReportController extends Controller
         $totalCreditWithDue = $totalCredit + $aCredit;
 
         $total .= '<tr>
-                        <td colspan="5" class="text-right"></td>
-                         <td class="text-right"><b>'.$totalDebitWithDue.'</b></td>
-                        <td class="text-right"><b>'.$totalCreditWithDue.'</b></td>
+                        <td colspan="5" class="text-end"></td>
+                         <td class="text-end"><b>'.$totalDebitWithDue.'</b></td>
+                        <td class="text-end"><b>'.$totalCreditWithDue.'</b></td>
                         <td></td>
                     </tr>';
 
@@ -275,7 +275,7 @@ class ReportController extends Controller
                             <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
                             <thead class="table-dark">
                                 <tr><th colspan="3" class="text-center">INCOME</th></tr>
-                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                                <tr><th>Particulars</th><th class="text-end" style="width:30%;">Amount</th><th class="text-end" style="width:30%;">Net</th></tr>
                             </thead>
                             <tbody>';
 
@@ -298,8 +298,8 @@ class ReportController extends Controller
             }
             $table .= '<tr>
                             <td>'.$income->name.'</td>
-                            <td class="text-right">'.number_format($amountDebitSum).'</td>
-                            <td class="text-right"></td>
+                            <td class="text-end">'.number_format($amountDebitSum).'</td>
+                            <td class="text-end"></td>
                         </tr>';
             $totalIncome += $amountDebitSum;
         }
@@ -338,8 +338,8 @@ class ReportController extends Controller
             }
             $table .= '<tr>
                            <td width="50%">'.$sale->name.'</td>
-                           <td width="25%" class="text-right">'.$setBracket.$amountDebitSum.$setBracket2.'</td>
-                           <td width="25%" class="text-right">'.$netSalesAmount.'</td>
+                           <td width="25%" class="text-end">'.$setBracket.$amountDebitSum.$setBracket2.'</td>
+                           <td width="25%" class="text-end">'.$netSalesAmount.'</td>
                        </tr>';
         }
 
@@ -347,15 +347,15 @@ class ReportController extends Controller
 
         $table .= '<tr class="font-weight-bold table-active">
                             <td>Total Income</td>
-                            <td class="text-right">'.number_format($totalIncomeWithOpening).'</td>
-                            <td class="text-right"></td>
+                            <td class="text-end">'.number_format($totalIncomeWithOpening).'</td>
+                            <td class="text-end"></td>
                         </tr>';
         $table .= '</tbody></table></td>
                         <td style="width:50%; padding:0;">
                             <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
                             <thead class="table-dark">
                                 <tr><th colspan="3" class="text-center">EXPENDITURE</th></tr>
-                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                                <tr><th>Particulars</th><th class="text-end" style="width:30%;">Amount</th><th class="text-end" style="width:30%;">Net</th></tr>
                             </thead>
                             <tbody>';
 
@@ -395,8 +395,8 @@ class ReportController extends Controller
 
             $table .= '<tr>
                            <td>'.$purchase->name.'</td>
-                           <td class="text-right">'.$setBracket.$amountSum.$setBracket2.'</td>
-                           <td class="text-right">'.$netPurchaseAmount.'</td>
+                           <td class="text-end">'.$setBracket.$amountSum.$setBracket2.'</td>
+                           <td class="text-end">'.$netPurchaseAmount.'</td>
                         </tr>';
             if ($purchase->id != 43) {
                 $purchaseSum += $amountSum;
@@ -428,22 +428,22 @@ class ReportController extends Controller
 
             $table .= '<tr>
                            <td width="50%">'.$expense->name.'</td>
-                           <td width="25%" class="text-right">'.number_format($amountSum).'</td>
-                           <td width="25%" class="text-right">'.$tempTotalExpenses.'</td>
+                           <td width="25%" class="text-end">'.number_format($amountSum).'</td>
+                           <td width="25%" class="text-end">'.$tempTotalExpenses.'</td>
                         </tr>';
             $expenseSum += $amountSum;
         }
 
         /* $table .= '<tr>
                     <td width="75%" class="text-center" colspan="2">Total Expenses </td>
-                    <td width="25%" class="text-right">' . (($totalExpenses + $totalPurchases) - $totalPurchaseReturnAmount) . '</td>
+                    <td width="25%" class="text-end">' . (($totalExpenses + $totalPurchases) - $totalPurchaseReturnAmount) . '</td>
                 </tr>'; */
 
         $totalExpense = (($expenseSum + $purchaseSum) - $totalPurchaseReturnAmount);
         $table .= '<tr class="font-weight-bold table-active">
                             <td>Total Expenditure</td>
-                            <td class="text-right">'.number_format($totalExpense).'</td>
-                            <td class="text-right"></td>
+                            <td class="text-end">'.number_format($totalExpense).'</td>
+                            <td class="text-end"></td>
                         </tr>';
         $table .= '</tbody></table></td></tr></table>';
 
@@ -451,9 +451,9 @@ class ReportController extends Controller
                         <tbody>
                             <tr class="font-weight-bold table-active">
                                 <td style="width:25%;">Total Income</td>
-                                <td class="text-right" style="width:25%;">'.number_format($totalIncomeWithOpening).'</td>
+                                <td class="text-end" style="width:25%;">'.number_format($totalIncomeWithOpening).'</td>
                                 <td style="width:25%;">Total Expenditure</td>
-                                <td class="text-right" style="width:25%;">'.number_format($totalExpense).'</td>
+                                <td class="text-end" style="width:25%;">'.number_format($totalExpense).'</td>
                             </tr>';
         $due = $totalIncomeWithOpening - $totalExpense;
         if ($totalIncomeWithOpening < $totalExpense) {
@@ -475,7 +475,7 @@ class ReportController extends Controller
         }
         $table .= '<tr class="font-weight-bold">
                         <td>Balance Closing</td>
-                        <td class="text-right" colspan="3"><strong>'.number_format($expenseClosing).'</strong></td>
+                        <td class="text-end" colspan="3"><strong>'.number_format($expenseClosing).'</strong></td>
                     </tr>';
 
         // Start Voucher Section
@@ -493,9 +493,9 @@ class ReportController extends Controller
                 DB::raw('SUM(CASE WHEN type="Payment Received" THEN payment_vouchers.amount END) totalVoucherRcvAmount'),
                 DB::raw('SUM(CASE WHEN type="Payment" THEN payment_vouchers.amount END) totalVoucherPaymentAmount'),
             )->first();
-        $table .= '<tr><td>Voucher Recipient</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherRcvAmount).'</td></tr>';
-        $table .= '<tr><td>Payment Voucher</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherPaymentAmount).'</td></tr>';
-        $table .= '<tr class="font-weight-bold table-active"><td>Cash In Hand</td><td class="text-right" colspan="3">'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</td></tr>';
+        $table .= '<tr><td>Voucher Recipient</td><td class="text-end" colspan="3">'.number_format($voucherSummary->totalVoucherRcvAmount).'</td></tr>';
+        $table .= '<tr><td>Payment Voucher</td><td class="text-end" colspan="3">'.number_format($voucherSummary->totalVoucherPaymentAmount).'</td></tr>';
+        $table .= '<tr class="font-weight-bold table-active"><td>Cash In Hand</td><td class="text-end" colspan="3">'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</td></tr>';
         $table .= '</tbody></table>';
         // End Voucher Section
 
@@ -643,7 +643,7 @@ class ReportController extends Controller
                             <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
                             <thead class="table-dark">
                                 <tr><th colspan="3" class="text-center">INCOME</th></tr>
-                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                                <tr><th>Particulars</th><th class="text-end" style="width:30%;">Amount</th><th class="text-end" style="width:30%;">Net</th></tr>
                             </thead>
                             <tbody>';
 
@@ -666,8 +666,8 @@ class ReportController extends Controller
             }
             $table .= '<tr>
                             <td>'.$income->name.'</td>
-                            <td class="text-right">'.number_format($amountDebitSum).'</td>
-                            <td class="text-right"></td>
+                            <td class="text-end">'.number_format($amountDebitSum).'</td>
+                            <td class="text-end"></td>
                         </tr>';
             $totalIncome += $amountDebitSum;
         }
@@ -709,8 +709,8 @@ class ReportController extends Controller
 
             $table .= '<tr width="100%">
                            <td width="50%">'.$sale->name.'</td>
-                           <td width="25%" class="text-right">'.$setBracket.$amountDebitSum.$setBracket2.'</td>
-                           <td width="25%" class="text-right">'.$netSalesAmount.'</td>
+                           <td width="25%" class="text-end">'.$setBracket.$amountDebitSum.$setBracket2.'</td>
+                           <td width="25%" class="text-end">'.$netSalesAmount.'</td>
                        </tr>';
         }
 
@@ -718,15 +718,15 @@ class ReportController extends Controller
 
         $table .= '<tr class="font-weight-bold table-active">
                             <td>Total Income</td>
-                            <td class="text-right">'.number_format($totalIncomeWithOpening).'</td>
-                            <td class="text-right"></td>
+                            <td class="text-end">'.number_format($totalIncomeWithOpening).'</td>
+                            <td class="text-end"></td>
                         </tr>';
         $table .= '</tbody></table></td>
                         <td style="width:50%; padding:0;">
                             <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
                             <thead class="table-dark">
                                 <tr><th colspan="3" class="text-center">EXPENDITURE</th></tr>
-                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                                <tr><th>Particulars</th><th class="text-end" style="width:30%;">Amount</th><th class="text-end" style="width:30%;">Net</th></tr>
                             </thead>
                             <tbody>';
 
@@ -764,8 +764,8 @@ class ReportController extends Controller
 
             $table .= '<tr  width="100%">
                            <td width="50%">'.$purchase->name.'</td>
-                           <td width="25%" class="text-right">'.$setBracket.$amountSum.$setBracket2.'</td>
-                           <td width="25%" class="text-right">'.$netPurchaseAmount.'</td>
+                           <td width="25%" class="text-end">'.$setBracket.$amountSum.$setBracket2.'</td>
+                           <td width="25%" class="text-end">'.$netPurchaseAmount.'</td>
                         </tr>';
             if ($purchase->id != 43) {
                 $purchaseSum += $amountSum;
@@ -798,8 +798,8 @@ class ReportController extends Controller
 
             $table .= '<tr>
                            <td width="50%">'.$expense->name.'</td>
-                           <td width="25%" class="text-right">'.number_format($amountSum).'</td>
-                           <td width="25%" class="text-right">'.$tempTotalExpenses.'</td>
+                           <td width="25%" class="text-end">'.number_format($amountSum).'</td>
+                           <td width="25%" class="text-end">'.$tempTotalExpenses.'</td>
                         </tr>';
             $expenseSum += $amountSum;
         }
@@ -807,8 +807,8 @@ class ReportController extends Controller
         $totalExpense = (($expenseSum + $purchaseSum) - $totalPurchaseReturnAmount);
         $table .= '<tr class="font-weight-bold table-active">
                             <td>Total Expenditure</td>
-                            <td class="text-right">'.number_format($totalExpense).'</td>
-                            <td class="text-right"></td>
+                            <td class="text-end">'.number_format($totalExpense).'</td>
+                            <td class="text-end"></td>
                         </tr>';
         $table .= '</tbody></table></td></tr></table>';
 
@@ -816,9 +816,9 @@ class ReportController extends Controller
                         <tbody>
                             <tr class="font-weight-bold table-active">
                                 <td style="width:25%;">Total Income</td>
-                                <td class="text-right" style="width:25%;">'.number_format($totalIncomeWithOpening).'</td>
+                                <td class="text-end" style="width:25%;">'.number_format($totalIncomeWithOpening).'</td>
                                 <td style="width:25%;">Total Expenditure</td>
-                                <td class="text-right" style="width:25%;">'.number_format($totalExpense).'</td>
+                                <td class="text-end" style="width:25%;">'.number_format($totalExpense).'</td>
                             </tr>';
         $due = $totalIncomeWithOpening - $totalExpense;
         if ($totalIncomeWithOpening < $totalExpense) {
@@ -840,7 +840,7 @@ class ReportController extends Controller
         }
         $table .= '<tr class="font-weight-bold">
                         <td>Balance Closing</td>
-                        <td class="text-right" colspan="3"><strong>'.number_format($expenseClosing).'</strong></td>
+                        <td class="text-end" colspan="3"><strong>'.number_format($expenseClosing).'</strong></td>
                     </tr>';
 
         // Start Voucher Section
@@ -858,9 +858,9 @@ class ReportController extends Controller
                 DB::raw('SUM(CASE WHEN type="Payment Received" THEN payment_vouchers.amount END) totalVoucherRcvAmount'),
                 DB::raw('SUM(CASE WHEN type="Payment" THEN payment_vouchers.amount END) totalVoucherPaymentAmount'),
             )->first();
-        $table .= '<tr><td>Voucher Recipient</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherRcvAmount).'</td></tr>';
-        $table .= '<tr><td>Payment Voucher</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherPaymentAmount).'</td></tr>';
-        $table .= '<tr class="font-weight-bold table-active"><td>Cash In Hand</td><td class="text-right" colspan="3">'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</td></tr>';
+        $table .= '<tr><td>Voucher Recipient</td><td class="text-end" colspan="3">'.number_format($voucherSummary->totalVoucherRcvAmount).'</td></tr>';
+        $table .= '<tr><td>Payment Voucher</td><td class="text-end" colspan="3">'.number_format($voucherSummary->totalVoucherPaymentAmount).'</td></tr>';
+        $table .= '<tr class="font-weight-bold table-active"><td>Cash In Hand</td><td class="text-end" colspan="3">'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</td></tr>';
         $table .= '</tbody></table>';
         // End Voucher Section
 
@@ -1135,7 +1135,7 @@ class ReportController extends Controller
 
         $table .= '<tr>
                                             <td width="70%">Cash in hand</td>
-                                            <td width="30%" class="text-right"><input type="hidden" id="previousDayClosing" value='.$openingbalance.'>'.number_format($openingbalance).'</td>
+                                            <td width="30%" class="text-end"><input type="hidden" id="previousDayClosing" value='.$openingbalance.'>'.number_format($openingbalance).'</td>
                                         </tr>';
         $totalIncome = 0;
         foreach ($allIncomes as $income) {
@@ -1155,7 +1155,7 @@ class ReportController extends Controller
 
             $table .= '<tr>
                                                 <td width="70%">'.$income->name.'</td>
-                                                <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
+                                                <td width="30%" class="text-end">'.number_format($amountDebitSum).'</td>
                                             </tr>';
             $totalIncome += $amountDebitSum;
         }
@@ -1177,7 +1177,7 @@ class ReportController extends Controller
             }
             $table .= '<tr>
                                                 <td width="70%">'.$sale->name.'</td>
-                                                <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
+                                                <td width="30%" class="text-end">'.number_format($amountDebitSum).'</td>
                                             </tr>';
             $totalSales += $amountDebitSum;
         }
@@ -1202,7 +1202,7 @@ class ReportController extends Controller
         }
         $table .= '<tr>
                                                 <td width="70%">Bill</td>
-                                                <td width="30%" class="text-right">'.number_format($billAmount).'</td>
+                                                <td width="30%" class="text-end">'.number_format($billAmount).'</td>
                                             </tr>';
 
         $purchaseSum = 0;
@@ -1222,7 +1222,7 @@ class ReportController extends Controller
 
             $table .= '<tr>
                                                 <td width="70%">'.$purchase->name.'</td>
-                                                <td width="30%" class="text-right">'.number_format($amountSum).'</td>
+                                                <td width="30%" class="text-end">'.number_format($amountSum).'</td>
                                             </tr>';
             $purchaseSum += $amountSum;
         }
@@ -1245,7 +1245,7 @@ class ReportController extends Controller
 
             $table .= '<tr>
                                                 <td width="70%">'.$expense->name.'</td>
-                                                <td width="30%" class="text-right">'.number_format($amountSum).'</td>
+                                                <td width="30%" class="text-end">'.number_format($amountSum).'</td>
                                             </tr>';
             $expenseSum += $amountSum;
         }
@@ -1261,7 +1261,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total Income: </td>
-                                        <td width="30%" class="text-right">'.number_format($totalIncomeWithOpening).'</td>
+                                        <td width="30%" class="text-end">'.number_format($totalIncomeWithOpening).'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1271,7 +1271,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total Expense: </td>
-                                        <td width="30%" class="text-right">'.number_format($totalExpense).'</td>
+                                        <td width="30%" class="text-end">'.number_format($totalExpense).'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1295,7 +1295,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Balance Closing: </td> <input type="hidden" id="due" value='.$due.'>
-                                        <td width="30%" class="text-right">'.number_format($incomeClosing).Session::get('companySettings')[0]['currency'].'</td>
+                                        <td width="30%" class="text-end">'.number_format($incomeClosing).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1305,7 +1305,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Balance Closing: </td>
-                                        <td width="30%" class="text-right">'.number_format($expenseClosing).Session::get('companySettings')[0]['currency'].'</td>
+                                        <td width="30%" class="text-end">'.number_format($expenseClosing).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1319,7 +1319,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total : </td>
-                                        <td width="30%" class="text-right">'.number_format($totalIncomeWithDue).Session::get('companySettings')[0]['currency'].'</td>
+                                        <td width="30%" class="text-end">'.number_format($totalIncomeWithDue).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1329,7 +1329,7 @@ class ReportController extends Controller
                                 <tbody>
                                     <tr>
                                         <td width="70%">Total : </td>
-                                        <td width="30%" class="text-right">'.number_format($totalExpenseWithDue).Session::get('companySettings')[0]['currency'].'</td>
+                                        <td width="30%" class="text-end">'.number_format($totalExpenseWithDue).Session::get('companySettings')[0]['currency'].'</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1525,9 +1525,9 @@ class ReportController extends Controller
                     <td width="8%"><b>Job No.</b></td>
                     <td width="15%"><b>COA</b></td>
                     <td width="20%"><b>Party Info</b></td>
-                    <td width="15%" class="text-right"><b>Job Amount</b></td>
-                    <td width="15%" class="text-right"><b>Sale Amount</b></td>
-                    <td width="15%" class="text-right"><b>Balance</b></td>
+                    <td width="15%" class="text-end"><b>Job Amount</b></td>
+                    <td width="15%" class="text-end"><b>Sale Amount</b></td>
+                    <td width="15%" class="text-end"><b>Balance</b></td>
                     <td class="text-center" width="12%"><b>Status</b></td>
             </tr>
             </thead>
@@ -1544,9 +1544,9 @@ class ReportController extends Controller
                         <td>'.$order->sale_no.'</td>
                         <td>'.$coaName.'</td>
                         <td>Name: '.$order->partyName.'<br>Contact: '.$order->contact.'</td>
-                        <td class="text-right">'.number_format($order->grand_total).' '.Session::get('companySettings')[0]['currency'].'</td>
-                        <td class="text-right">'.number_format($order->final_sale_amount).' '.Session::get('companySettings')[0]['currency'].'</td>
-                        <td class="text-right">'.number_format(($order->grand_total) - ($order->final_sale_amount)).' '.Session::get('companySettings')[0]['currency'].'</td>
+                        <td class="text-end">'.number_format($order->grand_total).' '.Session::get('companySettings')[0]['currency'].'</td>
+                        <td class="text-end">'.number_format($order->final_sale_amount).' '.Session::get('companySettings')[0]['currency'].'</td>
+                        <td class="text-end">'.number_format(($order->grand_total) - ($order->final_sale_amount)).' '.Session::get('companySettings')[0]['currency'].'</td>
                         <td class="text-center">'.$order->order_status.'</td>
                     </tr>';
             $total_amount_sum += $order->grand_total;
@@ -1554,10 +1554,10 @@ class ReportController extends Controller
         }
 
         $table .= '<tr>
-                        <td colspan="4" class="text-right"><b>Total: </b></td>
-                        <td class="text-right"><b>'.number_format($total_amount_sum).' '.Session::get('companySettings')[0]['currency'].'</b></td>
-                        <td class="text-right"><b>'.number_format($total_sale_amount_sum).' '.Session::get('companySettings')[0]['currency'].'</b></td>
-                        <td class="text-right"><b>'.number_format(($total_amount_sum - $total_sale_amount_sum)).' '.Session::get('companySettings')[0]['currency'].'</b></td>
+                        <td colspan="4" class="text-end"><b>Total: </b></td>
+                        <td class="text-end"><b>'.number_format($total_amount_sum).' '.Session::get('companySettings')[0]['currency'].'</b></td>
+                        <td class="text-end"><b>'.number_format($total_sale_amount_sum).' '.Session::get('companySettings')[0]['currency'].'</b></td>
+                        <td class="text-end"><b>'.number_format(($total_amount_sum - $total_sale_amount_sum)).' '.Session::get('companySettings')[0]['currency'].'</b></td>
                         <td></td>
                   </tr>';
 
@@ -1574,7 +1574,7 @@ class ReportController extends Controller
                     <td width="8%"><b>Job No</b></td>
                     <td width="15%"><b>COA</b></td>
                     <td width="20%"><b>Party Info</b></td>
-                    <td width="15%" class="text-right"><b>Amount</b></td>
+                    <td width="15%" class="text-end"><b>Amount</b></td>
                     <td width="15%" class="text-center"><b>Status</b></td>
                     <td width="23%"><b>Remarks</b></td>
             </tr>';
@@ -1601,15 +1601,15 @@ class ReportController extends Controller
                     <td>'.$order->sale_no.'</td>
                     <td>'.$coaName.'</td>
                     <td>Name: '.$order->partyName.'<br>Contact: '.$order->contact.'</td>
-                    <td class="text-right">'.$order->grand_total.' '.Session::get('companySettings')[0]['currency'].'</td>
+                    <td class="text-end">'.$order->grand_total.' '.Session::get('companySettings')[0]['currency'].'</td>
                     <td class="text-center">'.$order->order_status.'</td>
                     <td></td>
             </tr>';
             $totalSum += $order->grand_total;
         }
         $table .= '<tr> 
-                    <td colspan="4" class="text-right"><b>Total : </b></td>
-                    <td class="text-right">'.number_format($totalSum).' '.Session::get('companySettings')[0]['currency'].'</td>
+                    <td colspan="4" class="text-end"><b>Total : </b></td>
+                    <td class="text-end">'.number_format($totalSum).' '.Session::get('companySettings')[0]['currency'].'</td>
                     <td colspan="2" ></td>
                 </tr>';
         $table .= '<tbody>';
@@ -1623,8 +1623,8 @@ class ReportController extends Controller
                 <td class="text-center" width="15%"><b>Sale No</b></td>
                 <td class="text-center" width="20%"><b>COA</b></td>
                 <td width="30%"><b>Party Info</b></td>
-                <td width="15%" class="text-right"><b>Total</b></td>
-                <td width="15%" class="text-right"><b>Paid</b></td>
+                <td width="15%" class="text-end"><b>Total</b></td>
+                <td width="15%" class="text-end"><b>Paid</b></td>
             </tr>';
         $table .= '</thead>';
         $table .= '<tbody>';
@@ -1647,16 +1647,16 @@ class ReportController extends Controller
                 <td class="text-center">'.$sale->sale_no.'</td>
                 <td class="text-center">'.$sale->coaName.'</td>
                 <td >Name: '.$sale->partyName.'<br>Contact: '.$sale->contact.'</td>
-                <td class="text-right">'.$sale->grand_total.' '.Session::get('companySettings')[0]['currency'].'</td>
-                <td class="text-right">'.$sale->current_payment.' '.Session::get('companySettings')[0]['currency'].'</td>
+                <td class="text-end">'.$sale->grand_total.' '.Session::get('companySettings')[0]['currency'].'</td>
+                <td class="text-end">'.$sale->current_payment.' '.Session::get('companySettings')[0]['currency'].'</td>
             </tr>';
             $grandTotalSum += $sale->grand_total;
             $paidTotalSum += $sale->current_payment;
         }
         $table .= '<tr>
-                <td colspan="4" class="text-right">Total :</td>
-                <td class="text-right">'.$grandTotalSum.' '.Session::get('companySettings')[0]['currency'].'</td>
-                <td class="text-right">'.$paidTotalSum.' '.Session::get('companySettings')[0]['currency'].'</td>
+                <td colspan="4" class="text-end">Total :</td>
+                <td class="text-end">'.$grandTotalSum.' '.Session::get('companySettings')[0]['currency'].'</td>
+                <td class="text-end">'.$paidTotalSum.' '.Session::get('companySettings')[0]['currency'].'</td>
             </tr>';
         $table .= '</tbody>';
         $table .= '</table>';
