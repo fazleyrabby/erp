@@ -58,7 +58,7 @@ Account Settings
               </tbody>
             </table>
           </div>
-          <div class="form-row">
+          <div class="row g-3">
             <div class="form-group mb-3 col-md-12" style="padding-top: 30px">
               <button type="submit" class="btn btn-primary float-right">Update</button>
             </div>

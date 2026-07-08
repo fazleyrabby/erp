@@ -86,16 +86,16 @@
                         @csrf
 
                         <input type="hidden" name="id">
-                        <div class="form-group mb-3 row">
-                            <div class="col-md-12">
-                                <label> Date <span class="text-danger"> * </span></label>
-                                <input class="form-control input-sm" id="date" type="date" name="date"
+                        <div class="row g-3">
+                            <div class="form-group mb-3 col-md-12">
+                                <label class="form-label"> Date <span class="text-danger"> * </span></label>
+                                <input class="form-control form-control-sm" id="date" type="date" name="date"
                                     value="{{ date('Y-m-d') }}">
                                 <span class="text-danger" id="nameError"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label> Product <span class="text-danger"> * </span></label>
-                                <select class="form-control input-sm" id="productId" name="productId">
+                            <div class="form-group mb-3 col-md-6">
+                                <label class="form-label"> Product <span class="text-danger"> * </span></label>
+                                <select class="form-control form-control-sm" id="productId" name="productId">
                                     <option value="">Select Product</option>
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -103,31 +103,29 @@
                                 </select>
                                 <span class="text-danger" id="nameError"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label> Select Warehouse <span class="text-danger"> * </span></label>
-                                <select class="form-control input-sm" id="warehouse" name="warehouse">
+                            <div class="form-group mb-3 col-md-6">
+                                <label class="form-label"> Select Warehouse <span class="text-danger"> * </span></label>
+                                <select class="form-control form-control-sm" id="warehouse" name="warehouse">
                                 </select>
                                 <span class="text-danger" id="stock_warehouseError"></span>
                             </div>
-                        </div>
-                        <div class="form-group mb-3 row">
-                            <div class="col-md-6">
-                                <label> Current Stock</label>
-                                <input class="form-control input-sm" id="current_stock" type="text" name="current_stock"
-                                    Disabled>
+                        
+                            <div class="form-group mb-3 col-md-6">
+                                <label class="form-label"> Current Stock</label>
+                                <input class="form-control form-control-sm" id="current_stock" type="text" name="current_stock" Disabled>
                                 <span class="text-danger" id="nameError"></span>
                             </div>
-                            <div class="col-md-6">
-                                <label> Quantity <span class="text-danger"> * </span></label>
-                                <input class="form-control input-sm" id="damage_quantity" type="text"
-                                    name="damage_quantity">
+                            <div class="form-group mb-3 col-md-6">
+                                <label class="form-label"> Quantity <span class="text-danger"> * </span></label>
+                                <input class="form-control form-control-sm" id="damage_quantity" type="text" name="damage_quantity">
                                 <span class="text-danger" id="nameError"></span>
                             </div>
-                        </div>
-                        <div class="form-group mb-3 row">
-                            <label> Remarks</label>
-                            <input class="form-control input-sm" id="remark" type="text" name="remark">
-                            <span class="text-danger" id="nameError"></span>
+                        
+                            <div class="form-group mb-3 col-md-12">
+                                <label class="form-label"> Remarks</label>
+                                <input class="form-control form-control-sm" id="remark" type="text" name="remark">
+                                <span class="text-danger" id="nameError"></span>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
