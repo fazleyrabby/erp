@@ -5,40 +5,76 @@ Admin Leave Management -View
 @section('content')
 <div class="content-wrapper">
     <section class="content box-border">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 style=" float: left;">Leave list</h3>
-                            <a href="#/" onclick="create()"  class="btn btn-primary btn-icon-split float-right">
-                                <i class="fas fa-plus"></i>
-                                <span class="text">Add Leave</span>
-                            </a>
-                            <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-
-                            <table id="manageLeaveTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>SL</th>
-                                        <th>Employee</th>
-                                        <th>Leave Type</th>
-                                        <th>Leave Start</th>
-                                        <th>Leave End</th>
-                                        <th>Leave Reason</th>
-                                        <th>Note</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                                </table>
-
-                            </div>
-                        </div>
-                    
-        </section>
-    </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Leave list</h3>
+                <div class="card-actions">
+                    <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Leave</button>
+                </div>
+                <h3 class="text-center text-success">{{Session::get('message')}}</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <x-filter-bar route="{{ route('leaveIndex') }}" searchPlaceholder="Search leaves..." :sortOptions="['id' => 'ID', 'leave_type' => 'Leave Type']" :defaultSort="'id'" :defaultDirection="'DESC'" />
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Employee</th>
+                            <th>Leave Type</th>
+                            <th>Leave Start</th>
+                            <th>Leave End</th>
+                            <th>Leave Reason</th>
+                            <th>Note</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($items as $i => $leave)
+                        <tr>
+                            <td>{{ $items->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $leave->id }}" /></td>
+                            <td>{{ $leave->member_name }}</td>
+                            <td>{{ $leave->leave_type }}</td>
+                            <td>{{ $leave->leave_start_date }}</td>
+                            <td>{{ $leave->leave_end_date }}</td>
+                            <td>{{ $leave->leave_reason }}</td>
+                            <td>{{ $leave->admin_remarks }}</td>
+                            <td>
+                                @if ($leave->leave_status == 'Pending')
+                                <span class="badge badge-warning">{{ $leave->leave_status }}</span>
+                                @elseif ($leave->leave_status == 'Approved')
+                                <span class="badge badge-success">{{ $leave->leave_status }}</span>
+                                @else
+                                <span class="badge badge-danger">{{ $leave->leave_status }}</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="btn-grade">
+                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                         <i class="fas fa-cog"></i>
+                                     </button>
+                                     <div class="dropdown-menu dropdown-menu-end">
+                                         <a class="dropdown-item" href="#" onclick="editLeave({{ $leave->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                         <a class="dropdown-item" href="#/" onclick="confirmDelete({{ $leave->id }})"><i class="fas fa-trash me-2"></i> Delete</a>
+                                     </div>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="9" class="text-center py-4 text-muted">No leaves found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+                <div class="mt-3">
+                    {{ $items->links() }}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 
  <!-- modal -->
  <div class="modal fade" id="modal">
@@ -47,7 +83,7 @@ Admin Leave Management -View
 				<form id="leaveStore" >
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Leave</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div>
                 <div class="modal-body">
 					<div class="row">
@@ -97,7 +133,7 @@ Admin Leave Management -View
                 </div>
               </div>
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
                      <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save"></i> Save</button>
                 </div>
 			  </form>
@@ -113,7 +149,7 @@ Admin Leave Management -View
                 <form id="leaveEdit">
                     <div class="modal-header">
                         <h4 class="modal-title">Edit Leave</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                     </div> 
                     <div class="modal-body">
                     
@@ -163,7 +199,7 @@ Admin Leave Management -View
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save"></i> Update</button>
                     </div>
                 </form>
@@ -219,7 +255,7 @@ Admin Leave Management -View
                        // alert(JSON.stringify(result));
                     $("#modal").modal('hide');
                     Swal.fire("Saved!",result.success,"success");
-                    table.ajax.reload(null, false);                    
+                    location.reload();                    
                     }, 
                     error: function(response) {
                        // alert(JSON.stringify(response));
@@ -235,14 +271,7 @@ Admin Leave Management -View
 
 
             
-            /*get data*/
-            var table;
-                $(document).ready(function() {
-                    table = $('#manageLeaveTable').DataTable({
-                        'ajax': "{{route('getLeaveData')}}",
-                        processing:true,
-                    });
-                });
+
 
 
 
@@ -311,11 +340,11 @@ Admin Leave Management -View
             data:fd,
             contentType: false,
             processData: false,
-            success:function(result){
-               
+                success:function(result){
+                
                 $("#editModal").modal('hide');
                 Swal.fire("Updated info!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
              }, error: function(response) {
                 alert(JSON.stringify(response));
             }, beforeSend: function () {
@@ -347,7 +376,7 @@ Admin Leave Management -View
                     success: function (result) {
                        // alert(JSON.stringify(result));
                         Swal.fire("Done!",result.success,"success");
-                        table.ajax.reload(null, false);
+                        location.reload();
                     }, 
                     error: function(response) {
                 alert(JSON.stringify(response));

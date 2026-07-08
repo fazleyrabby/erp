@@ -22,37 +22,27 @@ use function PHPSTORM_META\type;
 
 class VoucherController extends Controller
 {
-    public function index($type)
+    public function index($type, Request $request)
     {
         $type = ucfirst($type);
-        /* if($type = 'Payment'){
-            $parties=Party::where('deleted','=','No')->where('party_type','Supplier')->get();
-        }else{
-            $parties=Party::where('deleted','=','No')->where('party_type','Customer')->get();
-        } */
-        $parties = Party::where('deleted', '=', 'No')/* ->where('party_type','Customer') */ ->get();
-        $suppliers = Party::where('deleted', '=', 'No')/* ->where('party_type','Supplier') */ ->get();
+        $parties = Party::where('deleted', '=', 'No')->get();
+        $suppliers = Party::where('deleted', '=', 'No')->get();
 
-        return view('admin.inventory.voucher.view-voucher', ['type' => $type, 'parties' => $parties, 'suppliers' => $suppliers]);
-    }
+        $sortBy = $request->sort_by ?? 'payment_vouchers.id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-    public function getVoucher($type)
-    {
-        $type = ucfirst($type);
         if ($type == 'Payment') {
-            $PaymentVouchers = DB::table('payment_vouchers')
+            $query = DB::table('payment_vouchers')
                 ->leftjoin('parties', 'payment_vouchers.party_id', '=', 'parties.id')
-                // ->leftjoin('sales','payment_vouchers.sales_id','=','sales.id')
                 ->leftjoin('purchases', 'payment_vouchers.purchase_id', '=', 'purchases.id')
-                /* ->leftjoin('','.id','=','payment_vouchers.project_id')
-                            ->leftjoin(',.id','=','payment_vouchers.work_order_id') */
                 ->whereRaw("(payment_vouchers.type=? or payment_vouchers.type='Payable') and (payment_vouchers.deleted='No')", [$type])
-                // ->orwhere('type','PartyPayable')
+                ->whereNull('expense_id')
                 ->select(
                     'payment_vouchers.id',
                     'payment_vouchers.purchase_id',
                     'payment_vouchers.sales_id',
-                    'payment_vouchers.type',
+                    'payment_vouchers.type as voucherType',
                     'payment_vouchers.amount',
                     'payment_vouchers.payment_method',
                     'payment_vouchers.paymentDate',
@@ -65,26 +55,19 @@ class VoucherController extends Controller
                     'purchases.purchase_no as invoiceNo',
                     'purchases.date',
                     'purchases.grand_total'
-                )
-                ->whereNull('expense_id')
-                ->orderby('payment_vouchers.id', 'DESC')
-                ->get();
+                );
             $voucherType = 'Purchase';
             $amountStatus = 'Payment';
         } elseif ($type == 'Payment Received') {
-            $PaymentVouchers = DB::table('payment_vouchers')
+            $query = DB::table('payment_vouchers')
                 ->join('parties', 'payment_vouchers.party_id', '=', 'parties.id')
                 ->leftjoin('sales', 'payment_vouchers.sales_id', '=', 'sales.id')
-
                 ->whereRaw("(payment_vouchers.type=? or payment_vouchers.type='Party Payable') and (payment_vouchers.deleted='No')", [$type])
-                // ->leftjoin('purchases','payment_vouchers.purchase_id','=','purchases.id')
-                // ->where('type',$type)
-                // ->orwhere('type','Payable')
                 ->select(
                     'payment_vouchers.id',
                     'payment_vouchers.purchase_id',
                     'payment_vouchers.sales_id',
-                    'payment_vouchers.type',
+                    'payment_vouchers.type as voucherType',
                     'payment_vouchers.amount',
                     'payment_vouchers.payment_method',
                     'payment_vouchers.paymentDate',
@@ -94,29 +77,22 @@ class VoucherController extends Controller
                     'parties.contact',
                     'parties.alternate_contact',
                     'payment_vouchers.remarks',
-                    // 'purchases.purchase_no','purchases.date as purchaseDate','purchases.grand_total as purchaseGrandTotal',
                     'sales.sale_no as invoiceNo',
                     'sales.date',
                     'sales.grand_total'
-                )
-                ->orderby('payment_vouchers.id', 'DESC')
-                ->get();
+                );
             $voucherType = 'Sale';
             $amountStatus = 'Received';
         } elseif ($type == 'Discount') {
-            $PaymentVouchers = DB::table('payment_vouchers')
+            $query = DB::table('payment_vouchers')
                 ->join('parties', 'payment_vouchers.party_id', '=', 'parties.id')
                 ->leftjoin('sales', 'payment_vouchers.sales_id', '=', 'sales.id')
-
                 ->whereRaw("(payment_vouchers.type='Discount' and payment_vouchers.deleted='No')")
-                // ->leftjoin('purchases','payment_vouchers.purchase_id','=','purchases.id')
-                // ->where('type',$type)
-                // ->orwhere('type','Payable')
                 ->select(
                     'payment_vouchers.id',
                     'payment_vouchers.purchase_id',
                     'payment_vouchers.sales_id',
-                    'payment_vouchers.type',
+                    'payment_vouchers.type as voucherType',
                     'payment_vouchers.amount',
                     'payment_vouchers.payment_method',
                     'payment_vouchers.paymentDate',
@@ -126,74 +102,24 @@ class VoucherController extends Controller
                     'parties.contact',
                     'parties.alternate_contact',
                     'payment_vouchers.remarks',
-                    // 'purchases.purchase_no','purchases.date as purchaseDate','purchases.grand_total as purchaseGrandTotal',
                     'sales.sale_no as invoiceNo',
                     'sales.date',
                     'sales.grand_total'
-                )
-                ->orderby('payment_vouchers.id', 'DESC')
-                ->get();
-
+                );
             $voucherType = '';
             $amountStatus = 'Discount';
         }
 
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($PaymentVouchers as $voucher) {
-
-            if ($voucher->type == 'Payable' || $voucher->type == 'Party Payable') {
-                $button = '';
-            } elseif ($voucher->type == 'Discount') {
-                $button = '<td style="width: 12%;">
-				<div class="btn-group">
-					<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-						<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-						<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-							<li class="action" onclick="printPaymentReceivedVoucher('.$voucher->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
-							</li> 
-					</li>
-						
-						<li class="action"><a   class="btn"  onclick="confirmDelete('.$voucher->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-						</li>
-						</ul>
-					</div>
-				</td>';
-            } elseif (($voucher->type == 'Payment' && $voucher->purchase_id != '') || ($voucher->type == 'Payment Received' && $voucher->sales_id != '')) {
-                $button = '';
-            }/*else if(($voucher->type == 'adjustment') || ($voucher->type == 'Payment Adjustment')){
-                $button = '<button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="confirmDelete('.$voucher->id.')" title="Delete Record"><i class="fa fa-trash"> </i></button>';
-            }*/ else {
-                // $button = '<button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="confirmDelete('.$voucher->id.')" title="Delete Record"><i class="fa fa-trash"> </i></button>';
-
-                $button = '<td style="width: 12%;">
-			<div class="btn-group">
-				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-						<li class="action" onclick="printPaymentReceivedVoucher('.$voucher->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
-						</li> 
-				</li>
-					
-					<li class="action"><a   class="btn"  onclick="confirmDelete('.$voucher->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-					</li>
-					</ul>
-				</div>
-			</td>';
-            }
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$voucher->id.'" />',
-                $voucher->paymentDate,
-                $voucher->voucherNo,
-                '<b>Party: </b>'.$voucher->name.'<br><b>Contact: </b>'.$voucher->contact.'<br><b>Alt. Contact: </b>'.$voucher->alternate_contact,
-                '<b>Invoice: </b>'.$voucherType.'-'.$voucher->invoiceNo.'<br><b>'.$amountStatus.': </b> '.$voucher->amount,
-                $voucher->payment_method,
-                $voucher->remarks,
-                $button,
-            ];
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('payment_vouchers.voucherNo', 'like', "%{$search}%")
+                  ->orWhere('parties.name', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $vouchers = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.inventory.voucher.view-voucher', compact('type', 'parties', 'suppliers', 'vouchers', 'voucherType', 'amountStatus'));
     }
 
     public function loadWorkOrder(Request $request)
@@ -434,17 +360,15 @@ class VoucherController extends Controller
         }
     }
 
-    public function emiPaymentView()
+    public function emiPaymentView(Request $request)
     {
         $type = 'Payment Received';
 
-        return view('admin.inventory.voucher.view-emi-voucher', ['type' => $type]);
-    }
+        $sortBy = $request->sort_by ?? 'sales.id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-    public function getPaidEmi()
-    {
-
-        $customers = DB::table('sales')
+        $query = DB::table('sales')
             ->join('parties', 'sales.customer_id', '=', 'parties.id')
             ->join('emi_sales', 'emi_sales.sale_id', '=', 'sales.id')
             ->select(
@@ -464,28 +388,18 @@ class VoucherController extends Controller
             ->where('sales.emi_status', 'Yes')
             ->where('emi_sales.is_paid', '!=', 'Yes')
             ->where('emi_sales.deleted', 'Yes')
-            ->orderBy('sales.id', 'DESC')
-            ->distinct()
-            ->get();
+            ->distinct();
 
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($customers as $customer) {
-            $button = '<td style="width: 12%;">
-				<div class="btn-group" >
-				<h1 class="action"  onclick="viewDetails('.$customer->sale_id.')"  ><a  class="btn" style="background-color: DarkGreen;color:white;"><i class="fas fa-lg fa-info-circle"></i>  View Details </a></h1>
-					</div>
-				</td>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$customer->sale_no.'" />',
-                'Sale No#: '.$customer->sale_no.'<br>Sale Date : '.$customer->date.' <br>Total Tenure :'.$customer->no_of_tenure,
-                '<span id="customerInfo"><b>Customer Name : </b>'.$customer->name.'<br><b>Contact : </b>'.$customer->contact.'<br></span><b>Alt. Contact : </b>'.$customer->alternate_contact,
-                '<b>Total: </b>'.$customer->total_amount.'<br><b>Discount : </b>'.$customer->discount.'<br><b>GrandTotal : </b>'.$customer->id,
-                $button,
-            ];
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('sales.sale_no', 'like', "%{$search}%")
+                  ->orWhere('parties.name', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $customers = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.inventory.voucher.view-emi-voucher', compact('type', 'customers'));
     }
 
     public function addEmiVoucher()

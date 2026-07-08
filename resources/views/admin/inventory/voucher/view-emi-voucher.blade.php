@@ -3,71 +3,82 @@
 {{Session::get("companySettings")[0]['name'].' Voucher '.$type}}
 @endsection
 @section('content')
-
-<style type="text/css">
-  
-  h3{
-    color: #66a3ff;
-  }
-</style>
-  <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-   <!-- /.content-header -->
-
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <!-- Small boxes (Stat box) -->
-      <!-- Main row -->
-      <div class="row">
-        <!-- Left col -->
-        <section class="col-md-12">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="card">
-            <div class="card-header"> 
-              <h3 style="float:left;">  EMI Voucher List (Paid)</h3>
-			  <a href="{{url('voucher/payment/addEmiVoucher')}}" class="btn btn-outline-success float-right" ><i class="fa fa-plus circle"></i> Add EMI Voucher </a>
-
-			  <a class="btn btn-outline-success" style="margin-left:20px;" onclick="reloadDt()"><i class="fas fa-sync"></i> Refresh </a>
-            </div><!-- /.card-header -->
-            <div class="card-body">
-               <div class="col-md-12">
-            
-
-            <!--data listing table-->
-            <div class="table-responsive">
-            <table id="manageVoucherTable" class="table table-bordered table-hover table-striped ">
-                <thead>
-                <tr>
-                    <td>SL</td>
-                    <td>voucher Info</td>
-                    <td>Customer Info</td>
-                    <td>Amount</td>
-                    <td>Actions</td>
-                </tr>
-                </thead>
-                
-            </table>
+    <div class="content-wrapper">
+        <section class="content box-border">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">EMI Voucher List (Paid)</h3>
+                    <div class="card-actions">
+                        <a class="btn btn-primary" href="{{url('voucher/payment/addEmiVoucher')}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add EMI Voucher
+                        </a>
+                        <a class="btn btn-outline-secondary" onclick="location.reload()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                            Refresh
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <x-filter-bar
+                        route="{{ url('voucher/payment/paidEmi') }}"
+                        searchPlaceholder="Search EMI voucher..."
+                        :sortOptions="['sales.id' => 'ID', 'sales.sale_no' => 'Sale No', 'sales.date' => 'Date']"
+                        :defaultSort="'sales.id'"
+                        :defaultDirection="'DESC'"
+                    />
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>SL</th>
+                                        <th>Voucher Info</th>
+                                        <th>Customer Info</th>
+                                        <th>Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($customers as $customer)
+                                        <tr>
+                                            <td>{{ $loop->iteration + ($customers->currentPage() - 1) * $customers->perPage() }}<input type="hidden" name="id" value="{{ $customer->sale_no }}" /></td>
+                                            <td>
+                                                Sale No#: {{ $customer->sale_no }}<br>
+                                                Sale Date: {{ $customer->date }}<br>
+                                                Total Tenure: {{ $customer->no_of_tenure }}
+                                            </td>
+                                            <td>
+                                                <span id="customerInfo"><b>Customer Name: </b>{{ $customer->name }}<br><b>Contact: </b>{{ $customer->contact }}<br></span>
+                                                <b>Alt. Contact: </b>{{ $customer->alternate_contact }}
+                                            </td>
+                                            <td>
+                                                <b>Total: </b>{{ $customer->total_amount }}<br>
+                                                <b>Discount: </b>{{ $customer->discount }}<br>
+                                                <b>GrandTotal: </b>{{ $customer->grand_total }}
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-secondary text-light" onclick="viewDetails({{ $customer->sale_id }})">
+                                                        <i class="fas fa-lg fa-info-circle"></i> View Details
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">No paid EMI vouchers found.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{ $customers->links() }}
+                </div>
             </div>
-            <!--data listing table-->
-
-        </div>
-              
-
-          </div>
-          <!-- /.card -->
-
-          <!-- /.card -->
         </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-      </div>
-      <!-- /.row (main row) -->
-    </div><!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+    </div>
 
     <!-- modal -->
 	<div class="modal fade bd-example-modal-lg" id="modalForCompletedEmiView" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -76,7 +87,7 @@
 	<form id="voucherForm" method="POST" enctype="multipart/form-data" action="#">
 			<div class="modal-header">
         <h4 class="modal-title float-left"> EMI {{$type}} Voucher</h4><br>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -84,9 +95,9 @@
 				<div class="row">
 					<div class="form-group col-md-6">
 						<div id="customerView">
-							
+
 						</div>
-					</div> 
+					</div>
 					<!-- table -->
 					<div class="form-group col-md-12">
 							<div style="font-weight: 900;" class="text-center bg-info text-light pt-2">
@@ -125,11 +136,11 @@
 									</table>
 									</table>
 						</div>
-			 
+
 			  </div>
 		  </div>
 		  	 <div class="modal-footer">
-				  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
 				<!-- <button type="submit" class="btn btn-primary btnSave" id="saveVoucher">Save</button> -->
 			</div>
 		  </form>
@@ -142,44 +153,6 @@
 @section('javascript')
 
 <script>
-
-
-	var table;
-	$(document).ready(function() {
-		table = $('#manageVoucherTable').DataTable({
-			'ajax': "{{url('voucher/sale/getPaidEmi')}}",
-			processing:true,
-		});
-	});
-
-	/* function getInvoice(id){
-		console.log(id);
-		var partyId = id;
-		$("#manageCartTable").html('');
-		$("#manageCartDeletedTable").html('');
-		$.ajax({
-			url:"{{url('voucher/sale/getEmiInvoice')}}",
-			method:"GET",
-			data:{'partyId':partyId},
-			success:function(result){
-				// alert(JSON.stringify(result));
-				var emiData = "<option value=''>Select Invoice </option>";
-				for(var i=0; i < result.length; i++){
-					emiData += "<option value='"+result[i]["id"]+"'>"+result[i]["sale_no"]+"</option>";
-				}
-				$("#invoice").html(emiData);
-		  }, beforeSend: function () {
-			  $('#loading').show();
-		  },complete: function () {
-			  $('#loading').hide();
-		  }, error: function(response) {
-			  $("#barcodeError").text("No such Invoice available in your system");
-				//alert(JSON.stringify(response));
-		  }
-		})
-
-		$("#modalForCompletedEmiView").modal('show');
-	} */
 
 
 	// get EMI with sale ID
@@ -213,13 +186,10 @@
 					let paymentStatus = '';
 					let paymentDeletedStatus = '';
 					if(result[i]["deleted"] == "Yes" ){
-						//button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card"></i> Do Something </a></li></li></li><li class="action">';
 						paymentDeletedStatus = '<i class="fas fa-times-circle" style="color:red; font-size:16px;" title="Active"></i>';
 					} else if(result[i]["is_paid"] == "No"){
-						//button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card "></i> doSomething </a></li></li></li><li class="action">';
 						 paymentStatus = '<i class="fa fa-envelope" aria-hidden="true" ></i>';
 					}else{
-						//button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card"></i> Do Something </a></li></li></li><li class="action">';
 						paymentStatus = '<i class="fas fa-check-circle" style="color:green; font-size:16px;" title="Active"></i>';
 					}
 					button += '</li></li></ul></div></td>';
@@ -236,7 +206,7 @@
 						serial++;
 						saleEmiData += "<tr class='text-center'><th scope='row'>"+(serial)+"</th><td>"+result[i]["tenure_payment_date"]+"</td><td id="+'tenuraAount'+result[i]["id"]+">"+result[i]["per_tenur_amount"]+"</td><td id="+result[i]["is_paid"]+">"+paymentStatus+button;
 					}
-					
+
 					saleEmiData += "</tr>";
 				}
 				$("#modalForCompletedEmiView").modal('show');
@@ -255,7 +225,8 @@
 		  }
 		})
 	}
-	
+
+
 
 
 

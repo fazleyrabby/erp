@@ -3,73 +3,105 @@
 Admin Time Schedule -Add
 @endsection
 @section('content')
-<div class="content-wrapper">
-    <section class="content box-border" >    
-        <div class="card ">
-            <div class="card-header">
-                <h3 style=" float: left;">Create Time Schedule Group</h3>
-                <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-            </div>
-            <div class="card-body">
-                <form id="timeScheduleAddForm">
-                        @csrf
-                    <div class="row ">
-                        <div class="form-group  col-md-6">
-                            <label >Group Name:</label>
-                            <select class="form-control" id="group_id" name="group_id" required>
-                                <option value=""selected disabled>Choose Group</option>
-                                @foreach($groups as $grps)
-                                <option value="{{$grps->id}}">{{$grps->name}}</option>
-                                @endforeach                                            
-                            </select>  
-                            <span class="text-danger" id="group_nameError"></span>
-                        </div>
-                        <div class="form-group  col-md-6">
-                            <label >Time From:</label>
-                            <input type="text" class="form-control " id="time_from" name="time_from" placeholder="Enter time from">
-                            <span class="text-danger" id="time_fromError"></span>
-                        </div>
-                        <div class="form-group  col-md-6">
-                            <label >Time To:</label>
-                            <input type="text" class="form-control " id="time_to" name="time_to" placeholder="Enter time to">
-                            <span class="text-danger" id="time_toError"></span>
-                        </div>
-                        <div class="form-group  col-md-6">
-                            <label >Working Hour:</label>
-                            <input type="text" class="form-control " id="working_hour" name="working_hour" placeholder="Enter working hour">
-                            <span class="text-danger" id="working_hourError"></span>
-                        </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-primary float-right" type="submit"><i class="fas fa-save"></i> Save</button>
-                        </div>
-                    </div>
-                </form>
-
-                <div class="table" style="padding-top:10px;">
-                    <div class="col-sm-6">
-                        <h3>Time Schedule List</h3>
-                    </div>
-                    <table  id="timeScheduleTable" class="table table-bordered table-striped" >
-                        <thead>
-                            <tr>
-                                <th>SL</th>
-                                <th>Group Name</th>
-                                <th>Time From</th>                                     
-                                <th>Time To</th>
-                                <th>Working Hour</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-
-                        <tbody></tbody>
-                    </table>
+    <div class="content-wrapper">
+        <section class="content box-border" >    
+            <div class="card ">
+                <div class="card-header">
+                    <h3 class="card-title">Time Schedule Group</h3>
+                    <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                 </div>
+                <div class="card-body">
+                    <x-filter-bar route="{{ route('timeScheduleGroupIndex') }}" searchPlaceholder="Search schedule groups..." :sortOptions="['id' => 'ID', 'schedule_name' => 'Name']" :defaultSort="'id'" :defaultDirection="'DESC'" />
+                    <form id="timeScheduleAddForm">
+                            @csrf
+                        <div class="row ">
+                            <div class="form-group  col-md-6">
+                                <label >Group Name:</label>
+                                <select class="form-control" id="group_id" name="group_id" required>
+                                    <option value=""selected disabled>Choose Group</option>
+                                    @foreach($groups as $grps)
+                                    <option value="{{$grps->id}}">{{$grps->name}}</option>
+                                    @endforeach                                            
+                                </select>  
+                                <span class="text-danger" id="group_nameError"></span>
+                            </div>
+                            <div class="form-group  col-md-6">
+                                <label >Time From:</label>
+                                <input type="text" class="form-control " id="time_from" name="time_from" placeholder="Enter time from">
+                                <span class="text-danger" id="time_fromError"></span>
+                            </div>
+                            <div class="form-group  col-md-6">
+                                <label >Time To:</label>
+                                <input type="text" class="form-control " id="time_to" name="time_to" placeholder="Enter time to">
+                                <span class="text-danger" id="time_toError"></span>
+                            </div>
+                            <div class="form-group  col-md-6">
+                                <label >Working Hour:</label>
+                                <input type="text" class="form-control " id="working_hour" name="working_hour" placeholder="Enter working hour">
+                                <span class="text-danger" id="working_hourError"></span>
+                            </div>
+                            <div class="col-md-12">
+                                <button class="btn btn-primary float-right" type="submit"><i class="fas fa-save"></i> Save</button>
+                            </div>
+                        </div>
+                    </form>
 
-            </div>     
+                    <div class="table" style="padding-top:10px;">
+                        <table class="table table-bordered table-striped" >
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Group Name</th>
+                                    <th>Time From</th>                                     
+                                    <th>Time To</th>
+                                    <th>Working Hour</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($items as $i => $group)
+                                <tr>
+                                    <td>{{ $items->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $group->id }}" /></td>
+                                    <td>{{ $group->groupName }}</td>
+                                    <td>{{ $group->time_from }}</td>
+                                    <td>{{ $group->time_to }}</td>
+                                    <td>{{ $group->working_hour }}</td>
+                                    <td>
+                                        @if ($group->status == 'Active')
+                                        <center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $group->status }}"></i></center>
+                                        @else
+                                        <center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $group->status }}"></i></center>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-grade">
+                                             <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-cog"></i>
+                                             </button>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                 <a class="dropdown-item" href="#" onclick="editScheduleGroup({{ $group->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                                 <a class="dropdown-item" href="#/" onclick="confirmDelete({{ $group->id }})"><i class="fas fa-trash me-2"></i> Delete</a>
+                                             </div>
+                                         </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center py-4 text-muted">No schedule groups found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                        <div class="mt-3">
+                            {{ $items->links() }}
+                        </div>
+                    </div>
+
+                </div>     
+            </div>
+        </section>
         </div>
-    </section>
-    </div>
 
 <!-- edit modal -->
 <div class="modal fade" id="editModal">
@@ -80,7 +112,7 @@ Admin Time Schedule -Add
                 <div class="modal-header">
                    
                     <h4 class="modal-title">Edit Schedule Group</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">
                 
@@ -128,7 +160,7 @@ Admin Time Schedule -Add
 				 </div>
               </div>
 			  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save"></i> Update</button>
                  </div>
 				 </form>
@@ -144,14 +176,7 @@ Admin Time Schedule -Add
 
            
 
-                /*get data*/
-            var table;
-                $(document).ready(function() {
-                    table = $('#timeScheduleTable').DataTable({
-                        'ajax': "{{route('getScheduleGroupData')}}",
-                        processing:true,
-                    }); 
-                });
+
 
                 
  
@@ -260,11 +285,11 @@ Admin Time Schedule -Add
             data:fd,
             contentType: false,
             processData: false,
-            success:function(result){
-               
+                success:function(result){
+                
                 $("#editModal").modal('hide');
                 Swal.fire("Updated Step!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
              }, error: function(response) {
                 //alert(JSON.stringify(response));
                 $('#editgroup_nameError').text(response.responseJSON.errors.group_id);
@@ -300,7 +325,7 @@ Admin Time Schedule -Add
                     data: {"id":id, "_token":_token},
                     success: function (result) {
                         Swal.fire("Done!",result.success,"success");
-                        table.ajax.reload(null, false);
+                        location.reload();
                     }, beforeSend: function () {
                         $('#loading').show();
                     },complete: function () {

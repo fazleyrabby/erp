@@ -9,7 +9,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Parties Routes
     Route::get('parties/view/{type}', [PartyController::class, 'index'])->name('parties.view');
-    Route::get('parties/viewTypes/{type}', [PartyController::class, 'getParty'])->name('viewParties');
     Route::get('parties/getParty', [PartyController::class, 'getPartyData'])->name('getPartyList');
     Route::get('parties/get/{type}', [PartyController::class, 'getParties']);
     Route::post('parties/store', [PartyController::class, 'store']);

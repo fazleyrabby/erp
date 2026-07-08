@@ -109,7 +109,7 @@ Admin Generate Salary Sheet  -View
 			
                 <div class="modal-header">
                     <h4 class="modal-title mr-auto">Salary Instructions</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
             <div class="modal-body">
                 <div class="row" style="padding:20px;">
@@ -120,7 +120,7 @@ Admin Generate Salary Sheet  -View
             
             </div>
 			  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
                  </div>
 				 </form>
             </div><!-- /.modal-content -->

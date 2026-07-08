@@ -10,31 +10,70 @@
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                    <h3 style="float:left;"> Damage List </h3>
-                    <a class="btn btn-cyan float-right" onclick="create()"><i
-                            class="fa fa-plus circle"></i>Add Damage</a>
-                    <a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()"><i
-                            class="fas fa-sync"></i> Refresh </a>
-                </div><!-- /.card-header -->
+                    <h3 class="card-title">Damage List</h3>
+                    <div class="card-actions">
+                        <a class="btn btn-primary" onclick="create()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Damage
+                        </a>
+                        <a class="btn btn-outline-secondary" onclick="location.reload()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                            Refresh
+                        </a>
+                    </div>
+                </div>
                 <div class="card-body">
-                                    <div class="table-responsive">
-                                        <!--data listing table-->
-                                        <table id="manageTable" width="100%" class="table table-bordered table-hover ">
-                                            <thead>
-                                                <tr>
-                                                    <td  width="6%">SL#</td>
-                                                    <td>Date</td>
-                                                    <td>Damage Info</td>
-                                                    <td>Product Info</td>
-                                                    <td>Other Info</td>
-                                                    <td>Quantity</td>
-                                                    <td  width="7%">Action</td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                        <!--data listing table-->
-                                    </div>
-                            </div>
+                    <x-filter-bar
+                        route="{{ route('damage.view') }}"
+                        searchPlaceholder="Search damage..."
+                        :sortOptions="['damage_products.id' => 'ID', 'damage_products.damage_date' => 'Date', 'damage_products.damage_order_no' => 'Damage No']"
+                        :defaultSort="'damage_products.id'"
+                        :defaultDirection="'DESC'"
+                    />
+                    <div class="table-responsive">
+                        <table id="manageTable" class="table table-vcenter table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="6%">SL#</th>
+                                    <th>Date</th>
+                                    <th>Damage Info</th>
+                                    <th>Product Info</th>
+                                    <th>Other Info</th>
+                                    <th>Quantity</th>
+                                    <th width="7%" class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($damages as $damage)
+                                    <tr>
+                                        <td>{{ $loop->iteration + ($damages->currentPage() - 1) * $damages->perPage() }}</td>
+                                        <td>{{ $damage->damage_date }}</td>
+                                        <td><b>Damage No: </b>{{ $damage->damage_order_no }}</td>
+                                        <td><b>Name: </b>{{ $damage->name }}<br><b>Code: </b>{{ $damage->code }}</td>
+                                        <td><b>Category: </b>{{ $damage->categoryName }}<br><b>Brand: </b>{{ $damage->brandName }}</td>
+                                        <td>{{ $damage->damage_quantity }} {{ $damage->unitName }}</td>
+                                        <td class="text-end">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-cog"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" href="#" onclick="printPurchase({{ $damage->id }})"><i class="fas fa-print me-2"></i> View Details</a>
+                                                    <a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $damage->id }})"><i class="fas fa-trash-alt me-2"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4 text-muted">No damage records found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    {{ $damages->links() }}
+                </div>
             </div>
         </section>
     </div>
@@ -46,7 +85,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Add Damage</h4>
-                    <button type="button" class="close"data-dismiss="modal" aria-hidden="true"><i class="fas fa-window-close" ></i></button>                </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>                </div>
                 <div class="modal-body">
                     <form id="damageForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
@@ -96,7 +135,7 @@
                             <span class="text-danger" id="nameError"></span>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary btnSave" id="saveDamage"><i
                                     class="fa fa-save"></i> Save Damage</button>
                         </div>
@@ -135,13 +174,7 @@
         $('#editModal').on('shown.bs.modal', function() {
             $('#editName').focus();
         })
-        var table;
-        $(document).ready(function() {
-            table = $('#manageTable').DataTable({
-                'ajax': "{{ route('damage.getDamage') }}",
-                processing: true,
-            });
-        })
+        $(document).ready(function() {})
         $("#productId").change(function() {
             var productId = $("#productId").val();
             if (productId != "") {
@@ -237,8 +270,9 @@
                     processData: false,
                     success: function(result) {
                         $("#modal").modal('hide');
-                        Swal.fire("Saved!", result.success, "success");
-                        table.ajax.reload(null, false);
+                        Swal.fire("Saved!", result.success, "success").then(function(){
+                          location.reload();
+                        });
                         reset();
                     },
                     error: function(response) {
@@ -290,8 +324,9 @@
                         },
                         success: function(result) {
                             //alert(JSON.stringify(result));
-                            Swal.fire("Deleted!", result.success, "success");
-                            table.ajax.reload(null, false);
+                            Swal.fire("Deleted!", result.success, "success").then(function(){
+                              location.reload();
+                            });
                         },
                         error: function(response) {
                             Swal.fire("Error!", JSON.stringify(response), "error");
@@ -318,13 +353,7 @@
         });
 
         function reloadDt() {
-            if ($('#modal.in, #modal.show').length) {
-
-            } else if ($('#editModal.in, #editModal.show').length) {
-
-            } else {
-                table.ajax.reload(null, false);
-            }
+            location.reload();
         }
         Mousetrap.bind('ctrl+shift+r', function(e) {
             e.preventDefault();

@@ -11,58 +11,31 @@ use Illuminate\Support\Facades\DB;
 
 class FacilityController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        $groups = Group::where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
-
-        return view('admin.payroll.facility.facilityView', ['groups' => $groups]);
-    }
-
-    public function getFacilityData()
-    {
-
-        $facilities = DB::table('facilities')
+        $query = DB::table('facilities')
             ->join('groups', 'facilities.group_id', '=', 'groups.id')
             ->select('facilities.*', 'groups.name as groupName')
-            ->where('facilities.deleted', '=', 'No')->orderBy('facilities.id', 'ASC')->get();
+            ->where('facilities.deleted', 'No');
 
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($facilities as $facility) {
-            $status = '';
-            if ($facility->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$facility->status.'"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$facility->status.'"></i></center>';
-            }
-            /*$button = '<button type="button"  class="btn btn-xs btn-warning btnEdit" title="Edit Party" ><i class="fa fa-edit"> </i></button>
-                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="" title="Delete Party"><i class="fa fa-trash"> </i></button>';*/
-            $button = '<div class="btn-grade">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-
-<li class="action"><a href="#" onclick="editFacility('.$facility->id.')" class="btn"><i class="fas fa-edit"></i> Edit </a></li>
-<li class="action"><a href="#/" class="btn" onclick="confirmDelete('.$facility->id.')"><i class="fas fa-trash"></i> Delete </a></li>
-                </li>
-
-                </ul>
-            </div>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$facility->id.'" />',
-                $facility->facility_name,
-                $facility->groupName,
-                $facility->amount,
-                $facility->lower_limit,
-                $facility->upper_limit,
-                $facility->location,
-                $status,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('facilities.facility_name', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $facilities = $query->orderBy('facilities.' . $sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        $groups = Group::where('deleted', 'No')->where('status', 'Active')->get();
+
+        return view('admin.payroll.facility.facilityView', compact('facilities', 'groups'));
     }
 
     public function store(Request $request)

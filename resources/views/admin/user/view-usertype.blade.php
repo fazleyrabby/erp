@@ -7,64 +7,55 @@
 @endsection
 @section('content')
 
-<style type="text/css">
-  
-  h3{
-    color:  #009999;
-  }
-</style>
-  <div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-   <!-- /.content-header -->
-
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <!-- Small boxes (Stat box) -->
-      <!-- Main row -->
-      <div class="row">
-        <!-- Left col -->
-        <section class="col-md-12">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="card">
-            <div class="card-header">
-				<h3 class="float-left"> Usertype List </h3>
-
-				<a class="btn btn-outline-success float-right" onclick="create()"><i class="fa fa-plus circle"></i> Add Usertype</a>
-				<a class="btn btn-outline-success" style="margin-left:20px;" onclick="reloadDt()"><i class="fas fa-sync"></i> Refresh</a>
-            </div><!-- /.card-header -->
-            <div class="card-body">
-               <div class="col-md-12">
-            <!--data listing table-->
-            <table id="userTypeTable"  width="100%" class="table table-bordered table-hover" >
-                <thead>
-                <tr>
-					<td width="6%" class="text-center">SL.</td>
-					<td  width="78%"  >Usertype </td>
-					<td  width="8%" class="text-center">Status</td>
-					<td  width="8%" class="text-center">ACTION</td>
-                </tr>
-                </thead>
-            </table>
-            <!--data listing table-->
-
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Usertype List</h3>
+        <div class="card-actions">
+            <a class="btn btn-primary" onclick="create()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Usertype
+            </a>
+            <a class="btn btn-outline-secondary" onclick="location.reload()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                Refresh
+            </a>
         </div>
-              
-
-          </div>
-          <!-- /.card -->
-
-          <!-- /.card -->
-        </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-      </div>
-      <!-- /.row (main row) -->
-    </div><!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
+    </div>
+    <div class="card-body">
+        <x-filter-bar
+            route="{{ route('users.usertype.view') }}"
+            searchPlaceholder="Search usertypes..."
+            :sortOptions="['usertype' => 'Usertype', 'user_count' => 'Total Users']"
+            :defaultSort="'id'"
+            :defaultDirection="'DESC'"
+        />
+        <div class="table-responsive">
+            <table class="table table-vcenter table-bordered">
+                <thead>
+                    <tr>
+                        <th width="6%">SL#</th>
+                        <th>Usertype</th>
+                        <th width="12%">Total Users</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($usertypes as $usertype)
+                        <tr>
+                            <td class="text-center">{{ $loop->iteration + ($usertypes->currentPage() - 1) * $usertypes->perPage() }}</td>
+                            <td>{{ $usertype->usertype }}</td>
+                            <td class="text-center">{{ $usertype->user_count }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-4 text-muted">No usertypes found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        {{ $usertypes->links() }}
+    </div>
 </div>
-<!-- /.content-wrapper -->
 
     <!-- modal -->
     <div class="modal fade" id="modal">
@@ -72,7 +63,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
+                            data-bs-dismiss="modal" aria-hidden="true">
                     </button>
                     <h4 class="modal-title float-left"> Add Usertype</h4>
                 </div> 
@@ -88,7 +79,7 @@
                       </div>
                     
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">x Close</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">x Close</button>
                       <button type="submit" class="btn btn-primary btnSave" id="saveCategory">Save</button>
                  </form> </div>
               </div>
@@ -103,7 +94,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
+                            data-bs-dismiss="modal" aria-hidden="true">
                     </button>
                     <h4 class="modal-title">Edit Usertype</h4>
                 </div> 
@@ -127,7 +118,7 @@
                       </div>
 
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">x Close</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">x Close</button>
                       <button type="submit" class="btn btn-primary btnUpate" id="editUsertype">Update</button>
                  </form> </div>
               </div>
@@ -152,13 +143,7 @@
 	$('#editModal').on('shown.bs.modal', function() {
 	  $('#editName').focus();
 	})
-	var table;
-	$(document).ready(function() {
-		table = $('#userTypeTable').DataTable({
-			'ajax': "{{route('viewUserTypes')}}",
-			processing:true,
-		});
-	})
+
 		
 	
 	$("#userTypeForm").submit(function (e){
@@ -180,7 +165,7 @@
 			},
 			success:function(result){
 				$("#modal").modal('hide');
-				table.ajax.reload(null, false);
+				location.reload();
 				Swal.fire("Done!",result.success,"success");
 				
 			},
@@ -244,7 +229,7 @@
 			success:function(result){
 				$("#editModal").modal('hide');
 				Swal.fire("Done!",result.success,"success");
-				table.ajax.reload(null, false);
+				location.reload();
 			},
 			complete: function() {
 				$("#loading").hide();
@@ -278,7 +263,7 @@
 					},
 					success: function (result) {
 						Swal.fire("Done!",result.success,"success");
-						table.ajax.reload(null, false);
+						location.reload();
 					},
 					complete: function() {
 						$("#loading").hide();
@@ -308,7 +293,7 @@
 			
 		}
 		else{
-			table.ajax.reload(null, false);
+			location.reload();
 		}
 	}
 	Mousetrap.bind('ctrl+shift+r', function(e) {

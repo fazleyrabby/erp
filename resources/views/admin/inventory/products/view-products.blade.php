@@ -4,33 +4,107 @@
 @endsection
 @section('content')
     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title"> Product List </h3>
+                <div class="card-header">
+            <h3 class="card-title">Product List</h3>
             <div class="card-actions">
-                <a class="btn btn-primary" onclick="create()"><i class="fa fa-plus"></i> Add Product</a>
-                <a class="btn btn-primary" onclick="createService()"><i class="fa fa-plus"></i> Add Service</a>
+                <a class="btn btn-primary" onclick="create()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Product
+                </a>
+                <a class="btn btn-primary" onclick="createService()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Service
+                </a>
+                <a class="btn btn-outline-secondary" onclick="location.reload()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                    Refresh
+                </a>
             </div>
-                    <!-- <a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()">
-                        <i class="fas fa-sync"></i> Refresh 
-                    </a> -->
                 </div>
                 <div class="card-body">
+                    <x-filter-bar
+                        route="{{ route('products.view') }}"
+                        searchPlaceholder="Search products..."
+                        :sortOptions="['products.id' => 'ID', 'products.name' => 'Name', 'products.current_stock' => 'Stock', 'products.purchase_price' => 'Purchase Price', 'products.sale_price' => 'Sale Price']"
+                        :defaultSort="'products.id'"
+                        :defaultDirection="'DESC'"
+                    />
                     <div class="table-responsive">
-                        <table id="manageProductTable" width="100%" class="table table-vcenter table-bordered">
+                        <table id="manageProductTable" class="table table-vcenter table-bordered">
                             <thead>
                                 <tr>
-                                    <td width="5%">SL#</td>
-                                    <td width="30%">Product Info</td>
-                                    <td width="21%">Product Info</td>
-                                    <td width="10%">Image</td>
-                                    <td width="10%">Stock</td>
-                                    <td width="12%">Price</td>
-                                    <td width="5%">Status</td>
-                                    <td width="7%">Actions</td>
+                                    <th width="5%">SL#</th>
+                                    <th width="30%">Product Info</th>
+                                    <th width="21%">Category / Brand / Unit</th>
+                                    <th width="10%">Image</th>
+                                    <th width="10%">Stock</th>
+                                    <th width="12%">Price</th>
+                                    <th width="5%">Status</th>
+                                    <th width="7%" class="text-end">Actions</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                @forelse ($products as $product)
+                                    @php
+                                        $imageUrl = url('upload/product_images/thumbs/'.$product->image);
+                                        $currency = Session::get('companySettings')[0]['currency'];
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $loop->iteration + ($products->currentPage() - 1) * $products->perPage() }}</td>
+                                        <td>
+                                            <b>Name: </b>{{ $product->name }}<br>
+                                            <b>Model: </b>{{ $product->model_no }}<br>
+                                            <b>Code: </b>{{ $product->code }}
+                                        </td>
+                                        <td>
+                                            <b>Category: </b>{{ $product->categoryName }} <br>
+                                            <b>Brand: </b>{{ $product->brandName }}<br>
+                                            <b>Unit: </b>{{ $product->unitName }}<br>
+                                            <b>Type: </b>{{ Str::ucfirst($product->type) }}
+                                        </td>
+                                        <td>
+                                            <center><img style="max-width:50px; max-height:80px;" src="{{ $imageUrl }}" alt="no image" /></center>
+                                        </td>
+                                        <td>
+                                            <b>OS: </b>{{ $product->opening_stock }}<br>
+                                            <b>RQ: </b>{{ $product->remainder_quantity }}<br>
+                                            <b>Available: </b>{{ $product->current_stock }}
+                                        </td>
+                                        <td>
+                                            <b>CP: </b>{{ $currency }} {{ $product->purchase_price }}<br>
+                                            <b>PP: </b>{{ $currency }} {{ $product->sale_price }}
+                                        </td>
+                                        <td>
+                                            @if($product->status == 'Active')
+                                                <span class="badge bg-success">Active</span>
+                                            @else
+                                                <span class="badge bg-danger">Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-cog"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" href="#" onclick="editProduct({{ $product->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                                    @if($product->type != 'service')
+                                                    <a class="dropdown-item" href="#" onclick="editOpenStock({{ $product->id }})"><i class="fas fa-edit me-2"></i> Update Opening Stock</a>
+                                                    @endif
+                                                    <a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $product->id }})"><i class="fas fa-trash-alt me-2"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="8" class="text-center py-4 text-muted">No products found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
                         </table>
                     </div>
+                    {{ $products->links() }}
                 </div>
             </div>
 
@@ -1043,13 +1117,7 @@
         $('#editModal').on('shown.bs.modal', function() {
             $('#editName').focus();
         })
-        var table;
-        $(document).ready(function() {
-            table = $('#manageProductTable').DataTable({
-                'ajax': "{{ route('products.getProducts') }}",
-                processing: true,
-            });
-        });
+        $(document).ready(function() { });
 
         $("#productForm").submit(function(e) {
             e.preventDefault();
@@ -1134,10 +1202,11 @@
                 success: function(result) {
                     if (result['success']) {
                         $("#modal").modal('hide');
-                        Swal.fire("Product saved!", result.success, "success");
+                        Swal.fire("Product saved!", result.success, "success").then(function(){
+                          location.reload();
+                        });
                         reset();
                         $("#productForm").trigger("reset");
-                        table.ajax.reload(null, false);
                         for (i = 0; i < rowNumber; i++) {
                             $('#' + i).remove();
                         }
@@ -1231,10 +1300,11 @@
                     //alert(JSON.stringify(result));
                     if (result['success']) {
                         $("#servicemodal").modal('hide');
-                        Swal.fire("Service saved!", result.success, "success");
+                        Swal.fire("Service saved!", result.success, "success").then(function(){
+                          location.reload();
+                        });
                         reset();
                         $("#productForm").trigger("reset");
-                        table.ajax.reload(null, false);
                         for (i = 0; i < rowNumber; i++) {
                             $('#' + i).remove();
                         }
@@ -1672,9 +1742,10 @@
                 success: function(result) {
                     //alert(JSON.stringify(result));
                     $("#editModal").modal('hide');
-                    Swal.fire("Updated Product!", result.success, "success");
+                    Swal.fire("Updated Product!", result.success, "success").then(function(){
+                      location.reload();
+                    });
                     $('.editSpecRow').remove();
-                    table.ajax.reload(null, false);
                 },
                 error: function(response) {
                     //alert(JSON.stringify(response));
@@ -1727,8 +1798,9 @@
                 processData: false,
                 success: function(result) {
                     $("#editOpenStockModal").modal('hide');
-                    Swal.fire("Updated Stock!", result.success, "success");
-                    table.ajax.reload(null, false);
+                    Swal.fire("Updated Stock!", result.success, "success").then(function(){
+                      location.reload();
+                    });
                     $("#edit_open_stock_warehouse").val("").trigger("change");
                 },
                 error: function(response) {
@@ -1769,8 +1841,9 @@
                             "_token": _token
                         },
                         success: function(result) {
-                            Swal.fire("Done!", result.success, "success");
-                            table.ajax.reload(null, false);
+                            Swal.fire("Done!", result.success, "success").then(function(){
+                              location.reload();
+                            });
                         },
                         error: function(response) {
                             //alert(JSON.stringify(response));
@@ -1820,13 +1893,7 @@
         });
 
         function reloadDt() {
-            if ($('#modal.in, #modal.show').length) {
-
-            } else if ($('#editModal.in, #editModal.show').length) {
-
-            } else {
-                table.ajax.reload(null, false);
-            }
+            location.reload();
         }
         Mousetrap.bind('ctrl+shift+r', function(e) {
             e.preventDefault();

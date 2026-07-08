@@ -15,9 +15,24 @@ class RoleController extends Controller
         $this->middleware('permission:role-delete', ['only' => ['delete']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::where('deleted', '=', 'No')->get();
+        $query = Role::where('deleted', '=', 'No');
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($qry) use ($q) {
+                $qry->where('name', 'like', "%{$q}%");
+            });
+        }
+
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'DESC');
+        $limit = $request->get('limit', 10);
+
+        $roles = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
 
         return view('admin.RolesPermissions.Roles.roleView', ['roles' => $roles]);
     }

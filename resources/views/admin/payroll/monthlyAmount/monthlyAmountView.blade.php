@@ -4,19 +4,20 @@ Admin Monthly Amount -View
 @endsection
 @section('content')
 <div class="content-wrapper">
-
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="float-left">Monthly Amount</h3>
-                            <a href="#/" onclick="create()"  class="btn btn-primary btn-icon-split float-right"> <i class="fas fa-plus"></i> Add Monthly Amount</a>  
+                            <h3 class="card-title">Monthly Amount</h3>
+                            <div class="card-actions">
+                                <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Monthly Amount</button>
+                            </div>
                             <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
+                            <x-filter-bar route="{{ route('monthlyAmountIndex') }}" searchPlaceholder="Search monthly amounts..." :sortOptions="['id' => 'ID']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                             <table id="manageMonthlyAmountTable" width="100%" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -28,8 +29,36 @@ Admin Monthly Amount -View
                                         <td width="8%">Action</td>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    @forelse ($monthlyAmounts as $i => $monthlyAmount)
+                                    <tr>
+                                        <td>{{ $monthlyAmounts->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $monthlyAmount->id }}" /></td>
+                                        <td>{{ $monthlyAmount->member_name }}</td>
+                                        <td>{{ $monthlyAmount->facility_name }}</td>
+                                        <td>{{ $monthlyAmount->amount }}</td>
+                                        <td>{{ $monthlyAmount->type }}</td>
+                                        <td>
+                                            <div class="btn-grade">
+                                                 <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                     <i class="fas fa-cog"></i>
+                                                 </button>
+                                                 <div class="dropdown-menu dropdown-menu-end">
+                                                     <a class="dropdown-item" href="#" onclick="editMonthlyAmount({{ $monthlyAmount->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                                     <a class="dropdown-item" href="#/" onclick="confirmDelete({{ $monthlyAmount->id }})"><i class="fas fa-trash me-2"></i> Delete</a>
+                                                 </div>
+                                             </div>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted">No monthly amounts found.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
                             </table>
+                            <div class="mt-3">
+                                {{ $monthlyAmounts->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,7 +75,7 @@ Admin Monthly Amount -View
             <form id="MonthlyAmountFormStore" >
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Monthly Amount</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
 
                 </div> 
                 <div class="modal-body">
@@ -111,7 +140,7 @@ Admin Monthly Amount -View
                         </div>
                     </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
                     <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save"></i> Save</button>
                 </div>
             </form>
@@ -131,7 +160,7 @@ Admin Monthly Amount -View
                 @csrf
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Monthly Amount</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">
 
@@ -188,7 +217,7 @@ Admin Monthly Amount -View
                     </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
                     <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save"></i> Update</button>
                 </div>
             </form>
@@ -213,15 +242,6 @@ Admin Monthly Amount -View
                 $('#user_id').focus();
             })
 
-                /*Get Data*/               
-                var table;
-                $(document).ready(function() {
-                    table = $('#manageMonthlyAmountTable').DataTable({
-                        'ajax': "{{route('getMonthlyAmountData')}}",
-                        processing:true,
-                    });
-                });
-            
                 /* store data*/
                 $('#MonthlyAmountFormStore').submit(function(e){
                     e.preventDefault();
@@ -254,7 +274,7 @@ Admin Monthly Amount -View
                         //alert(JSON.stringify(result));
                     $("#modal").modal('hide');
                     Swal.fire("Saved!",result.success,"success");
-                    table.ajax.reload(null, false);                        
+                    location.reload();                        
                     }, 
                     error: function(response) {
                         alert(JSON.stringify(response));
@@ -377,7 +397,7 @@ Admin Monthly Amount -View
                 //alert(result);
                 $("#editModal").modal('hide');
                 Swal.fire("Updated Amount Data!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
             }, error: function(response) {
                 $('#editFacility_nameError').text(response.responseJSON.errors.facility_name);
                 $('#editAmountError').text(response.responseJSON.errors.amount);
@@ -421,7 +441,7 @@ Admin Monthly Amount -View
                 data: {"id":id, "_token":_token},
                 success: function (result) {
                     Swal.fire("Done!",result.success,"success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 }, beforeSend: function () {
                     $('#loading').show();
                 },complete: function () {

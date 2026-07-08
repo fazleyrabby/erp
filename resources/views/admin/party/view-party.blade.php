@@ -3,42 +3,86 @@
     {{ Session::get('companySettings')[0]['name'] . ' ' . $type }}
 @endsection
 @section('content')
-    <style type="text/css">
-        h3 {
-            color: #66a3ff;
-        }
-
-    </style>
     <div class="content-wrapper">
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                                <h3 style="float:left;"> {{ $type }} List </h3>
-                                <a class="btn btn-primary float-right" onclick="create()"><i
-                                        class="fa fa-plus circle"></i> Add {{ $type }}</a>
-                                
-                            </div><!-- /.card-header -->
+                    <h3 class="card-title">{{ $type }} List</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="create()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add {{ $type }}
+                        </button>
+                    </div>
+                </div>
                 <div class="card-body">
-                                <!--data listing table-->
-                                <div class="table-responsive">
-                                    <table id="managePartyTable" width="100%" class="table table-bordered table-hover ">
-                                        <thead>
-                                            <tr>
-                                                <td width="5%">SL</td>
-                                                <td width="25%">Party Info</td>
-                                                <td width="25%">Address</td>
-                                                <td width="23%">Contact</td>
-                                                <td width="12%">Type</td>
-                                                <td width="5%">Status</td>
-                                                <td width="5%">Actions</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tableViewParty">
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    <x-filter-bar route="{{ route('parties.view', $type) }}" searchPlaceholder="Search {{ $type }}..." :sortOptions="['id' => 'ID', 'name' => 'Name', 'email' => 'Email', 'contact' => 'Contact']" :defaultSort="'id'" :defaultDirection="'DESC'" :params="['type' => $type]" />
+                    <div class="table-responsive">
+                        <table class="table table-vcenter table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="5%">SL#</th>
+                                    <th width="25%">Party Info</th>
+                                    <th width="25%">Address</th>
+                                    <th width="23%">Contact</th>
+                                    <th width="12%">Type</th>
+                                    <th width="5%">Status</th>
+                                    <th width="5%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($parties as $i => $party)
+                                <tr>
+                                    <td class="text-center">{{ $parties->firstItem() + $i }}</td>
+                                    <td>
+                                        <b>Name: </b>{{ $party->name }}<br>
+                                        <b>Code:</b> #{{ $party->code }}<br>
+                                        <b>Cr. Limit: </b>{{ Session::get('companySettings')[0]['currency'] ?? '' }} {{ $party->credit_limit }}<br>
+                                        <b>Method: </b>{{ $party->customer_type }}
+                                    </td>
+                                    <td>
+                                        <b>Address: </b>{{ $party->address }}<br>
+                                        <b>District: </b>{{ $party->district }}<br>
+                                        <b>Country: </b>{{ $party->country_name }}
+                                    </td>
+                                    <td>
+                                        <b>Phone: </b>{{ $party->contact }}<br>
+                                        <b>Alt: </b>{{ $party->alternate_contact }}<br>
+                                        <b>Email:</b>{{ $party->email }}
+                                    </td>
+                                    <td>{{ $party->party_type }}</td>
+                                    <td class="text-center">
+                                        @if ($party->status == 'Active')
+                                        <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $party->status }}"></i>
+                                        @else
+                                        <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $party->status }}"></i>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-cog"></i>
+                                             </button>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                 <a class="dropdown-item" href="#" onclick="editParty({{ $party->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                                 <a class="dropdown-item" href="#" onclick="updateDue({{ $party->id }})"><i class="fas fa-edit me-2"></i> Update Due</a>
+                                                 <a class="dropdown-item" href="#" onclick="confirmDelete({{ $party->id }})"><i class="fas fa-trash-alt me-2"></i> Delete</a>
+                                             </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">No {{ $type }} found</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3">
+                        {{ $parties->links() }}
+                    </div>
+                </div>
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
@@ -49,7 +93,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Update Opening Due</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x </button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"> x </button>
                 </div>
                 <div class="modal-body">
 
@@ -78,7 +122,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                             <button type="submit" class="btn btn-primary " id="saveOpeningDue"><i class="fa fa-save"></i> Update Opening Due</button>
                         </div>
                     </form>
@@ -108,7 +152,7 @@
                 <form id="partyForm" method="POST" enctype="multipart/form-data" action="#">
                     <div class="modal-header">
                         <h4 class="modal-title float-left"> Add {{ $type }}</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
                                 class="fa fa-times" aria-hidden="true"></i>
                         </button>
 
@@ -496,7 +540,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                         <button type="submit" class="btn btn-primary btnSave" id="saveCategory">Save</button>
                     </div>
                 </form>
@@ -511,7 +555,7 @@
                 <form id="editPartyForm" method="POST" enctype="multipart/form-data" action="#">
                     <div class="modal-header">
                         <h4 class="modal-title">Edit {{ $type }}</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
                                 class="fa fa-times" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -911,7 +955,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                         <button type="submit" class="btn btn-primary btnUpate" id="editCategory">Update</button>
                     </div>
                 </form>
@@ -945,12 +989,7 @@
         $('#editModal').on('shown.bs.modal', function() {
             $('#editName').focus();
         })
-        var table;
         $(document).ready(function() {
-            table = $('#managePartyTable').DataTable({
-                'ajax': "{{ url('parties/viewTypes/' . $type) }}",
-                processing: true,
-            });
         });
 
 
@@ -1032,7 +1071,7 @@
                     //alert(JSON.stringify(result));
                     $("#modal").modal('hide');
                     Swal.fire("Saved!", result.success, "success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 },
                 error: function(response) {
                     //alert(JSON.stringify(response));
@@ -1186,7 +1225,7 @@
                     //alert(JSON.stringify(result));
                     $("#editModal").modal('hide');
                     Swal.fire("Updated Party!", result.success, "success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 },
                 error: function(response) {
                     //alert(JSON.stringify(response));
@@ -1227,7 +1266,7 @@
                 success: function(result) {
                     $("#editOpeningDueForm").modal('hide');
                     Swal.fire("Updated Stock!", result.success, "success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 },
                 error: function(response) {
                     Swal.fire("Updated Stock Error!", JSON.stringify(response), "error");
@@ -1261,7 +1300,7 @@
                         },
                         success: function(result) {
                             Swal.fire("Done!", result.success, "success");
-                            table.ajax.reload(null, false);
+                            location.reload();
                         },
                         beforeSend: function() {
                             $('#loading').show();
@@ -1292,7 +1331,7 @@
             } else if ($('#editModal.in, #editModal.show').length) {
 
             } else {
-                table.ajax.reload(null, false);
+                location.reload();
             }
         }
         Mousetrap.bind('ctrl+shift+r', function(e) {

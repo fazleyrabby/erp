@@ -25,16 +25,21 @@
           <!-- Custom tabs (Charts with tabs)-->
           <div class="card">
             <div class="card-header">
-              <h3 style="float:left;"> Transaction List </h3>
-                <a class="btn btn-primary float-right" onclick="create()"> <i class="fa fa-plus circle"></i> Add Transaction</a>
+              <h3 class="card-title">Transaction List</h3>
+              <div class="card-actions">
+                <button type="button" class="btn btn-primary" onclick="create()">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add Transaction
+                </button>
+              </div>
             </div><!-- /.card-header -->
             <div class="card-body">
+               <x-filter-bar route="{{ route('transactionsView') }}" searchPlaceholder="Search transactions..." :sortOptions="['id' => 'ID', 'amount' => 'Amount', 'transaction_date' => 'Date']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                <div class="col-md-12">
-            
 
             <!--data listing table-->
             <div class="table-responsive">
-            <table id="manageTransactionTable" width="100%" class="table table-bordered table-hover ">
+            <table id="manageTransactionTable" width="100%" class="table table-vcenter table-bordered">
                 <thead>
                 <tr>
                     <td width="5%">SL</td>
@@ -48,14 +53,43 @@
                 </tr>
                 </thead>
                 <tbody id="tableViewTransaction">
-
+                @forelse ($transactions as $i => $transaction)
+                <tr>
+                    <td>{{ $transactions->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $transaction->id }}" /></td>
+                    <td>{{ $transaction->transaction_id }}</td>
+                    <td>{{ $transaction->name }}</td>
+                    <td>{{ $transaction->amount }}</td>
+                    <td>{{ $transaction->remarks }}</td>
+                    <td>{{ $transaction->transaction_date }}</td>
+                    <td>
+                        @if ($transaction->status == 'Active')
+                        <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $transaction->status }}"></i>
+                        @else
+                        <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $transaction->status }}"></i>
+                        @endif
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             <i class="fas fa-cog"></i></button>
+                             <div class="dropdown-menu dropdown-menu-end">
+                                 <a class="dropdown-item" href="#/" onclick="confirmDelete({{ $transaction->id }})"><i class="fas fa-trash me-2"></i> Delete</a>
+                             </div>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8" class="text-center py-4 text-muted">No transactions found.</td>
+                </tr>
+                @endforelse
                 </tbody>
             </table>
             </div>
+            {{ $transactions->links() }}
             <!--data listing table-->
 
         </div>
-              
 
           </div>
           <!-- /.card -->
@@ -80,7 +114,7 @@
                 <div class="modal-header">
                 <h4 class="modal-title float-left"> Add Transaction</h4>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i>
+                            data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                    
                 </div> 
@@ -167,7 +201,7 @@
 				
               </div>
 			  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                     <button type="submit" class="btn btn-secondary"  disabled id="saveBtnOnPage"><i class="fas fa-save"></i> Save</button>
                     <div id="checkAmounttext"></div>
                     <div id="saveButton"></div>
@@ -226,14 +260,6 @@ $(function() {
 
 
 
-
-	var table;
-	$(document).ready(function() {
-		table = $('#manageTransactionTable').DataTable({
-			'ajax': "{{route('getTransactions')}}",
-			processing:true,
-		});
-	});
 
 
 
@@ -442,7 +468,7 @@ $(function() {
 				//alert(JSON.stringify(result));
 				$("#modal").modal('hide');
                 Swal.fire("Saved!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
                
 			},   beforeSend: function () {
 				$('#loading').show();
@@ -514,7 +540,7 @@ $(function() {
                 success: function (result) {
                     //alert(JSON.stringify(result));
                     Swal.fire("Done!",result.success,"success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 }, beforeSend: function () {
                     $('#loading').show();
                 },complete: function () {
@@ -545,7 +571,7 @@ $(function() {
 			
 		}
 		else{
-			table.ajax.reload(null, false);
+			location.reload();
 		}
 	}
 	Mousetrap.bind('ctrl+shift+r', function(e) {

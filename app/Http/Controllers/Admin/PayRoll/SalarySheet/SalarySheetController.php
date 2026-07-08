@@ -9,11 +9,26 @@ use Illuminate\Support\Facades\Auth;
 
 class SalarySheetController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        return view('admin.payroll.salarySheet.salarySheetView');
+        $query = SalarySheet::where('deleted', 'No');
 
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('sheet_name', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $items = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.payroll.salarySheet.salarySheetView', compact('items'));
     }
 
     public function getSalarySheetData()

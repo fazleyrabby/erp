@@ -10,51 +10,26 @@ use Illuminate\Support\Facades\Auth;
 
 class GradeNewController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        // $count= Email::where('replied_by',NULL)->count();
+        $query = Grade::where('deleted', 'No');
 
-        return view('admin.payroll.grade.gradeViewNew');
-
-    }
-
-    public function getGradeData()
-    {
-
-        $grades = Grade::where('deleted', '=', 'No')->orderBy('id', 'ASC')->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($grades as $grade) {
-            $status = '';
-            if ($grade->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$grade->status.'"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$grade->status.'"></i></center>';
-            }
-            /*$button = '<button type="button"  class="btn btn-xs btn-warning btnEdit" title="Edit Party" ><i class="fa fa-edit"> </i></button>
-                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="" title="Delete Party"><i class="fa fa-trash"> </i></button>';*/
-            $button = '<div class="btn-grade">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-
-<li class="action"><a href="#" onclick="editGrade('.$grade->id.')" class="btn"><i class="fas fa-edit"></i> Edit </a></li>
-<li class="action"><a href="#/" class="btn" onclick="confirmDelete('.$grade->id.')"><i class="fas fa-trash"></i> Delete </a></li>
-                </li>
-
-                </ul>
-            </div>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$grade->id.'" />',
-                $grade->grade_name,
-                $grade->note,
-                $status,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('grade_name', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $grades = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.payroll.grade.gradeViewNew', compact('grades'));
     }
 
     public function store(Request $request)

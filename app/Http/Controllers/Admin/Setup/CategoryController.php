@@ -26,50 +26,23 @@ class CategoryController extends Controller
         $this->middleware('permission:warehouse.delete', ['only' => ['deleteWarehouse']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.setups.category.view-category');
-    }
+        $query = Category::where('deleted', 'No');
 
-    public function getCategories()
-    {
-        $data = '';
-        $categories = Category::where('deleted', 'No')->orderBy('id', 'DESC')->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($categories as $category) {
-            $status = '';
-            if ($category->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$category->status.'"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$category->status.'"></i></center>';
-            }
-            $imageUrl = url('upload/category_images/'.$category->image);
-            /* $button = '<button type="button" onclick="editCategory('.$category->id.')" class="btn btn-xs btn-warning btnEdit" title="Edit Record" ><i class="fa fa-edit"> </i></button>
-                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="confirmDelete('.$category->id.')" title="Delete Record"><i class="fa fa-trash"> </i></button>'; */
-            $button = '<td style="width: 12%;">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                                <li class="action" onclick="editCategory('.$category->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
-                                
-                                <li class="action"><a   class="btn"  onclick="confirmDelete('.$category->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-                              
-                                </ul>
-                            </div>
-                        </td>';
-
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$category->id.'" />',
-                $category->name,
-                '<img style="width:70px;" src="'.$imageUrl.'" alt="'.$category->name.'" />',
-                $status,
-                $button,
-            ];
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $categories = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.setups.category.view-category', compact('categories'));
     }
 
     public function add()
@@ -157,51 +130,26 @@ class CategoryController extends Controller
     }
 
     // Start Warehouse
-    public function warehouse()
+    public function warehouse(Request $request)
     {
-        return view('admin.inventory.warehouse.warehouse');
-    }
+        $query = DB::table('tbl_warehouse')
+            ->where('tbl_warehouse.deleted', 'No');
 
-    public function getWarehouses()
-    {
-        $warehouses = DB::table('tbl_warehouse')
-            ->where('tbl_warehouse.deleted', 'No')
-            ->orderBy('tbl_warehouse.id', 'DESC')
-            ->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($warehouses as $warehouse) {
-            $status = '';
-            if ($warehouse->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;"></i></center>';
-            }
-
-            $button = '<td style="width: 12%;">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                                <li class="action liDropDown" onclick="editWarehouse('.$warehouse->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
-                                </li>
-                            </li>
-                                <li class="action liDropDown"><a   class="btn"  onclick="confirmDelete('.$warehouse->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-                                </li> 
-                                </ul>
-                            </div>
-                        </td>';
-
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$warehouse->id.'" />',
-                $warehouse->wareHouseName,
-                $warehouse->wareHouseAddress,
-                $status,
-                $button,
-            ];
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('wareHouseName', 'like', "%{$s}%")
+                  ->orWhere('wareHouseAddress', 'like', "%{$s}%");
+            });
         }
 
-        return $output;
+        $sortBy = $request->input('sort', 'id');
+        $direction = strtoupper($request->input('direction', 'DESC')) === 'ASC' ? 'ASC' : 'DESC';
+        $query->orderBy($sortBy, $direction);
+
+        $data['warehouses'] = $query->paginate($request->input('per_page', 20))->withQueryString();
+
+        return view('admin.inventory.warehouse.warehouse', $data);
     }
 
     public function storeWarehouse(Request $request)
@@ -260,10 +208,32 @@ class CategoryController extends Controller
     // End Warehouse Section
 
     // Start Warehouse Transfer
-    public function warehouseTransferView()
+    public function warehouseTransferView(Request $request)
     {
         $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status', 'Active')->get();
         $data['products'] = Product::where('deleted', 'No')->where('status', 'Active')->where('current_stock', '>', 0)->get();
+
+        $query = DB::table('tbl_warehouse_transfer')
+            ->join('tbl_warehouse', 'tbl_warehouse_transfer.tbl_current_warehouse_id', 'tbl_warehouse.id')
+            ->join('tbl_warehouse as warehouse', 'tbl_warehouse_transfer.tbl_transfer_warehouse_id', 'warehouse.id')
+            ->join('products', 'tbl_warehouse_transfer.tbl_products_id', 'products.id')
+            ->where('tbl_warehouse_transfer.deleted', 'No')
+            ->select('tbl_warehouse_transfer.id', 'tbl_warehouse_transfer.transfer_stock', 'tbl_warehouse_transfer.transferDate', 'warehouse.wareHouseName as warehouse_to', 'tbl_warehouse.wareHouseName as warehouse_from', 'products.name');
+
+        if ($request->filled('q')) {
+            $s = $request->q;
+            $query->where(function ($q) use ($s) {
+                $q->where('products.name', 'like', "%{$s}%")
+                  ->orWhere('tbl_warehouse.wareHouseName', 'like', "%{$s}%")
+                  ->orWhere('warehouse.wareHouseName', 'like', "%{$s}%");
+            });
+        }
+
+        $sortBy = $request->input('sort_by', 'id');
+        $direction = strtoupper($request->input('sort_direction', 'DESC')) === 'ASC' ? 'ASC' : 'DESC';
+        $query->orderBy($sortBy, $direction);
+
+        $data['transfers'] = $query->paginate($request->input('limit', 10))->withQueryString();
 
         return view('admin.inventory.warehouse.warehouseTransfer', $data);
     }
@@ -359,33 +329,6 @@ class CategoryController extends Controller
         }
     }
 
-    public function viewWarehousesTransfer()
-    {
-        $data = '';
-        $warehouseTransfers = DB::table('tbl_warehouse_transfer')
-            ->join('tbl_warehouse', 'tbl_warehouse_transfer.tbl_current_warehouse_id', 'tbl_warehouse.id')
-            ->join('tbl_warehouse as warehouse', 'tbl_warehouse_transfer.tbl_transfer_warehouse_id', 'warehouse.id')
-            ->join('products', 'tbl_warehouse_transfer.tbl_products_id', 'products.id')
-            ->where('tbl_warehouse_transfer.deleted', 'No')
-            ->select('tbl_warehouse_transfer.id', 'tbl_warehouse_transfer.transfer_stock', 'warehouse.wareHouseName as warehouse_to', 'tbl_warehouse.wareHouseName as warehouse_from', 'products.name', 'tbl_warehouse_transfer.transferDate')
-            ->get();
-        // dd($warehouseTransfers);
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($warehouseTransfers as $warehouseTransfer) {
-            $button = '<a   class="btn"  onclick="confirmDelete('.$warehouseTransfer->id.')" ><i class="fas fa-trash-alt"></i> </a>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$warehouseTransfer->id.'" />',
-                'ProductName: '.$warehouseTransfer->name.'<br>Date: '.$warehouseTransfer->transferDate,
-                $warehouseTransfer->warehouse_from,
-                $warehouseTransfer->warehouse_to,
-                $warehouseTransfer->transfer_stock,
-                $button,
-            ];
-        }
-
-        return $output;
-    }
 
     public function deleteWarehouseTransfer(Request $request)
     {

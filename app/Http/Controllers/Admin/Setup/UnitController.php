@@ -16,50 +16,23 @@ class UnitController extends Controller
         $this->middleware('permission:units.delete', ['only' => ['delete']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.setups.units.view-units');
-    }
+        $query = Unit::where('deleted', 'No');
 
-    public function getUnits()
-    {
-        $data = '';
-        $units = Unit::where('deleted', 'No')->orderBy('id', 'DESC')->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($units as $unit) {
-            $status = '';
-            if ($unit->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$unit->status.'"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$unit->status.'"></i></center>';
-            }
-            /* $button = '<button type="button" onclick="editUnit('.$unit->id.')" class="btn btn-xs btn-warning btnEdit" title="Edit Record" ><i class="fa fa-edit"> </i></button>
-                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="confirmDelete('.$unit->id.')" title="Delete Record"><i class="fa fa-trash"> </i></button>'; */
-
-            $button = '<td style="width: 12%;">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                    <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                    <li class="action" onclick="editUnit('.$unit->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
-                    </li>
-                </li> 
-                    <li class="action"><a   class="btn"  onclick="confirmDelete('.$unit->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-                    </li>
-                    </ul>
-                </div>
-            </td>';
-
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$unit->id.'" />',
-                $unit->name,
-                $status,
-                $button,
-            ];
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $units = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.setups.units.view-units', compact('units'));
     }
 
     public function store(Request $request)

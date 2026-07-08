@@ -8,9 +8,9 @@
 
         @include('admin.includes.sidebar')
 
-        @include('admin.includes.topbar')
-
         <div class="page-wrapper">
+
+            @include('admin.includes.topbar')
             <div class="page-body">
                 <div class="container-xl">
                     @yield('content')
@@ -23,6 +23,7 @@
     @include('admin.includes.js')
     @yield('javascript')
     @yield('contentJavaScripts')
+    @stack('javascript')
 </body>
 
 </html>

@@ -12,58 +12,33 @@ use Illuminate\Support\Facades\DB;
 
 class MonthlyAmountController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        $employees = OurTeam::where('deleted', '=', 'No')->where('status', 'Active')->get();
-
-        $facilities = Facility::get();
-
-        return view('admin.payroll.monthlyAmount.monthlyAmountView', ['employees' => $employees, 'facilities' => $facilities]);
-    }
-
-    public function getMonthlyAmountData()
-    {
-
-        $monthlyAmounts = DB::table('monthly_amounts')
+        $query = DB::table('monthly_amounts')
             ->join('our_teams', 'monthly_amounts.user_id', '=', 'our_teams.id')
             ->select('monthly_amounts.*', 'our_teams.member_name')
-            ->where('monthly_amounts.deleted', '=', 'No')->get();
+            ->where('monthly_amounts.deleted', 'No');
 
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($monthlyAmounts as $monthlyAmount) {
-            $status = '';
-            if ($monthlyAmount->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$monthlyAmount->status.'"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$monthlyAmount->status.'"></i></center>';
-            }
-            /*$button = '<button type="button"  class="btn btn-xs btn-warning btnEdit" title="Edit Party" ><i class="fa fa-edit"> </i></button>
-                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="" title="Delete Party"><i class="fa fa-trash"> </i></button>';*/
-            $button = '<div class="btn-grade">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-
-<li class="action"><a href="#" onclick="editMonthlyAmount('.$monthlyAmount->id.')" class="btn"><i class="fas fa-edit"></i> Edit </a></li>
-<li class="action"><a href="#/" class="btn" onclick="confirmDelete('.$monthlyAmount->id.')"><i class="fas fa-trash"></i> Delete </a></li>
-                </li>
-
-                </ul>
-            </div>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$monthlyAmount->id.'" />',
-                $monthlyAmount->member_name,
-                $monthlyAmount->facility_name,
-                $monthlyAmount->amount,
-                $monthlyAmount->type,
-                // $status,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('our_teams.member_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('monthly_amounts.facility_name', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $monthlyAmounts = $query->orderBy('monthly_amounts.' . $sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        $employees = OurTeam::where('deleted', 'No')->where('status', 'Active')->get();
+        $facilities = Facility::get();
+
+        return view('admin.payroll.monthlyAmount.monthlyAmountView', compact('monthlyAmounts', 'employees', 'facilities'));
     }
 
     public function store(Request $request)

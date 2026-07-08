@@ -27,30 +27,66 @@ fieldset.scheduler-border {
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                                <h3 style="float:left;"> Warehouse Transfer List </h3>
-                                <a class="btn btn-outline-success float-right" onclick="create()"><i
-                                        class="fa fa-plus circle"></i> Warehouse Transfer</a>
-                                <a class="btn btn-outline-success" style="margin-left:20px;" onclick="reloadDt()"><i
-                                        class="fas fa-sync"></i> Refresh </a>
-                            </div><!-- /.card-header -->
+                    <h3 class="card-title">Warehouse Transfer List</h3>
+                    <div class="card-actions">
+                        <a class="btn btn-primary" onclick="create()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Warehouse Transfer
+                        </a>
+                        <a class="btn btn-outline-secondary" onclick="location.reload()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                            Refresh
+                        </a>
+                    </div>
+                </div><!-- /.card-header -->
                     <div class="card-body">
-                                    <!--data listing table-->
-                                    <div class="table-responsive">
-                                        <table id="manageWarehouseTable" width="100%"
-                                            class="table table-bordered table-hover ">
-                                            <thead>
-                                                <tr>
-                                                    <td width="5%">SL</td>
-                                                    <td width="30%">Product Name</td>
-                                                    <td width="30%">Warehouse From</td>
-                                                    <td width="30%">Warehouse To</td>
-                                                    <td width="11%">Transfer Quantity</td>
-                                                    <td width="7%">Actions</td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                        <!--data listing table-->
-                                    </div>
+                                    <x-filter-bar
+                        route="{{ route('warehouse.transfer.view') }}"
+                        searchPlaceholder="Search transfers..."
+                        :sortOptions="['id' => 'ID', 'name' => 'Product', 'transferDate' => 'Date']"
+                        :defaultSort="'id'"
+                        :defaultDirection="'DESC'"
+                    />
+                    <div class="table-responsive">
+                        <table id="manageWarehouseTable" class="table table-vcenter table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="5%">SL</th>
+                                    <th width="30%">Product Name</th>
+                                    <th width="30%">Warehouse From</th>
+                                    <th width="30%">Warehouse To</th>
+                                    <th width="11%">Transfer Quantity</th>
+                                    <th width="7%" class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($transfers as $transfer)
+                                    <tr>
+                                        <td>{{ $loop->iteration + ($transfers->currentPage() - 1) * $transfers->perPage() }}</td>
+                                        <td>{{ $transfer->name }}<br><small class="text-muted">{{ $transfer->transferDate }}</small></td>
+                                        <td>{{ $transfer->warehouse_from }}</td>
+                                        <td>{{ $transfer->warehouse_to }}</td>
+                                        <td>{{ $transfer->transfer_stock }}</td>
+                                        <td class="text-end">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-cog"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $transfer->id }})"><i class="fas fa-trash-alt me-2"></i> Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">No warehouse transfers found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    {{ $transfers->links() }}
                             </div>
                             <!-- /.card -->
             </div>
@@ -64,7 +100,7 @@ fieldset.scheduler-border {
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left">  WareHouse Transfer </h4>
-                    <button type="button" class="close"data-dismiss="modal" aria-hidden="true"><i class="fas fa-window-close" ></i></button>                </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>                </div>
                 <div class="modal-body">
                     <form id="warehouseForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
@@ -132,7 +168,7 @@ fieldset.scheduler-border {
 					        </fieldset>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                             <button type="submit" class="btn btn-primary " id="saveWarehouse"><i class="fa fa-save"></i> Transfer Warehouse</button>
                         </div>
                     </form>
@@ -250,13 +286,7 @@ fieldset.scheduler-border {
         $('#editWarehouseModal').on('shown.bs.modal', function() {
             $('#editwarehouseName').focus();
         })
-        var table;
-        $(document).ready(function() {
-            table = $('#manageWarehouseTable').DataTable({
-                'ajax': "{{ route('warehouseTransfer.view') }}",
-                processing: true,
-            });
-        });
+        $(document).ready(function() {});
 
         $("#warehouseForm").submit(function(e) {
             e.preventDefault();
@@ -286,7 +316,7 @@ fieldset.scheduler-border {
                     Swal.fire("Warehouse saved!", result.success, "success");
                     $("#warehouseForm")[0].reset();
 
-                    table.ajax.reload(null, false);
+                    location.reload();
                 },
                 error: function(response) {
                     $('#warehouseNameError').text(response.responseJSON.errors.warehouseName);
@@ -325,7 +355,7 @@ fieldset.scheduler-border {
                         },
                         success: function(result) {
                             Swal.fire("Done!", result.success, "success");
-                            table.ajax.reload(null, false);
+                            location.reload();
                         },
                         error: function(response) {
                             alert(JSON.stringify(response));
@@ -360,7 +390,7 @@ fieldset.scheduler-border {
             } else if ($('#editModal.in, #editModal.show').length) {
 
             } else {
-                table.ajax.reload(null, false);
+                location.reload();
             }
         }
         Mousetrap.bind('ctrl+shift+r', function(e) {

@@ -12,16 +12,42 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $transactions = DB::table('tbl_acc_transactions')
+            ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'tbl_acc_transactions.tbl_coa_to_id')
+            ->select('tbl_acc_transactions.*', 'tbl_acc_coas.name')
+            ->where('tbl_acc_transactions.deleted', 'No')
+            ->where('tbl_acc_transactions.status', 'Active');
+
+        if ($searchTerm) {
+            $transactions->where(function ($q) use ($searchTerm) {
+                $q->where('tbl_acc_transactions.transaction_id', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_acc_coas.name', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_acc_transactions.amount', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_acc_transactions.remarks', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $transactions = $transactions->orderBy('tbl_acc_transactions.' . $sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
         $config = DB::table('tbl_acc_coas')
             ->where('tbl_acc_coas.name', '=', 'Bank')
             ->first();
         $configId = $config->id;
-        // $banks=ChartOfAccounts::where('parent_id','=',$configId)->where('deleted','=','No')->where('status','=','Active')->get();
-        $banks = ChartOfAccounts::where('parent_id', '=', $configId)->where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
+        $banks = ChartOfAccounts::where('parent_id', $configId)
+            ->where('deleted', 'No')
+            ->where('status', 'Active')
+            ->get();
 
-        return view('admin.banks.transactions.transactionView', ['banks' => $banks]);
+        return view('admin.banks.transactions.transactionView', compact('transactions', 'banks'));
     }
 
     public function geData()

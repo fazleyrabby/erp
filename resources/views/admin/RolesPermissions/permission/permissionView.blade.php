@@ -9,15 +9,27 @@
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                    <h3>Permission
-                            <button type="button" class="btn btn-primary float-right" data-toggle="modal"
-                                data-target="#exampleModal" data-whatever="@getbootstrap"><i class="fa fa-plus-circle"></i>
-                                Add
-                                Permissions</button>
-                    </h3>
-                    <h3 class="text-center text-success">{{ Session::get('message') }}</h3>
+                    <h3 class="card-title">Permission</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Permissions
+                        </button>
+                    </div>
                 </div>
+                @if (Session::has('message'))
+                <div class="card-footer text-success text-center">{{ Session::get('message') }}</div>
+                @endif
                 <div class="card-body">
+                    <x-filter-bar
+                        route="{{ route('permissionView') }}"
+                        searchPlaceholder="Search permissions..."
+                        :sortOptions="['id' => 'ID', 'name' => 'Name', 'group_name' => 'Group']"
+                        :defaultSort="'id'"
+                        :defaultDirection="'DESC'"
+                    />
+
                     <div class="col-md-12">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover" id="data_Table" width="100%">
@@ -30,12 +42,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $i = 1;
-                                    @endphp
                                     @foreach ($permissions as $permission)
                                         <tr>
-                                            <td class="text-center">{{ $i++ }}</td>
+                                            <td class="text-center">{{ $loop->iteration + ($permissions->currentPage() - 1) * $permissions->perPage() }}</td>
 
                                             <td class="text-center">{{$permission->group_name}}</td>
 
@@ -43,25 +52,23 @@
 
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-primary dropdown-toggle"
-                                                        data-toggle="dropdown">
-                                                        <i class="fas fa-cog"></i> <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right"
-                                                        style="border: 1px solid gray;" permission="menu">
+                                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm"
+                                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                         <i class="fas fa-cog"></i>
+                                                     </button>
+                                                     <div class="dropdown-menu dropdown-menu-end">
 
-                                                        <li type="button" class="btn "
-                                                            onclick="editProduct({{ $permission->id }})">
-                                                            <i class="fa fa-edit"></i>Edit
-                                                        </li>
+                                                         <a class="dropdown-item" href="#"
+                                                             onclick="editProduct({{ $permission->id }})">
+                                                             <i class="fa fa-edit me-2"></i>Edit
+                                                         </a>
 
-                                                        <li class="action"><a
-                                                                href="{{ route('permissionDelete', $permission->id) }}"
-                                                                class="btn"
-                                                                onclick="return confirm('Are you sure you want to delete this item?');"><i
-                                                                    class="fas fa-trash"></i> Delete </a></li>
+                                                         <a class="dropdown-item"
+                                                                 href="{{ route('permissionDelete', $permission->id) }}"
+                                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                                     class="fas fa-trash me-2"></i> Delete</a>
 
-                                                    </ul>
+                                                     </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -70,6 +77,8 @@
                             </table>
                         </div>
                     </div>
+
+                    {{ $permissions->links() }}
                 </div><!-- Card Content end -->
 
                 <!-- create Model Start -->
@@ -80,8 +89,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Add Permission</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                                            class="fas fa-window-close"></i></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <form action="{{ route('permissionStore') }}" method="post" enctype="multipart/form-data">
                                     <div class="modal-body">
@@ -104,7 +112,7 @@
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn  btn-secondary mr-auto" data-dismiss="modal">x
+                                        <button type="button" class="btn  btn-secondary mr-auto" data-bs-dismiss="modal">x
                                             Close</button>
                                         <button type="submit" class="btn  btn-primary"><i class="fa fa-save"></i>
                                             Save</button>
@@ -125,8 +133,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Add Banner</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                                            class="fas fa-window-close"></i></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
 
                                 <form action="{{ route('permissionUpdate') }}" method="post"
@@ -153,9 +160,8 @@
                                     </div>
 
                                     <div class="modal-footer">
-                                        <button type="button" class="btn  btn-secondary mr-auto" data-dismiss="modal">x
-                                            Close</button>
-                                        <button type="submit" class="btn  btn-primary"><i class="fa fa-save"></i>
+                                        <button type="button" class="btn btn-secondary me-auto" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>
                                             Update</button>
                                     </div>
                                 </form>
@@ -171,11 +177,6 @@
 
 @section('javascript')
     <script>
-        $(document).ready(function() {
-            $('#data_Table').DataTable({
-                responsive: true
-            });
-        });
 
 
 

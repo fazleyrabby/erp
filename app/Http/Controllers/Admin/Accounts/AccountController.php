@@ -10,11 +10,29 @@ use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $coas = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->orderBy('code', 'asc')->get();
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'code';
+        $sortDirection = $request->sort_direction ?? 'asc';
+        $limit = $request->limit ?? 10;
 
-        return view('admin.account.chartOfAccount', ['coas' => $coas]);
+        $coas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active');
+
+        if ($searchTerm) {
+            $coas->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('code', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $coas = $coas->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        $allCoas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->orderBy('code', 'asc')->get();
+
+        return view('admin.account.chartOfAccount', compact('coas', 'allCoas'));
     }
 
     public function getCOA()

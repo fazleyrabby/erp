@@ -13,11 +13,29 @@ use PDF;
 
 class JournalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $coas = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        return view('admin.journal.journalView', ['coas' => $coas]);
+        $journals = Journal::where('deleted', 'No');
+
+        if ($searchTerm) {
+            $journals->where(function ($q) use ($searchTerm) {
+                $q->where('reference', 'like', "%{$searchTerm}%")
+                  ->orWhere('internal_information', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $journals = $journals->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        $coas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->get();
+
+        return view('admin.journal.journalView', compact('journals', 'coas'));
     }
 
     public function getJournalData()

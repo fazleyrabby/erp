@@ -14,60 +14,31 @@ use PDF;
 
 class SalaryLoanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        $employees = OurTeam::where('deleted', '=', 'No')->get();
-
-        return view('admin.payroll.salaryLoan.salaryLoanView', ['employees' => $employees]);
-    }
-
-    public function getLoanData()
-    {
-
-        $loans = DB::table('salary_loans')
+        $query = DB::table('salary_loans')
             ->join('our_teams', 'salary_loans.user_id', '=', 'our_teams.id')
             ->select('salary_loans.*', 'our_teams.member_name')
-            ->where('salary_loans.deleted', '=', 'No')->orderBy('salary_loans.id', 'ASC')->get();
+            ->where('salary_loans.deleted', 'No');
 
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($loans as $loan) {
-            $status = '';
-            if ($loan->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$loan->status.'"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$loan->status.'"></i></center>';
-            }
-            /*$button = '<button type="button"  class="btn btn-xs btn-warning btnEdit" title="Edit Party" ><i class="fa fa-edit"> </i></button>
-                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="" title="Delete Party"><i class="fa fa-trash"> </i></button>';*/
-            $button = '<div class="btn-grade">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-
-        <li class="action"><a href="#" onclick="editLoanAmount('.$loan->id.')" class="btn"><i class="fas fa-edit"></i> Edit </a></li>
-        <li class="action"><a href="#" onclick="tenureData('.$loan->id.')" class="btn"><i class="fas fa-calendar-alt"></i> Tenure Data </a></li>
-        <li class="action"><a href="#/" class="btn" onclick="generatePdf('.$loan->id.')"><i class="fas fa-file-pdf"></i> Generate PDF</a></li>
-        <li class="action"><a href="#/" class="btn" onclick="confirmDelete('.$loan->id.')"><i class="fas fa-trash"></i> Delete </a></li>
-                </li>
-
-                </ul>
-            </div>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$loan->id.'" />',
-                $loan->member_name,
-                $loan->amount,
-                $loan->tenure,
-                $loan->installment,
-                $loan->percent.'%',
-                $loan->applicable_from,
-                $status,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('our_teams.member_name', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $loans = $query->orderBy('salary_loans.' . $sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        $employees = OurTeam::where('deleted', 'No')->get();
+
+        return view('admin.payroll.salaryLoan.salaryLoanView', compact('loans', 'employees'));
     }
 
     public function store(Request $request)

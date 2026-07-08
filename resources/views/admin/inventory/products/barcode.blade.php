@@ -19,7 +19,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3> Barcode Generator for Product
-                                        <a class="btn btn-success float-right" href="{{ route('sale.add') }}"> <i
+                                        <a class="btn btn-success float-right" href="{{ route('sale.add', 'walkin_sale') }}"> <i
                                                 class="fa fa-plus-circle"></i> Add Sale</a>
                                     </h3>
                                 </div><!-- /.card-header -->

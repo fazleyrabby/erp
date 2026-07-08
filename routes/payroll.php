@@ -29,7 +29,6 @@ Route::group(['middleware' => ['auth']], function () {
         /* -----Grade Routes start--------- */
 
         Route::get('gradeIndex', [GradeNewController::class, 'index'])->name('gradeIndex');
-        Route::get('getGradeData', [GradeNewController::class, 'getGradeData'])->name('getGradeData');
         Route::post('gradeStore', [GradeNewController::class, 'store'])->name('gradeStore');
         Route::get('editGrade', [GradeNewController::class, 'edit'])->name('editGrade');
         Route::post('gradeUpdate', [GradeNewController::class, 'update'])->name('gradeUpdate');
@@ -39,7 +38,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* -----Steps Routes start--------- */
         Route::get('allStep', [StepNewController::class, 'index'])->name('stepsIndex');
-        Route::get('getSteps', [StepNewController::class, 'getSteps'])->name('getSteps');
         Route::post('stepStore', [StepNewController::class, 'store'])->name('stepStore');
         Route::get('editStep', [StepNewController::class, 'edit'])->name('editStep');
         Route::post('stepUpdate', [StepNewController::class, 'update'])->name('stepUpdate');
@@ -50,7 +48,6 @@ Route::group(['middleware' => ['auth']], function () {
         /* -----Groups Routes start--------- */
 
         Route::get('allGroup', [GroupController::class, 'index'])->name('groupIndex');
-        Route::get('getGroup', [GroupController::class, 'getGroups'])->name('getGroup');
         // Route::get('createGroup',[GroupController::class,'create'])->name('createGroup');
         Route::post('groupStore', [GroupController::class, 'store'])->name('groupStore');
         Route::get('editGroup', [GroupController::class, 'edit'])->name('editGroup');
@@ -64,7 +61,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* -----Facility Routes start--------- */
         Route::get('allFacility', [FacilityController::class, 'index'])->name('facilityIndex');
-        Route::get('getFacilityData', [FacilityController::class, 'getFacilityData'])->name('getFacilityData');
         Route::post('facilityStore', [FacilityController::class, 'store'])->name('facilityStore');
         Route::get('editFacility', [FacilityController::class, 'edit'])->name('editFacility');
         Route::post('facilityUpdate', [FacilityController::class, 'update'])->name('facilityUpdate');
@@ -75,7 +71,6 @@ Route::group(['middleware' => ['auth']], function () {
         /* -----Monthly amount Routes start--------- */
 
         Route::get('monthly/Amount/Index', [MonthlyAmountController::class, 'index'])->name('monthlyAmountIndex');
-        Route::get('monthly/Amount/get', [MonthlyAmountController::class, 'getMonthlyAmountData'])->name('getMonthlyAmountData');
         Route::post('monthly/Amount/Store', [MonthlyAmountController::class, 'store'])->name('monthlyAmountStore');
         Route::get('monthly/Amount/edit', [MonthlyAmountController::class, 'edit'])->name('editMonthlyAmount');
         Route::post('monthly/Amount/Update', [MonthlyAmountController::class, 'update'])->name('AmountDataUpdate');
@@ -86,7 +81,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* -----Loan Salary Routes start--------- */
         Route::get('loan/Amount/Index', [SalaryLoanController::class, 'index'])->name('loanIndex');
-        Route::get('loan/Amount/get', [SalaryLoanController::class, 'getLoanData'])->name('getLoanData');
         Route::post('loan/Amount/Store', [SalaryLoanController::class, 'store'])->name('loanStore');
         Route::get('loan/Amount/edit', [SalaryLoanController::class, 'edit'])->name('loanEdit');
         Route::post('loan/Amount/Update', [SalaryLoanController::class, 'update'])->name('loanUpdate');
@@ -101,7 +95,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* -----Salary Sheet Routes start--------- */
         Route::get('salary/sheet/view', [SalarySheetController::class, 'index'])->name('SalarySheetView');
-        Route::get('salary/sheet/get/data', [SalarySheetController::class, 'getSalarySheetData'])->name('getSalarySheetData');
         Route::post('salary/sheet/storeData', [SalarySheetController::class, 'store'])->name('salarySheetStore');
         Route::get('salary/sheet/edit', [SalarySheetController::class, 'edit'])->name('editSalarySheet');
         Route::post('salary/sheet/update', [SalarySheetController::class, 'update'])->name('sheetUpdate');
@@ -110,7 +103,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* -----Salary Instruction Routes start--------- */
         Route::get('salary/instruction/view', [SalaryInstructionController::class, 'index'])->name('SalaryInstructionView');
-        Route::get('salary/instruction/get/data', [SalaryInstructionController::class, 'getSalaryInformationData'])->name('getSalaryInformationData');
         Route::get('salary/instruction/view/details/data/', [SalaryInstructionController::class, 'viewInstruction'])->name('viewInstruction');
         Route::get('salary/instruction/add', [SalaryInstructionController::class, 'create'])->name('sheetInstructionAdd');
         Route::post('salary/instruction/storeData', [SalaryInstructionController::class, 'store'])->name('sheetInstructionStore');
@@ -138,7 +130,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* -----Bonus List Routes start--------- */
         Route::get('salary/bonus/list/view', [BonusController::class, 'index'])->name('bonusListView');
-        Route::get('salary/bonus/get/list', [BonusController::class, 'getBonusData'])->name('getBonusData');
         Route::post('salary/bonus/store', [BonusController::class, 'store'])->name('bonusDataStore');
         Route::get('salary/bonus/edit', [BonusController::class, 'edit'])->name('editBonusSheet');
         Route::post('salary/bonus/update', [BonusController::class, 'update'])->name('bonusListUpdate');
@@ -176,7 +167,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* payroll Time Schedule */
         Route::get('/time/schedule/index', [TimeGroupController::class, 'index'])->name('timeScheduleGroupIndex');
-        Route::get('/time/schedule/get/data', [TimeGroupController::class, 'getScheduleGroupData'])->name('getScheduleGroupData');
         Route::post('/time/schedule/store', [TimeGroupController::class, 'store'])->name('scheduleDataAdd');
         Route::post('/time/schedule/delete', [TimeGroupController::class, 'delete'])->name('scheduleDataDelete');
         Route::get('/time/schedule/edit/data', [TimeGroupController::class, 'edit'])->name('editScheduleGroup');
@@ -184,7 +174,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* payroll user schedule group */
         Route::get('/user/schedule/group/index', [UserTimeScheduleController::class, 'index'])->name('userTimeGroupIndex');
-        Route::get('/user/schedule/group/get/data', [UserTimeScheduleController::class, 'getData'])->name('getUserScheduleGroupData');
         Route::post('/user/schedule/group/store', [UserTimeScheduleController::class, 'store'])->name('getUserScheduleGroupStore');
         Route::get('/user/schedule/group/edit', [UserTimeScheduleController::class, 'edit'])->name('getUserScheduleGroupEdit');
         Route::post('/user/schedule/group/update', [UserTimeScheduleController::class, 'update'])->name('userScheduleGroupUpdate');
@@ -193,7 +182,6 @@ Route::group(['middleware' => ['auth']], function () {
         /* Leave Mangement system routes */
         Route::get('leave/management/index', [LeaveController::class, 'index'])->name('leaveIndex');
         Route::post('leave/management/store',[LeaveController::class, 'store'])->name('leaveStore');
-        Route::get('leave/management/get/data',[LeaveController::class, 'getData'])->name('getLeaveData');
         Route::get('leave/management/get/edit',[LeaveController::class, 'edit'])->name('leaveEdit');
         Route::post('leave/management/get/update',[LeaveController::class, 'update'])->name('leaveUpdate');
         Route::post('leave/management/get/delete',[LeaveController::class, 'delete'])->name('leaveDelete');

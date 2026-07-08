@@ -13,13 +13,13 @@ Admin Grade -View
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                    <h3 style="float:left;"> Grade </h3>
-                    <a class="btn btn-primary float-right" onclick="create()"><i class="fa fa-plus circle"></i> Add Grade</a>
-                   
-                </div><!-- /.card-header -->
-
-                <!-- /.card-header -->
+                    <h3 class="card-title">Grade</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fa fa-plus circle"></i> Add Grade</button>
+                    </div>
+                </div>
                 <div class="card-body">
+                    <x-filter-bar route="{{ route('gradeIndex') }}" searchPlaceholder="Search grades..." :sortOptions="['id' => 'ID', 'grade_name' => 'Name']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <table id="manageGradeTable" width="100%" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -30,8 +30,41 @@ Admin Grade -View
                                 <td width="8%">Action</td>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            @forelse ($grades as $i => $grade)
+                            <tr>
+                                <td>{{ $grades->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $grade->id }}" /></td>
+                                <td>{{ $grade->grade_name }}</td>
+                                <td>{{ $grade->note }}</td>
+                                <td class="text-center">
+                                    @if ($grade->status == 'Active')
+                                        <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $grade->status }}"></i>
+                                    @else
+                                        <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $grade->status }}"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-grade">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             <i class="fas fa-cog"></i>
+                                         </button>
+                                         <div class="dropdown-menu dropdown-menu-end">
+                                             <a class="dropdown-item" href="#" onclick="editGrade({{ $grade->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                             <a class="dropdown-item" href="#/" onclick="confirmDelete({{ $grade->id }})"><i class="fas fa-trash me-2"></i> Delete</a>
+                                         </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">No grades found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
                     </table>
+                    <div class="mt-3">
+                        {{ $grades->links() }}
+                    </div>
                 </div>
             </div>
         </section>
@@ -50,7 +83,7 @@ Admin Grade -View
             <form id="GradeFormStore" >
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Grade</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">
                     
@@ -67,7 +100,7 @@ Admin Grade -View
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
                     <button type="submit" class="btn btn-primary " id="saveGrade"><i class="fa fa-save"></i> Save</button>
                 </div>
             </form>
@@ -88,7 +121,7 @@ Admin Grade -View
             <form id="editGradeForm" method="POST" enctype="multipart/form-data" action="#">
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Grade</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">
                     @csrf
@@ -115,7 +148,7 @@ Admin Grade -View
                         
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
                     <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save"></i> Update</button>
                 </div>
             </form>
@@ -142,17 +175,7 @@ Admin Grade -View
                 $('#grade_name').focus();
             })
 
-            /*get data*/
-            var table;
-                $(document).ready(function() {
-                    table = $('#manageGradeTable').DataTable({
-                        'ajax': "{{route('getGradeData')}}",
-                        processing:true,
-                    });
-                });
-
-
-                    /* store data*/
+            /* store data*/
             $('#GradeFormStore').submit(function(e){
                 e.preventDefault();
                 clearMessages();
@@ -173,7 +196,7 @@ Admin Grade -View
                     success:function(result){
                         $("#modal").modal('hide');
                         Swal.fire("Saved!",result.success,"success");
-                        table.ajax.reload(null, false);
+                        location.reload();
                     }, error: function(response) {
                         //alert(JSON.stringify(response));
                         $('#grade_nameError').text(response.responseJSON.errors.grade_name);
@@ -265,7 +288,7 @@ Admin Grade -View
                 //alert(result);
                 $("#editModal").modal('hide');
                 Swal.fire("Updated Grade!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
             }, error: function(response) {
                 $('#editGradeNameError').text(response.responseJSON.errors.name);
                 $('#editNoteError').text(response.responseJSON.errors.code);
@@ -295,7 +318,7 @@ Admin Grade -View
                 data: {"id":id, "_token":_token},
                 success: function (result) {
                     Swal.fire("Done!",result.success,"success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 }, beforeSend: function () {
                     $('#loading').show();
                 },complete: function () {

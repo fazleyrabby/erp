@@ -4,24 +4,25 @@ Admin Loan Salary -View
 @endsection
 @section('content')
 <div class="content-wrapper">
-
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="float-left">Loan Salary</h3>
-                            <a href="{{route('addSalaryLoan')}}"   class="btn btn-primary btn-icon-split float-right"><i class="fas fa-plus"></i> Add Loan</a>  
+                            <h3 class="card-title">Loan Salary</h3>
+                            <div class="card-actions">
+                                <a href="{{route('addSalaryLoan')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Loan</a>
+                            </div>
                             <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
+                            <x-filter-bar route="{{ route('loanIndex') }}" searchPlaceholder="Search loans..." :sortOptions="['id' => 'ID', 'amount' => 'Amount']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                             <table id="manageLoanTable" width="100%" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <td width="6%">SL</td>
-                                        <td>Employee Name</td>                                                                           
+                                        <td>Employee Name</td>
                                         <td>Amount</td>
                                         <td>Tenure</td>
                                         <td>Installment</td>
@@ -31,8 +32,47 @@ Admin Loan Salary -View
                                         <td width="8%">Action</td>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    @forelse ($loans as $i => $loan)
+                                    <tr>
+                                        <td>{{ $loans->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $loan->id }}" /></td>
+                                        <td>{{ $loan->member_name }}</td>
+                                        <td>{{ $loan->amount }}</td>
+                                        <td>{{ $loan->tenure }}</td>
+                                        <td>{{ $loan->installment }}</td>
+                                        <td>{{ $loan->percent }}%</td>
+                                        <td>{{ $loan->applicable_from }}</td>
+                                        <td class="text-center">
+                                            @if ($loan->status == 'Active')
+                                                <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $loan->status }}"></i>
+                                            @else
+                                                <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $loan->status }}"></i>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-grade">
+                                                 <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                     <i class="fas fa-cog"></i>
+                                                 </button>
+                                                 <div class="dropdown-menu dropdown-menu-end">
+                                                     <a class="dropdown-item" href="#" onclick="editLoanAmount({{ $loan->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                                     <a class="dropdown-item" href="#" onclick="tenureData({{ $loan->id }})"><i class="fas fa-calendar-alt me-2"></i> Tenure Data</a>
+                                                     <a class="dropdown-item" href="#/" onclick="generatePdf({{ $loan->id }})"><i class="fas fa-file-pdf me-2"></i> Generate PDF</a>
+                                                     <a class="dropdown-item" href="#/" onclick="confirmDelete({{ $loan->id }})"><i class="fas fa-trash me-2"></i> Delete</a>
+                                                 </div>
+                                             </div>
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="9" class="text-center text-muted">No loans found.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
                             </table>
+                            <div class="mt-3">
+                                {{ $loans->links() }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -50,7 +90,7 @@ Admin Loan Salary -View
                 @csrf
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Loan Amount</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">	
                         <input type="hidden" name="editId" id="editId">
@@ -93,7 +133,7 @@ Admin Loan Salary -View
                 </div>
         
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
             <button type="submit" class="btn btn-primary btnUpate"><i class="fa fa-save"></i> Update</button>
         </div>
         </form></div>
@@ -115,7 +155,7 @@ Admin Loan Salary -View
             <div class="modal-header">
                
                 <h4 class="modal-title">Tenure Details</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
             </div>
 
             <div class="modal-body">
@@ -135,8 +175,8 @@ Admin Loan Salary -View
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary" data-dismiss="modal">Okay</button>
+                <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary" data-bs-dismiss="modal">Okay</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -152,17 +192,6 @@ Admin Loan Salary -View
 @section('contentJavaScripts')
 
  <script>
-
-
-
-                /*Get Data*/
-                var table;
-                    $(document).ready(function() {
-                        table = $('#manageLoanTable').DataTable({
-                            'ajax': "{{route('getLoanData')}}",
-                            processing:true,
-                    });
-                }); 
 
 
 
@@ -269,7 +298,7 @@ Admin Loan Salary -View
                         
                         $("#editModal").modal('hide');
                         Swal.fire("Updated Amount Data!",result.success,"success");
-                        table.ajax.reload(null, false);
+                        location.reload();
                     }, error: function(response) {
                         $('#editTenureError').text(response.responseJSON.errors.tenure);
                         $('#editAmountError').text(response.responseJSON.errors.amount);
@@ -312,7 +341,7 @@ Admin Loan Salary -View
                         success: function (result) {
                             
                             Swal.fire("Done!",result.success,"success");
-                            table.ajax.reload(null, false);
+                            location.reload();
                         }, beforeSend: function () {
                             $('#loading').show();
                         },complete: function () {
@@ -328,8 +357,7 @@ Admin Loan Salary -View
 
 
                
-    
-
+     
              /*tenure list */
              function tenureData(loan_id){
                  
@@ -343,11 +371,11 @@ Admin Loan Salary -View
                         for(var i = 0; i < result.length; i++)
                         {
                             tableData += "<tr><td>"+(i+1)+"</td><td>"+result[i].month_year+"</td><td>"+result[i].installment+"</td><td>"+result[i].loan_status+"</td><td>" 
-                                            +"<div class='dropdown'>"
-                                                +"<button class='btn btn-primary dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
+                                            +"<div class='btn-group'>"
+                                                +"<button class='btn btn-primary dropdown-toggle btn-sm' type='button' data-bs-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"
                                                     +"<i class='fas fa-cog'></i>"
                                                 +"</button>"
-                                                +"<div class='dropdown-menu' aria-labelledby='dropdownMenuButton'>"
+                                                +"<div class='dropdown-menu dropdown-menu-end'>"
                                                     +"<a class='dropdown-item' href='#' onclick='changeStatus("+result[i].id+",\"Pending\")'> Pending </a>"
                                                     +"<a class='dropdown-item' href='#' onclick='changeStatus("+result[i].id+",\"Paid\")'> Paid    </a>"
                                                     +"<a class='dropdown-item' href='#' onclick='changeStatus("+result[i].id+",\"Reject\")'> Reject  </a>"

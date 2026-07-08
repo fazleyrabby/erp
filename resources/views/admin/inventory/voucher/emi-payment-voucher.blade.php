@@ -112,7 +112,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
+                            data-bs-dismiss="modal" aria-hidden="true">
                     </button>
                     <h4 class="modal-title float-left"> EMI Payment</h4>
                 </div> 
@@ -151,7 +151,7 @@
 					  </div>
                   </div>
                   <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-primary btnSave">Save</button>
                 
 					</div> 
@@ -228,16 +228,15 @@
 					let paymentStatus = '';
 					let paymentDeletedStatus = '';
 					if(result[i]["deleted"] == "Yes" ){
-						button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card"></i> Do Something </a></li></li></li><li class="action">';
+						button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button><div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#" onclick="doSomething('+result[i]["id"]+')"><i class="fas fa-credit-card me-2"></i> Do Something </a></div></div></td>';
 						paymentDeletedStatus = '<i class="fas fa-times-circle" style="color:red; font-size:16px;" title="Active"></i>';
 					} else if(result[i]["is_paid"] == "No"){
-						button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="pay('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card "></i> Pay </a></li></li></li><li class="action">';
+						button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button><div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#" onclick="pay('+result[i]["id"]+')"><i class="fas fa-credit-card me-2"></i> Pay </a></div></div></td>';
 						 paymentStatus = '<i class="fa fa-envelope" aria-hidden="true" ></i>';
 					}else{
-						button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card"></i> Do Something </a></li></li></li><li class="action">';
+						button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-cog"></i></button><div class="dropdown-menu dropdown-menu-end"><a class="dropdown-item" href="#" onclick="doSomething('+result[i]["id"]+')"><i class="fas fa-credit-card me-2"></i> Do Something </a></div></div></td>';
 						paymentStatus = '<i class="fas fa-check-circle" style="color:green; font-size:16px;" title="Active"></i>';
 					}
-					button += '</li></li></ul></div></td>';
 					var checkbox = '';
 					if(result[i]["is_paid"] == "No" ){
 						if(result[i]["deleted"] == "Yes"){

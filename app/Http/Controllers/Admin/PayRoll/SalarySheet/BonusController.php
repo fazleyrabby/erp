@@ -12,13 +12,36 @@ use Illuminate\Support\Facades\DB;
 
 class BonusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'bonus_lists.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $query = DB::table('bonus_lists')
+            ->leftjoin('groups', 'bonus_lists.group_id', '=', 'groups.id')
+            ->select('bonus_lists.*', 'groups.name as groupName')
+            ->where('bonus_lists.deleted', '=', 'No');
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('bonus_lists.bonus_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('bonus_lists.month_year', 'like', "%{$searchTerm}%")
+                  ->orWhere('bonus_lists.amount', 'like', "%{$searchTerm}%")
+                  ->orWhere('bonus_lists.note', 'like', "%{$searchTerm}%")
+                  ->orWhere('groups.name', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $items = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
 
         $salrysheets = SavedSalarySheet::where('deleted', '=', 'No')->select('month_year')->distinct()->get();
         $groups = Group::where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
 
-        return view('admin.payroll.salarySheet.bonusListView', ['salrysheets' => $salrysheets, 'groups' => $groups]);
+        return view('admin.payroll.salarySheet.bonusListView', compact('items', 'salrysheets', 'groups'));
     }
 
     public function getBonusData()

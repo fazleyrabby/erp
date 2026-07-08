@@ -9,28 +9,66 @@
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                    <h3>Expense List
-                            <button type="button" class="btn  btn-primary float-right" onclick="create()"><i class="fa fa-plus-circle"></i>
-                                Add Expense</button>
-                    </h3>
+                    <h3 class="card-title">Expense List</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="create()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Expense
+                        </button>
+                    </div>
                     <h3 class="text-center text-success">{{ Session::get('message') }}</h3>
                 </div>
                 <div class="card-body">
+                    <x-filter-bar route="{{ route('expenseView') }}" searchPlaceholder="Search expenses..." :sortOptions="['id' => 'ID', 'transaction_date' => 'Date', 'tbl_acc_expenses.particulars' => 'Particulars', 'amount' => 'Amount']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover dataTable no-footer" id="manageExpenseTable" width="100%">
+                        <table class="table table-vcenter table-bordered" id="manageExpenseTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
-                                    <td width="5%" class="text-center">Sl</td>
-                                    <td width="20%" class="text-center">Supplier</td>
-                                    <td width="15%" class="text-center">Transaction Date</td>
-                                    <td width="25%" class="text-center">Expense Reason</td>
-                                    <td width="15%" class="text-center">Amount</td>
-                                    <td width="12%" class="text-center">Status</td>
-                                    <td width="8%" class="text-center">Action</td>
+                                    <th width="5%" class="text-center">Sl</th>
+                                    <th width="20%" class="text-center">Supplier</th>
+                                    <th width="15%" class="text-center">Transaction Date</th>
+                                    <th width="25%" class="text-center">Expense Reason</th>
+                                    <th width="15%" class="text-center">Amount</th>
+                                    <th width="12%" class="text-center">Status</th>
+                                    <th width="8%" class="text-center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                @forelse ($expenses as $i => $expense)
+                                <tr>
+                                    <td class="text-center">{{ $expenses->firstItem() + $i }}<input type="hidden" name="id" value="{{ $expense->id }}" /></td>
+                                    <td>{{ $expense->member_name }}</td>
+                                    <td class="text-center">{{ $expense->transaction_date }}</td>
+                                    <td>{{ $expense->particulars }}</td>
+                                    <td class="text-end">{{ $expense->amount }}</td>
+                                    <td class="text-center">
+                                        @if ($expense->status == 'Active')
+                                            <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $expense->status }}"></i>
+                                        @else
+                                            <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $expense->status }}"></i>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-cog"></i>
+                                             </button>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                 <a class="dropdown-item" href="#/" onclick="seeExpense({{ $expense->id }})"><i class="fa fa-file-pdf me-2"></i> See Details</a>
+                                             </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="7" class="text-center text-muted">No expenses found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
                         </table>
+                    </div>
+                    <div class="mt-3">
+                        {{ $expenses->links() }}
                     </div>
                 </div><!-- Card Content end -->
 
@@ -44,7 +82,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Edit COA</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
                                         <i class="fas fa-window-close"></i></button>
                                 </div>
                                 <div class="modal-body">
@@ -90,7 +128,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn  btn-secondary mr-auto" data-dismiss="modal">x
+                                    <button type="button" class="btn  btn-secondary mr-auto" data-bs-dismiss="modal">x
                                         Close</button>
                                     <button  class="btn  btn-primary" onclick="updateCoa()"><i class="fa fa-save"></i>
                                         Save</button>
@@ -116,12 +154,7 @@
             window.open("{{url('expense/details')}}"+"/"+id);
         }
 
-        $(document).ready(function(){
-            table = $('#manageExpenseTable').DataTable({
-                'ajax': "{{route('getExpense')}}",
-                processing:true,
-            });
-        });
+
 
 
 

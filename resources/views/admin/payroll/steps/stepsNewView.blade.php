@@ -6,35 +6,68 @@ Admin Steps -View
     <div class="content-wrapper">
         <section class="content box-border">
             <div class="card">
-                        <div class="card-header">
-                            <h3 style="float: left;">Steps </h3>
-                            <a href="#/" onclick="create()"  class="btn btn-primary btn-icon-split float-right"><i class="fas fa-plus"></i>Add Step</a> 
-                            <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                        </div>
-
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <table id="manageStepTable" width="100%" class="table table-bordered table-striped ">
-
-                                <thead>
-                                    <tr>
-                                        <td width="6%">ID</td>
-
-                                        <td>Steps Name</td>
-                                        <td>Salary(Taka)</td>
-                                        <td>Grade</td>
-                                        <td>Note</td>
-                                        <td>Sequence</td>
-                                        <td width="8%">Status</td>
-                                        <td width="8%">Action</td>
-                                    </tr>
-                                </thead>
-
-                                <tbody></tbody>
-
-                            </table>
-                        </div>
+                <div class="card-header">
+                    <h3 class="card-title">Steps</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Step</button>
                     </div>
+                    <h3 class="text-center text-success">{{Session::get('message')}}</h3>
+                </div>
+                <div class="card-body">
+                    <x-filter-bar route="{{ route('stepsIndex') }}" searchPlaceholder="Search steps..." :sortOptions="['id' => 'ID', 'step_name' => 'Name']" :defaultSort="'id'" :defaultDirection="'DESC'" />
+                    <table id="manageStepTable" width="100%" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <td width="6%">ID</td>
+                                <td>Steps Name</td>
+                                <td>Salary(Taka)</td>
+                                <td>Grade</td>
+                                <td>Note</td>
+                                <td>Sequence</td>
+                                <td width="8%">Status</td>
+                                <td width="8%">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($steps as $i => $step)
+                            <tr>
+                                <td>{{ $steps->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $step->id }}" /></td>
+                                <td>{{ $step->step_name }}</td>
+                                <td>{{ $step->salary_amount }}</td>
+                                <td>{{ $step->grade_name }}</td>
+                                <td>{{ $step->note }}</td>
+                                <td>{{ $step->priority }}</td>
+                                <td class="text-center">
+                                    @if ($step->status == 'Active')
+                                        <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $step->status }}"></i>
+                                    @else
+                                        <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $step->status }}"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-step">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item" href="#" onclick="editStep({{ $step->id }})"><i class="fas fa-edit me-2"></i> Edit </a>
+                                            <a class="dropdown-item" href="#" onclick="confirmDelete({{ $step->id }})"><i class="fas fa-trash me-2"></i> Delete </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" class="text-center text-muted">No steps found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    <div class="mt-3">
+                        {{ $steps->links() }}
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 
@@ -50,7 +83,7 @@ Admin Steps -View
                 @csrf    
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Step</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">
                     <div class="form-group row col-md-12">
@@ -89,7 +122,7 @@ Admin Steps -View
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"><i class="fa fa-close"></i>X Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i>X Close</button>
                     <button type="submit" class="btn btn-primary float-right" ><i class="fa fa-save"></i> Save</button>
                 </div>
             </form>
@@ -118,7 +151,7 @@ Admin Steps -View
                 @csrf
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Step</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">
                     <input type="hidden" name="editId" id="editId">
@@ -170,7 +203,7 @@ Admin Steps -View
                     </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
                     <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save"></i> Update</button>
                 </div>
             </form>
@@ -194,19 +227,6 @@ Admin Steps -View
                 $('#modal').on('shown.bs.modal', function() {
                     $('#grade_name').focus();
                 })
-
-        /* table Data*/
-        var table;
-                $(document).ready(function() {
-                    table = $('#manageStepTable').DataTable({
-                        'ajax': "{{route('getSteps')}}",
-                        processing:true,
-                    });
-                });
-
-
-
-
 
         /* store data*/
         $('#stepFormAdd').submit(function(e){
@@ -236,7 +256,7 @@ Admin Steps -View
                         //alert(JSON.stringify(result));
                         $("#modal").modal('hide');
                         Swal.fire("Saved!",result.success,"success");
-                        table.ajax.reload(null, false);                        
+                        location.reload();                        
                     }, 
                     error: function(response) {
                         //alert(JSON.stringify(response));
@@ -342,7 +362,7 @@ Admin Steps -View
                 //alert(result);
                 $("#editModal").modal('hide');
                 Swal.fire("Updated Step!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
              }, error: function(response) {
                 $('#editStepNameError').text(response.responseJSON.errors.step_name);
                 $('#editGrade_idError').text(response.responseJSON.errors.grade_id);
@@ -390,7 +410,7 @@ Admin Steps -View
                 data: {"id":id, "_token":_token},
                 success: function (result) {
                     Swal.fire("Done!",result.success,"success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 }, beforeSend: function () {
                     $('#loading').show();
                 },complete: function () {

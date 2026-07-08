@@ -14,13 +14,34 @@ use PDF;
 
 class SalaryInstructionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'salary_instructions.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $query = DB::table('salary_instructions')
+            ->join('salary_sheets', 'salary_instructions.sheet_id', '=', 'salary_sheets.id')
+            ->select('salary_instructions.*', 'salary_sheets.sheet_name')
+            ->where('salary_instructions.deleted', '=', 'No');
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('salary_sheets.sheet_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('salary_instructions.bank_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('salary_instructions.branch_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('salary_instructions.month_year', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $items = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
 
         $sheets = SalarySheet::where('deleted', '=', 'No')->get();
 
-        return view('admin.payroll.salarySheet.SheetInstruction.salarySheetInstruction', ['sheets' => $sheets]);
-
+        return view('admin.payroll.salarySheet.SheetInstruction.salarySheetInstruction', compact('items', 'sheets'));
     }
 
     public function getSalaryInformationData()

@@ -9,17 +9,23 @@
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                    <h3>Bill List
-                            <button type="button" class="btn  btn-primary" onclick="paybill()"><i class="fab fa-amazon-pay"></i>
-                                Pay bills</button>
-                            <button type="button" class="btn  btn-primary float-right" onclick="create()"><i class="fa fa-plus-circle"></i>
-                                Add bills</button>
-                    </h3>
-                    <h3 class="text-center text-success">{{ Session::get('message') }}</h3>
+                    <h3 class="card-title">Bill List</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="paybill()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-credit-card" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="3" y="5" width="18" height="14" rx="3"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="7" y1="15" x2="7.01" y2="15"/><line x1="11" y1="15" x2="13" y2="15"/></svg>
+                            Pay bills
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="create()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add bills
+                        </button>
+                    </div>
                 </div>
+                <h3 class="text-center text-success">{{ Session::get('message') }}</h3>
                 <div class="card-body">
+                    <x-filter-bar route="{{ route('billView') }}" searchPlaceholder="Search bills..." :sortOptions="['id' => 'ID', 'amount' => 'Amount', 'transaction_date' => 'Date']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover dataTable no-footer" id="manageBillTable" width="100%">
+                        <table class="table table-vcenter table-bordered" id="manageBillTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>
@@ -32,9 +38,47 @@
                                     <td width="5%" class="text-center">Action</td>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                @forelse ($bills as $i => $bill)
+                                <tr>
+                                    <td class="text-center">{{ $bills->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $bill->id }}" /></td>
+                                    <td class="text-center">{{ $bill->name }}</td>
+                                    <td class="text-center">{{ $bill->transaction_date }}</td>
+                                    <td class="text-center">{{ $bill->particulars }}</td>
+                                    <td class="text-center">{{ $bill->amount }}</td>
+                                    <td class="text-center">
+                                        @if ($bill->payment_status == 'Due')
+                                        <span class="text-danger">{{ $bill->payment_status }}</span>
+                                        @else
+                                        <span class="text-success">{{ $bill->payment_status }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($bill->status == 'Active')
+                                        <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $bill->status }}"></i>
+                                        @else
+                                        <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $bill->status }}"></i>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             <i class="fas fa-cog"></i></button>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                             <a class="dropdown-item" href="#/" onclick="seeBills({{ $bill->id }})"><i class="fas fa-print me-2"></i> See Details</a>
+                                             </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="8" class="text-center py-4 text-muted">No bills found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
                         </table>
                     </div>
+                    {{ $bills->links() }}
                 </div><!-- Card Content end -->
 
                 
@@ -47,7 +91,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Edit COA</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
                                         <i class="fas fa-window-close"></i></button>
                                 </div>
                                 <div class="modal-body">
@@ -93,7 +137,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn  btn-secondary mr-auto" data-dismiss="modal">x
+                                    <button type="button" class="btn  btn-secondary mr-auto" data-bs-dismiss="modal">x
                                         Close</button>
                                     <button  class="btn  btn-primary" onclick="updateCoa()"><i class="fa fa-save"></i>
                                         Save</button>
@@ -123,12 +167,9 @@
             window.open("{{url('account/bill/details')}}"+"/"+id);
         }
 
-        $(document).ready(function(){
-            table = $('#manageBillTable').DataTable({
-                'ajax': "{{route('getBill')}}",
-                processing:true,
-            });
-        });
+        function reloadDt(){
+            location.reload();
+        }
 
 
 

@@ -4,70 +4,106 @@
 @endsection
 @section('content')
 
-<style type="text/css">
-
-    h3{
-        color: #66a3ff;
-    }
-</style>
-    <div class="content-wrapper">
-        <section class="content box-border">
-            <div class="card">
-                <div class="card-header">
-                            <h3 style="float:left;"> Brand List </h3>
-                            <a class="btn btn-primary float-right" onclick="create()"><i class="fa fa-plus circle"></i> Add Brand</a>
-                            <a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()"><i class="fas fa-sync"></i> Refresh</a>
-                        </div><!-- /.card-header -->
-                <div class="card-body">
-                            <div class="col-md-12">
-
-
-                                <!--data listing table-->
-                                <table id="manageBrandTable" width="100%" class="table table-bordered table-hover ">
-                                    <thead>
-                                        <tr>
-                                            <td width="6%">SL#</td>
-                                            <td>Brand Name</td>
-                                            <td>Image</td>
-                                            <td width="8%">Status</td>
-                                            <td width="8%">Action</td>
-                                        </tr>
-                                    </thead>
-                                </table>
-                                <!--data listing table-->
-
-                            </div>
-
-
-                        </div>
-            </div><!-- /.container-fluid -->
-        </section>
-    <!-- /.content -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Brand List</h3>
+        <div class="card-actions">
+            <a class="btn btn-primary" onclick="create()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Brand
+            </a>
+            <a class="btn btn-outline-secondary" onclick="location.reload()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                Refresh
+            </a>
+        </div>
     </div>
-<!-- /.content-wrapper -->
+    <div class="card-body">
+        <x-filter-bar
+            route="{{ route('brands.view') }}"
+            searchPlaceholder="Search brands..."
+            :sortOptions="['id' => 'ID', 'name' => 'Name', 'status' => 'Status']"
+            :defaultSort="'id'"
+            :defaultDirection="'DESC'"
+        />
+
+        <div class="table-responsive">
+            <table class="table table-vcenter card-table table-striped">
+                <thead>
+                    <tr>
+                        <th width="6%">SL#</th>
+                        <th>Brand Name</th>
+                        <th>Image</th>
+                        <th width="8%">Status</th>
+                        <th width="8%" class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($brands as $brand)
+                        <tr>
+                            <td>{{ $loop->iteration + ($brands->currentPage() - 1) * $brands->perPage() }}</td>
+                            <td>{{ $brand->name }}</td>
+                            <td>
+                                @if($brand->image && $brand->image != 'no_image.png')
+                                    <img src="{{ url('upload/brand_images/'.$brand->image) }}" alt="{{ $brand->name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px;">
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($brand->status == 'Active')
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-danger">Inactive</span>
+                                @endif
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 00-2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 00-1.066 -2.573c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 001.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c.996 .608 2.296 .07 2.572 -1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#" onclick="editBrand({{ $brand->id }})"><i class="fas fa-edit"></i> Edit</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="confirmDelete({{ $brand->id }})"><i class="fas fa-trash-alt"></i> Delete</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">No brands found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{ $brands->links() }}
+    </div>
+</div>
 
 <!-- modal -->
-<div class="modal fade" id="modal">
+<div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header float-left">
-                <h4 class="modal-title float-left"> Add Brand</h4>
-                <button type="button" class="close"data-dismiss="modal" aria-hidden="true"><i class="fas fa-window-close" ></i></button>
+            <div class="modal-header">
+                <h4 class="modal-title">Add Brand</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div> 
             <div class="modal-body">
                 <form id="brandForm" method="POST" enctype="multipart/form-data" action="#">
                     @csrf
 
                     <input type="hidden" name="id">
-                    <div class="form-group">
-                        <label> Brand Name <span class="text-danger"> * </span></label>
-                        <input class="form-control input-sm" id="name" type="text" name="name" >
+                    <div class="form-group mb-3">
+                        <label class="form-label">Brand Name <span class="text-danger"> * </span></label>
+                        <input class="form-control" id="name" type="text" name="name" >
                         <span class="text-danger" id="nameError"></span>
                     </div>
-                    <div class="form-group row">
+                    <div class="row mb-3">
                         <div class="col-md-8">
-                            <label for="">Brand Logo</label>
-                            <input type="file" name="image" id="image" class="form-control form-control-sm">
+                            <label class="form-label">Brand Logo</label>
+                            <input type="file" name="image" id="image" class="form-control">
                             <span class="text-danger" id="imageError"></span>
                         </div>
                         <div class="col-md-4">
@@ -76,62 +112,62 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
-                        <button type="submit" class="btn btn-primary btnSave" id="saveCategory"><i class="fa fa-save"></i> Save</button>
+                        <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveCategory"><i class="fa fa-save"></i> Save</button>
                 </form> </div>
+            </div>
         </div>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+</div>
 
 <!-- edit modal -->
-<div class="modal fade" id="editModal">
+<div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Edit Brand</h4>
-                <button type="button" class="close"data-dismiss="modal" aria-hidden="true"><i class="fas fa-window-close" ></i></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div> 
             <div class="modal-body">
                 <form id="editBrandForm" method="POST" enctype="multipart/form-data" action="#">
                     @csrf
 
                     <input type="hidden" name="editId" id="editId">
-                    <div class="form-group row">
+                    <div class="row mb-3">
                         <div class="col-md-6">
-                            <label>Brand Name <span class="text-danger"> * </span></label>
-                            <input class="form-control input-sm" id="editName" type="text" name="editName" required="">
+                            <label class="form-label">Brand Name <span class="text-danger"> * </span></label>
+                            <input class="form-control" id="editName" type="text" name="editName" required="">
                             <span class="text-danger" id="editNameError"></span>
                         </div>
                         <div class="col-md-6">
-                            <label> Status</label>
-                            <select id="editStatus" name="editStatus" class="form-control input-sm">
+                            <label class="form-label">Status</label>
+                            <select id="editStatus" name="editStatus" class="form-select">
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="row mb-3">
                         <div class="col-md-8">
-                            <label for="">Edit Logo</label>
-                            <input type="file" name="editImage" id="editImage" class="form-control form-control-sm">
+                            <label class="form-label">Edit Logo</label>
+                            <input type="file" name="editImage" id="editImage" class="form-control">
                             <span class="text-danger" id="editImageError"></span>
                         </div>
                         <div class="col-md-4" >
-                            <img id="editShowImage" src="{{url('upload/no_image.png')}}"style="width: 70px;height: 80px; border:1px solid #000000" /><br>
+                            <img id="editShowImage" src="{{url('upload/no_image.png')}}" style="width: 70px;height: 80px; border:1px solid #000000" /><br>
                                 <a href="#" onclick="removeImage()" style="margin-left:20px;"> <i class="fas fa-trash-alt"></i> Remove Image</a>
                             <input type="hidden" id="removeImage" name="removeImage" value="" />
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
-                        <button type="submit" class="btn btn-primary btnUpate" id="editCategory"><i class="fa fa-save"></i> Update</button>
+                        <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="editCategory"><i class="fa fa-save"></i> Update</button>
                 </form> </div>
+            </div>
         </div>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+    </div>
+</div>
 @endsection
 
 @section('javascript')
@@ -141,7 +177,6 @@
       function create() {
           reset();
           $("#modal").modal('show');
-          //$(".btnSave").show();
       }
 	$('#modal').on('shown.bs.modal', function() {
 		$('#name').focus();
@@ -149,16 +184,8 @@
 	$('#editModal').on('shown.bs.modal', function() {
 		$('#editName').focus();
 	})
-	var table;
-	$(document).ready(function() {
-		table = $('#manageBrandTable').DataTable({
-			'ajax': "{{route('brands.getBrands')}}",
-			processing:true,
-		});
-	});
 		
         $("#brandForm").submit(function (e){
-           // alert("calling");
           e.preventDefault();
           clearMessages();
           var brandName = $("#name").val();
@@ -176,10 +203,10 @@
                 processData: false,
                 success:function(result){
                   $("#modal").modal('hide');
-                  Swal.fire("Brand Saved!",result.success,"success");
-                  table.ajax.reload(null, false);
+                  Swal.fire("Brand Saved!",result.success,"success").then(function(){
+                    location.reload();
+                  });
               }, error: function(response) {
-                  //alert(JSON.stringify(response));
                 $('#nameError').text(response.responseJSON.errors.name);
                 $('#imageError').text(response.responseJSON.errors.image);
               }, beforeSend: function () {
@@ -260,8 +287,9 @@
               processData: false,
               success:function(result){
                 $("#editModal").modal('hide');
-                  Swal.fire("Updated brand!",result.success,"success");
-                  table.ajax.reload(null, false);
+                  Swal.fire("Updated brand!",result.success,"success").then(function(){
+                    location.reload();
+                  });
               }, error: function(response) {
                 $('#editNameError').text(response.responseJSON.errors.name);
                 $('#editImageError').text(response.responseJSON.errors.image);
@@ -290,12 +318,9 @@
                 method: "POST",
                 data: {"id":id, "_token":_token},
                 success: function (result) {
-                  // if(result == "Success"){
-                    Swal.fire("Done!","Brand was succesfully deleted!","success");
-                    table.ajax.reload(null, false);
-                  // }else{
-                  //   Swal.fire("Cancelled", result, "error");
-                  // }
+                    Swal.fire("Done!","Brand was succesfully deleted!","success").then(function(){
+                      location.reload();
+                    });
                 }, error: function(response) {
                   Swal.fire("Cancelled", result, "error");
                   $('#editNameError').text(response.responseJSON.errors.name);
@@ -358,19 +383,9 @@
 			create();
 		}
 	});
-	function reloadDt(){
-		if($('#modal.in, #modal.show').length){
-			
-		}else if($('#editModal.in, #editModal.show').length){
-			
-		}
-		else{
-			table.ajax.reload(null, false);
-		}
-	}
 	Mousetrap.bind('ctrl+shift+r', function(e) {
 		e.preventDefault();
-		reloadDt();
+		location.reload();
 	});
 	Mousetrap.bind('ctrl+shift+s', function(e) {
 		e.preventDefault();
@@ -397,7 +412,5 @@
 		}
 	});
     </script>
-
-
 
 @endsection

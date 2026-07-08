@@ -82,13 +82,12 @@ Final Salary Sheet -View
                                        
                                         <td>
                                         <div class="btn-grade">
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fas fa-cog"></i>  <span class="caret"></span>
+                                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-cog"></i>
                                             </button>
-                                                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">     
-                                                <!-- Button trigger modal -->
-                                                <li><a  class="btn" data-toggle="modal" data-target="#data{{$sheet->id}}"><i class="fas fa-calendar-alt"></i> View</a></li> 
-                                                </ul> 
+                                                <div class="dropdown-menu dropdown-menu-end">     
+                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#data{{$sheet->id}}"><i class="fas fa-calendar-alt me-2"></i> View</a> 
+                                                </div> 
                                                  <!-- Modal -->
                                                  <div class="modal fade" id="data{{$sheet->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
@@ -96,7 +95,7 @@ Final Salary Sheet -View
                                                     <div class="modal-header">
                                                         
                                                         <h5 class="modal-title" id="exampleModalLongTitle"> Salary Data </h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
@@ -203,7 +202,7 @@ Final Salary Sheet -View
                                                         <!----------Table End-------->
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                         <a href=""><button type="button" class="btn btn-primary">Generate Sheet</button> </a>
                                                     </div>
                                                     </div>

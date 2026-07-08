@@ -11,11 +11,33 @@ use Illuminate\Support\Facades\DB;
 
 class TimeGroupController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'tbl_payroll_time_schedule_groups.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $query = DB::table('tbl_payroll_time_schedule_groups')
+            ->leftjoin('groups', 'tbl_payroll_time_schedule_groups.group_id', '=', 'groups.id')
+            ->select('tbl_payroll_time_schedule_groups.*', 'groups.name as groupName')
+            ->where('tbl_payroll_time_schedule_groups.deleted', '=', 'No')
+            ->where('tbl_payroll_time_schedule_groups.status', '=', 'Active');
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('groups.name', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_payroll_time_schedule_groups.working_hour', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $items = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
         $groups = Group::where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
 
-        return view('admin.payroll.TimeScheduleGroup.timeScheduleGroupView', ['groups' => $groups]);
+        return view('admin.payroll.TimeScheduleGroup.timeScheduleGroupView', compact('items', 'groups'));
     }
 
     public function getScheduleGroupData()

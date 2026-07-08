@@ -18,13 +18,35 @@ class PermissionToRoleController extends Controller
         $this->middleware('permission:permissionToRole.delete', ['only' => ['delete']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = permission::where('deleted', '=', 'No')->get();
-        $roles = Role::where('deleted', '=', 'No')->get();
-        $permission_groups = User::getPermissionGroups();
+        $query = Role::where('deleted', '=', 'No');
 
-        return view('admin.rolesPermissions.permission.permissionToRoleList', ['permissions' => $permissions, 'roles' => $roles, 'permission_groups' => $permission_groups]);
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($qry) use ($q) {
+                $qry->where('name', 'like', "%{$q}%");
+            });
+        }
+
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'DESC');
+        $limit = $request->get('limit', 10);
+
+        $roles = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        $permissions = permission::where('deleted', '=', 'No')->get();
+        $permission_groups = User::getPermissionGroups();
+        $allRoles = Role::where('deleted', '=', 'No')->get();
+
+        return view('admin.rolesPermissions.permission.permissionToRoleList', [
+            'permissions' => $permissions,
+            'roles' => $roles,
+            'permission_groups' => $permission_groups,
+            'allRoles' => $allRoles,
+        ]);
     }
 
     public function store(Request $request)

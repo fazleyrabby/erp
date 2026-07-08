@@ -12,58 +12,36 @@ class TransportController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:transport.view', ['only' => ['index', 'getTransports']]);
+        $this->middleware('permission:transport.view', ['only' => ['index']]);
         $this->middleware('permission:transport.store', ['only' => ['store']]);
         $this->middleware('permission:transport.edit', ['only' => ['edit', 'udpate']]);
         $this->middleware('permission:transport.delete', ['only' => ['delete']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.inventory.transport.transport');
-    }
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'tbl_transportinfo.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-    public function getTransports()
-    {
-        $transports = DB::table('tbl_transportinfo')
-            ->where('tbl_transportinfo.deleted', 'No')
-            ->orderBy('tbl_transportinfo.id', 'DESC')
-            ->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($transports as $transport) {
-            $status = '';
-            if ($transport->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;"></i></center>';
-            }
+        $query = DB::table('tbl_transportinfo')
+            ->where('tbl_transportinfo.deleted', 'No');
 
-            $button = '<td style="width: 12%;">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                                <li class="action liDropDown" onclick="editTransportInfo('.$transport->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
-                                </li>
-                            </li>
-                                <li class="action liDropDown"><a   class="btn"  onclick="confirmDelete('.$transport->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-                                </li> 
-                                </ul>
-                            </div>
-                        </td>';
-
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$transport->id.'" />',
-                $transport->transportName,
-                $transport->address,
-                'Contact Person: '.$transport->contactPerson.'<br>Contact No: '.$transport->contactNo,
-                $status,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('tbl_transportinfo.transportName', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_transportinfo.address', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_transportinfo.contactNo', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_transportinfo.contactPerson', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $transports = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.inventory.transport.transport', compact('transports'));
     }
 
     public function store(Request $request)

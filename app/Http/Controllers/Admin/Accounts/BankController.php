@@ -4,14 +4,44 @@ namespace App\Http\Controllers\Admin\Accounts;
 
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\ChartOfAccounts;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BankController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        return view('admin.banks.bankView');
+        $config = DB::table('tbl_acc_configurations')
+            ->where('tbl_acc_configurations.name', '=', 'Bank')
+            ->first();
+        $configId = $config->tbl_acc_coa_id;
+
+        $banks = ChartOfAccounts::where('parent_id', $configId)
+            ->where('deleted', 'No')
+            ->where('status', 'Active');
+
+        if ($searchTerm) {
+            $banks->where('name', 'like', "%{$searchTerm}%");
+        }
+
+        $banks = $banks->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        $bankChildsData = [];
+        foreach ($banks as $bank) {
+            $bankChildsData[$bank->id] = ChartOfAccounts::where('parent_id', $bank->id)
+                ->where('deleted', 'No')
+                ->where('status', 'Active')
+                ->get();
+        }
+
+        return view('admin.banks.bankView', compact('banks', 'bankChildsData'));
     }
 
     public function geData()

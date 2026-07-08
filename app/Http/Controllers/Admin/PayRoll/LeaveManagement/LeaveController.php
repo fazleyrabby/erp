@@ -11,11 +11,34 @@ use Illuminate\Support\Facades\DB;
 
 class LeaveController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'tbl_payroll_leaves.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $query = DB::table('tbl_payroll_leaves')
+            ->join('our_teams', 'tbl_payroll_leaves.employee_id', '=', 'our_teams.id')
+            ->select('tbl_payroll_leaves.*', 'our_teams.member_name')
+            ->where('tbl_payroll_leaves.deleted', '=', 'No');
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('our_teams.member_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_payroll_leaves.leave_type', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_payroll_leaves.leave_reason', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_payroll_leaves.admin_remarks', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $items = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
         $employees = OurTeam::where('deleted', '=', 'No')->get();
 
-        return view('admin.payroll.LeaveViews.leaveView', ['employees' => $employees]);
+        return view('admin.payroll.LeaveViews.leaveView', compact('items', 'employees'));
     }
 
     public function store(Request $request)

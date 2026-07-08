@@ -17,6 +17,7 @@ use App\Models\inventory\TempSaleProduct;
 use App\Models\inventory\Warehouse;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -55,9 +56,7 @@ class SaleReturnController extends Controller
 
     public function saleReturnList($type)
     {
-        $saleType = $type;
-
-        return view('admin.inventory.sale.sale-returnList', compact('saleType'));
+        return $this->saleReturnView($type, request());
     }
 
     public function saveSaleReturn(Request $request)
@@ -190,13 +189,9 @@ class SaleReturnController extends Controller
         }
     }
 
-    public function saleReturnView($type)
+    public function saleReturnView($type, Request $request)
     {
-
-        $output = ['data' => []];
-        $i = 1;
-
-        $saleReturns = DB::table('sale_returns')
+        $query = DB::table('sale_returns')
             ->join('parties', 'sale_returns.customer_id', '=', 'parties.id')
             ->leftjoin('users', 'users.id', '=', 'sale_returns.created_by')
             ->select(
@@ -208,7 +203,6 @@ class SaleReturnController extends Controller
                 'sale_returns.id',
                 'sale_returns.sale_id',
                 'sale_returns.sale_date',
-                'sale_returns.grand_total',
                 'sale_returns.status as saleStatus',
                 'parties.name',
                 'parties.code',
@@ -218,44 +212,26 @@ class SaleReturnController extends Controller
                 'users.name as userName'
             )
             ->where('sale_returns.deleted', 'No')
-            ->where('sale_returns.sales_type', $type)
-            ->orderBy('sale_returns.id', 'DESC')
-            ->get();
+            ->where('sale_returns.sales_type', $type);
 
-        foreach ($saleReturns as $saleReturn) {
-            // $button = '<button type="button" title="print sale" id="delete" class="btn btn-sm btn-success printPurchase" onclick="printPurchase('.$saleReturn->id.')" title="Print sale"><i class="fa fa-print"> </i></button> <button type="button" title="Delete" id="delete" class="btn btn-sm btn-danger btnDelete" onclick="confirmDelete('.$saleReturn->id.')" title="Delete Record"><i class="fa fa-trash"> </i></button>';
-            $button = '<td style="width: 12%;">
-			   <div class="btn-group">
-				   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-					   <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-					   <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-					   <li class="action" onclick="printPurchase('.$saleReturn->id.')" ><a  class="btn" ><i class="fas fa-print"></i> View Details  </a></li>
-					   </li>
-				   </li> 
-					   <li class="action"><a   class="btn"  onclick="confirmDelete('.$saleReturn->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-					   </li>
-					   </ul>
-				   </div>
-			   </td>';
-            $badgeColor = '';
-            if ($saleReturn->saleStatus == 'Active') {
-                $badgeColor = 'success';
-            } else {
-                $badgeColor = 'danger';
-            }
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$saleReturn->id.'" />',
-                '<b>Return No: </b>'.$saleReturn->sale_return_no.' <br><b>Return Date: </b>'.$saleReturn->sale_return_date,
-                '<b>Sale No: </b>'.$saleReturn->sale_no.'<br> <b>Sale Date:</b>'.$saleReturn->sale_date,
-                '<b>Party: </b>'.$saleReturn->name.'<br><b>Contact: </b>'.$saleReturn->contact.'<br><b>Alt. Contact: </b>'.$saleReturn->alternate_contact.'<br><b>Address: </b>'.substr(str_pad($saleReturn->address, 4), 0, 25),
-                '<b>Grand Total : </b>'.$saleReturn->grand_total,
-                $saleReturn->userName,
-                '<span class="badge badge-pill badge-'.$badgeColor.' text-center">'.$saleReturn->saleStatus.'</span>',
-                $button,
-            ];
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('sale_returns.sale_return_no', 'like', "%{$search}%")
+                  ->orWhere('sale_returns.sale_no', 'like', "%{$search}%")
+                  ->orWhere('parties.name', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $sortBy = $request->sort_by ?? 'sale_returns.id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $saleReturns = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.inventory.sale.sale-returnList', [
+            'saleReturns' => $saleReturns,
+            'saleType' => $type,
+        ]);
     }
 
     public function deleteSaleReturn(Request $request)
@@ -265,7 +241,7 @@ class SaleReturnController extends Controller
             $saleReturn = SaleReturn::find($request->id);
             $saleReturn->deleted = 'Yes';
             $saleReturn->deleted_date = date('Y-m-d H:i:s');
-            $saleReturn->created_by = Auth::user()->id;
+            $saleReturn->deleted_by = Auth::user()->id;
             $saleReturn->save();
 
             $party = Party::find($saleReturn->customer_id);
@@ -277,7 +253,7 @@ class SaleReturnController extends Controller
                 $saleProduct = SaleProductReturn::find($sale_product->id);
                 $saleProduct->deleted = 'Yes';
                 $saleProduct->deleted_date = date('Y-m-d H:i:s');
-                $saleProduct->created_by = Auth::user()->id;
+                $saleProduct->deleted_by = Auth::user()->id;
                 $saleProduct->save();
 
                 $product = Product::find($saleProduct->product_id);

@@ -16,9 +16,25 @@ class PermissionController extends Controller
         $this->middleware('permission:permission.delete', ['only' => ['delete']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = permission::where('deleted', '=', 'No')->get();
+        $query = permission::where('deleted', '=', 'No');
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($qry) use ($q) {
+                $qry->where('name', 'like', "%{$q}%")
+                    ->orWhere('group_name', 'like', "%{$q}%");
+            });
+        }
+
+        $sortBy = $request->get('sort_by', 'id');
+        $sortDirection = $request->get('sort_direction', 'DESC');
+        $limit = $request->get('limit', 10);
+
+        $permissions = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
 
         return view('admin.rolesPermissions.permission.permissionView', ['permissions' => $permissions]);
     }

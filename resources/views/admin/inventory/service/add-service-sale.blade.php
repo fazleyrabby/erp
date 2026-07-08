@@ -424,7 +424,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Product Advance Search</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x </button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"> x </button>
                 </div>
                 <div class="modal-body">
                     <form id="productForm" method="POST" enctype="multipart/form-data" action="#">
@@ -450,7 +450,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"> x
                             </button>
                         </div>
                     </form>
@@ -466,7 +466,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Serialize Product</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
                             class="fas fa-window-close"></i></button>
                 </div>
                 <div class="modal-body card-body">
@@ -495,7 +495,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x
+                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x
                                 Close</button>
                         </div>
                     </form>

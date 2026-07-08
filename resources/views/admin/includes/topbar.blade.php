@@ -1,16 +1,16 @@
 <header class="navbar navbar-expand-md d-print-none" data-bs-theme="dark">
     <div class="container-xl">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="navbar-brand navbar-brand-autodark">
+        <div class="navbar-brand navbar-brand-autodark d-lg-none">
             <a href="{{route('dashboard')}}">
                 <span style="font-size:1.1rem; font-weight:600;">{{Session::get('companySettings')[0]['name']}}</span>
             </a>
         </div>
 
-        <div class="navbar-nav flex-row order-md-last">
+        <div class="navbar-nav flex-row ms-auto">
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
                     <span class="avatar avatar-sm" style="background-image: url({{!empty(Auth::user()->image) ? url('upload/user_images/'.Auth::user()->image) : url('upload/no-image.jpg')}})"></span>
@@ -27,10 +27,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-
-        <div class="collapse navbar-collapse" id="navbar-menu">
-
         </div>
     </div>
 </header>

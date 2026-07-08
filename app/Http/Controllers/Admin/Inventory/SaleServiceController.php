@@ -31,40 +31,26 @@ class SaleServiceController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:sale.service.view', ['only' => ['viewSaleOrders', 'getSaleOrders']]);
+        $this->middleware('permission:sale.service.view', ['only' => ['viewSaleOrders']]);
         $this->middleware('permission:sale.service.add', ['only' => ['add', 'addToCart', 'fetchCart', 'checkOutCart']]);
         $this->middleware('permission:sale.service.edit', ['only' => ['editSaleOrder', 'addToOrderEditCart', 'fetchOrderEditCart', 'updateOrderEditCart']]);
         $this->middleware('permission:sale.service.statusComplete', ['only' => ['statusComplete']]);
         $this->middleware('permission:sale.service.createOrderToWalkinSale', ['only' => ['createOrderToWalkinSale', 'completeOrdercheckOutCart']]);
     }
 
-    public function viewSaleOrders()
+    public function viewSaleOrders(Request $request)
     {
-
         $saleType = 'walkin_sale';
         session(['type' => $saleType]);
 
-        return view('admin.inventory.service.view-sale-orders', compact('saleType'));
-    }
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'sale_orders.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-    public function changeCustomer(Request $request)
-    {
-
-        $saleOrder = SaleOrder::find($request->id);
-        $saleOrder->customer_id = '52';
-        $saleOrder->customer_change_date = Carbon::now();
-        $saleOrder->save();
-
-        return response()->json();
-    }
-
-    public function getSaleOrders()
-    {
-        $type = 'walkin_sale';
-        $saleOrders = DB::table('sale_orders')
+        $query = DB::table('sale_orders')
             ->join('parties', 'sale_orders.customer_id', '=', 'parties.id')
             ->leftjoin('users', 'users.id', '=', 'sale_orders.created_by')
-            ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'sale_orders.category')
             ->select(
                 'sale_orders.sale_no',
                 'sale_orders.date',
@@ -82,7 +68,6 @@ class SaleServiceController extends Controller
                 'sale_orders.created_date',
                 'sale_orders.service_start_date',
                 'sale_orders.delivered_date',
-                'sale_orders.category',
                 'sale_orders.brand',
                 'sale_orders.model',
                 'sale_orders.item',
@@ -92,210 +77,37 @@ class SaleServiceController extends Controller
                 'parties.address',
                 'parties.contact',
                 'parties.alternate_contact',
-                'tbl_acc_coas.name as coaName',
-                'users.name as userName',
-                'parties.deleted'
+                'users.name as userName'
             )
-            ->where('sale_orders.sales_type', $type)
+            ->where('sale_orders.sales_type', $saleType)
             ->where('sale_orders.deleted', 'No')
-            ->where('parties.deleted', 'No')
-            ->orderBy('sale_orders.id', 'DESC')
-            ->get();
+            ->where('parties.deleted', 'No');
 
-        $output = ['data' => []];
-        $i = 1;
-
-        foreach ($saleOrders as $saleOrder) {
-            $order_status = '';
-            $actionButtons = '';
-            $intervalDays = '';
-            $feedback = SaleOrderFeedback::where('tbl_sale_orders_id', $saleOrder->id)
-                ->where('deleted', 'No')
-                ->orderBy('id', 'desc')
-                ->first();
-
-            if ($saleOrder->order_status == 'Pending') {
-                $date1 = $saleOrder->created_date;
-                $date2 = Carbon::now();
-
-                $diff = abs(strtotime($date2) - strtotime($date1));
-
-                $years = floor($diff / (365 * 60 * 60 * 24));
-                $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
-                $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
-                $yearString = '';
-                $monthsString = '';
-                $daysString = '';
-                if ($years == '0') {
-                    $yearString = '';
-                } else {
-                    $yearString = $years.' years';
-                }
-                if ($months == '0') {
-                    $monthsString = '';
-                } else {
-                    $monthsString = $months.' months';
-                }
-                if ($days == '0') {
-                    $daysString = '<span class="text-success">Today arrived</span>';
-                } else {
-                    $daysString = $days.' days';
-                }
-                $intervalDays = '<center>'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
-            } elseif ($saleOrder->order_status == 'Servicing') {
-                $date1 = $saleOrder->service_start_date;
-                $date2 = Carbon::now();
-
-                $diff = abs(strtotime($date2) - strtotime($date1));
-
-                $years = floor($diff / (365 * 60 * 60 * 24));
-                $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
-                $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
-                $yearString = '';
-                $monthsString = '';
-                $daysString = '';
-                if ($years == '0') {
-                    $yearString = '';
-                } else {
-                    $yearString = $years.' years';
-                }
-                if ($months == '0') {
-                    $monthsString = '';
-                } else {
-                    $monthsString = $months.' months';
-                }
-                if ($days == '0') {
-                    $daysString = '<span class="text-success">Went to service Today </span>';
-                } else {
-                    $daysString = $days.' days';
-                }
-                $intervalDays = '<center>'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
-            } elseif ($saleOrder->order_status == 'Delivered') {
-                $date1 = $saleOrder->delivered_date;
-                $date2 = Carbon::now();
-
-                $diff = abs(strtotime($date2) - strtotime($date1));
-
-                $years = floor($diff / (365 * 60 * 60 * 24));
-                $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
-                $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
-                $yearString = '';
-                $monthsString = '';
-                $daysString = '';
-                if ($years == '0') {
-                    $yearString = '';
-                } else {
-                    $yearString = $years.' years';
-                }
-                if ($months == '0') {
-                    $monthsString = '';
-                } else {
-                    $monthsString = $months.' months';
-                }
-                if ($days == '0') {
-                    $daysString = '<span class="text-danger">Delivered Today </span>';
-                } else {
-                    $daysString = $days.' days';
-                }
-                $intervalDays = '<center class="text-danger">'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
-            } elseif ($saleOrder->order_status == 'ReadyToDeliverd') {
-                $date1 = $saleOrder->ready_to_deliver_date;
-                $date2 = Carbon::now();
-
-                $diff = abs(strtotime($date2) - strtotime($date1));
-
-                $years = floor($diff / (365 * 60 * 60 * 24));
-                $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
-                $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
-                $yearString = '';
-                $monthsString = '';
-                $daysString = '';
-                if ($years == '0') {
-                    $yearString = '';
-                } else {
-                    $yearString = $years.' years';
-                }
-                if ($months == '0') {
-                    $monthsString = '';
-                } else {
-                    $monthsString = $months.' months';
-                }
-                if ($days == '0') {
-                    $daysString = '<span class="text-danger">Came from service Today </span>';
-                } else {
-                    $daysString = $days.' days';
-                }
-                $intervalDays = '<center class="text-danger">'.$yearString.' '.$monthsString.' '.$daysString.'</center>';
-            }
-
-            if ($feedback != null) {
-                $comments = $feedback->customer_response;
-            } else {
-                $comments = '';
-            }
-
-            if ($saleOrder->order_status == 'Pending' || $saleOrder->order_status == 'Servicing') {
-                $actionButtons .= '<li class="action" onclick="editSaleOrder('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Update Order </a></li>';
-                $order_status = '<center class="text-primary"><i class="fas fa-hourglass-start" font-size:16px;"></i><br> '.$saleOrder->order_status.'</center>';
-                if ($saleOrder->order_status == 'Pending') {
-                    $actionButtons .= '<li class="action" onclick="orderInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Order Invoice </a></li>';
-                }
-                if ($saleOrder->order_status == 'Servicing') {
-                    $order_status = '<center class="text-info"><i class="fa fa-wrench" font-size:16px;"></i> '.$saleOrder->order_status.'</center>';
-                    $actionButtons .= '<li class="action"  onclick="statusComplete('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-check"></i>  Ready to deliverd </a></li>
-                            <li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
-                }
-            } elseif ($saleOrder->order_status == 'ReadyToDeliverd') {
-                $actionButtons .= '<li class="action" onclick="editSaleOrder('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-edit"></i> Update Order </a></li>
-                                    <li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
-                $order_status = '<center class="text-primary"><i class="fas fa-dolly" style="font-size:16px;"></i><br>Ready for delivery</center>';
-            } elseif ($saleOrder->order_status == 'Declined') {
-                $order_status = '<center class="text-primary"><i class="fas fa-hourglass-start" style="font-size:16px;"></i><br>'.$saleOrder->order_status.'</center>';
-                $actionButtons .= '<li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
-            } elseif ($saleOrder->order_status == 'Delivered') {
-                $actionButtons .= '<li class="action" onclick="createOrderToWalkinSale('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-cart-plus"> </i>  Final Service Sale </a></li>
-                                    <li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
-                $order_status = '<center class="text-success"><i class="fas fa-check" style="font-size:16px;"></i><br>'.$saleOrder->order_status.'</center>';
-            } elseif ($saleOrder->order_status == 'Completed') {
-                $order_status = '<center class="text-success"><i class="fas fa-check-circle" style="font-size:16px;"></i><br>'.$saleOrder->order_status.'</center>';
-                $actionButtons .= '<li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>
-                                    <li class="action" onclick="saleInvoice('.$saleOrder->sale_id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Sale Invoice </a></li>';
-            } else {
-                $order_status = '<center class="text-danger"><span  font-size:16px;">X</span> '.$saleOrder->order_status.'</center>';
-                $actionButtons .= '<li class="action" onclick="completeInvoice('.$saleOrder->id.')"  ><a  class="btn" ><i class="fas fa-file-pdf"></i> Complete Invoice </a></li>';
-            }
-
-            $button = '<td style="width: 12%; ">
-    			<div class="btn-group">
-    				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-    					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-    					    '.$actionButtons.'
-    					</ul>
-    				</div>
-    			</td>';
-
-            $grandTotal = floatval($saleOrder->total_amount) - floatval($saleOrder->discount) + floatval($saleOrder->carrying_cost) + floatval($saleOrder->vat) + floatval($saleOrder->ait);
-
-            $project = '';
-            if ($saleOrder->project_name != null) {
-                $project .= '<b>Project: </b>'.$saleOrder->project_name;
-            }
-
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$saleOrder->id.'" />',
-                $saleOrder->sale_no,
-                date('d-m-Y h:i a', strtotime($saleOrder->date)),
-                '<b>Category: </b>'.$saleOrder->coaName.'<br><b>Brand: </b>'.substr(str_pad($saleOrder->brand, 4), 0, 20).'<br><b>Model: </b>'.substr(str_pad($saleOrder->model, 4), 0, 20).'<br><b>Item: </b>'.substr(str_pad($saleOrder->item, 4), 0, 20).'<br>'.$project,
-                '<b>Party: </b>'.$saleOrder->name.'<br><b>Contact: </b>'.$saleOrder->contact.'<br><b>Alt. Contact: </b>'.$saleOrder->alternate_contact.'<br><b>Address: </b>'.substr(str_pad($saleOrder->address, 4), 0, 25),
-                '<b>Total: </b>'.$saleOrder->total_amount.'<br><b>Discount: </b>'.$saleOrder->discount.'<br><b>Transport: </b>'.$saleOrder->carrying_cost.'<br><b>GrandTotal: </b>'.$grandTotal.'<br><b>Paid: </b>'.$saleOrder->current_payment,
-                $saleOrder->userName,
-                $order_status.'<br>'.$intervalDays,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('sale_orders.sale_no', 'like', "%{$searchTerm}%")
+                  ->orWhere('parties.name', 'like', "%{$searchTerm}%")
+                  ->orWhere('sale_orders.brand', 'like', "%{$searchTerm}%")
+                  ->orWhere('sale_orders.model', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $saleOrders = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.inventory.service.view-sale-orders', compact('saleOrders', 'saleType'));
+    }
+
+    public function changeCustomer(Request $request)
+    {
+
+        $saleOrder = SaleOrder::find($request->id);
+        $saleOrder->customer_id = '52';
+        $saleOrder->customer_change_date = Carbon::now();
+        $saleOrder->save();
+
+        return response()->json();
     }
 
     public function getPaymentData(Request $request)

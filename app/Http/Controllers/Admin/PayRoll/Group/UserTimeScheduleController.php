@@ -11,8 +11,32 @@ use Illuminate\Support\Facades\DB;
 
 class UserTimeScheduleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'tbl_payroll_user_time_schedules.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $query = DB::table('tbl_payroll_user_time_schedules')
+            ->join('tbl_payroll_time_schedule_groups', 'tbl_payroll_user_time_schedules.schedule_group_id', '=', 'tbl_payroll_time_schedule_groups.id')
+            ->join('our_teams', 'tbl_payroll_user_time_schedules.employee_id', '=', 'our_teams.id')
+            ->leftjoin('groups', 'tbl_payroll_time_schedule_groups.group_id', '=', 'groups.id')
+            ->select('tbl_payroll_user_time_schedules.*', 'groups.name as groupName', 'our_teams.member_name')
+            ->where('tbl_payroll_user_time_schedules.deleted', '=', 'No');
+
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('our_teams.member_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('groups.name', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_payroll_user_time_schedules.note', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $items = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
         $employees = OurTeam::where('deleted', '=', 'No')->get();
         $schedules = DB::table('tbl_payroll_time_schedule_groups')
             ->leftjoin('groups', 'tbl_payroll_time_schedule_groups.group_id', '=', 'groups.id')
@@ -21,7 +45,7 @@ class UserTimeScheduleController extends Controller
             ->where('tbl_payroll_time_schedule_groups.status', '=', 'Active')
             ->get();
 
-        return view('admin.payroll.userScheduleGroup.userScheduleGroupView', ['employees' => $employees, 'schedules' => $schedules]);
+        return view('admin.payroll.userScheduleGroup.userScheduleGroupView', compact('items', 'employees', 'schedules'));
     }
 
     public function getData()

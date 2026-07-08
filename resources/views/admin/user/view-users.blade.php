@@ -5,46 +5,84 @@
 @section('User Management')
 @endsection
 @section('content')
-    <style type="text/css">
-        h3 {
-            color: #66a3ff;
-        }
-
-    </style>
-    <div class="container-fluid">
-        <section class="content box-border">
-            <div class="card">
-                <div class="card-header">
-                    <h3> Users List
-                        <a class="btn btn-primary float-right" onclick="create()"><i class="fa fa-plus circle"></i>
-                            Add User</a>
-                        <a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()"><i
-                                class="fas fa-sync"></i> Refresh</a>
-                    </h3>
-                </div><!-- /.card-header -->
-                <div class="card-body">
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table id="manageUserTable" width="100%" class="table table-bordered table-hover ">
-                                <thead>
-                                    <tr>
-                                        <td>ID</td>
-                                        <td>Image</td>
-                                        <td>Full Name</td>
-                                        <td>Contact</td>
-                                        <td>Dep./Des.</td>
-                                        <td>Status</td>
-                                        <td width="8%" ;">ACTION</td>
-                                    </tr>
-                                </thead>
-                                <!--<tbody id="tableViewUsers"></tbody>-->
-                            </table>
-                        </div>
-                        <!--data listing table-->
-                    </div>
-                </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Users List</h3>
+            <div class="card-actions">
+                <a class="btn btn-primary" onclick="create()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add User
+                </a>
+                <a class="btn btn-outline-secondary" onclick="location.reload()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                    Refresh
+                </a>
             </div>
-        </section>
+        </div>
+        <div class="card-body">
+            <x-filter-bar
+                route="{{ route('users.') }}"
+                searchPlaceholder="Search users..."
+                :sortOptions="['users.id' => 'ID', 'users.name' => 'Name', 'users.email' => 'Email']"
+                :defaultSort="'users.id'"
+                :defaultDirection="'DESC'"
+            />
+            <div class="table-responsive">
+                <table class="table table-vcenter table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="6%">SL#</th>
+                            <th>Image</th>
+                            <th>Full Name</th>
+                            <th>Contact</th>
+                            <th>Dep./Des.</th>
+                            <th width="8%">Status</th>
+                            <th width="8%">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($users as $user)
+                            <tr>
+                                <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                                <td>
+                                    @if($user->image && $user->image != 'no_image.png')
+                                        <img style="width:70px;" src="{{ url('upload/user_images/'.$user->image) }}" alt="{{ $user->name }}" />
+                                    @else
+                                        <img style="width:70px;" src="{{ url('upload/no_image.png') }}" alt="{{ $user->name }}" />
+                                    @endif
+                                </td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}<br>{{ $user->mobile_no }}</td>
+                                <td>Dep: {{ $user->department }}<br>Des: {{ $user->designation }}<br><b>Role:</b> {{ $user->role }}</td>
+                                <td>
+                                    @if($user->status == 'Active')
+                                        <i class="fas fa-check-circle" style="color:green; font-size:16px;"></i>
+                                    @else
+                                        <i class="fas fa-times-circle" style="color:red; font-size:16px;"></i>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             <i class="fas fa-cog"></i>
+                                         </button>
+                                         <div class="dropdown-menu dropdown-menu-end">
+                                             <a class="dropdown-item" href="#" onclick="userEdit({{ $user->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                             <a class="dropdown-item" href="#" onclick="confirmDelete({{ $user->id }})"><i class="fas fa-trash-alt me-2"></i> Delete</a>
+                                         </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center py-4 text-muted">No users found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            {{ $users->links() }}
+        </div>
     </div>
     <!-- /.content-wrapper -->
 
@@ -54,7 +92,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Add User</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
                             class="fas fa-window-close"></i></button>
                 </div>
                 <form id="userForm" method="POST" action="#">
@@ -144,7 +182,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                         <button type="submit" class="btn btn-primary btnSave" id="saveCategory"><i
                                 class="fa fa-save"></i> Save</button>
                     </div>
@@ -159,7 +197,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Edit User</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
                             class="fas fa-window-close"></i></button>
                 </div>
                 <form id="editUserForm" method="POST" enctype="multipart/form-data" action="#">
@@ -245,7 +283,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                         <button type="submit" class="btn btn-primary btnUpate" id="editCategory"><i
                                 class="fa fa-save"></i> Update</button>
                     </div>
@@ -283,14 +321,6 @@
         $('#editModal').on('shown.bs.modal', function() {
             $('#editName').focus();
         })
-        var table;
-        $(document).ready(function() {
-            table = $('#manageUserTable').DataTable({
-                'ajax': "{{ route('users.view') }}",
-                processing: true,
-            });
-        })
-
         function reset() {
             $("#name").val("");
             $("#email").val("");
@@ -365,7 +395,7 @@
                 },
                 success: function(result) {
                     $("#modal").modal('hide');
-                    table.ajax.reload(null, false);
+                    location.reload();
                     Swal.fire("Saved!", result, "success");
                 },
                 error: function(response) {
@@ -465,7 +495,7 @@
                 success: function(result) {
 					///alert(JSON.stringify(result))
                     $("#editModal").modal('hide');
-                    table.ajax.reload(null, false);
+                    location.reload();
                     Swal.fire("Updated!", result.success, "success");
                 },
                 error: function(response) {
@@ -508,7 +538,7 @@
                         },
                         success: function(result) {
                             Swal.fire(" Deleted! ", result.success, "success");
-                            table.ajax.reload(null, false);
+                            location.reload();
                         }
                     });
                 } else {
@@ -570,7 +600,7 @@
             } else if ($('#editModal.in, #editModal.show').length) {
 
             } else {
-                table.ajax.reload(null, false);
+                location.reload();
             }
         }
         Mousetrap.bind('ctrl+shift+r', function(e) {

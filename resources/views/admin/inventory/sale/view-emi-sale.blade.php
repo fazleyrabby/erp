@@ -4,53 +4,77 @@
 @endsection
 @section('content')
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
-            <!-- Main row -->
-            <div class="row">
-                <!-- Left col -->
-                <section class="col-md-12">
-                    <!-- Custom tabs (Charts with tabs)-->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>EMI Sale list
-                                <a class="btn btn-outline-success float-right" href="{{route('sale.add')}}"> <i class="fa fa-plus-circle"></i> Add Sale</a>
-                                <a class="btn btn-outline-success" style="margin-left:20px;" onclick="reloadDt()"><i class="fas fa-sync"></i> Refresh </a>
-                            </h3>
-                        </div><!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                                    <table id="manageSaleTable" width="100%" class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <td width="6%">SL.</td>
-                                                <td>Sale Info</td>
-                                                <td>Customer Info</td>
-                                                <td>Amount</td>
-                                                <td width="10%">Actions</td>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.card -->
-                </section>
-                <!-- /.Left col -->
-                <!-- right col (We are only adding the ID to make the widgets sortable)-->
+    <section class="content box-border">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">EMI Sale List</h3>
+                <div class="card-actions">
+                    <a class="btn btn-primary" href="{{route('sale.add', 'walkin_sale')}}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Sale
+                    </a>
+                    <a class="btn btn-outline-secondary" onclick="location.reload()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                        Refresh
+                    </a>
+                </div>
             </div>
-            <!-- /.row (main row) -->
-        </div><!-- /.container-fluid -->
+            <div class="card-body">
+                <x-filter-bar
+                    route="{{ route('sale.emi') }}"
+                    searchPlaceholder="Search EMI sale..."
+                    :sortOptions="['sales.id' => 'ID', 'sales.sale_no' => 'Sale No', 'sales.date' => 'Date']"
+                    :defaultSort="'sales.id'"
+                    :defaultDirection="'DESC'"
+                />
+                <div class="table-responsive">
+                    <table id="manageSaleTable" class="table table-vcenter table-bordered">
+                        <thead>
+                            <tr>
+                                <th width="6%">SL.</th>
+                                <th>Sale Info</th>
+                                <th>Customer Info</th>
+                                <th>Amount</th>
+                                <th width="10%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($emiSales as $emiSale)
+                                <tr>
+                                    <td>{{ $loop->iteration + ($emiSales->currentPage() - 1) * $emiSales->perPage() }}<input type="hidden" name="id" id="sale_no" value="{{ $emiSale->sale_no }}" /></td>
+                                    <td>
+                                        <span id="{{ $emiSale->id }}"><b>Sale No#: </b>{{ $emiSale->sale_no }}<br><b>Sale Date:</b> {{ $emiSale->date }}<br></span>
+                                        <b>Total tenure: </b>{{ $emiSale->no_of_tenure }}
+                                    </td>
+                                    <td>
+                                        <span id="{{ $emiSale->id }}{{ $emiSale->sale_no }}"><b>Party: </b>{{ $emiSale->name }}<br><b>Contact: </b>{{ $emiSale->contact }}<br></span>
+                                        <b>Alt. Contact: </b>{{ $emiSale->alternate_contact }}
+                                    </td>
+                                    <td>
+                                        <b>Grand Total: </b>{{ $emiSale->grand_total }}<br>
+                                        <b>Total Amount: </b>{{ $emiSale->total_amount }}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-secondary text-light" onclick="viewDetails({{ $emiSale->id }})">
+                                                <i class="fas fa-info-circle"></i> EMI Details
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No EMI sales found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                {{ $emiSales->links() }}
+            </div>
+        </div>
     </section>
-    <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
 
 
 <!-- modal -->
@@ -60,7 +84,7 @@
             <form id="voucherForm" method="POST" enctype="multipart/form-data" action="#">
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> View EMI Details </h4><br>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -113,7 +137,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                     <!-- <button type="submit" class="btn btn-primary btnSave" id="saveVoucher">Save</button> -->
                 </div>
             </form>
@@ -125,16 +149,8 @@
 @endsection
 @section('javascript')
 <script>
-		var table;
-	$(document).ready(function() {
-		table = $('#manageSaleTable').DataTable({
-			'ajax': "{{route('getEMISale')}}",
-			processing:true,
-		});
-	});
 
 	function confirmDelete(id) {
-      alert("check");
         Swal.fire({
             title: "Are you sure ?",
             text: "You will not be able to recover this imaginary file!",
@@ -153,7 +169,7 @@
 					success: function (result) {
 						if(result == "Success"){
 							Swal.fire("Deleted!",result.success,"success");
-							table.ajax.reload(null, false);
+							location.reload();
 						}else{
 							Swal.fire("Cancelled", result, "error");
 						}
@@ -206,13 +222,10 @@
 					let paymentStatus = '';
 					let paymentDeletedStatus = '';
 					if(result[i]["deleted"] == "Yes" ){
-						//button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card"></i> Do Something </a></li></li></li><li class="action">';
 						paymentDeletedStatus = '<i class="fas fa-times-circle" style="color:red; font-size:16px;" title="Active"></i>';
 					} else if(result[i]["is_paid"] == "No"){
-						//button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card "></i> doSomething </a></li></li></li><li class="action">';
 						 paymentStatus = '<i class="fa fa-envelope" aria-hidden="true" ></i>';
 					}else{
-						//button = '<td style="width: 12%;"><div class="btn-group"><button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i>  <span class="caret"></span></button><ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"><li class="action"  onclick="doSomething('+result[i]["id"]+')"  ><a  class="btn" ><i class="fas fa-credit-card"></i> Do Something </a></li></li></li><li class="action">';
 						paymentStatus = '<i class="fas fa-check-circle" style="color:green; font-size:16px;" title="Active"></i>';
 					}
 					button += '</li></li></ul></div></td>';
@@ -249,7 +262,6 @@
 		})
 	}
 	
-
 
 	</script>
 @endsection

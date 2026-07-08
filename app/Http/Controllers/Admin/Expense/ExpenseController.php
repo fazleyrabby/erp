@@ -15,9 +15,31 @@ use PDF;
 
 class ExpenseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.expense.expenseView');
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $expenses = DB::table('tbl_acc_expenses')
+            ->leftjoin('our_teams', 'tbl_acc_expenses.tbl_crm_vendor_id', '=', 'our_teams.id')
+            ->select('tbl_acc_expenses.*', 'our_teams.member_name')
+            ->where('tbl_acc_expenses.deleted', 'No');
+
+        if ($searchTerm) {
+            $expenses->where(function ($q) use ($searchTerm) {
+                $q->where('tbl_acc_expenses.particulars', 'like', "%{$searchTerm}%")
+                  ->orWhere('our_teams.member_name', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_acc_expenses.amount', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $expenses = $expenses->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.expense.expenseView', compact('expenses'));
     }
 
     public function getExpense()

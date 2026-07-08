@@ -17,9 +17,31 @@ use PDF;
 
 class BillController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.bills.billView');
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $bills = DB::table('tbl_acc_bills')
+            ->leftjoin('parties', 'parties.id', '=', 'tbl_acc_bills.tbl_crm_vendor_id')
+            ->select('tbl_acc_bills.*', 'parties.name')
+            ->where('tbl_acc_bills.deleted', 'No');
+
+        if ($searchTerm) {
+            $bills->where(function ($q) use ($searchTerm) {
+                $q->where('tbl_acc_bills.particulars', 'like', "%{$searchTerm}%")
+                  ->orWhere('parties.name', 'like', "%{$searchTerm}%")
+                  ->orWhere('tbl_acc_bills.amount', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $bills = $bills->orderBy('tbl_acc_bills.' . $sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.bills.billView', compact('bills'));
     }
 
     public function create()

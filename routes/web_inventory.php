@@ -19,7 +19,6 @@ Route::group(['middleware' => ['auth']], function () {
     // Category Routes
     Route::name('categories.')->prefix('categories')->group(function () {
         Route::get('/view', [CategoryController::class, 'index'])->name('view');
-        Route::get('/viewCategories', [CategoryController::class, 'getCategories'])->name('getCategories');
         Route::post('/store', [CategoryController::class, 'store'])->name('store');
         Route::get('/edit', [CategoryController::class, 'edit'])->name('edit');
         Route::post('/update', [CategoryController::class, 'update'])->name('update');
@@ -29,7 +28,6 @@ Route::group(['middleware' => ['auth']], function () {
     // Brand Routes
     Route::name('brands.')->prefix('brands')->group(function () {
         Route::get('/view', [BrandController::class, 'index'])->name('view');
-        Route::get('/viewBrands', [BrandController::class, 'getBrands'])->name('getBrands');
         Route::post('/store', [BrandController::class, 'store'])->name('store');
         Route::get('/edit', [BrandController::class, 'edit'])->name('edit');
         Route::post('/update', [BrandController::class, 'update'])->name('update');
@@ -41,7 +39,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::name('units.')->prefix('units')->group(function () {
         Route::get('/view', [UnitController::class, 'index'])->name('view');
-        Route::get('/viewUnits', [UnitController::class, 'getUnits'])->name('getUnits');
         Route::post('/store', [UnitController::class, 'store'])->name('store');
         Route::get('/edit', [UnitController::class, 'edit'])->name('edit');
         Route::post('/update', [UnitController::class, 'update'])->name('update');
@@ -51,7 +48,6 @@ Route::group(['middleware' => ['auth']], function () {
     // WareHouse Routes
     Route::name('warehouse.')->prefix('warehouse')->group(function () {
         Route::get('/view', [CategoryController::class, 'warehouse'])->name('view');
-        Route::get('/warehouseView', [CategoryController::class, 'getWarehouses'])->name('getWarehouses');
         Route::post('/store', [CategoryController::class, 'storeWarehouse'])->name('store');
         Route::get('/edit', [CategoryController::class, 'editWarehouse'])->name('edit');
         Route::post('/update', [CategoryController::class, 'updateWarehouse'])->name('update');
@@ -65,7 +61,6 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/{type}', [VoucherController::class, 'index']);
         Route::get('/add', [VoucherController::class, 'add'])->name('voucher.add');
-        Route::get('/view/{type}', [VoucherController::class, 'getVoucher']);
         Route::post('/store', [VoucherController::class, 'store']);
         Route::post('/delete', [VoucherController::class, 'voucherDelete'])->name('voucher.delete');
         Route::get('/view/load/workOrder', [VoucherController::class, 'loadWorkOrder'])->name('loadWorkOrder');
@@ -76,7 +71,6 @@ Route::group(['middleware' => ['auth']], function () {
         // EMI payment Voucher
         Route::get('payment/emi', [VoucherController::class, 'addEmiVoucher']);
         Route::get('payment/paidEmi', [VoucherController::class, 'emiPaymentView']);
-        Route::get('/sale/getPaidEmi', [VoucherController::class, 'getPaidEmi']);
         Route::get('payment/addEmiVoucher', [VoucherController::class, 'addEmiVoucher']);
         Route::get('/sale/getEmiInvoice', [VoucherController::class, 'getEmiInvoice']);
         Route::get('/sale/fetchEMI', [VoucherController::class, 'fetchEMI']);
@@ -90,14 +84,13 @@ Route::group(['middleware' => ['auth']], function () {
     // warehouseTransfer Routes
     Route::prefix('warehouseTransfer')->group(function () {
         Route::post('/Store', [CategoryController::class, 'warehouseTransferStore'])->name('warehouseTransfer.store');
-        Route::get('/view', [CategoryController::class, 'viewWarehousesTransfer'])->name('warehouseTransfer.view');
         Route::post('/delete', [CategoryController::class, 'deleteWarehouseTransfer'])->name('warehouseTransfer.delete');
     });
 
     // Transport Routes
     Route::name('transport.')->prefix('transport')->group(function () {
         Route::get('/', [TransportController::class, 'index'])->name('view');
-        Route::get('/View', [TransportController::class, 'getTransports'])->name('getTransports');
+
         Route::post('/store', [TransportController::class, 'store'])->name('store');
         Route::get('/edit', [TransportController::class, 'edit'])->name('edit');
         Route::post('/update', [TransportController::class, 'udpate'])->name('update');
@@ -109,7 +102,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('products')->group(function () {
         Route::name('products.')->group(function () {
             Route::get('/view', [ProductController::class, 'index'])->name('view');
-            Route::get('/viewTypes', [ProductController::class, 'getProducts'])->name('getProducts');
             Route::post('/store', [ProductController::class, 'store'])->name('store');
             Route::post('/service/store', [ProductController::class, 'servicestore'])->name('servicestore');
             Route::get('/edit', [ProductController::class, 'edit'])->name('edit');
@@ -130,7 +122,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('purchase')->group(function () {
         Route::name('purchase.')->group(function () {
             Route::get('/', [PurchaseController::class, 'index'])->name('index');
-            Route::get('/view', [PurchaseController::class, 'getPurchase'])->name('viewPurchase');
             Route::post('/supplierDue', [PurchaseController::class, 'supplierDue'])->name('supplierDue');
             Route::get('/add', [PurchaseController::class, 'add'])->name('add');
             Route::post('/addProduct', [PurchaseController::class, 'addToCart'])->name('addToCart');
@@ -147,7 +138,6 @@ Route::group(['middleware' => ['auth']], function () {
         // purchase return//
         Route::get('/purchase-return/{id}', [PurchaseReturnController::class, 'purchaseReturn']);
         Route::get('purchase-return-list', [PurchaseReturnController::class, 'purchaseReturnList'])->name('purchase.return.list');
-        Route::get('purchaseReturnView', [PurchaseReturnController::class, 'purchaseReturnView'])->name('purchaseReturnView');
         Route::get('/purchase-return/{id}', [PurchaseReturnController::class, 'purchaseReturn']);
         Route::post('/savePurchaseReturn', [PurchaseReturnController::class, 'storePurchaseReturn'])->name('purchase.savePurchaseReturn');
         Route::get('/return/invoice/{id}', [PurchaseReturnController::class, 'createPDF']);
@@ -159,8 +149,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/viewSales/{type}', [SaleController::class, 'viewSales'])->name('sales');
         Route::get('/add/{type}', [SaleController::class, 'add'])->name('add');
         Route::get('/view/{type}', [SaleController::class, 'getSale'])->name('viewSale');
-        Route::get('/emi', [SaleController::class, 'EMI']);
-        Route::get('/emi-view', [SaleController::class, 'getEMISale'])->name('getEMISale');
+        Route::get('/emi', [SaleController::class, 'EMI'])->name('emi');
         Route::post('/supplierDue', [SaleController::class, 'supplierDue'])->name('supplierDue');
         Route::post('/addProduct', [SaleController::class, 'addToCart'])->name('addToCart');
         Route::get('/fetchCart', [SaleController::class, 'fetchCart'])->name('fetchCart');
@@ -191,7 +180,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::name('sale.service.')->prefix('sale')->group(function () {
         Route::get('service/view', [SaleServiceController::class, 'viewSaleOrders'])->name('SaleOrders');
         Route::get('service/change/customer', [SaleServiceController::class, 'changeCustomer'])->name('changeCustomer');
-        Route::get('service/getSaleOrders', [SaleServiceController::class, 'getSaleOrders'])->name('getSaleOrders');
+
         Route::get('service/add', [SaleServiceController::class, 'add'])->name('add');
         Route::post('service/addProduct', [SaleServiceController::class, 'addToCart'])->name('addToCart');
         Route::get('service/fetchCart', [SaleServiceController::class, 'fetchCart'])->name('fetchCart');
@@ -225,7 +214,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('damage')->group(function () {
         Route::name('damage.')->group(function () {
             Route::get('/', [ProductController::class, 'damageIndex'])->name('view');
-            Route::get('/view', [ProductController::class, 'getDamage'])->name('getDamage');
             Route::post('/store', [ProductController::class, 'damageStore'])->name('store');
             Route::post('/delete', [ProductController::class, 'damageDelete'])->name('delete');
         });

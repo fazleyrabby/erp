@@ -31,71 +31,41 @@ class ProductController extends Controller
         $this->middleware('permission:products.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:products.delete', ['only' => ['delete']]);
         // Damage
-        $this->middleware('permission:damage.view', ['only' => ['damageIndex', 'getDamage']]);
+        $this->middleware('permission:damage.view', ['only' => ['damageIndex']]);
         $this->middleware('permission:damage.store', ['only' => ['damageStore']]);
         $this->middleware('permission:damage.delete', ['only' => ['damageDelete']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $data['categories'] = Category::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->get();
         $data['brands'] = Brand::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->get();
         $data['units'] = Unit::where('deleted', 'No')->where('status', '=', 'Active')->get();
         $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status', '=', 'Active')->get();
 
-        return view('admin.inventory.products.view-products', $data);
-    }
-
-    public function getProducts()
-    {
-        $products = DB::table('products')
+        $query = DB::table('products')
             ->join('brands', 'products.brand_id', '=', 'brands.id')
             ->join('units', 'products.unit_id', '=', 'units.id')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->select('products.id', 'products.status', 'products.type', 'products.image', 'products.name', 'products.model_no', 'products.code', 'products.barcode_no', 'products.opening_stock', 'products.current_stock', 'products.remainder_quantity', 'products.purchase_price', 'products.sale_price', 'products.discount', 'categories.name as categoryName', 'brands.name as brandName', 'units.name as unitName')
-            ->where('products.deleted', 'No')
-            ->where('products.status', 'Active')
-            ->orderBy('products.id', 'DESC')
-            ->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($products as $product) {
-            $status = '';
-            if ($product->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;"></i></center>';
-            }
-            $imageUrl = url('upload/product_images/thumbs/'.$product->image);
-            $actionItems = '
-                    <a class="dropdown-item" href="#" onclick="editProduct('.$product->id.')"><i class="fas fa-edit me-2"></i> Edit</a>';
-            if ($product->type != 'service') {
-                $actionItems .= '
-                    <a class="dropdown-item" href="#" onclick="editOpenStock('.$product->id.')"><i class="fas fa-edit me-2"></i> Update Opening Stock</a>';
-            }
-            $actionItems .= '
-                    <a class="dropdown-item text-danger" href="#" onclick="confirmDelete('.$product->id.')"><i class="fas fa-trash-alt me-2"></i> Delete</a>';
-            $button = '<div class="btn-group">
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-cog"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-end">'.$actionItems.'
-                    </div>
-                </div>';
+            ->where('products.deleted', 'No');
 
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$product->id.'" />',
-                '<b>Name: </b>'.$product->name.'<br><b>Model: </b>'.$product->model_no.'<br><b>Code: </b>'.$product->code,
-                '<b>Category: </b>'.$product->categoryName.' <br><b>Brand: </b>'.$product->brandName.'<br><b>Unit: </b>'.$product->unitName.'<br><b>Type: </b>'.Str::ucfirst($product->type),
-                '<center><img style="max-width:50px; max-height:80px;" src="'.$imageUrl.'" alt="no image" /></center>',
-                '<b>OS: </b>'.$product->opening_stock.'<br><b>RQ: </b>'.$product->remainder_quantity.'<br><b>Available: </b>'.$product->current_stock,
-                '<b>CP: </b>'.Session::get('companySettings')[0]['currency'].' '.$product->purchase_price.'<br><b>PP: </b>'.Session::get('companySettings')[0]['currency'].' '.$product->sale_price,
-                $status,
-                $button,
-            ];
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('products.name', 'like', "%{$search}%")
+                    ->orWhere('products.model_no', 'like', "%{$search}%")
+                    ->orWhere('products.code', 'like', "%{$search}%")
+                    ->orWhere('products.barcode_no', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $sortBy = $request->sort_by ?? 'products.id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $data['products'] = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.inventory.products.view-products', $data);
     }
 
     public function getAdvanceSearchProducts(Request $request)
@@ -849,9 +819,34 @@ class ProductController extends Controller
         return response()->json(['success' => 'Product Spec deleted']);
     }
 
-    public function damageIndex()
+    public function damageIndex(Request $request)
     {
         $data['products'] = Product::where('deleted', 'No')->where('type', '!=', 'service')->get();
+
+        $query = DB::table('damage_products')
+            ->join('products', 'damage_products.products_id', '=', 'products.id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->join('units', 'products.unit_id', '=', 'units.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('damage_products.id', 'damage_products.damage_quantity', 'damage_products.damage_date', 'damage_products.damage_order_no', 'damage_products.remarks', 'products.image', 'products.name', 'products.code', 'categories.name as categoryName', 'brands.name as brandName', 'units.name as unitName')
+            ->where('damage_products.deleted', 'No');
+
+        // Search
+        if ($searchTerm = $request->q) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('products.name', 'like', "%{$searchTerm}%")
+                  ->orWhere('products.code', 'like', "%{$searchTerm}%")
+                  ->orWhere('damage_products.damage_order_no', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        // Sort
+        $sortBy = $request->sort_by ?? 'damage_products.id';
+        $sortDir = strtoupper($request->sort_direction ?? 'DESC') === 'ASC' ? 'ASC' : 'DESC';
+        $limit = $request->limit ?? 10;
+        $query->orderBy($sortBy, $sortDir);
+
+        $data['damages'] = $query->paginate($limit)->appends($request->all());
 
         return view('admin.inventory.damage.view-damage', $data);
     }
@@ -881,47 +876,6 @@ class ProductController extends Controller
         $product = Product::find($request->id);
 
         return $product->current_stock;
-    }
-
-    public function getDamage()
-    {
-        $damages = DB::table('damage_products')
-            ->join('products', 'damage_products.products_id', '=', 'products.id')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->join('units', 'products.unit_id', '=', 'units.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('damage_products.id', 'damage_products.damage_quantity', 'damage_products.damage_date', 'damage_products.damage_order_no', 'products.image', 'products.name', 'products.code', 'products.barcode_no', 'products.opening_stock', 'products.remainder_quantity', 'products.purchase_price', 'products.sale_price', 'products.discount', 'categories.name as categoryName', 'brands.name as brandName', 'units.name as unitName')
-            ->where('damage_products.deleted', 'No')
-            ->orderBy('damage_products.id', 'DESC')
-            ->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($damages as $damage) {
-            $button = '<td style="width: 12%;">
-			<div class="btn-group">
-				<button type="button" class="btn btn-cyan dropdown-toggle" data-toggle="dropdown">
-					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu"> 
-				</li>
-				<li class="action" onclick="printPurchase('.$damage->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
-				</li>
-					<li class="action"><a   class="btn"  onclick="confirmDelete('.$damage->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-					</li>
-					</ul>
-				</div>
-			</td>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$damage->id.'" />',
-                $damage->damage_date,
-                '<b>Damage No: </b>'.$damage->damage_order_no,
-                '<b>Name: </b>'.$damage->name.' <br><b>Code: </b>'.$damage->code,
-                '<b>Category: </b>'.$damage->categoryName.'<br><b>Brand: </b>'.$damage->brandName,
-                $damage->damage_quantity.' '.$damage->unitName,
-                $button,
-            ];
-        }
-
-        return $output;
     }
 
     public function damageStore(Request $request)

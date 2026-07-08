@@ -9,27 +9,64 @@
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                    <h3>Journal List
-                            <button type="button" class="btn  btn-primary float-right" onclick="create()"><i class="fa fa-plus-circle"></i>
-                                Add Journal</button>
-                    </h3>
+                    <h3 class="card-title">Journal List</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="create()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Journal
+                        </button>
+                    </div>
                     <h3 class="text-center text-success">{{ Session::get('message') }}</h3>
                 </div>
                 <div class="card-body">
+                    <x-filter-bar route="{{ route('journalView') }}" searchPlaceholder="Search journals..." :sortOptions="['id' => 'ID', 'transaction_date' => 'Date', 'reference' => 'Reference']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover dataTable no-footer" id="manageJournalTable" width="100%">
+                        <table class="table table-vcenter table-bordered" id="manageJournalTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
-                                    <td width="5%" class="text-center">Sl</td>
-                                    <td width="30%" class="text-center">Transaction Date</td>
-                                    <td width="30%" class="text-center">Reference</td>
-                                    <td width="20%" class="text-center">Particulars</td>
-                                    <td width="10%" class="text-center">Status</td>
-                                    <td width="5%" class="text-center">Action</td>
+                                    <th width="5%" class="text-center">Sl</th>
+                                    <th width="30%" class="text-center">Transaction Date</th>
+                                    <th width="30%" class="text-center">Reference</th>
+                                    <th width="20%" class="text-center">Particulars</th>
+                                    <th width="10%" class="text-center">Status</th>
+                                    <th width="5%" class="text-center">Action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                @forelse ($journals as $i => $journal)
+                                <tr>
+                                    <td class="text-center">{{ $journals->firstItem() + $i }}<input type="hidden" name="id" value="{{ $journal->id }}" /></td>
+                                    <td class="text-center">{{ $journal->transaction_date }}</td>
+                                    <td class="text-center">{{ $journal->reference }}</td>
+                                    <td>{{ $journal->internal_information }}</td>
+                                    <td class="text-center">
+                                        @if ($journal->status == 'Active')
+                                            <i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $journal->status }}"></i>
+                                        @else
+                                            <i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $journal->status }}"></i>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                 <i class="fas fa-cog"></i>
+                                             </button>
+                                             <div class="dropdown-menu dropdown-menu-end">
+                                                 <a class="dropdown-item" href="#/" onclick="journalDetails({{ $journal->id }})"><i class="fa fa-file-pdf me-2"></i> See Details</a>
+                                             </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">No journals found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
                         </table>
+                    </div>
+                    <div class="mt-3">
+                        {{ $journals->links() }}
                     </div>
                 </div><!-- Card Content end -->
 
@@ -43,7 +80,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLabel">Edit COA</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">
                                         <i class="fas fa-window-close"></i></button>
                                 </div>
                                 <div class="modal-body">
@@ -91,7 +128,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn  btn-secondary mr-auto" data-dismiss="modal">x
+                                    <button type="button" class="btn  btn-secondary mr-auto" data-bs-dismiss="modal">x
                                         Close</button>
                                     <button  class="btn  btn-primary" onclick="updateCoa()"><i class="fa fa-save"></i>
                                         Save</button>
@@ -111,12 +148,7 @@
             window.location.href = "{{ route('addJournal')}}";
         }
 
-        $(document).ready(function() {
-            table = $('#manageJournalTable').DataTable({
-                'ajax': "{{route('getJournalData')}}",
-                processing:true,
-            });
-        });
+
 
 
 
@@ -195,7 +227,7 @@
                 //alert(JSON.stringify(result));
                 $("#editModal").modal('hide');
                 Swal.fire("Updated COA!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
             }, error: function(response) {
                 //alert(JSON.stringify(response));
                 $('#editNameError').text(response.responseJSON.errors.name);
@@ -210,8 +242,6 @@
             }
         })
     }
-
-
 
 
 
@@ -235,7 +265,7 @@
                 data: {"id":id, "_token":_token},
                 success: function (result) {
                     Swal.fire("Done!",result.success,"success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 }, beforeSend: function () {
                     $('#loading').show();
                 },complete: function () {

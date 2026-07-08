@@ -10,9 +10,33 @@ use Illuminate\Support\Facades\Session;
 
 class PartyController extends Controller
 {
-    public function index($type)
+    public function index(Request $request, $type)
     {
-        return view('admin.party.view-party', ['type' => $type]);
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $parties = Party::where('deleted', 'No')
+            ->where(function ($query) use ($type) {
+                $query->where('party_type', $type)
+                    ->orWhere('party_type', 'Both');
+            });
+
+        if ($searchTerm) {
+            $parties->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('email', 'like', "%{$searchTerm}%")
+                  ->orWhere('contact', 'like', "%{$searchTerm}%")
+                  ->orWhere('code', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $parties = $parties->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.party.view-party', compact('parties', 'type'));
     }
 
     public function getParty(Request $request)

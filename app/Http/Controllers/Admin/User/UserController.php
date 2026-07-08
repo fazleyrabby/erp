@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Image;
 use Spatie\Permission\Models\permission;
@@ -16,7 +17,7 @@ class UserController extends Controller
     // Check Permission
     public function __construct()
     {
-        $this->middleware('permission:user.view', ['only' => ['index', 'getUsers', 'add']]);
+        $this->middleware('permission:user.view', ['only' => ['index', 'usertypeIndex']]);
         $this->middleware('permission:user.store', ['only' => ['store']]);
         $this->middleware('permission:user.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:user.delete', ['only' => ['delete']]);
@@ -24,64 +25,54 @@ class UserController extends Controller
     }
 
     // View User Page
-    public function index()
+    public function index(Request $request)
     {
         $roles = Role::where('deleted', '=', 'No')->get();
 
-        return view('admin.user.view-users', ['roles' => $roles]);
-    }
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'users.id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-    // Get All Users
-    public function getUsers()
-    {
-        $data = '';
-        $users = User::where('deleted', 'No')->orderBy('id', 'DESC')->get();
-        $i = 1;
-        $output = ['data' => []];
-        foreach ($users as $user) {
-            /* Load Image */
-            if ($user->image != '') {
-                $imageUrl = url('upload/user_images/'.$user->image);
-            } else {
-                $imageUrl = url('upload/user_images/no_image.png');
-            }
-            /* Status */
-            if ($user->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;"></i></center>';
-            }
-            /* Buttons */
-            /*	$buttonOld = '<button type="button" onclick="userEdit('.$user->id.')" class="btn btn-xs btn-warning btnEdit" title="Edit User" ><i class="fa fa-edit"> </i></button>
-                       <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="confirmDelete('.$user->id.')" title="Delete User"><i class="fa fa-trash"> </i></button>';
-        */
+        $query = User::where('deleted', 'No');
 
-            $button = '<td style="width: 12%;">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                    <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                    <li class="action" onclick="userEdit('.$user->id.')"><a  class="btn" ><i class="fas fa-edit"></i> Edit </a></li>
-                    </li>
-                </li>
-                    <li class="action"><a   class="btn" onclick="confirmDelete('.$user->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-                    </li> 
-                    </ul>
-                </div>
-            </td>';
-
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$user->id.'" />',
-                '<img style="width:70px;" src="'.$imageUrl.'" alt="'.$user->name.'" />',
-                $user->name,
-                $user->email.'<br>'.$user->mobile_no,
-                'Dep: '.$user->department.'<br>Des: '.$user->designation.'<br><b>Role:</b>'.$user->role,
-                $status,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('email', 'like', "%{$searchTerm}%")
+                  ->orWhere('mobile_no', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $users = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.user.view-users', compact('roles', 'users'));
+    }
+
+    // View Usertype Page (Grouped)
+    public function usertypeIndex(Request $request)
+    {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $query = DB::table('users')
+            ->select('id', 'usertype', DB::raw('COUNT(*) as user_count'))
+            ->where('deleted', 'No')
+            ->groupBy('usertype');
+
+        if ($searchTerm) {
+            $query->where('usertype', 'like', "%{$searchTerm}%");
+        }
+
+        $usertypes = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.user.view-usertype', compact('usertypes'));
     }
 
     // public function add()

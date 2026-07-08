@@ -5,49 +5,84 @@
 @section('content')
     <style type="text/css">
 
-
     </style>
     <div class="content-wrapper">
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
-                    <h3 style="float:left;"> Transport Information </h3>
-                    <a class="btn btn-primary float-right" onclick="create()"><i class="fa fa-plus circle"></i>
-                        Transport</a>
-                    <a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()"><i
-                            class="fas fa-sync"></i> Refresh </a>
-                </div><!-- /.card-header -->
-
-                <div class="card-body">
-                    <div class="col-md-12">
-
-
-                        <!--data listing table-->
-                        <div class="table-responsive">
-                            <table id="manageBankAccountInfoTable" width="100%" class="table table-bordered table-hover ">
-                                <thead>
-                                    <tr>
-                                        <td width="5%">SL</td>
-                                        <td width="30%">Transport Name</td>
-                                        <td width="31%">Address</td>
-                                        <td width="31%">Contact</td>
-                                        <td width="11%">Status</td>
-                                        <td width="7%">Actions</td>
-                                    </tr>
-                                </thead>
-                            </table>
-                            <!--data listing table-->
-                        </div>
-
+                    <h3 class="card-title">Transport Information</h3>
+                    <div class="card-actions">
+                        <a class="btn btn-primary" onclick="create()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Transport
+                        </a>
+                        <a class="btn btn-outline-secondary" onclick="location.reload()">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                            Refresh
+                        </a>
                     </div>
-
-
                 </div>
-                <!-- /.card -->
+                <div class="card-body">
+                    <x-filter-bar
+                        route="{{ route('transport.view') }}"
+                        searchPlaceholder="Search transport..."
+                        :sortOptions="['tbl_transportinfo.id' => 'ID', 'tbl_transportinfo.transportName' => 'Name']"
+                        :defaultSort="'tbl_transportinfo.id'"
+                        :defaultDirection="'DESC'"
+                    />
+                    <div class="table-responsive">
+                        <table id="manageTransportTable" class="table table-vcenter table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="5%">SL</th>
+                                    <th width="30%">Transport Name</th>
+                                    <th width="31%">Address</th>
+                                    <th width="31%">Contact</th>
+                                    <th width="11%">Status</th>
+                                    <th width="7%" class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($transports as $transport)
+                                <tr>
+                                    <td>{{ $loop->iteration + ($transports->currentPage() - 1) * $transports->perPage() }}</td>
+                                    <td>{{ $transport->transportName }}</td>
+                                    <td>{{ $transport->address }}</td>
+                                    <td><b>Contact Person: </b>{{ $transport->contactPerson }}<br><b>Contact No: </b>{{ $transport->contactNo }}</td>
+                                    <td>
+                                        @if ($transport->status == 'Active')
+                                        <i class="fas fa-check-circle text-success" style="font-size:16px;"></i>
+                                        @else
+                                        <i class="fas fa-times-circle text-danger" style="font-size:16px;"></i>
+                                        @endif
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#" onclick="editTransportInfo({{ $transport->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                                <a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $transport->id }})"><i class="fas fa-trash-alt me-2"></i> Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">No transport records found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3">
+                        {{ $transports->links() }}
+                    </div>
+                </div>
             </div>
         </section>
     </div>
-    <!-- /.content-wrapper -->
 
     <!-- modal -->
     <div class="modal fade" id="transportModal">
@@ -55,7 +90,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Add New Transport Info</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
                             class="fas fa-window-close"></i></button>
                 </div>
                 <div class="modal-body">
@@ -101,7 +136,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x Close</button>
+                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
                             <button type="submit" class="btn btn-primary " id="savebankAccountInfo"><i
                                     class="fa fa-save"></i>
                                 Save Transport</button>
@@ -119,7 +154,7 @@
             <div class="modal-content">
                 <div class="modal-header float-left">
                     <h4 class="modal-title float-left"> Update Transport Info</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i
                             class="fas fa-window-close"></i></button>
                 </div>
                 <div class="modal-body">
@@ -151,63 +186,57 @@
                                     name="editContactEmail" placeholder=" Contact Email">
                                 <span class="text-danger" id="editContactEmailError"></span>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label>Address <span class="text-danger"> * </span></label>
-                                <input class="form-control  input-sm" id="editAddress" type="text" name="editAddress"
-                                    placeholder=" Address">
-                                <span class="text-danger" id="editAddressError"></span>
-                            </div>
 
                             <div class="form-group col-md-6">
-                                <label>Remarks </label>
-                                <textarea class="form-control input-sm" rows="2" id="editRemark" type="text" name="editRemark"
-                                    placeholder=" Remarks"></textarea>
-                                <span class="text-danger" id="editRemarksError"></span>
+                                <label>Address</label>
+                                <textarea class="form-control input-sm" rows="2" id="editAddress" type="text"
+                                    name="editAddress" placeholder=" Address"></textarea>
+                                <span class="text-danger" id="editAddressError"></span>
                             </div>
                             <div class="form-group col-md-6">
-                                <label> Status <span class="text-danger"> * </span></label>
-                                <select id="editStatus" name="editStatus " class="form-control input-sm">
+                                <label>Remarks</label>
+                                <textarea class="form-control input-sm" id="editRemark" type="text" name="editRemark"
+                                    placeholder=" Remarks"></textarea>
+                                <span class="text-danger" id="editRemarkError"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>Status</label>
+                                <select class="form-control input-sm" id="editStatus" name="editStatus">
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
-                                </select> <br>
+                                </select>
                                 <span class="text-danger" id="editStatusError"></span>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">x
-                                Close</button>
-                            <button type="submit" class="btn btn-primary " id="saveTransportInfo"><i
+                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
+                            <button type="submit" class="btn btn-primary " id="updatebankAccountInfo"><i
                                     class="fa fa-save"></i>
-                                update Transport</button>
+                                Update Transport</button>
                         </div>
                     </form>
 
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /. edit modal -->
-@endsection
+    </div><!-- /.modal -->
 
+@endsection
 @section('javascript')
     <script>
         function create() {
-            $("#transportModal").modal('show');
             clearErroMessage();
+            $("#transportModal").modal('show');
+            $("#transportName").focus();
+            $("#transportForm").trigger("reset");
         }
 
         $('#transportModal').on('shown.bs.modal', function() {
-            $('#accountNumber').focus();
+            $('#transportName').focus();
         })
         $('#editTransportModal').on('shown.bs.modal', function() {
-            $('#editAccountNumber').focus();
+            $('#editTransportName').focus();
         })
-        var table;
-        $(document).ready(function() {
-            table = $('#manageBankAccountInfoTable').DataTable({
-                'ajax': "{{ route('transport.getTransports') }}",
-                processing: true,
-            });
-        });
 
         $("#transportForm").submit(function(e) {
             e.preventDefault();
@@ -237,7 +266,7 @@
                     $("#transportModal").modal('hide');
                     Swal.fire("Transport saved!", result.success, "success");
                     $("#transportForm").trigger("reset");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 },
                 error: function(response) {
                     $('#transportNameError').text(response.responseJSON.errors.transportName);
@@ -316,7 +345,7 @@
                     $("#editTransportModal").modal('hide');
                     Swal.fire("Updated Transport Info!", result.success, "success");
                     $("#editTransportForm").trigger("reset");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 },
                 error: function(response) {
                     $('#editTransportNameError').text(response.responseJSON.errors.transportName);
@@ -353,8 +382,9 @@
                             "_token": _token
                         },
                         success: function(result) {
-                            Swal.fire("Done!", result.success, "success");
-                            table.ajax.reload(null, false);
+                            Swal.fire("Done!", result.success, "success").then(function() {
+                                location.reload();
+                            });
                         },
                         error: function(response) {
                             alert(JSON.stringify(response));
@@ -394,23 +424,14 @@
             }
         });
 
-        function reloadDt() {
-            if ($('#modal.in, #modal.show').length) {
-
-            } else if ($('#editModal.in, #editModal.show').length) {
-
-            } else {
-                table.ajax.reload(null, false);
-            }
-        }
         Mousetrap.bind('ctrl+shift+r', function(e) {
             e.preventDefault();
-            reloadDt();
+            location.reload();
         });
         Mousetrap.bind('ctrl+shift+s', function(e) {
             e.preventDefault();
             if ($('#modal.in, #modal.show').length) {
-                $("#productForm").trigger('submit');
+                $("#transportForm").trigger('submit');
             } else {
                 alert("Not Calling");
             }
@@ -418,7 +439,7 @@
         Mousetrap.bind('ctrl+shift+u', function(e) {
             e.preventDefault();
             if ($('#editModal.in, #editModal.show').length) {
-                $("#editProductForm").trigger('submit');
+                $("#editTransportForm").trigger('submit');
             } else {
                 alert("Not Calling");
             }
@@ -426,9 +447,9 @@
         Mousetrap.bind('esc', function(e) {
             e.preventDefault();
             if ($('#editModal.in, #editModal.show').length) {
-                $("#editModal").modal('hide');
+                $("#editTransportModal").modal('hide');
             } else if ($('#modal.in, #modal.show').length) {
-                $('#modal').modal('hide');
+                $('#transportModal').modal('hide');
             }
         });
     </script>

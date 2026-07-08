@@ -41,13 +41,13 @@ Final Salary Sheet -View
                                     
                                       
                                     <div class="btn-grade">
-                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fas fa-cog"></i>  <span class="caret"></span>
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-cog"></i>
                                         </button>
-                                            <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">               
-                                                <li class="action"><a href="{{route('finalSalarySheetView',$sheet->id)}}" class="btn" ><i class="fas fa-calendar-alt"></i> View</a></li>
-                                                <li class="action"><a href="{{route('finalSalarySheetDelete',$sheet->id)}}" class="btn" onclick="return confirm('Are you sure you want to delete this Sheet?');"><i class="fas fa-trash"></i> Delete </a></li>
-                                            </ul>                                               
+                                            <div class="dropdown-menu dropdown-menu-end">               
+                                                <a class="dropdown-item" href="{{route('finalSalarySheetView',$sheet->id)}}"><i class="fas fa-calendar-alt me-2"></i> View</a>
+                                                <a class="dropdown-item" href="{{route('finalSalarySheetDelete',$sheet->id)}}" onclick="return confirm('Are you sure you want to delete this Sheet?');"><i class="fas fa-trash me-2"></i> Delete </a>
+                                            </div>                                               
                                     </div>
 
                                     </td>

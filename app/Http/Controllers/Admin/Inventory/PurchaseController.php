@@ -32,9 +32,46 @@ class PurchaseController extends Controller
         $this->middleware('permission:purchase.delete', ['only' => ['delete']]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.inventory.purchase.view-purchase');
+        $query = DB::table('purchases')
+            ->join('parties', 'purchases.supplier_id', '=', 'parties.id')
+            ->leftjoin('users', 'purchases.created_by', '=', 'users.id')
+            ->select(
+                'purchases.purchase_no',
+                'purchases.created_date',
+                'purchases.total_amount',
+                'purchases.current_payment',
+                'purchases.discount',
+                'purchases.carrying_cost',
+                'purchases.id',
+                'purchases.grand_total',
+                'purchases.status as purchaseStatus',
+                'parties.name',
+                'parties.code',
+                'parties.address',
+                'parties.contact',
+                'parties.alternate_contact',
+                'users.name as userName'
+            )
+            ->where('purchases.deleted', 'No');
+
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('purchases.purchase_no', 'like', "%{$search}%")
+                  ->orWhere('parties.name', 'like', "%{$search}%")
+                  ->orWhere('parties.code', 'like', "%{$search}%")
+                  ->orWhere('parties.contact', 'like', "%{$search}%");
+            });
+        }
+
+        $sortBy = $request->sort_by ?? 'purchases.id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $data['purchases'] = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.inventory.purchase.view-purchase', $data);
     }
 
     public function add()
@@ -54,75 +91,6 @@ class PurchaseController extends Controller
         $supplierDue = Party::find($request->id);
 
         return $supplierDue->current_due;
-    }
-
-    public function getPurchase()
-    {
-        $purchases = DB::table('purchases')
-            ->join('parties', 'purchases.supplier_id', '=', 'parties.id')
-            ->leftjoin('users', 'purchases.created_by', '=', 'users.id')
-            ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'purchases.coa_id')
-            ->select(
-                'purchases.purchase_no',
-                'purchases.created_date',
-                'purchases.total_amount',
-                'purchases.current_payment',
-                'purchases.discount',
-                'purchases.carrying_cost',
-                'purchases.id',
-                'purchases.grand_total',
-                'purchases.status as purchaseStatus',
-                'parties.name',
-                'parties.code',
-                'parties.address',
-                'parties.contact',
-                'parties.alternate_contact',
-                'users.name as userName',
-                'tbl_acc_coas.name as coaName'
-            )
-            ->where('purchases.deleted', 'No')
-            ->orderBy('purchases.id', 'DESC')
-            ->get();
-
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($purchases as $purchase) {
-            $button = '<td style="width: 12%;">
-			<div class="btn-group">
-				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-						<li class="action" onclick="printPurchase('.$purchase->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
-						</li> 
-				</li>
-					<li class="action"><a   class="btn"  onclick="purchaseReturn('.$purchase->id.')" ><i class="fas fa-undo-alt"></i> Return Purchase </a></li>
-					</li>
-					<li class="action"><a   class="btn"  onclick="confirmDelete('.$purchase->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-					</li>
-					</ul>
-				</div>
-			</td>';
-            $badgeColor = '';
-            if ($purchase->purchaseStatus == 'Active') {
-                $badgeColor = 'success';
-            } else {
-                $badgeColor = 'danger';
-            }
-            $grandTotal = floatval($purchase->total_amount) - floatval($purchase->discount) + floatval($purchase->carrying_cost);
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$purchase->id.'" />',
-                $purchase->purchase_no,
-                date('d-m-Y h:i a', strtotime($purchase->created_date)),
-                $purchase->coaName,
-                '<b>Name: </b>'.$purchase->name.'<br><b>Contact: </b>'.$purchase->contact.'<br><b>Alt. Contact: </b>'.$purchase->alternate_contact.'<br><b>Address: </b>'.substr(str_pad($purchase->address, 4), 0, 25),
-                '<b>Total: </b>'.$purchase->total_amount.'<br><b>Discount: </b>'.$purchase->discount.'<br><b>Transport: </b>'.$purchase->carrying_cost.'<br><b>GrandTotal: </b>'.$grandTotal.'  <br><b>Paid : </b>'.$purchase->current_payment,
-                $purchase->userName,
-                '<span class="badge badge-pill badge-'.$badgeColor.' text-center">'.$purchase->purchaseStatus.'</span>',
-                $button,
-            ];
-        }
-
-        return $output;
     }
 
     public function addToCart(Request $request)

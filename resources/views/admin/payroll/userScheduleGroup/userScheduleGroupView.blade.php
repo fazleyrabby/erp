@@ -8,16 +8,16 @@ Admin Time Schedule Group -View
             <div class="card">
                 <!-- card header -->
                 <div class="card-header">
-                    <h3>Time Schedule Group</h3>
-                    <a href="#/" onclick="create()"  class="btn btn-primary btn-icon-split float-right">
-                        <i class="fas fa-plus"></i>
-                        <span class="text">Add Time Schedule</span>
-                    </a>  
+                    <h3 class="card-title">Time Schedule Group</h3>
+                    <div class="card-actions">
+                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Time Schedule</button>
+                    </div>
                     <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-body">
-                    <table id="manageScheduleGroupTable" class="table table-bordered table-striped">
+                    <x-filter-bar route="{{ route('userTimeGroupIndex') }}" searchPlaceholder="Search user schedules..." :sortOptions="['id' => 'ID']" :defaultSort="'id'" :defaultDirection="'DESC'" />
+                    <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>SL</th>
@@ -30,8 +30,44 @@ Admin Time Schedule Group -View
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            @forelse ($items as $i => $schedule)
+                            <tr>
+                                <td>{{ $items->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $schedule->id }}" /></td>
+                                <td>{{ $schedule->member_name }}</td>
+                                <td>{{ $schedule->groupName }}</td>
+                                <td>{{ $schedule->start_date }}</td>
+                                <td>{{ $schedule->end_date }}</td>
+                                <td>{{ $schedule->note }}</td>
+                                <td>
+                                    @if ($schedule->status == 'Active')
+                                    <center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $schedule->status }}"></i></center>
+                                    @else
+                                    <center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $schedule->status }}"></i></center>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-grade">
+                                        <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-cog"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item" href="#" onclick="editTimeSchedule({{ $schedule->id }})"><i class="fas fa-exchange-alt me-2"></i> Edit </a>
+                                            <a class="dropdown-item" href="#" onclick="confirmDelete({{ $schedule->id }})"><i class="fas fa-edit me-2"></i> Delete </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" class="text-center py-4 text-muted">No user schedule groups found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
                     </table>
+                    <div class="mt-3">
+                        {{ $items->links() }}
+                    </div>
                 </div>
             </div>            
         </section>
@@ -44,7 +80,7 @@ Admin Time Schedule Group -View
 				<form id="scheduleGroupFormStore" >
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Time Schedule</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div> 
                 <div class="modal-body">
 					<div class="row">
@@ -85,7 +121,7 @@ Admin Time Schedule Group -View
                 </div>
 
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
                      <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save"></i> Save</button>
                 </div>
 
@@ -102,7 +138,7 @@ Admin Time Schedule Group -View
                 <div class="modal-header">
                     <h4 class="modal-title">Edit Time Schedule</h4>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
+                            data-bs-dismiss="modal" aria-hidden="true">
                     </button>
                 </div>
                 <div class="modal-body">
@@ -140,7 +176,7 @@ Admin Time Schedule Group -View
 				    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save"></i> Update</button>
                 </div>
             </div><!-- /.modal-content -->
@@ -165,14 +201,7 @@ Admin Time Schedule Group -View
 
 
 
-             /*get data*/
-             var table;
-                $(document).ready(function() {
-                    table = $('#manageScheduleGroupTable').DataTable({
-                        'ajax': "{{route('getUserScheduleGroupData')}}",
-                        processing:true,
-                    });
-                });
+
 
 
 
@@ -206,7 +235,7 @@ Admin Time Schedule Group -View
                        // alert(JSON.stringify(result));
                     $("#modal").modal('hide');
                     Swal.fire("Saved!",result.success,"success");
-                    table.ajax.reload(null, false);                    
+                    location.reload();                    
                     }, 
                     error: function(response) {
                       //  alert(JSON.stringify(response));
@@ -282,11 +311,11 @@ Admin Time Schedule Group -View
             data:fd,
             contentType: false,
             processData: false,
-            success:function(result){
-               
+                success:function(result){
+                
                 $("#editModal").modal('hide');
                 Swal.fire("Updated info!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
              }, error: function(response) {
                 //alert(JSON.stringify(response));
             }, beforeSend: function () {
@@ -321,7 +350,7 @@ Admin Time Schedule Group -View
                     success: function (result) {
                        // alert(JSON.stringify(result));
                         Swal.fire("Done!",result.success,"success");
-                        table.ajax.reload(null, false);
+                        location.reload();
                     }, 
                     error: function(response) {
                 //alert(JSON.stringify(response));

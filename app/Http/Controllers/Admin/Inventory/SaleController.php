@@ -23,6 +23,7 @@ use App\Models\inventory\SerializeProduct;
 use App\Models\inventory\Warehouse;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -40,10 +41,7 @@ class SaleController extends Controller
 
     public function viewSales($type)
     {
-        $saleType = $type;
-        session(['type' => $type]);
-
-        return view('admin.inventory.sale.view-sale', compact('saleType'));
+        return $this->getSale($type, request());
     }
 
     public function add($type)
@@ -69,10 +67,10 @@ class SaleController extends Controller
         return $customerInfo;
     }
 
-    public function getSale($type)
+    public function getSale($type, Request $request)
     {
         if ($type == 'ts') {
-            $sales = DB::table('tbl_temporary_sale')
+            $query = DB::table('tbl_temporary_sale')
                 ->join('parties', 'tbl_temporary_sale.tbl_customerId', '=', 'parties.id')
                 ->leftjoin('users', 'tbl_temporary_sale.tbl_userId', '=', 'users.id')
                 ->select(
@@ -86,43 +84,31 @@ class SaleController extends Controller
                     'parties.alternate_contact',
                     'users.name as user_name'
                 )
-                ->where('tbl_temporary_sale.deleted', 'No')
-                ->orderBy('tbl_temporary_sale.id', 'DESC')
-                ->get();
+                ->where('tbl_temporary_sale.deleted', 'No');
 
-            $output = ['data' => []];
-            $i = 1;
-            foreach ($sales as $sale) {
-                $button = '<td style="width: 12%; ">
-    			<div class="btn-group">
-    				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-    					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-    					
-    					<li class="action" onclick="printTsSales('.$sale->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
-    						
-    					<li class="action"><a   class="btn"  onclick="confirmDelete('.$sale->id.')" ><i class="fas fa-trash "></i> Delete  </a></li>
-    					
-    					</ul>
-    				</div>
-    			</td>';
-                $output['data'][] = [
-                    $i++.'<input type="hidden" name="id" id="id" value="'.$sale->id.'" />',
-                    '<b>Date:</b> '.$sale->date.' <br><b>Sale No#: </b>'.$sale->tsNo,
-                    '<b>Party: </b>'.$sale->name.' <br><b>Code: </b>'.$sale->code.'<br><b>Contact: </b>'.$sale->contact.'<br><b>Alt. Contact: </b>'.$sale->alternate_contact,
-                    '<b>Entry: </b>'.$sale->user_name,
-                    $button,
-                ];
+            if ($search = $request->q) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('tbl_temporary_sale.tsNo', 'like', "%{$search}%")
+                      ->orWhere('parties.name', 'like', "%{$search}%");
+                });
             }
+
+            $sortBy = $request->sort_by ?? 'tbl_temporary_sale.id';
+            $sortDir = $request->sort_direction ?? 'DESC';
+            $limit = $request->limit ?? 10;
+
+            $data['sales'] = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+            $data['saleType'] = $type;
+
+            return view('admin.inventory.sale.view-sale', $data);
         } elseif ($type == 'walkin_sale') {
-            $sales = DB::table('sales')
+            $query = DB::table('sales')
                 ->join('parties', 'sales.customer_id', '=', 'parties.id')
                 ->leftjoin('users', 'users.id', '=', 'sales.created_by')
-                ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'sales.coa_id')
                 ->select(
                     'sales.sale_no',
                     'sales.created_date',
-                    'sales.emi_status',
+                    'sales.sales_type as type',
                     'sales.total_amount',
                     'sales.current_payment',
                     'sales.discount',
@@ -130,7 +116,6 @@ class SaleController extends Controller
                     'sales.vat',
                     'sales.ait',
                     'sales.id',
-                    'sales.type',
                     'sales.status as saleStatus',
                     'sales.grand_total',
                     'parties.name',
@@ -138,63 +123,34 @@ class SaleController extends Controller
                     'parties.address',
                     'parties.contact',
                     'parties.alternate_contact',
-                    'users.name as userName',
-                    'tbl_acc_coas.name as coaName'
-
+                    'users.name as userName'
                 )
-                ->where('sales.type', 'walkin')
-                ->where('sales.deleted', 'No')
-                ->orderBy('sales.id', 'DESC')
-                ->get();
+                ->where('sales.sales_type', 'walkin_sale')
+                ->where('sales.deleted', 'No');
 
-            $output = ['data' => []];
-            $i = 1;
-            foreach ($sales as $sale) {
-                $button = '<td style="width: 12%; ">
-    			<div class="btn-group">
-    				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-    					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-    					
-    					<li class="action" onclick="printPurchase('.$sale->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
-    						</li>
-    				</li>
-    					<li class="action"  onclick="saleReturn('.$sale->id.')"  ><a  class="btn" ><i class="fas fa-undo-alt"></i>  Return Sale </a></li>
-    					</li>
-    					<li class="action"><a   class="btn"  onclick="confirmDelete('.$sale->id.')" ><i class="fas fa-trash "></i> Delete  </a></li>
-    					</li> 
-    					</ul>
-    				</div>
-    			</td>';
-                $badgeColor = '';
-                if ($sale->saleStatus == 'Active') {
-                    $badgeColor = 'success';
-                } else {
-                    $badgeColor = 'danger';
-                }
-
-                $grandTotal = floatval($sale->total_amount) - floatval($sale->discount) + floatval($sale->carrying_cost) + floatval($sale->vat) + floatval($sale->ait);
-                $output['data'][] = [
-                    $i++.'<input type="hidden" name="id" id="id" value="'.$sale->id.'" />',
-                    $sale->sale_no.'<br>'.$sale->type,
-                    date('d-m-Y h:i a', strtotime($sale->created_date)),
-                    $sale->coaName,
-                    '<b>Name: </b>'.$sale->name.'<br><b>Contact: </b>'.$sale->contact.'<br><b>Alt. Contact: </b>'.$sale->alternate_contact.'<br><b>Address: </b>'.$sale->address,
-                    '<b>Total: </b>'.$sale->total_amount.'<br><b>Discount: </b>'.$sale->discount.'<br><b>transport: </b>'.$sale->carrying_cost.'<br><b>GrandTotal: </b>'.numberFormat($grandTotal).'<br><b>Paid: </b>'.$sale->current_payment,
-                    $sale->userName,
-                    '<span class="badge badge-pill badge-'.$badgeColor.' text-center">'.$sale->saleStatus.'</span>',
-                    $button,
-                ];
+            if ($search = $request->q) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('sales.sale_no', 'like', "%{$search}%")
+                      ->orWhere('parties.name', 'like', "%{$search}%");
+                });
             }
+
+            $sortBy = $request->sort_by ?? 'sales.id';
+            $sortDir = $request->sort_direction ?? 'DESC';
+            $limit = $request->limit ?? 10;
+
+            $data['sales'] = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+            $data['saleType'] = $type;
+
+            return view('admin.inventory.sale.view-sale', $data);
         } elseif ($type == 'service') {
-            $sales = DB::table('sales')
+            $query = DB::table('sales')
                 ->join('parties', 'sales.customer_id', '=', 'parties.id')
                 ->leftjoin('users', 'users.id', '=', 'sales.created_by')
-                ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'sales.coa_id')
                 ->select(
                     'sales.sale_no',
                     'sales.created_date',
-                    'sales.emi_status',
+                    'sales.sales_type as type',
                     'sales.total_amount',
                     'sales.current_payment',
                     'sales.discount',
@@ -202,7 +158,6 @@ class SaleController extends Controller
                     'sales.vat',
                     'sales.ait',
                     'sales.id',
-                    'sales.type',
                     'sales.status as saleStatus',
                     'sales.grand_total',
                     'parties.name',
@@ -210,55 +165,29 @@ class SaleController extends Controller
                     'parties.address',
                     'parties.contact',
                     'parties.alternate_contact',
-                    'users.name as userName',
-                    'tbl_acc_coas.name as coaName'
-
+                    'users.name as userName'
                 )
-                ->where('sales.type', 'service')
-                ->where('sales.deleted', 'No')
-                ->orderBy('sales.id', 'DESC')
-                ->get();
+                ->where('sales.sales_type', 'walkin_sale')
+                ->where('sales.deleted', 'No');
 
-            $output = ['data' => []];
-            $i = 1;
-            foreach ($sales as $sale) {
-                $button = '<td style="width: 12%; ">
-    			<div class="btn-group">
-    				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-    					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-    					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-    					
-    					<li class="action" onclick="printPurchase('.$sale->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details </a></li>
-    						</li>
-    				</li>
-    					 
-    					</ul>
-    				</div>
-    			</td>';
-                $badgeColor = '';
-                if ($sale->saleStatus == 'Active') {
-                    $badgeColor = 'success';
-                } else {
-                    $badgeColor = 'danger';
-                }
-
-                $grandTotal = floatval($sale->total_amount) - floatval($sale->discount) + floatval($sale->carrying_cost) + floatval($sale->vat) + floatval($sale->ait);
-                $output['data'][] = [
-                    $i++.'<input type="hidden" name="id" id="id" value="'.$sale->id.'" />',
-                    $sale->sale_no.'<br>'.$sale->type,
-                    date('d-m-Y h:i a', strtotime($sale->created_date)),
-                    $sale->coaName,
-                    '<b>Name: </b>'.$sale->name.'<br><b>Contact: </b>'.$sale->contact.'<br><b>Alt. Contact: </b>'.$sale->alternate_contact.'<br><b>Address: </b>'.$sale->address,
-                    '<b>Total: </b>'.$sale->total_amount.'<br><b>Discount: </b>'.$sale->discount.'<br><b>transport: </b>'.$sale->carrying_cost.'<br><b>GrandTotal: </b>'.numberFormat($grandTotal).'<br><b>Paid: </b>'.$sale->current_payment,
-                    $sale->userName,
-                    '<span class="badge badge-pill badge-'.$badgeColor.' text-center">'.$sale->saleStatus.'</span>',
-                    $button,
-                ];
+            if ($search = $request->q) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('sales.sale_no', 'like', "%{$search}%")
+                      ->orWhere('parties.name', 'like', "%{$search}%");
+                });
             }
-        }
 
-        return $output;
+            $sortBy = $request->sort_by ?? 'sales.id';
+            $sortDir = $request->sort_direction ?? 'DESC';
+            $limit = $request->limit ?? 10;
+
+            $data['sales'] = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+            $data['saleType'] = $type;
+
+            return view('admin.inventory.sale.view-sale', $data);
+        }
     }
+
 
     public function addToCart(Request $request)
     {
@@ -917,14 +846,13 @@ class SaleController extends Controller
         }
     }
 
-    public function EMI()
+    public function EMI(Request $request)
     {
-        return view('admin.inventory.sale.view-emi-sale');
-    }
+        $sortBy = $request->sort_by ?? 'sales.id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-    public function getEMISale()
-    {
-        $emiSales = DB::table('sales')
+        $query = DB::table('sales')
             ->join('parties', 'sales.customer_id', '=', 'parties.id')
             ->join('emi_sales', 'sales.id', '=', 'emi_sales.sale_id')
             ->select(
@@ -947,28 +875,18 @@ class SaleController extends Controller
             ->where('sales.deleted', 'No')
             ->where('sales.no_of_tenure', '>', 0)
             ->where('sales.emi_status', 'Yes')
-            ->orderBy('sales.id', 'DESC')
-            ->distinct()
-            ->get();
+            ->distinct();
 
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($emiSales as $emiSale) {
-            $button = '<td style="width: 12%;">
-			<div class="">
-					<p class="action"  onclick="viewDetails('.$emiSale->id.')"  ><a  class="btn btn-secondary text-light" ><i class="fas fa-info-circle"></i> EMI Details </a></p>
-				</div>
-			</td>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="sale_no" value="'.$emiSale->sale_no.'" />',
-                '<span id='.$emiSale->id.'><b>Sale No#: </b>'.$emiSale->sale_no.'<br><b>Sale Date:</b> '.$emiSale->date.' <br></span><b>Total tenure: </b>'.$emiSale->no_of_tenure,
-                '<span id='.($emiSale->id.$emiSale->sale_no).'><b>Party: </b>'.$emiSale->name.'<br><b>Contact: </b>'.$emiSale->contact.'<br></span><b>Alt. Contact: </b>'.$emiSale->alternate_contact,
-                '<b>Grand Total: </b>'.$emiSale->grand_total.'<br><b>Total Amount: </b>'.$emiSale->total_amount,
-                $button,
-            ];
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('sales.sale_no', 'like', "%{$search}%")
+                  ->orWhere('parties.name', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $emiSales = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.inventory.sale.view-emi-sale', compact('emiSales'));
     }
 
     public function createPDF($id)

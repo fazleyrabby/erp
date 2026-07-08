@@ -9,51 +9,26 @@ use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $searchTerm = $request->q;
+        $sortBy = $request->sort_by ?? 'id';
+        $sortDirection = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
 
-        return view('admin.payroll.groups.groupsView');
-        /**/
-        // $count= Email::where('replied_by',NULL)->count();
-        // return view('admin.payroll.groups.groupsView',['group'=>$group]);
-    }
+        $query = Group::where('deleted', 'No');
 
-    public function getGroups()
-    {
-
-        $groups = Group::where('deleted', '=', 'No')->orderBy('id', 'ASC')->get();
-        $output = ['data' => []];
-        $i = 1;
-        foreach ($groups as $group) {
-            $status = '';
-            if ($group->status == 'Active') {
-                $status = '<center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="'.$group->status.'"></i></center>';
-            } else {
-                $status = '<center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="'.$group->status.'"></i></center>';
-            }
-            /*$button = '<button type="button"  class="btn btn-xs btn-warning btnEdit" title="Edit Party" ><i class="fa fa-edit"> </i></button>
-                        <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="" title="Delete Party"><i class="fa fa-trash"> </i></button>';*/
-            $button = '<div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-
-<li class="action"><a href="#/" onclick="editGroup('.$group->id.')" class="btn"><i class="fas fa-edit"></i> Edit </a></li>
-<li class="action"><a href="#/" class="btn" onclick="confirmDelete('.$group->id.')"><i class="fas fa-trash"></i> Delete </a></li>
-                </li>
-
-                </ul>
-            </div>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$group->id.'" />',
-                $group->name,
-                $group->note,
-                $status,
-                $button,
-            ];
+        if ($searchTerm) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'like', "%{$searchTerm}%");
+            });
         }
 
-        return $output;
+        $groups = $query->orderBy($sortBy, $sortDirection)
+            ->paginate($limit)
+            ->appends($request->all());
+
+        return view('admin.payroll.groups.groupsView', compact('groups'));
     }
 
     public function create()

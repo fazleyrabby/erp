@@ -3,63 +3,110 @@
 {{Session::get("companySettings")[0]['name'].' Voucher '.$type}}
 @endsection
 @section('content')
-
-<style type="text/css">
-  
-  h3{
-    color: #66a3ff;
-  }
-</style>
-    <div class="container-fluid">
+    <div class="content-wrapper">
         <section class="content box-border">
-          <!-- Custom tabs (Charts with tabs)-->
             <div class="card">
             <div class="card-header">
-				@if($type == 'Payment')
-              	<h3 style="float:left;"> Payment Voucher List </h3>
-				@elseif($type == 'Payment Received')
-				<h3 style="float:left;"> Received Voucher List </h3>
-				@elseif($type == 'Discount')
-				<h3 style="float:left;"> Discount Voucher List </h3>
-				@endif
-
-				@if($type == 'Payment')
-				<a class="btn btn-primary float-right" onclick="create('{{$type}}')"><i class="fa fa-plus circle"></i> Add Payment Voucher</a>
-				@elseif($type == 'Payment Received')
-				<a class="btn btn-primary float-right" onclick="create('{{$type}}')"><i class="fa fa-plus circle"></i> Add Received Voucher</a>
-				@elseif($type == 'Discount')
-				<a class="btn btn-primary float-right" onclick="create('{{$type}}')"><i class="fa fa-plus circle"></i> Add Discount Voucher</a>
-				@endif
-               
-				<a class="btn btn-primary" style="margin-left:20px;" onclick="reloadDt()"><i class="fas fa-sync"></i> Refresh </a>
-            </div><!-- /.card-header -->
-            <div class="card-body">
-               <div class="col-md-12"><!--data listing table-->
-                    <div class="table-responsive">
-                        <table id="manageVoucherTable" width="100%" class="table table-bordered table-hover ">
-                            <thead>
-                            <tr>
-                                <td width="5%" class="text-center">SL</td>
-            					<td width="10%" class="text-center">Issue Date</td>
-                                <td width="5%" class="text-center">voucher Info</td>
-                                <td width="20%" class="text-center">Party Info</td>
-                                <td width="20%" class="text-center">Invoice Info</td>
-                                <td width="7%" class="text-center">Amount</td>
-                                <td width="28%" class="text-center">Remarks</td>
-                                <td width="5%"  class="text-center">Actions</td>
-                            </tr>
-                            </thead>
-                            <tbody id="tableViewParty">
-            
-                            </tbody>
-                        </table>
-                    </div>
-                    <!--data listing table-->
+                <h3 class="card-title text-capitalize">
+                    @if($type == 'Payment')
+                        Payment Voucher List
+                    @elseif($type == 'Payment Received')
+                        Received Voucher List
+                    @elseif($type == 'Discount')
+                        Discount Voucher List
+                    @endif
+                </h3>
+                <div class="card-actions">
+                    @if($type == 'Payment')
+                    <a class="btn btn-primary" onclick="create('{{$type}}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Payment Voucher
+                    </a>
+                    @elseif($type == 'Payment Received')
+                    <a class="btn btn-primary" onclick="create('{{$type}}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Received Voucher
+                    </a>
+                    @elseif($type == 'Discount')
+                    <a class="btn btn-primary" onclick="create('{{$type}}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Discount Voucher
+                    </a>
+                    @endif
+                    <a class="btn btn-outline-secondary" onclick="location.reload()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-refresh" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4"/><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
+                        Refresh
+                    </a>
                 </div>
             </div>
-          <!-- /.card -->
+            <div class="card-body">
+                <x-filter-bar
+                    route="{{ url('voucher/'.$type) }}"
+                    searchPlaceholder="Search voucher..."
+                    :sortOptions="['payment_vouchers.id' => 'ID', 'payment_vouchers.voucherNo' => 'Voucher No', 'payment_vouchers.paymentDate' => 'Date']"
+                    :defaultSort="'payment_vouchers.id'"
+                    :defaultDirection="'DESC'"
+                />
+                <div class="table-responsive">
+                    <table class="table table-vcenter table-bordered">
+                        <thead>
+                            <tr>
+                                <th width="5%" class="text-center">SL</th>
+                                <th width="10%" class="text-center">Issue Date</th>
+                                <th width="5%" class="text-center">Voucher Info</th>
+                                <th width="20%" class="text-center">Party Info</th>
+                                <th width="20%" class="text-center">Invoice Info</th>
+                                <th width="7%" class="text-center">Method</th>
+                                <th width="28%" class="text-center">Remarks</th>
+                                <th width="5%" class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($vouchers as $voucher)
+                                <tr>
+                                    <td class="text-center">{{ $loop->iteration + ($vouchers->currentPage() - 1) * $vouchers->perPage() }}<input type="hidden" name="id" value="{{ $voucher->id }}" /></td>
+                                    <td class="text-center">{{ $voucher->paymentDate }}</td>
+                                    <td class="text-center">{{ $voucher->voucherNo }}</td>
+                                    <td><b>Party: </b>{{ $voucher->name }}<br><b>Contact: </b>{{ $voucher->contact }}<br><b>Alt. Contact: </b>{{ $voucher->alternate_contact }}</td>
+                                    <td>
+                                        <b>Invoice: </b>{{ $voucherType }}-{{ $voucher->invoiceNo }}<br>
+                                        <b>{{ $amountStatus }}: </b>{{ $voucher->amount }}
+                                    </td>
+                                    <td class="text-center">{{ $voucher->payment_method }}</td>
+                                    <td>{{ $voucher->remarks }}</td>
+                                    <td class="text-center">
+                                        @php
+                                            $showActions = true;
+                                            if ($voucher->voucherType == 'Payable' || $voucher->voucherType == 'Party Payable') {
+                                                $showActions = false;
+                                            } elseif (($voucher->voucherType == 'Payment' && $voucher->purchase_id != '') || ($voucher->voucherType == 'Payment Received' && $voucher->sales_id != '')) {
+                                                $showActions = false;
+                                            }
+                                        @endphp
+                                        @if($showActions)
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#" onclick="printPaymentReceivedVoucher({{ $voucher->id }})"><i class="fas fa-print me-2"></i> View Details</a>
+                                                <a class="dropdown-item text-danger" href="#" onclick="confirmDelete({{ $voucher->id }})"><i class="fas fa-trash-alt me-2"></i> Delete</a>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="text-center py-4 text-muted">No vouchers found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+                {{ $vouchers->links() }}
             </div>
-          <!-- /.card -->
+            </div>
         </section>
     </div>
 
@@ -76,15 +123,15 @@
 				@elseif($type == 'Discount')
 				<h4 class="modal-title float-left"> Add Discount Voucher</h4>
 				@endif
-			    
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fas fa-window-close"></i></button>
-			</div> 
+
+				<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fas fa-window-close"></i></button>
+			</div>
 
 			<div class="modal-body">
-			
+
 				<div class="row">
 			  		@csrf
-			 
+
 				  <input type="hidden" name="id">
 				  @if($type == 'Payment')
 					<div class="form-group col-md-4">
@@ -94,8 +141,8 @@
                               @foreach($suppliers as $party)
                               <option value="{{$party->id}}">{{$party->name}}</option>
                               @endforeach
-                          </select> 
-                          <span class="text-danger" id="party_idError"></span> 
+                          </select>
+                          <span class="text-danger" id="party_idError"></span>
                       </div>
 				@else
 					<div class="form-group col-md-4">
@@ -105,12 +152,12 @@
                               @foreach($parties as $party)
                               <option value="{{$party->id}}">{{$party->name}}</option>
                               @endforeach
-                          </select> 
-                          <span class="text-danger" id="party_idError"></span> 
+                          </select>
+                          <span class="text-danger" id="party_idError"></span>
                       </div>
-				 
+
 				@endif
-				 
+
 
 				@if($type == 'Payment')
 				<div class="form-group col-md-4 d-none">
@@ -118,16 +165,16 @@
 					  <select class="form-control" id="project_id" name="project_id" onchange="loadOrder()">
 							<option value='0' selected='true'> Select Project </option>
 							<option value='' ></option>
-							
+
 					  </select>
 					  <span class="text-danger" id="project_idError"></span>
 				  </div>
 				  <div class="form-group col-md-4 d-none" >
-				  
+
 					  <label >Work Order </label>
 					  <select class="form-control " id="work_order_id" name="work_order_id" onchange="loadDue()" >
 					  		<option value="">Select Work Order</option>
-							
+
 					  </select>
 				  </div>
 				@else
@@ -139,7 +186,7 @@
 					  <span class="text-danger" id="project_idError"></span>
 				  </div>
 				  <div class="form-group col-md-4 d-none" >
-				  
+
 					  <label >Work Order </label>
 					  <select class="form-control " id="work_order_id" name="work_order_id" onchange="loadDue()" >
 					  		<option value="">Select Work Order</option>
@@ -153,21 +200,21 @@
 					  <input class="form-control" id="paymentDate" type="date" name="paymentDate" value="{{  todayDate()  }}" />
 					  <span class="text-danger" id="paymentDateError"></span>
 				  </div>
-				 
+
 				  <div class="form-group col-md-4">
-				  
+
 					  <label>Due </label>
 					  <span id="currentDue" name="currentDue" class="btn-success form-control"></span>
 					  <span class="text-danger" id="dueError"></span>
 				  </div>
 				  @if($type != 'Discount')
 				  <div class="form-group col-md-4">
-				  
+
 					  <label >Payment Method </label>
 					  <select id="payment_method" name="payment_method" class="form-control input-sm" >
 						<option value="">Select Payment Method</option>
 						<option value="Cash" selected>Cash</option>
-						
+
 					  </select>
 				  </div>
 				  @elseif($type == 'Discount')
@@ -175,31 +222,31 @@
 				  @endif
 
 				  <div class="form-group col-md-4">
-				  
+
 					  <label >Amount ({{Session::get("companySettings")[0]['currency']}}) </label>
 					  <input class="form-control  input-sm" id="amount" type="text" name="amount" placeholder="Write Amount" maxlength = "10" onkeyup="digitCheck()">
 					  <span class="text-danger" id="creditError"></span>
 				  </div>
 
 				  <div class="form-group col-md-12">
-				  
+
 					  <label >Remarks:</label>
 					  <textarea class="form-control  input-sm" id="remark" type="text" name="remark" placeholder="Add Remarks" ></textarea>
-					  
+
 					  <span class="text-danger" id="remarksError"></span>
 				  </div>
-				  <input type="hidden" name="type" id="type" value="{{$type}}" />    
+				  <input type="hidden" name="type" id="type" value="{{$type}}" />
 				</div>
-  
+
 		  		<div class="modal-footer">
-				  	<button type="button" class="btn btn-secondery mr-auto" data-dismiss="modal">X Close</button>
+				  	<button type="button" class="btn btn-secondery mr-auto" data-bs-dismiss="modal">X Close</button>
 					<button type="submit" class="btn btn-primary btnSave" id="saveVoucher"><i class="fa fa-save"></i> Save</button>
 			  	</div>
 			</div>
 		  </form>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		</div>
+	</div>
+</div>
 @endsection
 
 @section('javascript')
@@ -226,8 +273,8 @@
 				allowClear: true,
 				width:'100%'
 			});
-			
-		
+
+
 		});
 
 
@@ -291,25 +338,20 @@
 					success:function(result){
 						$("#work_order_id").html(result);
 						//alert(JSON.stringify(result));
-					
+
 					}, error: function(response) {
 							//alert(JSON.stringify(response));
-							
+
 						}, beforeSend: function () {
-							$('#loading').show();  
+							$('#loading').show();
 						},complete: function () {
-							$('#loading').hide();                           
+							$('#loading').hide();
 					}
 				})
 				}else{
 					$("#work_order").html('');
 				}
 			}
-
-
-
-
-	
 
 
 
@@ -332,7 +374,7 @@
 
 
 	  function loadParty(){
-	
+
 		//alert(type);
 		var work_order_id = $("#work_order_id").val();
 		$.ajax({
@@ -355,7 +397,7 @@
                 //alert(JSON.stringify(response));
             }
 		});
-	}  
+	}
 
 
 
@@ -376,15 +418,15 @@
 								$("#currentDue").text(result);
 								//$("#currentDue").text(result.due);
 								//$("#currentDue").val(result['current_due']);
-								  
-							
+
+
 							}, error: function(response) {
 									//alert(JSON.stringify(response));
-									
+
 								}, beforeSend: function () {
-									$('#loading').show();  
+									$('#loading').show();
 								},complete: function () {
-									$('#loading').hide();                           
+									$('#loading').hide();
 							}
 						})
 						}else{
@@ -434,16 +476,6 @@
 		$('#editName').focus();
 	})
 
-	var table;
-	$(document).ready(function() {
-		table = $('#manageVoucherTable').DataTable({
-			'ajax': "{{url('voucher/view/'.$type)}}",
-			processing:true,
-			
-		});
-	});
-
-
 
 
 
@@ -471,7 +503,7 @@
         fd.append('type',type);
         fd.append('partyType',partyType);
         fd.append('remarks',remarks);
-		
+
         //fd.append('currentDue',currentDue);
         fd.append('_token',_token);
         $.ajax({
@@ -485,7 +517,7 @@
 				//alert(JSON.stringify(result));
                 $("#modal").modal('hide');
                 Swal.fire("Saved!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
 				reset();
             }, error: function(response) {
 				 //alert(JSON.stringify(response));
@@ -542,7 +574,7 @@
                 success: function (result) {
 					alert(JSON.stringify(result));
                     Swal.fire("Done!",result.success,"success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 }, beforeSend: function () {
                     $('#loading').show();
                 },complete: function () {
@@ -553,9 +585,8 @@
           Swal.fire("Cancelled", "Your imaginary Voucher is safe :)", "error");
         }
       })
-        
+
     }
-	
 
 
 
@@ -568,24 +599,14 @@
 	Mousetrap.bind('ctrl+shift+n', function(e) {
 		e.preventDefault();
 		if($('#modal.in, #modal.show').length){
-			
+
 		}else{
 			create();
 		}
 	});
-	function reloadDt(){
-		if($('#modal.in, #modal.show').length){
-			
-		}else if($('#editModal.in, #editModal.show').length){
-			
-		}
-		else{
-			table.ajax.reload(null, false);
-		}
-	}
 	Mousetrap.bind('ctrl+shift+r', function(e) {
 		e.preventDefault();
-		reloadDt();
+		location.reload();
 	});
 	Mousetrap.bind('ctrl+shift+s', function(e) {
 		e.preventDefault();

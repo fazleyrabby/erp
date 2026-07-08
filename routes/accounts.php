@@ -26,7 +26,6 @@ Route::group(['middleware' => ['auth']], function () {
     /* Accounts */
     Route::get('chart/Of/Accounts/view', [AccountController::class, 'index'])->name('chartOfAccounts');
     Route::post('chart/Of/Accounts/store', [AccountController::class, 'store'])->name('coaStore');
-    Route::get('chart/Of/Accounts/get', [AccountController::class, 'getCOA'])->name('getCOA');
     Route::get('chart/Of/Accounts/edit', [AccountController::class, 'edit'])->name('editCOA');
     Route::Post('chart/Of/Accounts/update', [AccountController::class, 'update'])->name('coaUpdate');
     Route::Post('chart/Of/Accounts/delete', [AccountController::class, 'delete'])->name('coaDelete');
@@ -34,7 +33,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     /* Journal */
     Route::get('journal/view', [JournalController::class, 'index'])->name('journalView');
-    Route::get('journal/get/Journal/Data', [JournalController::class, 'getJournalData'])->name('getJournalData');
     Route::get('journal/create', [JournalController::class, 'create'])->name('addJournal');
     Route::post('journal/store', [JournalController::class, 'store'])->name('journalStore');
     Route::get('journal/details/{id}', [JournalController::class, 'seeDetails'])->name('journalDetails');
@@ -42,7 +40,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     /* expense */
     Route::get('expense/View/', [ExpenseController::class, 'index'])->name('expenseView');
-    Route::get('expense/get/data/', [ExpenseController::class, 'getExpense'])->name('getExpense');
     Route::get('expense/create/', [ExpenseController::class, 'create'])->name('addExpense');
     Route::get('expense/get/Account/Status/', [ExpenseController::class, 'getAccountStatus'])->name('getAccountStatus');
     Route::get('expense/get/Amount/', [ExpenseController::class, 'getAmount'])->name('getAmount');
@@ -53,7 +50,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('account/bills/view', [BillController::class, 'index'])->name('billView');
     Route::get('account/bills/create', [BillController::class, 'create'])->name('addBills');
     Route::get('account/bill/details/{id}', [BillController::class, 'seeDetails'])->name('seeDetails');
-    Route::get('account/bill/get/bills', [BillController::class, 'getBill'])->name('getBill');
     Route::post('bill/store/', [BillController::class, 'store'])->name('billStore');
 
     Route::get('account/bills/payment', [BillController::class, 'payBills'])->name('payBills');
@@ -63,11 +59,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     /* Banks start */
     Route::get('account/banks/view', [BankController::class, 'index'])->name('bankView');
-    Route::get('account/banks/get/data', [BankController::class, 'geData'])->name('getBanks');
 
     /* transactions */
     Route::get('account/view/transactions', [TransactionController::class, 'index'])->name('transactionsView');
-    Route::get('account/transactions/get/data', [TransactionController::class, 'geData'])->name('getTransactions');
     Route::get('account/transactions/from/amount', [TransactionController::class, 'getFromAmount'])->name('getFromAmount');
     Route::get('account/transactions/to/amount', [TransactionController::class, 'getToAmount'])->name('getToAmount');
     Route::get('account/transactions/check/amount/transfer/limit', [TransactionController::class, 'checkTransferLimit'])->name('checkTransferLimit');

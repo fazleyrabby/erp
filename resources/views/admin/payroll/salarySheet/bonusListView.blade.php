@@ -17,13 +17,16 @@ Admin Bonus Sheet -View
     <section class="content box-border">
         <div class="card">
             <div class="card-header">
-                <h3 style="float:left;">Bonus </h3>
-                <a class="btn btn-primary float-right" onclick="create()"><i class="fa fa-plus circle"></i> Add Bonus</a>
+                <h3 class="card-title">Bonus</h3>
+                <div class="card-actions">
+                    <button type="button" class="btn btn-primary" onclick="create()"><i class="fa fa-plus circle"></i> Add Bonus</button>
+                </div>
             </div><!-- /.card-header -->
+            <h3 class="text-center text-success">{{Session::get('message')}}</h3>
 
-            <!-- /.card-header -->
             <div class="card-body">
-                <table id="manageBonusTable" width="100%" class="table table-bordered table-striped">
+                <x-filter-bar route="{{ route('bonusListView') }}" searchPlaceholder="Search bonuses..." :sortOptions="['id' => 'ID']" :defaultSort="'id'" :defaultDirection="'DESC'" />
+                <table width="100%" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <td width="5%">SL</td>
@@ -36,8 +39,44 @@ Admin Bonus Sheet -View
                             <td width="5%">Action</td>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        @forelse ($items as $i => $bonus)
+                        <tr>
+                            <td>{{ $items->firstItem() + $i }}<input type="hidden" name="id" id="id" value="{{ $bonus->id }}" /></td>
+                            <td>{{ $bonus->bonus_name }}</td>
+                            <td>{{ $bonus->groupName }}</td>
+                            <td>{{ $bonus->month_year }}</td>
+                            <td>{{ $bonus->amount }}</td>
+                            <td>{{ $bonus->note }}</td>
+                            <td>
+                                @if ($bonus->status == 'Active')
+                                <center><i class="fas fa-check-circle" style="color:green; font-size:16px;" title="{{ $bonus->status }}"></i></center>
+                                @else
+                                <center><i class="fas fa-times-circle" style="color:red; font-size:16px;" title="{{ $bonus->status }}"></i></center>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="btn-grade">
+                                     <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                         <i class="fas fa-cog"></i>
+                                     </button>
+                                     <div class="dropdown-menu dropdown-menu-end">
+                                         <a class="dropdown-item" href="#" onclick="editBonusList({{ $bonus->id }})"><i class="fas fa-edit me-2"></i> Edit</a>
+                                         <a class="dropdown-item" href="#/" onclick="confirmDelete({{ $bonus->id }})"><i class="fas fa-trash me-2"></i> Delete</a>
+                                     </div>
+                                 </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">No bonuses found.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
                 </table>
+                <div class="mt-3">
+                    {{ $items->links() }}
+                </div>
             </div>
             
         </div>
@@ -54,7 +93,7 @@ Admin Bonus Sheet -View
             <form id="bonusSheetFormStore">
                 <div class="modal-header">
                     <h4 class="modal-title float-left"> Add Bonus Sheet</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
 
                 </div> 
                 <div class="modal-body">
@@ -105,7 +144,7 @@ Admin Bonus Sheet -View
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal"><i class="fa fa-close"></i>X Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i>X Close</button>
                     <button type="submit" class="btn btn-primary float-right" ><i class="fa fa-save"></i> Save</button>
                 </div>
             </form>
@@ -124,7 +163,7 @@ Admin Bonus Sheet -View
                  
                     <h4 class="modal-title">Edit Bonus List</h4>
                     <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true"> X
+                            data-bs-dismiss="modal" aria-hidden="true"> X
                     </button>
                 </div> 
                 <div class="modal-body">
@@ -199,7 +238,7 @@ Admin Bonus Sheet -View
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-dismiss="modal">X Close</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
                     <button type="submit" class="btn btn-primary btnUpate" ><i class="fa fa-save"></i> Update</button>
                 </div>
             </form>
@@ -230,14 +269,7 @@ Admin Bonus Sheet -View
 
 
 
-              /*get data*/
-              var table;
-                $(document).ready(function() {
-                    table = $('#manageBonusTable').DataTable({
-                        'ajax': "{{route('getBonusData')}}",
-                        processing:true,
-                    });
-                });
+
 
 
 
@@ -275,7 +307,7 @@ Admin Bonus Sheet -View
                         //alert(JSON.stringify(result));
                         $("#modal").modal('hide');
                         Swal.fire("Saved!",result.success,"success");
-                        table.ajax.reload(null, false);                    
+                        location.reload();                    
                     }, 
                     error: function(response) {
                         //alert(JSON.stringify(response));
@@ -356,11 +388,11 @@ Admin Bonus Sheet -View
             data:fd,
             contentType: false,
             processData: false,
-            success:function(result){
+                success:function(result){
                 //alert(JSON.stringify(result));
                 $("#editModal").modal('hide');
                 Swal.fire("Updated Sheet!",result.success,"success");
-                table.ajax.reload(null, false);
+                location.reload();
             }, error: function(response) {
                 //alert(JSON.stringify(response));
                 $('#editBonus_nameError').text(response.responseJSON.errors.bonus_name);              
@@ -395,7 +427,7 @@ Admin Bonus Sheet -View
                 data: {"id":id, "_token":_token},
                 success: function (result) {
                     Swal.fire("Done!",result.success,"success");
-                    table.ajax.reload(null, false);
+                    location.reload();
                 }, beforeSend: function () {
                     $('#loading').show();
                 },complete: function () {

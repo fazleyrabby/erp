@@ -186,52 +186,9 @@ class PurchaseReturnController extends Controller
         }
     }
 
-    public function purchaseReturnList()
+    public function purchaseReturnList(Request $request)
     {
-        /*$purchaseReturns = DB::table('purchase_returns')
-        ->join('parties', 'purchase_returns.supplier_id', '=', 'parties.id')
-        ->join('purchase_product_returns', 'purchase_returns.id', '=', 'purchase_product_returns.purchase_return_id')
-        ->join('products', 'purchase_product_returns.purchase_return_id', '=', 'products.id')
-        ->select('purchase_returns.purchase_return_no', 'purchase_returns.purchase_return_date', 'products.name as product_name', 'purchase_returns.grand_total', 'purchase_returns.discount', 'purchase_returns.id',
-                'purchase_returns.grand_total', 'parties.name', 'parties.code', 'parties.address', 'parties.contact', 'parties.alternate_contact')
-        ->where('purchase_returns.deleted','No')
-        ->orderBy('purchase_returns.id', 'DESC')
-        ->get(); */
-
-        return view('admin.inventory.purchase.purchase-returnList');
-    }
-
-    public function purchaseReturnView()
-    {
-
-        $output = ['data' => []];
-        $i = 1;
-
-        /*$purchaseReturns = DB::table('purchase_returns')
-            ->join('parties', 'purchase_returns.supplier_id', '=', 'parties.id')
-            ->join('purchase_product_returns', 'purchase_returns.id', '=', 'purchase_product_returns.purchase_return_id')
-            ->join('products', 'purchase_product_returns.purchase_product_id', '=', 'products.id')
-            // ->join('purchase_product_returns', 'products.id', '=', 'purchase_product_returns.purchase_product_id')
-            ->select(
-                'purchase_returns.purchase_return_no',
-                'purchase_returns.purchase_no',
-                'purchase_returns.purchase_return_date',
-                'purchase_product_returns.return_qty',
-                'purchase_returns.grand_total',
-                'purchase_returns.discount',
-                'purchase_returns.id',
-                'purchase_returns.purchase_date',
-                'purchase_returns.grand_total',
-                'parties.name',
-                'parties.code',
-                'parties.address',
-                'parties.contact',
-                'parties.alternate_contact'
-            )
-            ->where('purchase_returns.deleted', 'No')
-            ->orderBy('purchase_returns.id', 'DESC')
-            ->get();*/
-        $purchaseReturns = DB::table('purchase_returns')
+        $query = DB::table('purchase_returns')
             ->join('parties', 'purchase_returns.supplier_id', '=', 'parties.id')
             ->join('users', 'purchase_returns.created_by', '=', 'users.id')
             ->select(
@@ -242,7 +199,6 @@ class PurchaseReturnController extends Controller
                 'purchase_returns.discount',
                 'purchase_returns.id',
                 'purchase_returns.purchase_date',
-                'purchase_returns.grand_total',
                 'parties.name',
                 'parties.code',
                 'parties.address',
@@ -250,36 +206,23 @@ class PurchaseReturnController extends Controller
                 'parties.alternate_contact',
                 'users.name as userName'
             )
-            ->where('purchase_returns.deleted', 'No')
-            ->orderBy('purchase_returns.id', 'DESC')
-            ->get();
-        foreach ($purchaseReturns as $purchaseReturn) {
-            // $button = '<button type="button" title="print Purchase" id="delete" class="btn btn-xs btn-success printPurchase" onclick="printPurchase('.$purchaseReturn->id.')" title="Print Purchase"><i class="fa fa-print"> </i></button> <button type="button" title="Delete" id="delete" class="btn btn-xs btn-danger btnDelete" onclick="confirmDelete('.$purchaseReturn->id.')" title="Delete Record"><i class="fa fa-trash"> </i></button>';
-            $button = '<td style="width: 12%;">
-			<div class="btn-group">
-				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-					<i class="fas fa-cog"></i>  <span class="caret"></span></button>
-					<ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-					<li class="action" onclick="printPurchase('.$purchaseReturn->id.')"  ><a  class="btn" ><i class="fas fa-print"></i> View Details  </a></li>
-					</li>
-				</li> 
-					<li class="action"><a   class="btn"  onclick="confirmDelete('.$purchaseReturn->id.')" ><i class="fas fa-trash-alt"></i> Delete </a></li>
-					</li>
-					</ul>
-				</div>
-			</td>';
-            $output['data'][] = [
-                $i++.'<input type="hidden" name="id" id="id" value="'.$purchaseReturn->id.'" />',
-                '<b>Return Code: </b>'.$purchaseReturn->purchase_return_no.'<br><b>Return Date:</b>'.$purchaseReturn->purchase_return_date,
-                '<b>Purchase Code: </b>'.$purchaseReturn->purchase_no.'<br><b>Purchase Date:</b>'.$purchaseReturn->purchase_date,
-                '<b>Party: </b>'.$purchaseReturn->name.'<br><b>Contact: </b>'.$purchaseReturn->contact.'<br><b>Alt. Contact: </b>'.$purchaseReturn->alternate_contact,
-                '<br><b>Total : </b>'.$purchaseReturn->grand_total,
-                $purchaseReturn->userName,
-                $button,
-            ];
+            ->where('purchase_returns.deleted', 'No');
+
+        if ($search = $request->q) {
+            $query->where(function ($q) use ($search) {
+                $q->where('purchase_returns.purchase_return_no', 'like', "%{$search}%")
+                  ->orWhere('purchase_returns.purchase_no', 'like', "%{$search}%")
+                  ->orWhere('parties.name', 'like', "%{$search}%");
+            });
         }
 
-        return $output;
+        $sortBy = $request->sort_by ?? 'purchase_returns.id';
+        $sortDir = $request->sort_direction ?? 'DESC';
+        $limit = $request->limit ?? 10;
+
+        $data['purchaseReturns'] = $query->orderBy($sortBy, $sortDir)->paginate($limit)->appends($request->all());
+
+        return view('admin.inventory.purchase.purchase-returnList', $data);
     }
 
     public function deletePurchaseReturn(Request $request)

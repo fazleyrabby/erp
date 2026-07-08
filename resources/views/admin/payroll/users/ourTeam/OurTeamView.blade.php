@@ -71,16 +71,15 @@ Admin Our Team -View
                                         <td> {{ $emp->status }} </td>
                                         <td style="width: 12%;">
                                               <div class="btn-group">
-                                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fas fa-cog"></i>  <span class="caret"></span></button>
-                                                    <ul class="dropdown-menu dropdown-menu-right" style="border: 1px solid gray;" role="menu">
-                             
-                               <li class="action"><a href="{{route('memberEdit', $emp->member_id)}}" class="btn"><i class="fas fa-exchange-alt"></i> Edit </a></li>
-                                
-                          <li class="action"><a href="{{route('changeMemberStatus',$emp->member_id)}}" class="btn" onclick="return confirm('Are you sure you want to change status of this banner?');"><i class="fas fa-exchange-alt"></i> Change Status </a></li>
-                                
+                                                <button type="button" class="btn btn-primary dropdown-toggle btn-sm" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-cog"></i></button>
+                                                    <div class="dropdown-menu dropdown-menu-end">
+                              
+                              <a class="dropdown-item" href="{{route('memberEdit', $emp->member_id)}}"><i class="fas fa-exchange-alt me-2"></i> Edit </a>
+                                 
+                          <a class="dropdown-item" href="{{route('changeMemberStatus',$emp->member_id)}}" onclick="return confirm('Are you sure you want to change status of this banner?');"><i class="fas fa-exchange-alt me-2"></i> Change Status </a>
 
-                                                    </ul>
+                                                    </div>
                                                 </div>
                                             </td>
                                             @endforeach
