@@ -4,7 +4,7 @@
      *
      * Usage:
      *   confirmDeleteSwal({
-     *       url         : '{{ route('some.route') }}',
+     *       url         : '/your/delete/route',
      *       id          : id,
      *       itemName    : 'Category',
      *       data        : { extra: 'value' },
@@ -98,12 +98,12 @@
      * Replaces the old  onclick="return confirm(...)"  pattern.
      *
      * Usage (in Blade):
-     *   <a href="{{ route('roleDelete', $role->id) }}"
+     *   <a href="/some/delete/url/1"
      *      onclick="return swalConfirmLink(event, this)"
      *      data-item="Role"
      *      data-action="delete">Delete</a>
      *
-     *   <a href="{{ route('changeMemberStatus', $emp->id) }}"
+     *   <a href="/some/status/url/1"
      *      onclick="return swalConfirmLink(event, this)"
      *      data-item="employee"
      *      data-action="status">Change Status</a>
