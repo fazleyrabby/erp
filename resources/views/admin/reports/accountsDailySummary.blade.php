@@ -19,8 +19,8 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3> Daily Report
-                                        <a class="btn btn-primary float-right" href="{{ url('sale/') }}"> <i
-                                                class="fa fa-plus-circle"></i> view Sale</a>
+                                        <a class="btn btn-primary float-end" href="{{ url('sale/') }}"> <i
+                                                class="fa fa-plus-circle me-1"></i> view Sale</a>
                                     </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
