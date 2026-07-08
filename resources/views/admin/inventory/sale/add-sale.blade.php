@@ -167,15 +167,17 @@
                                     </div>
                                     <div class="form-group mb-3 col-md-12">
                                         <label class="form-label">Product Search : <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <select id="products" name="products" class="form-control form-control-sm">
-                                                <option value=""> Product Search </option>
-                                                @foreach ($products as $product)
-                                                    <option value="{{ $product->id }}">
-                                                        {{ $product->name . ' - ' . $product->code }} </option>
-                                                @endforeach
-                                            </select>
-                                            <button type="button" class="btn btn-primary"
+                                        <div class="d-flex">
+                                            <div class="flex-grow-1">
+                                                <select id="products" name="products" class="form-control form-control-sm">
+                                                    <option value=""> Product Search </option>
+                                                    @foreach ($products as $product)
+                                                        <option value="{{ $product->id }}">
+                                                            {{ $product->name . ' - ' . $product->code }} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <button type="button" class="btn btn-primary ms-2"
                                                 onclick="showAdvanceSearch();"> <i class="fas fa-search"></i></button>
                                         </div>
                                     </div>
