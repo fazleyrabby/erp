@@ -166,17 +166,16 @@
                                         </select>
                                     </div>
                                     <div class="form-group mb-3 col-md-12">
-                                        <label>Product Search : <span class="text-danger">*</span></label>
-                                        <div class="d-flex">
-                                            <select id="products" name="products" class="form-control form-control-sm"
-                                                style="width:96%">
+                                        <label class="form-label">Product Search : <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <select id="products" name="products" class="form-control form-control-sm">
                                                 <option value=""> Product Search </option>
                                                 @foreach ($products as $product)
                                                     <option value="{{ $product->id }}">
                                                         {{ $product->name . ' - ' . $product->code }} </option>
                                                 @endforeach
                                             </select>
-                                            <button type="button" class="btn btn-primary input-group-addon"
+                                            <button type="button" class="btn btn-primary"
                                                 onclick="showAdvanceSearch();"> <i class="fas fa-search"></i></button>
                                         </div>
                                     </div>

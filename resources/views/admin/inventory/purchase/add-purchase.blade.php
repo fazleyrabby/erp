@@ -85,22 +85,21 @@
                                     <option value="">Select Brand</option>
                                 </select>
                             </div>
-                            <div class="input-group col-md-12">
-                                <label>Product Search : <span class="text-danger">*</span></label>
-                                <select id="products" name="products" class="form-control form-control-sm" style="width:96%">
-                                    <option value=""> Product Search </option>
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}">
-                                            {{ $product->name . ' - ' . $product->code  . ' - ' . $product->brand_name}} </option>
-                                    @endforeach
-                                </select>
-                                <span class="text-danger" id="productIdError"></span>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-addon"
-                                        onclick="showAdvanceSearch();">
+                            <div class="form-group mb-3 col-md-12">
+                                <label class="form-label">Product Search : <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <select id="products" name="products" class="form-control form-control-sm">
+                                        <option value=""> Product Search </option>
+                                        @foreach ($products as $product)
+                                            <option value="{{ $product->id }}">
+                                                {{ $product->name . ' - ' . $product->code  . ' - ' . $product->brand_name}} </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" class="btn btn-primary" onclick="showAdvanceSearch();">
                                         <i class="fas fa-search"></i>
                                     </button>
                                 </div>
+                                <span class="text-danger" id="productIdError"></span>
                             </div>
 
 
