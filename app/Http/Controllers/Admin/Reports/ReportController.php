@@ -1558,10 +1558,11 @@ class ReportController extends Controller
         $pdfButton = '';
         foreach ($complete_orders as $order) {
             $coa = ChartOfAccounts::find($order->category);
+            $coaName = $coa ? $coa->name : 'N/A';
             $table .= '<tr>
                         <td>'.$i++.'</td>
                         <td>'.$order->sale_no.'</td>
-                        <td>'.$coa->name.'</td>
+                        <td>'.$coaName.'</td>
                         <td>Name: '.$order->partyName.'<br>Contact: '.$order->contact.'</td>
                         <td class="text-right">'.number_format($order->grand_total).' '.Session::get('companySettings')[0]['currency'].'</td>
                         <td class="text-right">'.number_format($order->final_sale_amount).' '.Session::get('companySettings')[0]['currency'].'</td>
@@ -1614,10 +1615,11 @@ class ReportController extends Controller
         $totalSum = 0;
         foreach ($other_orders as $order) {
             $coa = ChartOfAccounts::find($order->category);
+            $coaName = $coa ? $coa->name : 'N/A';
             $table .= '<tr>
                     <td>'.$i++.'</td>
                     <td>'.$order->sale_no.'</td>
-                    <td>'.$coa->name.'</td>
+                    <td>'.$coaName.'</td>
                     <td>Name: '.$order->partyName.'<br>Contact: '.$order->contact.'</td>
                     <td class="text-right">'.$order->grand_total.' '.Session::get('companySettings')[0]['currency'].'</td>
                     <td class="text-center">'.$order->order_status.'</td>

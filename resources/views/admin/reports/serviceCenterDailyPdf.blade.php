@@ -147,7 +147,7 @@
             <tr>
                 <td>{{$i++}}</td>
                 <td>{{$order->sale_no}}</td>
-                <td>{{$coa->name}}</td>
+                <td>{{$coa ? $coa->name : 'N/A'}}</td>
                 <td>Name: {{$order->partyName}}<br>Contact: {{$order->contact}}</td>
                 <td class="text-right">{{numberFormat($order->grand_total)}} {{ session::get('companySettings')[0]['currency']}}</td>
                 <td class="text-right">{{numberFormat($order->final_sale_amount)}} {{ session::get('companySettings')[0]['currency']}}</td>
@@ -198,7 +198,7 @@
             <tr>
                 <td>{{$i++}}</td>
                 <td>{{$order->sale_no}}</td>
-                <td>{{$coa->name}}</td>
+                <td>{{$coa ? $coa->name : 'N/A'}}</td>
                 <td>Name: {{$order->partyName}}<br>Contact: {{$order->contact}}</td>
                 <td class="text-right">{{$order->grand_total}} {{ session::get('companySettings')[0]['currency']}}</td>
                 <td class="text-center">{{$order->order_status}}</td>
