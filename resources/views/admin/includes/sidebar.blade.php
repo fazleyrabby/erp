@@ -230,7 +230,7 @@
 
                 @if (Auth::guard('web')->user()->can('Accounts'))
                 @php
-                    $acctRoutes = ['chartOfAccounts', 'journalView', 'expenseView', 'billView', 'bankView'];
+                    $acctRoutes = ['chartOfAccounts', 'journalView', 'addJournal', 'expenseView', 'addExpense', 'billView', 'addBills', 'bankView'];
                     $acctActive = request()->routeIs($acctRoutes);
                 @endphp
                 <li class="nav-item dropdown {{ $acctActive ? 'show' : '' }}">
@@ -245,7 +245,7 @@
                         </a>
                         @endif
                         @if (Auth::guard('web')->user()->can('journal.view'))
-                        <a class="dropdown-item {{ request()->routeIs('journalView') ? 'active' : '' }}" href="{{ route('journalView') }}">
+                        <a class="dropdown-item {{ request()->routeIs(['journalView', 'addJournal']) ? 'active' : '' }}" href="{{ route('journalView') }}">
                             <i class="fab fa-gg icon-inline me-1"></i> Journal
                         </a>
                         @endif

@@ -33,8 +33,8 @@
                         </div>
                         
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover dataTable no-footer" id="manageJournalTable" width="100%">
+                    <div class="table-responsive mb-3">
+                        <table class="table table-bordered table-hover table-vcenter" id="manageJournalTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>
@@ -47,9 +47,9 @@
                             </thead>
                             <tbody>
                                 <tr class="row0">
-                                    <td>#</td>
+                                    <td class="text-center align-middle">#</td>
                                     <td>
-                                        <select class="form-control ddl_account" name="account[]">
+                                        <select class="form-select form-select-sm ddl_account" name="account[]">
                                             <option value="0" selected>Choose COA</option>
                                             @php 
                                                 $status='';
@@ -70,26 +70,25 @@
                                         <span class="text-danger" id="accountError">{{ $errors->has('account') ? $errors->first('account') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="particular[]" placeholder="Particulars">
+                                        <input type="text" class="form-control form-control-sm" name="particular[]" placeholder="Particulars">
                                         <span class="text-danger" id="particularError">{{ $errors->has('particular') ? $errors->first('particular') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="debit[]" value="0" oninput="changeDebit(this)" onkeyup="equalization()" style="text-align:right;">
+                                        <input type="number" class="form-control form-control-sm" name="debit[]" value="0" oninput="changeDebit(this)" onkeyup="equalization()" style="text-align:right;">
                                         <span class="text-danger" id="debitError">{{ $errors->has('debit') ? $errors->first('debit') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="credit[]" value="0" oninput="changeCredit(this)" onkeyup="equalization()" style="text-align:right;">
+                                        <input type="number" class="form-control form-control-sm" name="credit[]" value="0" oninput="changeCredit(this)" onkeyup="equalization()" style="text-align:right;">
                                         <span class="text-danger" id="creditError">{{ $errors->has('credit') ? $errors->first('credit') : '' }}</span>
                                     </td>
-                                    <td>
-                                        <label style="display:none;">.</label><br><br>
-                                        <a href="#/" class="text-danger" onclick="remove_btn(this)"><i class="fas fa-trash"></i></a>
+                                    <td class="text-center align-middle">
+                                        <a href="#/" class="text-danger" onclick="remove_btn(this)" style="font-size: 1.25rem;"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 <tr class="row1">
-                                    <td>#</td>
+                                    <td class="text-center align-middle">#</td>
                                     <td>
-                                        <select class="form-control ddl_account" name="account[]">
+                                        <select class="form-select form-select-sm ddl_account" name="account[]">
                                             <option value="0" selected>Choose COA</option>
                                             @php 
                                                 $status='';
@@ -110,43 +109,34 @@
                                         <span class="text-danger" id="accountError">{{ $errors->has('account') ? $errors->first('account') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="particular[]" placeholder="Particulars">
+                                        <input type="text" class="form-control form-control-sm" name="particular[]" placeholder="Particulars">
                                         <span class="text-danger" id="particularError">{{ $errors->has('particular') ? $errors->first('particular') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="debit[]" value="0" oninput="changeDebit(this)" onkeyup="equalization()" style="text-align:right;">
+                                        <input type="number" class="form-control form-control-sm" name="debit[]" value="0" oninput="changeDebit(this)" onkeyup="equalization()" style="text-align:right;">
                                         <span class="text-danger" id="debitError">{{ $errors->has('debit') ? $errors->first('debit') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="credit[]" value="0" oninput="changeCredit(this)" onkeyup="equalization()" style="text-align:right;">
+                                        <input type="number" class="form-control form-control-sm" name="credit[]" value="0" oninput="changeCredit(this)" onkeyup="equalization()" style="text-align:right;">
                                         <span class="text-danger" id="creditError">{{ $errors->has('credit') ? $errors->first('credit') : '' }}</span>
                                     </td>
-                                    <td>
-                                        <label style="display:none;">.</label><br><br>
-                                        <a href="#/" class="text-danger" onclick="remove_btn(this)"><i class="fas fa-trash"></i></a>
+                                    <td class="text-center align-middle">
+                                        <a href="#/" class="text-danger" onclick="remove_btn(this)" style="font-size: 1.25rem;"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td>#</td>
+                                    <td colspan="3" class="text-end fw-bold align-middle">Total:</td>
                                     <td>
-                                        
-                                    </td>
-                                    <td>
-                                       
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" name="debitTotal" id="debitTotal"  style="text-align:right;">
+                                        <input type="text" class="form-control form-control-sm fw-bold text-success" name="debitTotal" id="debitTotal" style="text-align:right;" readonly>
                                         <span class="text-danger" id="debitTotalError">{{ $errors->has('debitTotal') ? $errors->first('debitTotal') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="creditTotal" id="creditTotal"   style="text-align:right;">
+                                        <input type="text" class="form-control form-control-sm fw-bold text-success" name="creditTotal" id="creditTotal" style="text-align:right;" readonly>
                                         <span class="text-danger" id="creditTotalError">{{ $errors->has('creditTotal') ? $errors->first('creditTotal') : '' }}</span>
                                     </td>
-                                    <td>
-                                        
-                                    </td>
+                                    <td></td>
                                 </tr>
                             </tfoot>
                         </table>
