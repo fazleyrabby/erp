@@ -205,7 +205,7 @@ CREATE TABLE `company_settings` (
 --
 
 INSERT INTO `company_settings` (`id`, `logo`, `vertical_logo`, `name`, `email`, `phone`, `address`, `website`, `report_header`, `report_footer`, `watermark`, `month_year`, `terms_conditions`, `default_party`, `currency`, `manage_stock_to_sale`, `barcode_exists`, `deleted`, `created_by`, `created_date`, `updated_by`, `updated_date`, `deleted_by`, `deleted_date`, `created_at`, `updated_at`) VALUES
-(1, '1661431518abcServiceLogo.jpg', '1665573685abc.png', 'ABC Traders', 'example@gmail.com', '0181808080', '904/B/1074,JUBILEE ROAD,CHATTOGRAM TEL:02333353270,01973865267', 'www.example.com', NULL, '<p>Powered by: Ali Technology</p>', NULL, 'F-Y', NULL, NULL, 'Tk', 'No', 'No', NULL, NULL, NULL, 1, '2022-10-12 17:21:35', NULL, NULL, '2022-07-23 06:12:42', '2022-10-12 11:21:35');
+(1, '1661431518abcServiceLogo.jpg', '1665573685abc.png', 'ABC Traders', 'example@gmail.com', '0181808080', '904/B/1074,JUBILEE ROAD,CHATTOGRAM TEL:02333353270,01973865267', 'www.example.com', NULL, '<p>Powered by: RHTech</p>', NULL, 'F-Y', NULL, NULL, 'Tk', 'No', 'No', NULL, NULL, NULL, 1, '2022-10-12 17:21:35', NULL, NULL, '2022-07-23 06:12:42', '2022-10-12 11:21:35');
 
 -- --------------------------------------------------------
 

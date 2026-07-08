@@ -1,5 +1,5 @@
 
----------------------Ali Technology Inventory Module------------------------
+---------------------RHTech Inventory Module------------------------
 Sub Modules: 
 	Products
 	Damage

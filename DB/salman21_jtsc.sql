@@ -210,7 +210,7 @@ CREATE TABLE `company_settings` (
 --
 
 INSERT INTO `company_settings` (`id`, `logo`, `vertical_logo`, `name`, `email`, `phone`, `address`, `website`, `report_header`, `report_footer`, `watermark`, `month_year`, `terms_conditions`, `default_party`, `currency`, `manage_stock_to_sale`, `barcode_exists`, `deleted`, `created_by`, `created_date`, `updated_by`, `updated_date`, `deleted_by`, `deleted_date`, `created_at`, `updated_at`) VALUES
-(1, '166808004116679969471667815468WhatsApp Image 2022-11-07 at 4.01.28 PM(1).jpeg', '1665573685abc.png', 'ABC Traders', 'example@gmail.com', '0181808080', '904/B/1074,JUBILEE ROAD,CHATTOGRAM TEL:02333353270,01973865267', 'www.example.com', NULL, '<p>Powered by: Ali Technology</p>', NULL, 'F-Y', NULL, NULL, 'Tk', 'No', 'No', NULL, NULL, NULL, 1, '2022-11-10 17:34:01', NULL, NULL, '2022-07-23 06:12:42', '2022-11-10 23:34:01');
+(1, '166808004116679969471667815468WhatsApp Image 2022-11-07 at 4.01.28 PM(1).jpeg', '1665573685abc.png', 'ABC Traders', 'example@gmail.com', '0181808080', '904/B/1074,JUBILEE ROAD,CHATTOGRAM TEL:02333353270,01973865267', 'www.example.com', NULL, '<p>Powered by: RHTech</p>', NULL, 'F-Y', NULL, NULL, 'Tk', 'No', 'No', NULL, NULL, NULL, 1, '2022-11-10 17:34:01', NULL, NULL, '2022-07-23 06:12:42', '2022-11-10 23:34:01');
 
 -- --------------------------------------------------------
 

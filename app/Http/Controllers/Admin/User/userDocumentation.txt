@@ -1,5 +1,5 @@
 
----------------------Ali Technology User management Module------------------------
+---------------------RHTech User management Module------------------------
 Sub Modules: 
 	View UserType
 	View Users
