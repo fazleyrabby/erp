@@ -12,7 +12,7 @@
 
             @include('admin.includes.topbar')
             <div class="page-body">
-                <div class="container-xl">
+                <div class="container-fluid">
                     @yield('content')
                 </div>
             </div>
