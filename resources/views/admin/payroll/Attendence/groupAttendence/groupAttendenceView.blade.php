@@ -13,31 +13,25 @@ Admin Group Attendence
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="attendence-card" >
-                        
-                        
-                            <div class="row g-3">
-                                <div class="form-group mb-3  col-sm-6">
-                                    <label class="form-label">Group:</label>
-                                    <select class="form-select form-select-sm" id="group_id"  name="group_id" onchange="getMonthYear()">
-                                    <option value="" selected disabled>Choose group</option>
-                                    @foreach($groups as $group)
-                                    <option value="{{$group->id}}">{{$group->name}}</option>
-                                    @endforeach
-                                    </select>
-                                    <span class="text-danger" id="group_idError"></span>
-                                </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <label class="form-label">Group</label>
+                            <select class="form-select form-select-sm" id="group_id"  name="group_id" onchange="getMonthYear()">
+                            <option value="" selected disabled>Choose group</option>
+                            @foreach($groups as $group)
+                            <option value="{{$group->id}}">{{$group->name}}</option>
+                            @endforeach
+                            </select>
+                            <span class="text-danger" id="group_idError"></span>
+                        </div>
 
-                                <div class="form-group mb-3  col-sm-6">
-                                    <label class="form-label">Month Year:</label>
-                                    <select class="form-select form-select-sm" id="month_year" name="month_year" onchange="getDatesFromTo()">
-                                        <option value="" selected>Choose Month Year</option>
-                                    </select>
-                                    <span class="text-danger" id="month_yearError"></span>
-                                </div>
-
-                            </div>
-                       
+                        <div class="col-sm-6">
+                            <label class="form-label">Month Year</label>
+                            <select class="form-select form-select-sm" id="month_year" name="month_year" onchange="getDatesFromTo()">
+                                <option value="" selected>Choose Month Year</option>
+                            </select>
+                            <span class="text-danger" id="month_yearError"></span>
+                        </div>
                     </div>
                     
                      

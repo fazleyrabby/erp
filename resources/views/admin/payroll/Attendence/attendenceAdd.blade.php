@@ -13,35 +13,31 @@ Admin Attendence -Add
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <div class="attendence-card" >
-                        <span><strong>Entry Time</strong></span>
-                        <br><br>
-                        <form action="{{route('attendenceStore')}}" method="POST">
-                            @csrf
-                            <input type="hidden" name="month_year" value="{{Date('F-Y')}}">
-                            <div class="row g-3">
-                                <div class="form-group mb-3 col-sm-5">
-                                    <label class="form-label">Employee:</label>
-                                    <select class="form-select form-select-sm" id="employee_id" name="employee_id" required>
-                                        <option value="" selected disabled>Choose Employee</option>
-                                        @foreach($teams as $team)
-                                            <option value="{{$team->id}}">{{$team->member_name}}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="text-danger">{{$errors->has('employee_id')?$errors->first('employee_id'):''}}</span>
-                                </div>
-                                <div class="form-group mb-3 col-sm-5">
-                                    <label class="form-label">Date:</label>
-                                    <input type="text" class="form-control form-control-sm" id="date" name="date" value="{{ date('Y-m-d') }}" readonly> 
-                                </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button class="btn btn-primary w-100" type="submit">Save</button>
-                                </div>
+                    <div class="subheader mb-3">Entry Time</div>
+                    <form action="{{route('attendenceStore')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="month_year" value="{{Date('F-Y')}}">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-sm-5">
+                                <label class="form-label">Employee</label>
+                                <select class="form-select form-select-sm" id="employee_id" name="employee_id" required>
+                                    <option value="" selected disabled>Choose Employee</option>
+                                    @foreach($teams as $team)
+                                        <option value="{{$team->id}}">{{$team->member_name}}</option>
+                                    @endforeach
+                                </select>
+                                <span class="text-danger">{{$errors->has('employee_id')?$errors->first('employee_id'):''}}</span>
                             </div>
-                        </form>
-                    </div>
-                    <br>
-                    <h3 style=" float: left;" >Attendence List</h3> 
+                            <div class="col-sm-5">
+                                <label class="form-label">Date</label>
+                                <input type="text" class="form-control form-control-sm" id="date" name="date" value="{{ date('Y-m-d') }}" readonly> 
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary w-100" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="hr-text">Attendence List</div> 
                     <div class="table-responsive mt-3" >
                         <table  id="attendenceTable" class="table table-vcenter table-bordered table-striped">
                             <thead>
