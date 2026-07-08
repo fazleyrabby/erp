@@ -165,7 +165,7 @@ fieldset.scheduler-border {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
-                            <button type="submit" class="btn btn-primary " id="saveWarehouse"><i class="fa fa-save"></i> Transfer Warehouse</button>
+                            <button type="submit" class="btn btn-primary " id="saveWarehouse"><i class="fa fa-save me-1"></i>Transfer Warehouse</button>
                         </div>
                     </form>
 

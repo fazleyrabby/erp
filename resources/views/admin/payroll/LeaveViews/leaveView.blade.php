@@ -9,7 +9,7 @@ Admin Leave Management -View
             <div class="card-header">
                 <h3 class="card-title">Leave list</h3>
                 <div class="card-actions">
-                    <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Leave</button>
+                    <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus me-1"></i>Add Leave</button>
                 </div>
                 <h3 class="text-center text-success">{{Session::get('message')}}</h3>
             </div>
@@ -130,8 +130,8 @@ Admin Leave Management -View
                 </div>
               </div>
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                     <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save"></i> Save</button>
+                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>Close</button>
+                     <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
 			  </form>
             </div><!-- /.modal-content -->
@@ -197,7 +197,7 @@ Admin Leave Management -View
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save"></i> Update</button>
+                        <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save me-1"></i>Update</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->

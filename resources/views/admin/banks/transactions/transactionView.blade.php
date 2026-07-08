@@ -200,7 +200,7 @@
               </div>
 			  <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
-                    <button type="submit" class="btn btn-secondary"  disabled id="saveBtnOnPage"><i class="fas fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-secondary"  disabled id="saveBtnOnPage"><i class="fas fa-save me-1"></i>Save</button>
                     <div id="checkAmounttext"></div>
                     <div id="saveButton"></div>
                   </div>

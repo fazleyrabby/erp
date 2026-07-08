@@ -10,7 +10,7 @@ Admin Time Schedule Group -View
                 <div class="card-header">
                     <h3 class="card-title">Time Schedule Group</h3>
                     <div class="card-actions">
-                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Time Schedule</button>
+                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus me-1"></i>Add Time Schedule</button>
                     </div>
                     <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                 </div>
@@ -119,7 +119,7 @@ Admin Time Schedule Group -View
 
                 <div class="modal-footer">
                      <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-                     <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save"></i> Save</button>
+                     <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
 
 			  </form>
@@ -174,7 +174,7 @@ Admin Time Schedule Group -View
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save"></i> Update</button>
+                    <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save me-1"></i>Update</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

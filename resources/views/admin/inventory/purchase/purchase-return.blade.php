@@ -131,11 +131,11 @@
                             </div>
                             <div class="col-md-1">
                                 <a href="{{ route('purchase.index') }}" class="btn btn-secondary btn-md" role="button"
-                                aria-pressed="true"><i class="fas fa-undo"></i> Back </a>
+                                aria-pressed="true"><i class="fas fa-undo me-1"></i>Back </a>
                             </div>
                             <div class="col-md-2">
                                 <a href="{{ route('purchase.return.list') }}" class="btn btn-info btn-md" role="button"
-                                aria-pressed="true"><i class="fas fa-list"></i> purchase return list </a>
+                                aria-pressed="true"><i class="fas fa-list me-1"></i>purchase return list </a>
                             </div>
                         </div>
                     </div>

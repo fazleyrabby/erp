@@ -261,7 +261,7 @@
                     $("#salePrice").val(result[0]["sale_price"]);
                     $("#barcode").html(result[0]["barcode"]);
                     let gererateBtn =
-                        '<button type="button"  class="btn btn-lg btn-info my_button float-right " onclick="generateBarcode()"><i class="fa fa-barcode"> Generate Barcode </i> </button>';
+                        '<button type="button"  class="btn btn-lg btn-info my_button float-right " onclick="generateBarcode()"><i class="fa fa-barcode me-1">Generate Barcode </i> </button>';
                     $("#createReport").html(gererateBtn);
                 },
                 beforeSend: function() {

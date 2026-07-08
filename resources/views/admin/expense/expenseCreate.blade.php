@@ -139,9 +139,9 @@
                     </div>
                     <div class="row g-3">
                         <div class="col-md-12 ">
-                            <div class=""><button class="btn btn-primary m-2" id="btn_addRow"> <i class="fas fa-plus"></i> Add row</button></div>
-                            <button type="submit" class="btn btn-primary float-right  m-2" id="saveBtn" style="display:none;"> <i class="fas fa-save"></i> Save</button>
-                            <button  class="btn btn-danger float-right  m-2" id="saveErrorBtn" disabled style="display:none;"> <i class="fas fa-save"></i> Save</button>
+                            <div class=""><button class="btn btn-primary m-2" id="btn_addRow"> <i class="fas fa-plus me-1"></i>Add row</button></div>
+                            <button type="submit" class="btn btn-primary float-right  m-2" id="saveBtn" style="display:none;"> <i class="fas fa-save me-1"></i>Save</button>
+                            <button  class="btn btn-danger float-right  m-2" id="saveErrorBtn" disabled style="display:none;"> <i class="fas fa-save me-1"></i>Save</button>
                             <span class="text-danger"id="saveErrorSpan" style="display:none;">You dont have enough credit..</span>
                             
                         </div>

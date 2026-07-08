@@ -52,7 +52,7 @@
                     							<input name="min" id="startDate" name="startDate" type="hidden" value="<?php echo date('Y-m-d');?>" data-date-format="yyyy-mm-dd" />					
                         							
                     							<div class="col-md-1">
-                    								<button type="button" id="btndisplay" class="btn btn-default btn-flat pull-left" name="btndisplay" onclick="showMyData();" style="background-color: #3f3e93;color: #fff;margin-top: 48%;border-color: #3f3e93;"><i class="fa fa-search"></i> Search </button>
+                    								<button type="button" id="btndisplay" class="btn btn-default btn-flat pull-left" name="btndisplay" onclick="showMyData();" style="background-color: #3f3e93;color: #fff;margin-top: 48%;border-color: #3f3e93;"><i class="fa fa-search me-1"></i>Search </button>
                     								
                     							</div>
                     					    </div>

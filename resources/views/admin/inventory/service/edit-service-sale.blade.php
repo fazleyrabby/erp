@@ -39,7 +39,7 @@
                                 <h3>
                                     Edit Service Centre
                                     <a class="mr-2 btn btn-primary float-right ml-1"
-                                        href="{{ route('sale.service.add') }}"> <i class="fa fa-plus-circle"></i> add
+                                        href="{{ route('sale.service.add') }}"> <i class="fa fa-plus-circle me-1"></i>add
                                         Service </a> 
                                     <a class="btn btn-primary float-right"
                                         href="{{ route('sale.service.SaleOrders') }} ">

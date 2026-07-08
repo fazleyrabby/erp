@@ -12,7 +12,7 @@ Admin Loan Salary -View
                         <div class="card-header">
                             <h3 class="card-title">Loan Salary</h3>
                             <div class="card-actions">
-                                <a href="{{route('addSalaryLoan')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Loan</a>
+                                <a href="{{route('addSalaryLoan')}}" class="btn btn-primary"><i class="fas fa-plus me-1"></i>Add Loan</a>
                             </div>
                             <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                         </div>
@@ -130,7 +130,7 @@ Admin Loan Salary -View
         
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-            <button type="submit" class="btn btn-primary btnUpate"><i class="fa fa-save"></i> Update</button>
+            <button type="submit" class="btn btn-primary btnUpate"><i class="fa fa-save me-1"></i>Update</button>
         </div>
         </form></div>
     </div><!-- /.modal-content -->

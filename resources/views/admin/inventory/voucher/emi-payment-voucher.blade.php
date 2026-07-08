@@ -18,7 +18,7 @@
           <div class="card">
             <div class="card-header">
               <h3> EMI Payment Voucher
-                <a class="btn btn-success float-right" href="{{url('voucher/payment/paidEmi')}}"> <i class="fa fa-plus-circle"></i> view Paid EMI Voucher</a>
+                <a class="btn btn-success float-right" href="{{url('voucher/payment/paidEmi')}}"> <i class="fa fa-plus-circle me-1"></i>view Paid EMI Voucher</a>
               </h3>
             </div><!-- /.card-header -->
             <div class="card-body">  
@@ -75,10 +75,10 @@
 			<div class="card-footer">
 				<div class="row g-3">
 					<div class="col-md-12">
-						<a class="btn btn-success float-left" href="#" onclick="clearCart()"> <i class="fa fa-plus-circle"></i> Clear Cart </a>
-						<!-- <button type="button" id="checkOutCart" class="btn btn-success float-right"><i class="fa fa-plus-circle"> checkOut Cart </i> </button> -->
+						<a class="btn btn-success float-left" href="#" onclick="clearCart()"> <i class="fa fa-plus-circle me-1"></i>Clear Cart </a>
+						<!-- <button type="button" id="checkOutCart" class="btn btn-success float-right"><i class="fa fa-plus-circle me-1">checkOut Cart </i> </button> -->
 						<button type="button" id="saveEmiPayment" onclick="addPayment()" class="btn btn-success  mr-2 float-right"><i class="fa fa-plus-circle "> Add Payment </i> </button>
-						<button type="button" id="saveEmiPayment" onclick="paymentNow()" class="btn btn-primary  mr-2 float-right"><i class="fa fa-plus-circle"> Payment Now </i> </button>
+						<button type="button" id="saveEmiPayment" onclick="paymentNow()" class="btn btn-primary  mr-2 float-right"><i class="fa fa-plus-circle me-1">Payment Now </i> </button>
 					</div>
 				</div>
 			</div>

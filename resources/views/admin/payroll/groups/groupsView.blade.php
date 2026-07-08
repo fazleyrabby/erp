@@ -9,7 +9,7 @@ Admin Groups -View
                 <div class="card-header">
                     <h3 class="card-title">Group</h3>
                     <div class="card-actions">
-                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Group</button>
+                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus me-1"></i>Add Group</button>
                     </div>
                     <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                 </div>
@@ -88,8 +88,8 @@ Admin Groups -View
                 </div>
               
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i>X Close</button>
-                    <button type="submit" class="btn btn-primary float-right" id="saveGroup"><i class="fa fa-save"></i> Save</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>X Close</button>
+                    <button type="submit" class="btn btn-primary float-right" id="saveGroup"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
 		</form>
             </div>
@@ -132,7 +132,7 @@ Admin Groups -View
 		</div>
 		<div class="modal-footer">
                       <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary btnUpate float-right" id="editGroup"><i class="fa fa-save"></i> Update</button>
+                      <button type="submit" class="btn btn-primary btnUpate float-right" id="editGroup"><i class="fa fa-save me-1"></i>Update</button>
                 </div>
 		</form>
             </div><!-- /.modal-content -->

@@ -147,7 +147,7 @@ Admin Facility -View
                 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-                    <button type="submit" class="btn btn-primary float-right" ><i class="fa fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-primary float-right" ><i class="fa fa-save me-1"></i>Save</button>
                 </div>
             </form>
         </div>
@@ -231,7 +231,7 @@ Admin Facility -View
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-                    <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save"></i> Update</button>
+                    <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save me-1"></i>Update</button>
                 </div>
             </form>
         </div>

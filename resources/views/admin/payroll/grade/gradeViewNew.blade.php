@@ -91,8 +91,8 @@ Admin Grade -View
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-                    <button type="submit" class="btn btn-primary " id="saveGrade"><i class="fa fa-save"></i> Save</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>Close</button>
+                    <button type="submit" class="btn btn-primary " id="saveGrade"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
@@ -140,7 +140,7 @@ Admin Grade -View
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-                    <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save"></i> Update</button>
+                    <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save me-1"></i>Update</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

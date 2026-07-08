@@ -138,8 +138,8 @@ Admin Bonus Sheet -View
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close"></i>X Close</button>
-                    <button type="submit" class="btn btn-primary float-right" ><i class="fa fa-save"></i> Save</button>
+                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>X Close</button>
+                    <button type="submit" class="btn btn-primary float-right" ><i class="fa fa-save me-1"></i>Save</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
@@ -233,7 +233,7 @@ Admin Bonus Sheet -View
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-                    <button type="submit" class="btn btn-primary btnUpate" ><i class="fa fa-save"></i> Update</button>
+                    <button type="submit" class="btn btn-primary btnUpate" ><i class="fa fa-save me-1"></i>Update</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

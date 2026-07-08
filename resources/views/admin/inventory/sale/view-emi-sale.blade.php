@@ -57,7 +57,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-secondary text-light" onclick="viewDetails({{ $emiSale->id }})">
-                                                <i class="fas fa-info-circle"></i> EMI Details
+                                                <i class="fas fa-info-circle me-1"></i>EMI Details
                                             </button>
                                         </div>
                                     </td>

@@ -120,11 +120,11 @@
                         <div class="row g-3">
                             <div class="col-md-6 ">
                                 <a href="#/" class="btn btn-primary btn-md" onclick="addjustment()" role="button"
-                                    aria-pressed="true"><i class="fas fa-save"></i> Adjustment</a>
+                                    aria-pressed="true"><i class="fas fa-save me-1"></i>Adjustment</a>
                                 <a href="{{ route('sale.sales', ['type'=>'ts']) }}" class="btn btn-dark btn-md" role="button"
-                                    aria-pressed="true"><i class="fas fa-undo"></i> Back </a>
+                                    aria-pressed="true"><i class="fas fa-undo me-1"></i>Back </a>
                                 <a href="{{ route('sale.return.list', ['type'=>'ts']) }}" class="btn btn-info btn-md" role="button"
-                                    aria-pressed="true"><i class="fas fa-list"></i> Sale return list </a>
+                                    aria-pressed="true"><i class="fas fa-list me-1"></i>Sale return list </a>
                             </div>
                         </div>
                     </form>

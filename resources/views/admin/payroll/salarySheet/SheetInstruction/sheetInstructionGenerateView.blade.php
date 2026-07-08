@@ -61,7 +61,7 @@ Admin Generate Salary Sheet  -View
                                                     <td>{{$instruction->account_no}}</td>
                                                     <td>{{$instruction->net_total}} Taka</td>
                                                     <td>{{$instruction->bank_name}}<br>({{$instruction->branch_name}})</td>
-                                                    <td><a class="btn btn-primary" style="color:#fff;" onclick=finalSheet({{$instruction->id}}) ><i class="fas fa-calendar-day"></i> Sheet</a></td>
+                                                    <td><a class="btn btn-primary" style="color:#fff;" onclick=finalSheet({{$instruction->id}}) ><i class="fas fa-calendar-day me-1"></i>Sheet</a></td>
                                                 </tr>
                                             </tbody>
                                         @endforeach
@@ -78,7 +78,7 @@ Admin Generate Salary Sheet  -View
                                         </table>
                                         <br>
                                             @foreach($letterInstructions as $pdfInstruction)
-                                            <button class="btn btn-success" onclick="generatePdf({{$pdfInstruction->id}})" ><i class="fas fa-file-pdf"></i> Generate PDF</button>
+                                            <button class="btn btn-success" onclick="generatePdf({{$pdfInstruction->id}})" ><i class="fas fa-file-pdf me-1"></i>Generate PDF</button>
                                             @endforeach
                                             </div>
                                         </div>

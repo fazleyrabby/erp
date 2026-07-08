@@ -41,7 +41,7 @@ Admin Time Schedule -Add
                                 <span class="text-danger" id="working_hourError"></span>
                             </div>
                             <div class="col-md-12">
-                                <button class="btn btn-primary float-right" type="submit"><i class="fas fa-save"></i> Save</button>
+                                <button class="btn btn-primary float-right" type="submit"><i class="fas fa-save me-1"></i>Save</button>
                             </div>
                         </div>
                     </form>
@@ -158,7 +158,7 @@ Admin Time Schedule -Add
               </div>
 			  <div class="modal-footer">
                       <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save"></i> Update</button>
+                      <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save me-1"></i>Update</button>
                  </div>
 				 </form>
             </div><!-- /.modal-content -->

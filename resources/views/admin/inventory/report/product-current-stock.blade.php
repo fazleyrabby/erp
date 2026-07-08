@@ -63,7 +63,7 @@
                                         <div class="col-md-3">
                                             <div id="createReport">
                                                 {{-- <button type="button" class="btn btn-success btn-lg btn-block float-right"
-                                                    onclick="generateReport(-1)"><i class="fas fa-print"> Generate Report
+                                                    onclick="generateReport(-1)"><i class="fas fa-print me-1">Generate Report
                                                     </i> </button> --}}
                                             </div>
                                         </div>

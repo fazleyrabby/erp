@@ -53,7 +53,7 @@
                     								<input name="min" id="endtDate" style="padding: inherit;" class="form-control datetimepicker" placeholder="Select Start date" name="endDate" type="date" value="<?php echo date('Y-m-d');?>" data-date-format="yyyy-mm-dd"  required/>					
                     							</div>
                 							    <div class="col-md-1">
-                    								<a href="#" id="btndisplay" class="btn btn-default btn-flat pull-left" name="btndisplay" onclick="showMyData();" style="background-color: #3f3e93;color: #fff;margin-top: 48%;border-color: #3f3e93;"><i class="fa fa-search"></i> Search </a>
+                    								<a href="#" id="btndisplay" class="btn btn-default btn-flat pull-left" name="btndisplay" onclick="showMyData();" style="background-color: #3f3e93;color: #fff;margin-top: 48%;border-color: #3f3e93;"><i class="fa fa-search me-1"></i>Search </a>
                     								
                     							</div>
                     					    </div>

@@ -90,8 +90,8 @@
                         <div class="col-md-12 ">
                             
                             
-                            <button type="submit" class="btn btn-primary float-right  m-2" id="saveBtn" style="display:none;"> <i class="fas fa-save"></i> Save</button>
-                            <button  class="btn btn-danger float-right  m-2" id="saveErrorBtn" disabled style="display:none;"> <i class="fas fa-save"></i> Save</button>
+                            <button type="submit" class="btn btn-primary float-right  m-2" id="saveBtn" style="display:none;"> <i class="fas fa-save me-1"></i>Save</button>
+                            <button  class="btn btn-danger float-right  m-2" id="saveErrorBtn" disabled style="display:none;"> <i class="fas fa-save me-1"></i>Save</button>
                             <span class="text-danger"id="saveErrorSpan" style="display:none;">You dont have enough credit..</span>
                         </div>
                     </div>

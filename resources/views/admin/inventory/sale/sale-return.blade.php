@@ -127,7 +127,7 @@
                     <div class="row g-3">
                         <div class="col-md-2">
                             <a href="#/" class="btn btn-primary btn-md" onclick="saleReturn()"
-                                aria-pressed="true"><i class="fas fa-save"></i> Return Sale</a>
+                                aria-pressed="true"><i class="fas fa-save me-1"></i>Return Sale</a>
                         </div>
                         <div class="col-md-1">
                             <a href=" {{ route('sale.sales', ['type' => session()->get('type')]) }} "

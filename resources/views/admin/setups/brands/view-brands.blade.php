@@ -65,8 +65,8 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 00-2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 00-1.066 -2.573c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 001.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c.996 .608 2.296 .07 2.572 -1.065z"/><circle cx="12" cy="12" r="3"/></svg>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#" onclick="editBrand({{ $brand->id }})"><i class="fas fa-edit"></i> Edit</a></li>
-                                        <li><a class="dropdown-item" href="#" onclick="confirmDelete({{ $brand->id }})"><i class="fas fa-trash-alt"></i> Delete</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="editBrand({{ $brand->id }})"><i class="fas fa-edit me-1"></i>Edit</a></li>
+                                        <li><a class="dropdown-item" href="#" onclick="confirmDelete({{ $brand->id }})"><i class="fas fa-trash-alt me-1"></i>Delete</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -114,7 +114,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="saveCategory"><i class="fa fa-save"></i> Save</button>
+                        <button type="submit" class="btn btn-primary" id="saveCategory"><i class="fa fa-save me-1"></i>Save</button>
                 </form> </div>
             </div>
         </div>
@@ -156,14 +156,14 @@
                         </div>
                         <div class="col-md-4" >
                             <img id="editShowImage" src="{{url('upload/no_image.png')}}" style="width: 70px;height: 80px; border:1px solid #000000" /><br>
-                                <a href="#" onclick="removeImage()" style="margin-left:20px;"> <i class="fas fa-trash-alt"></i> Remove Image</a>
+                                <a href="#" onclick="removeImage()" style="margin-left:20px;"> <i class="fas fa-trash-alt me-1"></i>Remove Image</a>
                             <input type="hidden" id="removeImage" name="removeImage" value="" />
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="editCategory"><i class="fa fa-save"></i> Update</button>
+                        <button type="submit" class="btn btn-primary" id="editCategory"><i class="fa fa-save me-1"></i>Update</button>
                 </form> </div>
             </div>
         </div>

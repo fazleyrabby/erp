@@ -12,7 +12,7 @@ Admin Monthly Amount -View
                         <div class="card-header">
                             <h3 class="card-title">Monthly Amount</h3>
                             <div class="card-actions">
-                                <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus"></i> Add Monthly Amount</button>
+                                <button type="button" class="btn btn-primary" onclick="create()"><i class="fas fa-plus me-1"></i>Add Monthly Amount</button>
                             </div>
                             <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                         </div>
@@ -137,7 +137,7 @@ Admin Monthly Amount -View
                     </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-                    <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save"></i> Save</button>
+                    <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
             </form>
         </div>
@@ -214,7 +214,7 @@ Admin Monthly Amount -View
                 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
-                    <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save"></i> Update</button>
+                    <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save me-1"></i>Update</button>
                 </div>
             </form>
             </div>

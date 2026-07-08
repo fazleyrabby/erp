@@ -246,7 +246,7 @@ Final Salary Sheet -View
 
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <button  onclick="generateSalarySheetPdf({{$sheetid->id}})" class="btn btn-{{$color1}}" {{$enablity1}} ><i class="fas fa-file-pdf"></i> Genereate PDF</button>
+                                        <button  onclick="generateSalarySheetPdf({{$sheetid->id}})" class="btn btn-{{$color1}}" {{$enablity1}} ><i class="fas fa-file-pdf me-1"></i>Genereate PDF</button>
                                         <span class="text-danger">{{$text1}}</span>
 
                                         <a class="btn btn-{{$color2}}  {{$enablity2}} float-right"  href="{{route('sheetInstructionAdd')}}"> Create Salary Instruction</a>

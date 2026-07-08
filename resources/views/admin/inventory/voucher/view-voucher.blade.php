@@ -237,7 +237,7 @@
 
 		  		<div class="modal-footer">
 				  	<button type="button" class="btn btn-secondery mr-auto" data-bs-dismiss="modal">X Close</button>
-					<button type="submit" class="btn btn-primary btnSave" id="saveVoucher"><i class="fa fa-save"></i> Save</button>
+					<button type="submit" class="btn btn-primary btnSave" id="saveVoucher"><i class="fa fa-save me-1"></i>Save</button>
 			  	</div>
 			</div>
 		  </form>

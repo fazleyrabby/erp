@@ -14,7 +14,7 @@ Account Settings
     <div class="card">
       <div class="card-header">
         <h3> Account Setting
-          <!-- <a class="btn btn-success float-right" href=""> <i class="fa fa-list"></i>View Shops </a> -->
+          <!-- <a class="btn btn-success float-right" href=""> <i class="fa fa-list me-1"></i>View Shops </a> -->
         </h3>
         <h3 class="text-center text-success">{{ Session::get('message') }}</h3>
       </div><!-- /.card-header -->

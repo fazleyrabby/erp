@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3> Company Details
-                        <!-- <a class="btn btn-success float-right" href=""> <i class="fa fa-list"></i>View Shops </a> -->
+                        <!-- <a class="btn btn-success float-right" href=""> <i class="fa fa-list me-1"></i>View Shops </a> -->
                     </h3>
                 </div><!-- /.card-header -->
                 <div class="card-body">

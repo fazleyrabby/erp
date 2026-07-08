@@ -415,7 +415,7 @@ Admin Create Team Member
                                 </div> 
 
                                 <div class="form-group mb-3">
-                                    <button type="submit" class="btn btn-primary btn-flat" name="addBanner"><i class="fa fa-save"></i> Save </button>
+                                    <button type="submit" class="btn btn-primary btn-flat" name="addBanner"><i class="fa fa-save me-1"></i>Save </button>
                                 </div>
                             </form>
 
