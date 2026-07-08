@@ -321,7 +321,7 @@
                 <div class="modal-body">
                     
                        
-                        <div class="row">
+                        <div class="row g-3">
                            
                             <div class="form-group col-md-6">
                                 <label> Service Name <span class="text-danger"> * </span></label>
@@ -504,7 +504,7 @@
 
                     <form id="editProductForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <input type="hidden" name="editId" id="editId">
                             <div class="form-group col-md-3" id="CategoryDiv">
                                 <label> Category <span class="text-danger"> * </span></label><br>
