@@ -35,7 +35,7 @@ Admin Monthly Attendence
                             <button class="btn btn-primary w-100" onclick="generateAttendence()">Generate Attendence</button>
                         </div>
                     </div>
-                    <div class="header mt-4" id="header"></div>
+                    <div class="h3 mt-4" id="header"></div>
                     <div class="table-responsive mt-3" >
                         <table id="attendenceTable" class="table table-vcenter table-bordered table-striped"></table>
                     </div>
@@ -52,7 +52,7 @@ Admin Monthly Attendence
 
 
      $(document).ready(function() {
-        $('#attendenceTable').DataTable();
+        // Simple table, DataTable disabled
     }); 
 
 
@@ -63,21 +63,19 @@ Admin Monthly Attendence
        
         $.ajax({
             url: "{{route('getMonthlyAttendence')}}",
-               method:"GET",
-               data:{"employee_id":employee_id,"date_from":date_from,"date_to":date_to},
-               success:function(result){
-                    //alert(JSON.stringify(result));
-                    $('#attendenceTable').html(result.data);
-                    $('#header').html(result.header);
-                   
-               }, error: function(response) {
-                    //alert(JSON.stringify(response));
-                }, beforeSend: function () {
-                    $('#loading').show();  
-                },complete: function () {
-                    $('#loading').hide();                           
-                }
-            }) 
+            method:"GET",
+            data:{"employee_id":employee_id,"date_from":date_from,"date_to":date_to},
+            success:function(result){
+                $('#attendenceTable').html(result.data);
+                $('#header').html(result.header);
+            }, error: function(response) {
+                // error handling
+            }, beforeSend: function () {
+                $('#loading').show();  
+            }, complete: function () {
+                $('#loading').hide();                           
+            }
+        }) 
     }
   
 

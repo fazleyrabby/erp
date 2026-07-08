@@ -113,7 +113,7 @@ Admin Attendence -Add
 
 
     $(document).ready(function() {
-        $('#attendenceTable').DataTable();
+        // Simple table, DataTable disabled
     });
 
 
