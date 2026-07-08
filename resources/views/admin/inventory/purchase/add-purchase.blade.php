@@ -3,7 +3,7 @@
     {{ Session::get('companySettings')[0]['name'] }} Purchase
 @endsection
 @section('content')
-    <div class="content-wrapper">
+    
         <section class="content box-border">
             <div class="card">
                 <div class="card-header">
@@ -272,7 +272,7 @@
     <!-- /.content -->
     </div>
 
-    <!-- /.content-wrapper -->
+    
 @endsection
 @section('javascript')
     <script>

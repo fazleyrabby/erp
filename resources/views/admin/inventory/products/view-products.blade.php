@@ -3,8 +3,6 @@
     {{ Session::get('companySettings')[0]['name'] }} Products
 @endsection
 @section('content')
-    <div class="content-wrapper">
-        <section class="content box-border">
             <div class="card">
                 <div class="card-header">
             <h3 class="card-title">Product List</h3>
@@ -109,8 +107,6 @@
                     {{ $products->links() }}
                 </div>
             </div>
-        </section>
-    </div>
 
 
     <div class="modal fade" id="modal" tabindex="-1">
@@ -124,7 +120,7 @@
                     <form id="productForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
                         <div class="row g-3">
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Category <span class="text-danger"> * </span></label><br>
                                 <select name="category_id" id="category_id" class="form-control input-sm">
                                     <option value="" selected="selected">Select Category</option>
@@ -134,7 +130,7 @@
                                 </select>
                                 <span class="text-danger" id="categoryError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Brand <span class="text-danger"> * </span></label><br>
                                 <select name="brand_id" id="brand_id" class="form-control input-sm">
                                     <option value="" selected>Select Brand</option>
@@ -144,26 +140,26 @@
                                 </select>
                                 <span class="text-danger" id="brandError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Product Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="name" type="text" name="name"
                                     placeholder=" Product name">
                                 <span class="text-danger" id="nameError"></span>
                             </div>
                             @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label>Barcode</label>
                                     <input class="form-control input-sm" id="barcode_no" type="text" name="barcode_no">
                                     <span class="text-danger" id="barcode_noError"></span>
                                 </div>
                             @endif
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Model No <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="model_no" type="text" name="model_no"
                                     placeholder=" Model Number ">
                                 <span class="text-danger" id="model_noError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Unit <span class="text-danger"> * </span></label>
                                 <select name="unit_id" id="unit_id" class="form-control input-sm">
                                     <option value="" selected="selected"> Select Unit </option>
@@ -173,38 +169,38 @@
                                 </select>
                                 <span class="text-danger" id="unitError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Purchase Price <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="minimum_price" type="number"
                                     name="minimum_price" placeholder=" Minimum price " min="0">
                                 <span class="text-danger" id="minimum_priceError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Sell price <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="maximum_price" type="number"
                                     name="maximum_price" placeholder=" Maximum price " min="0">
                                 <span class="text-danger" id="maximum_priceError"></span>
                             </div>
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Discount Amount</label>
                                 <input class="form-control input-sm" id="discount" type="text" value=""
                                     name="discount">
                                 <span class="text-danger" id="discountError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Opening Stock <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm openingStock" min="0" id="opening_stock"
                                     type="number" name="opening_stock" placeholder="opening stock"
                                     onchange="checkType()">
                                 <span class="text-danger" id="opening_stockError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Reminder Stock <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" min="0" id="remainder_quantity"
                                     type="number" name="remainder_quantity">
                                 <span class="text-danger" id="remainder_quantityError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Select Warehouse <span class="text-danger"> * </span></label>
                                 <select class="form-control input-sm" id="stock_warehouse" name="stock_warehouse">
                                     <option value="" selected> Select Warehouse </option>
@@ -215,14 +211,14 @@
                                 </select>
                                 <span class="text-danger" id="stock_warehouseError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Notes</label>
                                 <input class="form-control input-sm" id="notes" type="text" name="notes"
                                     placeholder=" notes about product ">
                                 <span class="text-danger" id="notesError"></span>
                             </div>
                             {{-- serializ --}}
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Type <span class="text-danger"> * </span></label>
                                 <select id="type" name="type" class="form-control input-sm"
                                     onchange="checkType()">
@@ -232,7 +228,7 @@
                                 </select>
                                 <span class="text-danger" id="typeError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Stock Check <span class="text-danger"> * </span></label>
                                 <select id="stockCheck" name="stockCheck" class="form-control input-sm">
                                     <option value="No"> No </option>
@@ -241,14 +237,14 @@
                                 <span class="text-danger" id="stockCheckError"></span>
                             </div>
                             <div class="row col-md-6">
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label>Items In Box: <span class="text-danger"></span></label>
                                     <input class="form-control input-sm serialize" id="itemsInBox" type="number"
                                         min="0" name="itemsInBox" placeholder=" Number " onchange="checkType()"
                                         disabled>
                                     <span class="text-danger" id="itemsInBoxError"></span>
                                 </div>
-                                <div class="form-group col-md-6 d-none" id="showBtn">
+                                <div class="form-group mb-3 col-md-6 d-none" id="showBtn">
                                     <label style="color: white;">.</label>
                                     <button type="button" class="btn btn-success form-control " onclick="checkType()"><i
                                             class="fa fa-table"></i>
@@ -256,16 +252,16 @@
                                 </div>
                             </div>
                             {{-- serializ --}}
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <div class="row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group mb-3 col-md-3">
                                         <label for="">Image</label>
                                         <input type="file" name="image" id="image"
                                             class="form-control form-control-sm">
                                         <span class="text-danger" id="imageError"></span>
 
                                         <div class="row">
-                                            <div class="form-group col-12">
+                                            <div class="form-group mb-3 col-12">
                                                 <img id="showImage" src=" {{ asset('upload/no_image.png') }} "
                                                     alt="Image Not Found"
                                                     style="width: 60%;height: 90px; border:1px solid #000000;margin: 2% 0% 0% 0%;">
@@ -327,26 +323,26 @@
                        
                         <div class="row g-3">
                            
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Service Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="service_name" type="text" name="service_name"
                                     placeholder=" Service name">
                                 <span class="text-danger" id="service_nameError"></span>
                             </div>
                             @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-                                <div class="form-group col-md-6 d-none">
+                                <div class="form-group mb-3 col-md-6 d-none">
                                     <label>Barcode</label>
                                     <input class="form-control input-sm" id="barcode_no" type="text" name="barcode_no">
                                     <span class="text-danger" id="barcode_noError"></span>
                                 </div>
                             @endif
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label>Model No <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="model_no" type="text" name="model_no"
                                     placeholder=" Model Number "  value="0123">
                                 <span class="text-danger" id="model_noError"></span>
                             </div>
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Unit <span class="text-danger"> * </span></label>
                                 <select name="unit_id" id="unit_id" class="form-control input-sm">
                                     <option value="No unit" selected="selected"> Select Unit </option>
@@ -356,38 +352,38 @@
                                 </select>
                                 <span class="text-danger" id="unitError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Minimum Price <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="serviceminimum_price" type="number"
                                     name="serviceminimum_price" placeholder=" Minimum price " min="0">
                                 <span class="text-danger" id="serviceminimum_priceError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Maximum Price <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="servicemaximum_price" type="number"
                                     name="servicemaximum_price" placeholder=" Maximum price " min="0">
                                 <span class="text-danger" id="servicemaximum_priceError"></span>
                             </div>
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Discount Amount</label>
                                 <input class="form-control input-sm" id="discount" type="text" value="0.00"
                                     name="discount">
                                 <span class="text-danger" id="discountError"></span>
                             </div>
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Opening Stock <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm openingStock" min="0" id="opening_stock"
                                     type="number" name="opening_stock" placeholder="opening stock"
                                     onchange="checkType()" value="0">
                                 <span class="text-danger" id="opening_stockError"></span>
                             </div>
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Reminder Stock <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" min="0" id="remainder_quantity"
                                     type="number" name="remainder_quantity" value="0">
                                 <span class="text-danger" id="remainder_quantityError"></span>
                             </div>
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Select Warehouse <span class="text-danger"> * </span></label>
                                 <select class="form-control input-sm" id="stock_warehouse" name="stock_warehouse">
                                     <option value="No Warehouse" selected> Select Warehouse </option>
@@ -400,7 +396,7 @@
                             </div>
                             
                             {{-- serializ --}}
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Type <span class="text-danger"> * </span></label>
                                 <select id="servicetype" name="servicetype" class="form-control input-sm"
                                     onchange="checkType()">
@@ -409,7 +405,7 @@
                                 </select>
                                 <span class="text-danger" id="typeError"></span>
                             </div>
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Stock Check <span class="text-danger"> * </span></label>
                                 <select id="stockCheck" name="stockCheck" class="form-control input-sm">
                                     <option value="No" selected> No </option>
@@ -418,14 +414,14 @@
                                 <span class="text-danger" id="stockCheckError"></span>
                             </div>
                             <div class="row col-md-6">
-                                <div class="form-group col-md-6 d-none">
+                                <div class="form-group mb-3 col-md-6 d-none">
                                     <label>Items In Box: <span class="text-danger"></span></label>
                                     <input class="form-control input-sm serialize" id="itemsInBox" type="number"
                                         min="0" name="itemsInBox" placeholder=" Number " onchange="checkType()"
                                         disabled>
                                     <span class="text-danger" id="itemsInBoxError"></span>
                                 </div>
-                                <div class="form-group col-md-6 d-none" id="showBtn">
+                                <div class="form-group mb-3 col-md-6 d-none" id="showBtn">
                                     <label style="color: white;">.</label>
                                     <button type="button" class="btn btn-primary form-control " onclick="checkType()"><i
                                             class="fa fa-table"></i>
@@ -433,16 +429,16 @@
                                 </div>
                             </div>
                             {{-- serializ --}}
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <div class="row">
-                                    <div class="form-group col-md-3 d-none">
+                                    <div class="form-group mb-3 col-md-3 d-none">
                                         <label for="">Image</label>
                                         <input type="file" name="serviceimage" id="serviceimage"
                                             class="form-control form-control-sm">
                                         <span class="text-danger" id="serviceimageError"></span>
 
                                         <div class="row">
-                                            <div class="form-group col-12">
+                                            <div class="form-group mb-3 col-12">
                                                 <img id="showImage" src=" {{ asset('upload/no_image.png') }} "
                                                     alt="Image Not Found"
                                                     style="width: 60%;height: 90px; border:1px solid #000000;margin: 2% 0% 0% 0%;">
@@ -450,7 +446,7 @@
                                         </div>
                                     </div>
                                     <!-- Start spec -->
-                                    <div class="form-group col-md-3 ">
+                                    <div class="form-group mb-3 col-md-3 ">
                                         <label>Notes</label>
                                         <input class="form-control input-sm" id="servicenotes" type="text" name="servicenotes"
                                             placeholder=" Notes about service... ">
@@ -510,7 +506,7 @@
                         @csrf
                         <div class="row g-3">
                             <input type="hidden" name="editId" id="editId">
-                            <div class="form-group col-md-3" id="CategoryDiv">
+                            <div class="form-group mb-3 col-md-3" id="CategoryDiv">
                                 <label> Category <span class="text-danger"> * </span></label><br>
                                 <select name="editCategory" id="editCategory" class="form-control input-sm">
                                     @foreach ($categories as $category)
@@ -519,7 +515,7 @@
                                 </select>
                                 <span class="text-danger" id="editCategoryError"></span>
                             </div>
-                            <div class="form-group col-md-3" id="BrandDiv">
+                            <div class="form-group mb-3 col-md-3" id="BrandDiv">
                                 <label> Brand <span class="text-danger"> * </span></label><br>
                                 <select name="editBrand" id="editBrand" class="form-control input-sm">
                                     @foreach ($brands as $brand)
@@ -528,20 +524,20 @@
                                 </select>
                                 <span class="text-danger" id="editBrandError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Product Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editName" type="text" name="editName">
                                 <span class="text-danger" id="editNameError"></span>
                             </div>
                             @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label>Barcode</label>
                                     <input class="form-control input-sm" id="editBarcode" type="text"
                                         name="editBarcode">
                                     <span class="text-danger" id="editBarcodeError"></span>
                                 </div>
                             @endif
-                            <div class="form-group col-md-3" id="UnitDiv">
+                            <div class="form-group mb-3 col-md-3" id="UnitDiv">
                                 <label> Unit <span class="text-danger"> * </span></label>
                                 <select name="editUnit" id="editUnit" class="form-control input-sm">
                                     @foreach ($units as $unit)
@@ -551,43 +547,43 @@
                                 <span class="text-danger" id="editUnitError"></span>
                             </div>
 
-                            <div class="form-group col-md-3" id="ModelDiv">
+                            <div class="form-group mb-3 col-md-3" id="ModelDiv">
                                 <label>Model No <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editModelNo" type="text" name="editModelNo">
                                 <span class="text-danger" id="editModelNoError"></span>
                             </div>
-                            <div class="form-group col-md-3" >
+                            <div class="form-group mb-3 col-md-3" >
                                 <label>Purchase Price <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editMinimumPrice" type="number"
                                     name="editMinimumPrice" placeholder=" Minimum price ">
                                 <span class="text-danger" id="editMinimumPriceError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Sell Price <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editMaximumPrice" type="number"
                                     name="editMaximumPrice" placeholder=" Maximum price ">
                                 <span class="text-danger" id="editMaximumPriceError"></span>
                             </div>
 
-                            <div class="form-group col-md-3 d-none">
+                            <div class="form-group mb-3 col-md-3 d-none">
                                 <label> Discount Amount</label>
                                 <input class="form-control input-sm" id="editDiscount" type="text"
                                     name="editDiscount">
                                 <span class="text-danger" id="editDiscountError"></span>
                             </div>
-                            <div class="form-group col-md-3" id="OpeningStockDiv">
+                            <div class="form-group mb-3 col-md-3" id="OpeningStockDiv">
                                 <label> Opening Stock </label>
                                 <input class="form-control input-sm" id="editOpenStock" type="number"
                                     name="editOpenStock" disabled>
                                 <span class="text-danger" id="editOpenStockError"></span>
                             </div>
-                            <div class="form-group col-md-3" id="ReminderStockDiv">
+                            <div class="form-group mb-3 col-md-3" id="ReminderStockDiv">
                                 <label> Reminder Stock <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editRemainder" type="number"
                                     name="editRemainder">
                                 <span class="text-danger" id="editRemainderError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label> Status <span class="text-danger"> * </span></label>
                                 <select id="editStatus" name="editStatus" class="form-control input-sm">
                                     <option value="Active">Active</option>
@@ -595,13 +591,13 @@
                                 </select>
                                 <span class="text-danger" id="editStatusError"></span>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Notes</label>
                                 <input class="form-control input-sm" id="editNotes" type="text" name="editNotes"
                                     placeholder="notes about product">
                                 <span class="text-danger" id="editNotesError"></span>
                             </div>
-                            <div class="form-group col-md-3" id="TypeDiv">
+                            <div class="form-group mb-3 col-md-3" id="TypeDiv">
                                 <label> Type <span class="text-danger"> * </span></label>
                                 <select id="editType" name="editType" class="form-control input-sm">
                                     <option value="regular"> Regular </option>
@@ -610,7 +606,7 @@
                                 </select>
                                 <span class="text-danger" id="typeError"></span>
                             </div>
-                            <div class="form-group col-md-3" id="StockCheckDiv">
+                            <div class="form-group mb-3 col-md-3" id="StockCheckDiv">
                                 <label> Stock Check <span class="text-danger"> * </span></label>
                                 <select id="editStockCheck" name="editStockCheck" class="form-control input-sm">
                                     <option value="Yes"> Yes</option>
@@ -619,22 +615,22 @@
                                 <span class="text-danger" id="stockCheckError"></span>
                             </div>
                             <div class="row col-md-6" id="editSP">
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label>Pics Per Box: <span class="text-danger"></span></label>
                                     <input class="form-control input-sm serialize" id="editPicsPerBox" type="text"
                                         name="editPicsPerBox" disabled>
                                     <span class="text-danger" id="editPicsPerBoxError"></span>
                                 </div>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <div class="row">
-                                    <div class="form-group col-md-3 " id="ImageDiv">
+                                    <div class="form-group mb-3 col-md-3 " id="ImageDiv">
                                         <label for="">Edit Image</label>
                                         <input type="file" name="editImage" id="editImage"
                                             class="form-control form-control-sm">
                                         <span class="text-danger" id="editImageError"></span>
                                         <div class="row">
-                                            <div class="form-group col-12">
+                                            <div class="form-group mb-3 col-12">
                                                 <img id="showImage" src="{{ asset('upload/no_image.png') }}"
                                                     style="width: 60%;height: 90px; border:1px solid #000000;margin: 2% 0% 0% 0%;">
                                             </div>
@@ -691,20 +687,20 @@
                         @csrf
                         <div class="row">
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <input type="hidden" name="editOpenStockId" id="editOpenStockId">
                                 <label> Product Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editOpenStockName" type="text"
                                     name="editOpenStockName" disabled>
                                 <span class="text-danger" id="editOpenStockNameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Opening Stock </label>
                                 <input class="form-control input-sm" id="editOpenStockInsert" type="number"
                                     name="editOpenStockInsert" onchange="checkTypeForOpenStockEdit();">
                                 <span class="text-danger" id="editOpenStockError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Select Warehouse <span class="text-danger"> * </span></label>
                                 <select class="form-control input-sm" id="edit_open_stock_warehouse"
                                     name="edit_open_stock_warehouse">
@@ -766,7 +762,7 @@
                 </div>
                 <div class="modal-body card-body">
                     <div class="row">
-                        <div class="form-group col-md-12">
+                        <div class="form-group mb-3 col-md-12">
                             <table border="1">
                                 <thead>
                                     <tr>

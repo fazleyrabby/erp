@@ -6,8 +6,6 @@
     <style type="text/css">
 
     </style>
-    <div class="content-wrapper">
-        <section class="content box-border">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Damage List</h3>
@@ -75,9 +73,6 @@
                     {{ $damages->links() }}
                 </div>
             </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
 
     <!-- modal -->
     <div class="modal fade" id="modal">
