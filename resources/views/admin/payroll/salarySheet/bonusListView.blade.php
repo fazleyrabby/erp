@@ -19,14 +19,14 @@ Admin Bonus Sheet -View
             <div class="card-header">
                 <h3 class="card-title">Bonus</h3>
                 <div class="card-actions">
-                    <button type="button" class="btn btn-primary" onclick="create()"><i class="fa fa-plus circle"></i> Add Bonus</button>
+                    <button type="button" class="btn btn-primary" onclick="create()"><i class="fa fa-plus-circle me-1"></i> Add Bonus</button>
                 </div>
             </div><!-- /.card-header -->
             <h3 class="text-center text-success">{{Session::get('message')}}</h3>
 
             <div class="card-body">
                 <x-filter-bar route="{{ route('bonusListView') }}" searchPlaceholder="Search bonuses..." :sortOptions="['id' => 'ID']" :defaultSort="'id'" :defaultDirection="'DESC'" />
-                <table width="100%" class="table table-bordered table-striped">
+                <table width="100%" class="table table-vcenter table-bordered table-striped">
                     <thead>
                         <tr>
                             <td width="5%">SL</td>
@@ -94,13 +94,13 @@ Admin Bonus Sheet -View
                     @csrf
                     <div class="form-group mb-3 row col-md-12">
                         <label for="carousalCaptionOffer">Bonus Sheet Name</label>
-                        <input type="text" class="form-control" id="bonus_name" name="bonus_name" placeholder=" Write Bonus Name">                                     
+                        <input type="text" class="form-control form-control-sm" id="bonus_name" name="bonus_name" placeholder=" Write Bonus Name">                                     
                         <span class="text-danger" id="bonus_nameError"></span>
                     </div>
                     <div class="form-group mb-3 row col-md-12">
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Month Year</label>
-                            <select class="form-control" id="month_year" name="month_year">   
+                            <select class="form-select form-select-sm" id="month_year" name="month_year">   
                                 <option value=""selected>Choose Month Year</option>                             
                                 @foreach($salrysheets as $salrysheet)
                                 <option value="{{$salrysheet->month_year}}">{{$salrysheet->month_year}}</option>
@@ -110,14 +110,14 @@ Admin Bonus Sheet -View
                         </div>
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Issue Date</label>
-                            <input type="date" class="form-control" id="applicable_from" name="applicable_from">                                     
+                            <input type="date" class="form-control form-control-sm" id="applicable_from" name="applicable_from">                                     
                             <span class="text-danger" id="applicable_fromError"></span>
                         </div>
                     </div>
                     <div class="form-group mb-3 row col-md-12">
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Group</label>
-                            <select class="form-control" id="group_id" name="group_id">    
+                            <select class="form-select form-select-sm" id="group_id" name="group_id">    
                                 <option value="" selected>Choose group</option>                            
                                 @foreach($groups as $group)
                                 <option value="{{$group->id}}">{{$group->name}}</option>
@@ -127,13 +127,13 @@ Admin Bonus Sheet -View
                         </div>
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Amount</label>
-                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Amount in decimal or '%'">                                     
+                            <input type="text" class="form-control form-control-sm" id="amount" name="amount" placeholder="Amount in decimal or '%'">                                     
                             <span class="text-danger" id="amountError"></span>
                         </div>
                     </div>
                     <div class="form-group mb-3 row col-md-12">
                         <label for="carousalCaptionOffer">Remarks</label>
-                            <textarea type="text" class="form-control" id="note" name="note"> </textarea>                                    
+                            <textarea type="text" class="form-control form-control-sm" id="note" name="note"> </textarea>                                    
                             <span class="text-danger" id="noteError"></span>
                     </div>
                 </div>
@@ -169,7 +169,7 @@ Admin Bonus Sheet -View
                             <div class="form-group mb-3 col-md-6">
                                 <label>Bonus Name</label>
                                 <div>
-                                    <input class="form-control input-sm" id="editBonus_name" type="text" name="editBonus_name" >
+                                    <input class="form-control form-control-sm" id="editBonus_name" type="text" name="editBonus_name" >
                                     <span class="text-danger" id="editBonus_nameError"></span>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@ Admin Bonus Sheet -View
                             <div class="form-group mb-3 col-md-6">
                                 <label>Month Year</label>
                                 <div>
-                                    <select class="form-control" id="editmonth_year" name="editmonth_year">   
+                                    <select class="form-select form-select-sm" id="editmonth_year" name="editmonth_year">   
                                        <option value=""selected disabled>Choose Month Year</option>                  
                                         @foreach($salrysheets as $salrysheet)
                                         <option value="{{$salrysheet->month_year}}">{{$salrysheet->month_year}}</option>
@@ -191,14 +191,14 @@ Admin Bonus Sheet -View
                             <div class="form-group mb-3 col-md-6">
                                 <label>Issue Date</label>
                                 <div>
-                                    <input type="date" class="form-control" id="editApplicable_from" name="editApplicable_from">                                     
+                                    <input type="date" class="form-control form-control-sm" id="editApplicable_from" name="editApplicable_from">                                     
                                     <span class="text-danger" id="editApplicable_fromError"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer">Group</label>
-                                <select class="form-control" id="editGroup_id" name="editGroup_id">    
+                                <select class="form-select form-select-sm" id="editGroup_id" name="editGroup_id">    
                                     <option value="" selected>Choose group</option>                            
                                     @foreach($groups as $group)
                                     <option value="{{$group->id}}">{{$group->name}}</option>
@@ -208,13 +208,13 @@ Admin Bonus Sheet -View
                             </div>
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer">Amount</label>
-                                <input type="text" class="form-control" id="editAmount" name="editAmount" placeholder="Amount in decimal or '%'">                                     
+                                <input type="text" class="form-control form-control-sm" id="editAmount" name="editAmount" placeholder="Amount in decimal or '%'">                                     
                                 <span class="text-danger" id="editAmountError"></span>
                             </div>
 
                             <div class="form-group mb-3 col-md-6">
                                 <label> Status</label>
-                                <select id="editStatus" name="editStatus" class="form-control input-sm">
+                                <select id="editStatus" name="editStatus" class="form-control form-control-sm">
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                 </select>
@@ -223,7 +223,7 @@ Admin Bonus Sheet -View
                             <div class="form-group mb-3 col-md-12">
                                 <label>Note</label>
                                 <div>
-                                    <textarea type="text" class="form-control" id="editNote" name="editNote"> </textarea>                                    
+                                    <textarea type="text" class="form-control form-control-sm" id="editNote" name="editNote"> </textarea>                                    
                                     <span class="text-danger" id="editNoteError"></span>
                                 </div>
                             </div>

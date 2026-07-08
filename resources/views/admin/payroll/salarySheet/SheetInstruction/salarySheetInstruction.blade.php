@@ -12,14 +12,14 @@ Admin Salary Sheet Instruction -View
                         <div class="card-header">
                             <h3 class="card-title">Salary Sheet Instructions</h3>
                             <div class="card-actions">
-                                <a href="{{route('sheetInstructionAdd')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Salary Instruction</a>
+                                <a href="{{route('sheetInstructionAdd')}}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Add Salary Instruction</a>
                             </div>
                             <h3 class="text-center text-success">{{Session::get('message')}}</h3>
                         </div>
 
                         <div class="card-body">
                             <x-filter-bar route="{{ route('SalaryInstructionView') }}" searchPlaceholder="Search instructions..." :sortOptions="['id' => 'ID']" :defaultSort="'id'" :defaultDirection="'DESC'" />
-                            <table width="100%" class="table table-bordered table-striped">
+                            <table width="100%" class="table table-vcenter table-bordered table-striped">
                                 <thead>
                                     <tr>
                                         <th width="6%">SL</th>
@@ -105,7 +105,7 @@ Admin Salary Sheet Instruction -View
 
                         <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Sheet Name</label>
-                                <select class="form-control" id="editSheet_id" name="editSheet_id" required>
+                                <select class="form-select form-select-sm" id="editSheet_id" name="editSheet_id" required>
                                 <option value="" selected disabled>Choose Sheet</option>
                                 @foreach($sheets as $sheet)
                                 <option value="{{$sheet->id}}">{{$sheet->sheet_name}}</option>
@@ -115,22 +115,22 @@ Admin Salary Sheet Instruction -View
                         </div>
                         <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Bank Name</label>
-                            <input type="text" class="form-control" id="editBank_name" name="editBank_name" placeholder=" Write Bank Name" >                                     
+                            <input type="text" class="form-control form-control-sm" id="editBank_name" name="editBank_name" placeholder=" Write Bank Name" >                                     
                             <span class="text-danger" id="editBank_nameError"></span>
                         </div>
                         <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Branch Name</label>
-                            <input type="text" class="form-control" id="editBranch_name" name="editBranch_name" placeholder=" Write Branch Name" >                                     
+                            <input type="text" class="form-control form-control-sm" id="editBranch_name" name="editBranch_name" placeholder=" Write Branch Name" >                                     
                             <span class="text-danger" id="editBranch_nameError"></span>
                         </div>
                         <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Account No</label>
-                            <input type="text" class="form-control" id="editMother_account_no" name="editMother_account_no" placeholder=" Write Account Number">                                     
+                            <input type="text" class="form-control form-control-sm" id="editMother_account_no" name="editMother_account_no" placeholder=" Write Account Number">                                     
                             <span class="text-danger" id="editMother_account_noError"></span>
                         </div>
                         <div class="form-group mb-3 col-md-6">
                             <label > Status</label>
-                            <select id="editStatus" class="form-control" name="editStatus" >
+                            <select id="editStatus" class="form-control form-control-sm" name="editStatus" >
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                             </select>

@@ -10,12 +10,14 @@ Final Salary Sheet -View
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 style="float:left;">Add Sheet</h3>
-                            <a href="{{route('finalSalarySheetAdd')}}"   class="btn btn-primary btn-icon-split float-right"><i class="fas fa-plus"></i> Add Sheet</a>     
+                            <h3 class="card-title">Final Salary Sheet</h3>
+                            <div class="card-actions">
+                                <a href="{{route('finalSalarySheetAdd')}}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Add Sheet</a>     
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body ">
-                        <table id="finalSalarySheetTable" width="100%" class="table table-bordered table-striped ">
+                        <table id="finalSalarySheetTable" width="100%" class="table table-vcenter table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <td width="6%">SL</td>

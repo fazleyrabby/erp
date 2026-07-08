@@ -16,10 +16,10 @@ Admin Final Salary Sheet -View
                         <form action="{{route('sheetDataStore')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                         
-                            <div class="form-group mb-3 row ">
+                            <div class="row g-3 align-items-end mb-3">
                                 <div class="col-md-4">
-                                    <label>Month Year</label>
-                                    <select class="form-control" id="month_year" name="month_year">                                
+                                    <label class="form-label">Month Year</label>
+                                    <select class="form-select form-select-sm" id="month_year" name="month_year">                                
                                             @php
                                                 $inc = 36;
                                                 for($i = 0; $i < 12; $i++)
@@ -30,18 +30,16 @@ Admin Final Salary Sheet -View
                                     </select>                                 
                                 </div>
                                 <div class="col-md-4">
-                                    <label>Sheet</label>
-                                    <select class="form-control" id="sheet_id" name="sheet_id" required>
+                                    <label class="form-label">Sheet</label>
+                                    <select class="form-select form-select-sm" id="sheet_id" name="sheet_id" required>
                                         <option value="" selected disabled>Choose Sheet</option>
                                         @foreach($sheets as $sheet)
                                         <option value="{{$sheet->id}}">{{$sheet->sheet_name}}</option>
                                         @endforeach                                   
                                     </select>                                    
                                 </div>
-                            
-                                <div class="col-md-4" style="margin-top: 3%;">
-                                    <span   onclick="generateSalarySheet()" class=" btn btn-primary" style="color:#fff;">Generate Salary Sheet </span>
-                                                           
+                                <div class="col-md-4">
+                                    <button type="button" onclick="generateSalarySheet()" class="btn btn-primary w-100">Generate Salary Sheet</button>
                                 </div>
                             </div>
 
@@ -49,7 +47,7 @@ Admin Final Salary Sheet -View
                         <!-- /.card-header -->
                         <div class="card-body " >
                             <div class="table-responsive">
-                            <table id="manageSalarySheetInstructionTable"  class="table table-bordered table-striped " >
+                            <table id="manageSalarySheetInstructionTable"  class="table table-vcenter table-bordered table-striped " >
                                 <thead>
                                     <tr>
                                         <td>SL</td>

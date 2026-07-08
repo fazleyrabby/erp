@@ -38,7 +38,7 @@ Admin Generate Salary Sheet  -View
                                             <h4 style="text-align:center;">Bank Sheet</h4>
                                             <p>{!! $Instruction->letter_body !!}</p>
                                             <p>Mother Account: {{$Instruction->mother_account_no}}</p>
-                                        <table  style="width:100%;text-align:center;margin-top:1px;">
+                                        <table class="table table-vcenter table-bordered table-striped w-100 text-center mt-3">
                                             <thead>
                                                     <tr>
                                                         <th>SL</th>

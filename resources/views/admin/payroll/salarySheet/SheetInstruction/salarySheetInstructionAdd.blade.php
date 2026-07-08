@@ -25,7 +25,7 @@ Admin Salary Sheet Intruction Add -View
                             <div class="form-group mb-3 row col-md-12">
                                 <div class="col-md-6">
                                     <label for="carousalCaptionOffer">Month Year</label>
-                                    <select class="form-control" id="month_year" name="month_year">
+                                    <select class="form-select form-select-sm" id="month_year" name="month_year">
                                         @php
                                         $inc = 36;
                                         for($i = 0; $i < 36; $i++)
@@ -38,7 +38,7 @@ Admin Salary Sheet Intruction Add -View
                                 </div>
                                 <div class="col-md-6">
                                     <label for="carousalCaptionOffer">Sheet Name</label>
-                                    <select class="form-control" id="sheet_id" name="sheet_id" required>
+                                    <select class="form-select form-select-sm" id="sheet_id" name="sheet_id" required>
                                         <option value="" selected disabled>Choose Sheet</option>
                                         @foreach($sheets as $sheet)
                                         <option value="{{$sheet->id}}">{{$sheet->sheet_name}}</option>
@@ -50,19 +50,19 @@ Admin Salary Sheet Intruction Add -View
                             <div class="form-group mb-3 row col-md-12">
                                 <div class="col-md-6">
                                     <label for="carousalCaptionOffer">Bank Name</label>
-                                    <input type="text" class="form-control" id="bank_name" name="bank_name" placeholder=" Write Bank Name" >                                     
+                                    <input type="text" class="form-control form-control-sm" id="bank_name" name="bank_name" placeholder=" Write Bank Name" >                                     
                                     <span class="text-danger" id="bank_nameError"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="carousalCaptionOffer">Branch Name</label>
-                                    <input type="text" class="form-control" id="branch_name" name="branch_name" placeholder=" Write Branch Name" >                                     
+                                    <input type="text" class="form-control form-control-sm" id="branch_name" name="branch_name" placeholder=" Write Branch Name" >                                     
                                     <span class="text-danger" id="branch_nameError"></span>
                                 </div>
                             </div>
                             <div class="form-group mb-3 row col-md-12">
                                 <div class="col-md-6">
                                     <label for="carousalCaptionOffer">Account No</label>
-                                    <input type="text" class="form-control" id="mother_account_no" name="mother_account_no" placeholder=" Write Account Number">                                     
+                                    <input type="text" class="form-control form-control-sm" id="mother_account_no" name="mother_account_no" placeholder=" Write Account Number">                                     
                                     <span class="text-danger" id="mother_account_noError"></span>
                                 </div>
                             </div>
