@@ -202,7 +202,6 @@ class ReportController extends Controller
 
     public function accountsSummaryGenerate(Request $request)
     {
-
         $time = strtotime($request->date_from);
         $month = date('F', $time);
         $year = date('Y', $time);
@@ -474,17 +473,9 @@ class ReportController extends Controller
         if ($totalIncomeWithOpening < $totalExpense) {
             $clss = 'bg-danger';
         }
-        $table .= '<tr>
-                        <td>
-                            <table class="table table-vcenter table-bordered table-striped">
-                                <tbody>
-                                    <tr class="font-weight-bold">
-                                        <td width="70%">Balance Closing: </td>
-                                        <td width="30%" class="text-right"><strong>'.number_format($expenseClosing).'</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
+        $table .= '<tr class="font-weight-bold">
+                        <td>Balance Closing</td>
+                        <td class="text-right" colspan="3"><strong>'.number_format($expenseClosing).'</strong></td>
                     </tr>';
 
         // Start Voucher Section
@@ -502,26 +493,10 @@ class ReportController extends Controller
                 DB::raw('SUM(CASE WHEN type="Payment Received" THEN payment_vouchers.amount END) totalVoucherRcvAmount'),
                 DB::raw('SUM(CASE WHEN type="Payment" THEN payment_vouchers.amount END) totalVoucherPaymentAmount'),
             )->first();
-        $table .= '<tr>
-                    <td>
-                        <table class="table table-vcenter table-bordered table-striped">
-                            <tbody>
-                                <tr class="font-weight-bold">
-                                    <td width="70%"> Voucher Recipient </td>
-                                    <td width="30%" class="text-right"><strong>'.$voucherSummary->totalVoucherRcvAmount.'</strong></td>
-                                </tr>
-                                <tr class="font-weight-bold">
-                                    <td width="70%"> Payment Voucher </td>
-                                    <td width="30%" class="text-right"><strong>'.$voucherSummary->totalVoucherPaymentAmount.'</strong></td>
-                                </tr>
-                                <tr class="font-weight-bold">
-                                    <td width="70%"> Cash In Hand </td>
-                                    <td width="30%" class="text-right"><strong>'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>';
+        $table .= '<tr><td>Voucher Recipient</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherRcvAmount).'</td></tr>';
+        $table .= '<tr><td>Payment Voucher</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherPaymentAmount).'</td></tr>';
+        $table .= '<tr class="font-weight-bold table-active"><td>Cash In Hand</td><td class="text-right" colspan="3">'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</td></tr>';
+        $table .= '</tbody></table>';
         // End Voucher Section
 
         $lastTwoChar = substr(($request->date_to), -2);

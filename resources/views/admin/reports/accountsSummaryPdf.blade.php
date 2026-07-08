@@ -1,8 +1,6 @@
 <html>
 
 <head>
-
-
     <link rel="stylesheet" type="text/css"
         href="{{ base_path() . '/public/backend/assets/assets/libs/bootstrap/dist/css/bootstrap.min.css' }}">
 
@@ -25,7 +23,7 @@
 
         /** Define now the real margins of every page in the PDF **/
         body {
-            margin-top: 4.1cm;
+            margin-top: 1.5cm;
             margin-left: 0.5cm;
             margin-right: 0.5cm;
             margin-bottom: 4cm;

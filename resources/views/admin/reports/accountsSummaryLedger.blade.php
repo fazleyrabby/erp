@@ -6,17 +6,13 @@
 
 @section('content')
     <div class="container-fluid">
-        
             <div class="card">
                 <div class="card-header">
                     <h3>Income & Expenditure Statement</h3>
                     <h3 class="text-center text-danger">{{ Session::get('message') }}</h3>
                 </div>
                 <div class="card-body">
-
-
                     <div class="row g-3">
-
                         <div class="col-md-4">
                             <label class="form-label">Date From</label>
                             <input type="date" class="form-control form-control-sm" name="date_from" id="date_from"
@@ -40,11 +36,17 @@
                     </div>
 
                     <div id="monthYearHeader"></div>
+                    <br/>
                     <div class="table-responsive" id="tableData"></div>
-                    <div class="row g-3">
-                        <div class="col-md-12 " id="getVoucherButton"></div>
+                    <div class="container-fluid p-0 mt-2">
+                        <div class="row no-gutters">
+                            <div class="col-md-12" id="getVoucherButton">
+                                <div id="closingBtn"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div id="closingBtn"></div </div><!-- Card Content end -->
+                </div>
+                <!-- Card Content end -->
         <!-- pc-container end -->
 @endsection
 
