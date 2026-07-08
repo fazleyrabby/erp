@@ -4,7 +4,9 @@
 @endsection
 @section('content')
 
-<div class="card">
+<div class="content-wrapper">
+    <section class="content box-border">
+        <div class="card">
     <div class="card-header">
         <h3 class="card-title">Category List</h3>
         <div class="card-actions">
@@ -80,6 +82,8 @@
 
         {{ $categories->links('pagination::tabler') }}
     </div>
+</div>
+    </section>
 </div>
 
 <!-- create modal -->

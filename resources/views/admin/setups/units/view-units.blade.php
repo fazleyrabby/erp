@@ -4,7 +4,9 @@
 @endsection
 @section('content')
 
-<div class="card">
+<div class="content-wrapper">
+    <section class="content box-border">
+        <div class="card">
     <div class="card-header">
         <h3 class="card-title">Unit List</h3>
         <div class="card-actions">
@@ -72,6 +74,8 @@
 
         {{ $units->links() }}
     </div>
+</div>
+    </section>
 </div>
 
 <!-- modal -->

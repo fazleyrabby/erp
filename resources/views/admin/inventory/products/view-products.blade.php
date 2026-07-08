@@ -3,7 +3,9 @@
     {{ Session::get('companySettings')[0]['name'] }} Products
 @endsection
 @section('content')
-    <div class="card">
+    <div class="content-wrapper">
+        <section class="content box-border">
+            <div class="card">
                 <div class="card-header">
             <h3 class="card-title">Product List</h3>
             <div class="card-actions">
@@ -107,6 +109,8 @@
                     {{ $products->links() }}
                 </div>
             </div>
+        </section>
+    </div>
 
 
     <div class="modal fade" id="modal" tabindex="-1">

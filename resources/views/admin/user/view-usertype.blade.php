@@ -7,7 +7,9 @@
 @endsection
 @section('content')
 
-<div class="card">
+<div class="content-wrapper">
+    <section class="content box-border">
+        <div class="card">
     <div class="card-header">
         <h3 class="card-title">Usertype List</h3>
         <div class="card-actions">
@@ -55,6 +57,8 @@
         </div>
         {{ $usertypes->links() }}
     </div>
+</div>
+    </section>
 </div>
 
     <!-- modal -->
