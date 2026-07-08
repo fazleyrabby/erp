@@ -41,7 +41,7 @@ class PermissionToRoleController extends Controller
         $permission_groups = User::getPermissionGroups();
         $allRoles = Role::where('deleted', '=', 'No')->get();
 
-        return view('admin.rolesPermissions.permission.permissionToRoleList', [
+        return view('admin.RolesPermissions.permission.permissionToRoleList', [
             'permissions' => $permissions,
             'roles' => $roles,
             'permission_groups' => $permission_groups,

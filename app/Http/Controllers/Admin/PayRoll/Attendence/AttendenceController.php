@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\PayRoll\Attendence;
 
 use App\Http\Controllers\Controller;
 use App\Models\payroll\OurTeam;
-use App\Models\payRoll\PayrollAttendence;
+use App\Models\payroll\PayrollAttendence;
 use App\Models\payroll\TimeScheduleGroup;
 use DateTime;
 use Illuminate\Http\Request;

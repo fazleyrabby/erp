@@ -1,76 +1,452 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RHTECH ERP - Premium Enterprise Resource Planning crafted for SMEs, manufacturing, retail, and wholesale in Bangladesh. Scale operations, automate workflows, and drive business growth.">
+    <title>RHTECH ERP - Elevate & Automate Your Business Operations</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
-        <title>Pos-System</title>
+    <!-- Tailwind CSS v4 CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind v4 Custom Theme Configuration -->
+    <style type="text/theme">
+        @theme {
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --color-bg-dark: #0f172a;
+            --color-brand-primary: #8b5cf6;
+            --color-brand-accent: #6366f1;
+        }
+    </style>
 
-        <!-- Styles -->
-        <style>
-            /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}body{margin:0}a{background-color:transparent}[hidden]{display:none}html{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;line-height:1.5}*,:after,:before{box-sizing:border-box;border:0 solid #e2e8f0}a{color:inherit;text-decoration:inherit}svg,video{display:block;vertical-align:middle}video{max-width:100%;height:auto}.bg-white{--bg-opacity:1;background-color:#fff;background-color:rgba(255,255,255,var(--bg-opacity))}.bg-gray-100{--bg-opacity:1;background-color:#f7fafc;background-color:rgba(247,250,252,var(--bg-opacity))}.border-gray-200{--border-opacity:1;border-color:#edf2f7;border-color:rgba(237,242,247,var(--border-opacity))}.border-t{border-top-width:1px}.flex{display:flex}.grid{display:grid}.hidden{display:none}.items-center{align-items:center}.justify-center{justify-content:center}.font-semibold{font-weight:600}.h-5{height:1.25rem}.h-8{height:2rem}.h-16{height:4rem}.text-sm{font-size:.875rem}.text-lg{font-size:1.125rem}.leading-7{line-height:1.75rem}.mx-auto{margin-left:auto;margin-right:auto}.ml-1{margin-left:.25rem}.mt-2{margin-top:.5rem}.mr-2{margin-right:.5rem}.ml-2{margin-left:.5rem}.mt-4{margin-top:1rem}.ml-4{margin-left:1rem}.mt-8{margin-top:2rem}.ml-12{margin-left:3rem}.-mt-px{margin-top:-1px}.max-w-6xl{max-width:72rem}.min-h-screen{min-height:100vh}.overflow-hidden{overflow:hidden}.p-6{padding:1.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.pt-8{padding-top:2rem}.fixed{position:fixed}.relative{position:relative}.top-0{top:0}.right-0{right:0}.shadow{box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px 0 rgba(0,0,0,.06)}.text-center{text-align:center}.text-gray-200{--text-opacity:1;color:#edf2f7;color:rgba(237,242,247,var(--text-opacity))}.text-gray-300{--text-opacity:1;color:#e2e8f0;color:rgba(226,232,240,var(--text-opacity))}.text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}.text-gray-500{--text-opacity:1;color:#a0aec0;color:rgba(160,174,192,var(--text-opacity))}.text-gray-600{--text-opacity:1;color:#718096;color:rgba(113,128,150,var(--text-opacity))}.text-gray-700{--text-opacity:1;color:#4a5568;color:rgba(74,85,104,var(--text-opacity))}.text-gray-900{--text-opacity:1;color:#1a202c;color:rgba(26,32,44,var(--text-opacity))}.underline{text-decoration:underline}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.w-5{width:1.25rem}.w-8{width:2rem}.w-auto{width:auto}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.sm\:rounded-lg{border-radius:.5rem}.sm\:block{display:block}.sm\:items-center{align-items:center}.sm\:justify-start{justify-content:flex-start}.sm\:justify-between{justify-content:space-between}.sm\:h-20{height:5rem}.sm\:ml-0{margin-left:0}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:pt-0{padding-top:0}.sm\:text-left{text-align:left}.sm\:text-right{text-align:right}}@media (min-width:768px){.md\:border-t-0{border-top-width:0}.md\:border-l{border-left-width:1px}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (min-width:1024px){.lg\:px-8{padding-left:2rem;padding-right:2rem}}@media (prefers-color-scheme:dark){.dark\:bg-gray-800{--bg-opacity:1;background-color:#2d3748;background-color:rgba(45,55,72,var(--bg-opacity))}.dark\:bg-gray-900{--bg-opacity:1;background-color:#1a202c;background-color:rgba(26,32,44,var(--bg-opacity))}.dark\:border-gray-700{--border-opacity:1;border-color:#4a5568;border-color:rgba(74,85,104,var(--border-opacity))}.dark\:text-white{--text-opacity:1;color:#fff;color:rgba(255,255,255,var(--text-opacity))}.dark\:text-gray-400{--text-opacity:1;color:#cbd5e0;color:rgba(203,213,224,var(--text-opacity))}}
-        </style>
-
-        <style>
-            body {
-                font-family: 'Nunito', sans-serif;
+    <!-- Custom CSS for Font & Entrance Animations -->
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
-        </style>
-    </head>
-    <body class="antialiased">
-        <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-            @if (Route::has('login'))
-                <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="text-slate-300 antialiased selection:bg-violet-600 selection:text-white overflow-x-hidden">
 
-                        @if (Route::has('register'))
-                            
-                        @endif
-                    @endauth
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-lg border-b border-white/5">
+        <nav class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5">
+                <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center text-white font-extrabold text-xl shadow-lg">R</span>
+                <span class="font-bold text-2xl tracking-tight text-white">RHTECH <span class="text-violet-500 font-medium">ERP</span></span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#problems" class="text-sm text-slate-400 hover:text-white transition-colors">Pain Points</a>
+                <a href="#screenshots" class="text-sm text-slate-400 hover:text-white transition-colors">Tour</a>
+                <a href="#modules" class="text-sm text-slate-400 hover:text-white transition-colors">Modules</a>
+                <a href="#industries" class="text-sm text-slate-400 hover:text-white transition-colors">Industries</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="/login" class="text-sm font-semibold text-slate-300 hover:text-white transition-colors">Login</a>
+                <a href="#contact" class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-white text-slate-950 font-bold hover:bg-slate-100 transition-all active:scale-98">
+                    Book a Demo
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-24 lg:py-32 overflow-hidden">
+        <!-- Background gradients -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-violet-600/10 rounded-full blur-[140px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-center">
+            <!-- Hero Copywriting -->
+            <div class="lg:col-span-5 space-y-8 animate-fade-in text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-950/40 border border-violet-850/30 text-violet-400 text-xs font-semibold">
+                    Built for Bangladesh's Growing Businesses
                 </div>
-            @endif
 
-            <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex justify-center pt-8 sm:justify-start sm:pt-0">
-                    <svg viewBox="0 0 651 192" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-16 w-auto text-gray-700 sm:h-20">
-                        <g clip-path="url(#clip0)" fill="#EF3B2D">
-                            <path d="M248.032 44.676h-16.466v100.23h47.394v-14.748h-30.928V44.676zM337.091 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.431 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162-.001 2.863-.479 5.584-1.432 8.161zM463.954 87.202c-2.101-3.341-5.083-5.965-8.949-7.875-3.865-1.909-7.756-2.864-11.669-2.864-5.062 0-9.69.931-13.89 2.792-4.201 1.861-7.804 4.417-10.811 7.661-3.007 3.246-5.347 6.993-7.016 11.239-1.672 4.249-2.506 8.713-2.506 13.389 0 4.774.834 9.26 2.506 13.459 1.669 4.202 4.009 7.925 7.016 11.169 3.007 3.246 6.609 5.799 10.811 7.66 4.199 1.861 8.828 2.792 13.89 2.792 3.913 0 7.804-.955 11.669-2.863 3.866-1.908 6.849-4.533 8.949-7.875v9.021h15.607V78.182h-15.607v9.02zm-1.432 32.503c-.955 2.578-2.291 4.821-4.009 6.73-1.719 1.91-3.795 3.437-6.229 4.582-2.435 1.146-5.133 1.718-8.091 1.718-2.96 0-5.633-.572-8.019-1.718-2.387-1.146-4.438-2.672-6.156-4.582-1.719-1.909-3.032-4.152-3.938-6.73-.909-2.577-1.36-5.298-1.36-8.161 0-2.864.451-5.585 1.36-8.162.905-2.577 2.219-4.819 3.938-6.729 1.718-1.908 3.77-3.437 6.156-4.582 2.386-1.146 5.059-1.718 8.019-1.718 2.958 0 5.656.572 8.091 1.718 2.434 1.146 4.51 2.674 6.229 4.582 1.718 1.91 3.054 4.152 4.009 6.729.953 2.577 1.432 5.298 1.432 8.162 0 2.863-.479 5.584-1.432 8.161zM650.772 44.676h-15.606v100.23h15.606V44.676zM365.013 144.906h15.607V93.538h26.776V78.182h-42.383v66.724zM542.133 78.182l-19.616 51.096-19.616-51.096h-15.808l25.617 66.724h19.614l25.617-66.724h-15.808zM591.98 76.466c-19.112 0-34.239 15.706-34.239 35.079 0 21.416 14.641 35.079 36.239 35.079 12.088 0 19.806-4.622 29.234-14.688l-10.544-8.158c-.006.008-7.958 10.449-19.832 10.449-13.802 0-19.612-11.127-19.612-16.884h51.777c2.72-22.043-11.772-40.877-33.023-40.877zm-18.713 29.28c.12-1.284 1.917-16.884 18.589-16.884 16.671 0 18.697 15.598 18.813 16.884h-37.402zM184.068 43.892c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002-35.648-20.524a2.971 2.971 0 00-2.964 0l-35.647 20.522-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v38.979l-29.706 17.103V24.493a3 3 0 00-.103-.776c-.024-.088-.073-.165-.104-.25-.058-.157-.108-.316-.191-.46-.056-.097-.137-.176-.203-.265-.087-.117-.161-.242-.265-.345-.085-.086-.194-.148-.29-.223-.109-.085-.206-.182-.327-.252l-.002-.001-.002-.002L40.098 1.396a2.971 2.971 0 00-2.964 0L1.487 21.919l-.002.002-.002.001c-.121.07-.219.167-.327.252-.096.075-.205.138-.29.223-.103.103-.178.228-.265.345-.066.089-.147.169-.203.265-.083.144-.133.304-.191.46-.031.085-.08.162-.104.25-.067.249-.103.51-.103.776v122.09c0 1.063.568 2.044 1.489 2.575l71.293 41.045c.156.089.324.143.49.202.078.028.15.074.23.095a2.98 2.98 0 001.524 0c.069-.018.132-.059.2-.083.176-.061.354-.119.519-.214l71.293-41.045a2.971 2.971 0 001.489-2.575v-38.979l34.158-19.666a2.971 2.971 0 001.489-2.575V44.666a3.075 3.075 0 00-.106-.774zM74.255 143.167l-29.648-16.779 31.136-17.926.001-.001 34.164-19.669 29.674 17.084-21.772 12.428-43.555 24.863zm68.329-76.259v33.841l-12.475-7.182-17.231-9.92V49.806l12.475 7.182 17.231 9.92zm2.97-39.335l29.693 17.095-29.693 17.095-29.693-17.095 29.693-17.095zM54.06 114.089l-12.475 7.182V46.733l17.231-9.92 12.475-7.182v74.537l-17.231 9.921zM38.614 7.398l29.693 17.095-29.693 17.095L8.921 24.493 38.614 7.398zM5.938 29.632l12.475 7.182 17.231 9.92v79.676l.001.005-.001.006c0 .114.032.221.045.333.017.146.021.294.059.434l.002.007c.032.117.094.222.14.334.051.124.088.255.156.371a.036.036 0 00.004.009c.061.105.149.191.222.288.081.105.149.22.244.314l.008.01c.084.083.19.142.284.215.106.083.202.178.32.247l.013.005.011.008 34.139 19.321v34.175L5.939 144.867V29.632h-.001zm136.646 115.235l-65.352 37.625V148.31l48.399-27.628 16.953-9.677v33.862zm35.646-61.22l-29.706 17.102V66.908l17.231-9.92 12.475-7.182v33.841z"/>
-                        </g>
-                    </svg>
+                <h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.1]">
+                    Stop juggling software.<br>
+                    <span class="bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">Automate your business.</span>
+                </h1>
+
+                <p class="text-lg text-slate-400 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                    Ditch manual work and fragile spreadsheets. Integrate your Inventory, Purchasing, POS, Accounting, and HR into one secure, lightning-fast platform designed to increase margins.
+                </p>
+
+                <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+                    <a href="#contact" class="px-8 py-4 rounded-lg bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold shadow-lg hover:shadow-violet-600/25 hover:-translate-y-0.5 transition-all active:scale-98 text-center">
+                        Book a Free Demo
+                    </a>
+                    <a href="#screenshots" class="px-8 py-4 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 text-white font-semibold transition-all hover:-translate-y-0.5 active:scale-98 text-center">
+                        See System Showcase
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Right: High-Fidelity Overlapping Screenshot Stack -->
+            <div class="lg:col-span-7 animate-fade-in delay-100 relative h-[380px] md:h-[450px] w-full flex items-center justify-center mt-12 lg:mt-0">
+                <!-- Stack Item 1: Payroll (Left Bottom) -->
+                <div class="absolute left-0 bottom-4 w-[75%] bg-slate-900 border border-white/5 rounded-xl shadow-xl overflow-hidden opacity-60 hover:opacity-100 hover:z-40 hover:scale-102 hover:border-white/20 transition-all duration-300 transform -rotate-2">
+                    <div class="bg-slate-800 border-b border-white/5 px-3 py-1.5 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        <span class="ml-2 text-[10px] text-slate-400 font-mono">rhtech.xyz/payroll</span>
+                    </div>
+                    <img src="{{ asset('landing/payroll.png') }}" class="w-full h-auto block object-cover" alt="Payroll Stacking View">
                 </div>
 
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <div class="p-6">
-                            <div class="flex items-center">
-                                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="w-8 h-8 text-gray-500"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                                <div class="ml-4 text-lg leading-7 font-semibold"><a href="https://laravel.com/docs" class="underline text-gray-900 dark:text-white">Documentation</a></div>
-                            </div>
+                <!-- Stack Item 2: Inventory (Right Middle) -->
+                <div class="absolute right-0 top-4 w-[75%] bg-slate-900 border border-white/5 rounded-xl shadow-xl overflow-hidden opacity-60 hover:opacity-100 hover:z-40 hover:scale-102 hover:border-white/20 transition-all duration-300 transform rotate-2">
+                    <div class="bg-slate-800 border-b border-white/5 px-3 py-1.5 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        <span class="ml-2 text-[10px] text-slate-400 font-mono">rhtech.xyz/inventory</span>
+                    </div>
+                    <img src="{{ asset('landing/inventory.png') }}" class="w-full h-auto block object-cover" alt="Inventory Stacking View">
+                </div>
 
-                            <div class="ml-12">
-                                <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
-                                    Laravel has wonderful, thorough documentation covering every aspect of the framework. Whether you are new to the framework or have previous experience with Laravel, we recommend reading all of the documentation from beginning to end.
-                                </div>
-                            </div>
-                        </div>
+                <!-- Stack Item 3: Dashboard (Center Top Focus) -->
+                <div class="absolute w-[80%] bg-slate-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-30 hover:scale-102 transition-transform duration-300">
+                    <div class="bg-slate-800 border-b border-white/5 px-4 py-2.5 flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span>
+                        <span class="ml-4 text-xs text-slate-400 font-mono">rhtech.xyz/dashboard</span>
+                    </div>
+                    <img src="{{ asset('landing/dashboard.png') }}" class="w-full h-auto block object-cover" alt="Dashboard Focus View">
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    
+    <!-- Business Pain Points -->
+    <section id="problems" class="py-24 border-t border-white/5 bg-slate-900/40 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-2xl mx-auto text-center space-y-4 mb-16">
+                <span class="text-xs uppercase tracking-widest text-rose-500 font-bold">The Reality</span>
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Is administrative overhead strangling your growth?</h2>
+                <p class="text-slate-400">Most businesses in Bangladesh stay small not due to sales, but because they get bogged down in chaotic manual systems.</p>
+            </div>
 
-                        
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Pain 1 -->
+                <div class="p-8 rounded-xl border border-white/5 bg-slate-900 hover:border-rose-950 hover:shadow-lg transition-all duration-300">
+                    <span class="text-xs font-bold text-rose-500 uppercase tracking-wider">Pain #01</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Inventory Leakage</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Stocks go missing, warehouses are uncoordinated, and items run out right when customers are ready to pay.</p>
+                </div>
+                <!-- Pain 2 -->
+                <div class="p-8 rounded-xl border border-white/5 bg-slate-900 hover:border-rose-950 hover:shadow-lg transition-all duration-300">
+                    <span class="text-xs font-bold text-rose-500 uppercase tracking-wider">Pain #02</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Excel & Ledger Dependency</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Relying on staff to update complex sheets leads to transcription errors, stolen logs, and slow verification.</p>
+                </div>
+                <!-- Pain 3 -->
+                <div class="p-8 rounded-xl border border-white/5 bg-slate-900 hover:border-rose-950 hover:shadow-lg transition-all duration-300">
+                    <span class="text-xs font-bold text-rose-500 uppercase tracking-wider">Pain #03</span>
+                    <h3 class="text-lg font-bold text-white mt-2 mb-3">Delayed Billing & Cashflow</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Writing bills manually slows down invoicing, creating lag times in cash collections and high outstanding debts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                     
+    <!-- Product Showcase Tour (Detailed Screenshots Section) -->
+    <section id="screenshots" class="py-24 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="text-xs uppercase tracking-widest text-violet-500 font-bold">System Tour</span>
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Explore the RHTECH ERP Interface</h2>
+                <p class="text-slate-400">Review the clean, structured modules designed for high daily performance.</p>
+            </div>
 
+            <!-- Showcase cards -->
+            <div class="space-y-20">
+                
+                <!-- Tour Item 1: Inventory -->
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-5 space-y-6">
+                        <span class="text-xs font-bold text-violet-400 uppercase tracking-wider">Inventory & Warehouse</span>
+                        <h3 class="text-2xl font-bold text-white">Stock Ledger Control</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Complete visibility of items across multi-warehouse setups. Configure products, manage units, generate barcodes, and receive real-time notifications on threshold levels.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-7 bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+                        <div class="bg-slate-800 border-b border-white/5 px-4 py-2 text-xs text-slate-400 font-mono">rhtech.xyz/inventory</div>
+                        <img src="{{ asset('landing/inventory.png') }}" class="w-full h-auto block" alt="Inventory Management Screenshot">
                     </div>
                 </div>
 
-               
+                <!-- Tour Item 2: Accounting -->
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-5 lg:order-last space-y-6">
+                        <span class="text-xs font-bold text-violet-400 uppercase tracking-wider">Finance & Ledger</span>
+                        <h3 class="text-2xl font-bold text-white">Double-Entry Accounting</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Maintain strict chart of accounts, generate general ledgers, automate vouchers, manage financial reports, and review balance sheets instantly.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-7 bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+                        <div class="bg-slate-800 border-b border-white/5 px-4 py-2 text-xs text-slate-400 font-mono">rhtech.xyz/ledger</div>
+                        <img src="{{ asset('landing/ledger.png') }}" class="w-full h-auto block" alt="Double Entry Ledger Screenshot">
+                    </div>
+                </div>
+
+                <!-- Tour Item 3: Payroll -->
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-5 space-y-6">
+                        <span class="text-xs font-bold text-violet-400 uppercase tracking-wider">Payroll & Scheduling</span>
+                        <h3 class="text-2xl font-bold text-white">Shift & Attendance Planner</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">
+                            Track attendance records, allocate shift patterns, establish schedules, and automatically compile salary sheets based on logs.
+                        </p>
+                    </div>
+                    <div class="lg:col-span-7 bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-xl">
+                        <div class="bg-slate-800 border-b border-white/5 px-4 py-2 text-xs text-slate-400 font-mono">rhtech.xyz/payroll</div>
+                        <img src="{{ asset('landing/payroll.png') }}" class="w-full h-auto block" alt="Payroll Shift Planner Screenshot">
+                    </div>
+                </div>
+
             </div>
         </div>
-    </body>
+    </section>
+
+    <!-- Interactive Modules Section -->
+    <section id="modules" class="py-24 border-t border-white/5 bg-slate-900/40">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="text-xs uppercase tracking-widest text-violet-500 font-bold">System Capabilities</span>
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Engineered for real business results</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Inventory -->
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900 hover:border-violet-500/30 transition-all duration-300">
+                    <h3 class="text-lg font-bold text-white mb-2">Inventory Control</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Save up to 15% on stock costs by eliminating duplicate ordering and unallocated warehouse wastage.</p>
+                </div>
+                <!-- Accounting -->
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900 hover:border-violet-500/30 transition-all duration-300">
+                    <h3 class="text-lg font-bold text-white mb-2">Automated Ledgers</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Get accurate Balance Sheets instantly. Close your monthly accounts in minutes instead of days.</p>
+                </div>
+                <!-- POS -->
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900 hover:border-violet-500/30 transition-all duration-300">
+                    <h3 class="text-lg font-bold text-white mb-2">Retail Point of Sale</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Super-fast billing interface with barcode support. Keep queues moving and automatically sync transactions with stock.</p>
+                </div>
+                <!-- CRM -->
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900 hover:border-violet-500/30 transition-all duration-300">
+                    <h3 class="text-lg font-bold text-white mb-2">Lead Tracking</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Never lose a potential customer. Log communications, assign accounts, and track your pipeline steps.</p>
+                </div>
+                <!-- HR & Payroll -->
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900 hover:border-violet-500/30 transition-all duration-300">
+                    <h3 class="text-lg font-bold text-white mb-2">Shift & Salary Control</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Manage complex employee shifts, track biometric log entries, and calculate net salaries without discrepancies.</p>
+                </div>
+                <!-- Reports -->
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900 hover:border-violet-500/30 transition-all duration-300">
+                    <h3 class="text-lg font-bold text-white mb-2">Executive Reports</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Make decisions based on real facts. Monitor top-selling items, cash flows, and overall productivity levels instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Served -->
+    <section id="industries" class="py-24 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="text-xs uppercase tracking-widest text-violet-500 font-bold">Adaptability</span>
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Configured for your specific workflow</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Industry 1 -->
+                <div class="p-6 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors">
+                    <h4 class="text-white font-bold mb-2">Manufacturing</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Track raw materials, monitor Bills of Materials (BOM), and track multi-stage assembly lines.</p>
+                </div>
+                <!-- Industry 2 -->
+                <div class="p-6 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors">
+                    <h4 class="text-white font-bold mb-2">Retail & Wholesale</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Handle large bulk invoicing, client credit parameters, barcodes, and quick checkouts.</p>
+                </div>
+                <!-- Industry 3 -->
+                <div class="p-6 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors">
+                    <h4 class="text-white font-bold mb-2">Restaurants</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Raw ingredient depletion logs, kitchen slip processing, and busy dining POS panels.</p>
+                </div>
+                <!-- Industry 4 -->
+                <div class="p-6 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-colors">
+                    <h4 class="text-white font-bold mb-2">Pharmacies</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Track medicinal batches, manage expiry dates, and automate medicine reorders.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us / Outcomes -->
+    <section class="py-24 border-t border-white/5 bg-slate-900/40">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-5 space-y-6">
+                <span class="text-xs uppercase tracking-widest text-violet-500 font-bold">Why RHTECH</span>
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Uncompromising performance for scale</h2>
+                <p class="text-slate-400 text-sm leading-relaxed">
+                    We don't just sell system tools. We deploy robust, localized infrastructure designed to eliminate errors, lower management fatigue, and support your transition to digital operations.
+                </p>
+            </div>
+            
+            <div class="lg:col-span-7 grid grid-cols-2 gap-6">
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900">
+                    <span class="text-3xl font-extrabold text-violet-400 font-serif">99.8%</span>
+                    <h4 class="text-white font-bold text-sm mt-2 mb-1">Inventory Precision</h4>
+                    <p class="text-xs text-slate-400">Eliminate manual counting mistakes and physical stock leaks.</p>
+                </div>
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900">
+                    <span class="text-3xl font-extrabold text-violet-400 font-serif">4x Faster</span>
+                    <h4 class="text-white font-bold text-sm mt-2 mb-1">Invoicing Routines</h4>
+                    <p class="text-xs text-slate-400">Instantly generate and record transactions into ledgers.</p>
+                </div>
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900">
+                    <span class="text-3xl font-extrabold text-violet-400 font-serif">15+ Hrs</span>
+                    <h4 class="text-white font-bold text-sm mt-2 mb-1">Weekly Time Saved</h4>
+                    <p class="text-xs text-slate-400">Ditch daily manual balance compilations and reporting reviews.</p>
+                </div>
+                <div class="p-6 rounded-xl border border-white/5 bg-slate-900">
+                    <span class="text-3xl font-extrabold text-violet-400 font-serif">Real-Time</span>
+                    <h4 class="text-white font-bold text-sm mt-2 mb-1">Dashboard Insight</h4>
+                    <p class="text-xs text-slate-400">Check current margins and outstanding balance logs immediately.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust / Testimonials -->
+    <section class="py-24 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="text-xs uppercase tracking-widest text-violet-500 font-bold">Credibility</span>
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-white">Trusted by growing teams</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="p-8 rounded-xl border border-white/5 bg-slate-900/40 space-y-6">
+                    <p class="text-slate-300 italic leading-relaxed text-sm">
+                        "Deploying RHTECH ERP resolved our stock leakage issues completely. We now track raw materials across three separate warehouses in Chittagong Metro seamlessly, and our accounts close instantly."
+                    </p>
+                    <div>
+                        <h5 class="text-white font-bold text-sm">Managing Director</h5>
+                        <p class="text-xs text-slate-500">Ctg Packaging & Manufacturing Ltd.</p>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="p-8 rounded-xl border border-white/5 bg-slate-900/40 space-y-6">
+                    <p class="text-slate-300 italic leading-relaxed text-sm">
+                        "The time schedule and shift configuration features saved us hours of manual HR work. Salary calculation steps are processed automatically, and errors have plummeted to zero."
+                    </p>
+                    <div>
+                        <h5 class="text-white font-bold text-sm">Operations Director</h5>
+                        <p class="text-xs text-slate-500">Dhaka Wholesale Distribution</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="py-24 border-t border-white/5 bg-slate-900/40">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="text-xs uppercase tracking-widest text-violet-500 font-bold">The Journey</span>
+                <h2 class="text-3xl lg:text-4xl font-extrabold text-white">How we ensure implementation success</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="space-y-4">
+                    <span class="text-4xl font-extrabold text-white/10 font-serif">01</span>
+                    <h4 class="text-white font-bold">Analysis</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">We audit your current accounting charts and inventory storage setups to tailor templates.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="space-y-4">
+                    <span class="text-4xl font-extrabold text-white/10 font-serif">02</span>
+                    <h4 class="text-white font-bold">Configuration</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Our specialists configure specific tax structures, regional parameters, and warehouse locations.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="space-y-4">
+                    <span class="text-4xl font-extrabold text-white/10 font-serif">03</span>
+                    <h4 class="text-white font-bold">Staff Training</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">We run targeted interactive sessions for your account team and inventory managers.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="space-y-4">
+                    <span class="text-4xl font-extrabold text-white/10 font-serif">04</span>
+                    <h4 class="text-white font-bold">Active Support</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Enjoy direct priority support lines to handle adjustments and data updates fast.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA / Contact Form -->
+    <section id="contact" class="py-24 border-t border-white/5 relative overflow-hidden">
+        <!-- Background light blur -->
+        <div class="absolute bottom-[-100px] left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-violet-600/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center space-y-12 relative z-10">
+            <div class="space-y-4">
+                <span class="text-xs uppercase tracking-widest text-violet-500 font-bold">Get Started</span>
+                <h2 class="text-4xl lg:text-5xl font-extrabold text-white">Request a Personalized Demo</h2>
+                <p class="text-slate-400 text-sm max-w-xl mx-auto">
+                    Tell us about your operations structure, and our team will prepare a localized demo staging environment tailored to your inventory needs.
+                </p>
+            </div>
+
+            <!-- Booking Action Button -->
+            <div class="pt-4">
+                <a href="/login" class="inline-flex items-center justify-center px-10 py-5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold text-lg shadow-xl hover:shadow-violet-600/25 hover:-translate-y-0.5 transition-all active:scale-98">
+                    Launch Interactive Staging Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-500 py-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-lg bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">R</span>
+                <span class="font-semibold text-lg tracking-tight text-white">RHTECH ERP</span>
+            </div>
+            
+            <p class="text-xs">&copy; 2026 RHTECH Ltd. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
 </html>

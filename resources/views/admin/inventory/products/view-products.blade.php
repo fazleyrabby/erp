@@ -46,7 +46,8 @@
                             <tbody>
                                 @forelse ($products as $product)
                                     @php
-                                        $imageUrl = url('upload/product_images/thumbs/'.$product->image);
+                                        $imagePath = public_path('upload/product_images/thumbs/'.$product->image);
+                                        $imageUrl = ($product->image && file_exists($imagePath)) ? url('upload/product_images/thumbs/'.$product->image) : asset('upload/no_image.png');
                                         $currency = Session::get('companySettings')[0]['currency'];
                                     @endphp
                                     <tr>

@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('welcome');
 });
 
 Auth::routes();

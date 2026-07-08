@@ -36,7 +36,7 @@ class PermissionController extends Controller
             ->paginate($limit)
             ->appends($request->all());
 
-        return view('admin.rolesPermissions.permission.permissionView', ['permissions' => $permissions]);
+        return view('admin.RolesPermissions.permission.permissionView', ['permissions' => $permissions]);
     }
 
     public function store(Request $request)

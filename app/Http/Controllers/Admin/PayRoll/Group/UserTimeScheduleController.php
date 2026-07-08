@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\PayRoll\Group;
 
 use App\Http\Controllers\Controller;
-use App\Models\payRoll\OurTeam;
-use App\Models\payRoll\UserTimeSchedule;
+use App\Models\payroll\OurTeam;
+use App\Models\payroll\UserTimeSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
