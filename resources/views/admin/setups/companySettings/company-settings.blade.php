@@ -18,46 +18,46 @@
                     <form id="editShopForm" method="post" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="editId" id="editId" value="1">
-                        <div class="form-row">
+                        <div class="row g-3">
 
                             <div class="form-group mb-3 col-md-4">
-                                <label for="name">Shop Name<font style="color:red">*</font> </label>
-                                <input type="text" name="name" id="companyName" class="form-control form-group mb-3-sm"
+                                <label class="form-label" for="name">Shop Name<span class="text-danger">*</span></label>
+                                <input type="text" name="name" id="companyName" class="form-control form-control-sm"
                                     placeholder="Shop Name">
                                 <span class="text-danger" id="companyNameError"></span>
                             </div>
                             <div class="form-group mb-3 col-md-4">
-                                <label for="email">Email<font style="color:red">*</font> </label>
-                                <input type="text" name="email" id="companyEmail" class="form-control form-group mb-3-sm"
+                                <label class="form-label" for="email">Email<span class="text-danger">*</span></label>
+                                <input type="text" name="email" id="companyEmail" class="form-control form-control-sm"
                                     placeholder="Shop email">
                             </div>
                             <div class="form-group mb-3 col-md-4">
-                                <label for="phone">Phone No<font style="color:red">*</font> </label>
-                                <input type="text" name="phone" id="companyPhone" class="form-control form-group mb-3-sm"
+                                <label class="form-label" for="phone">Phone No<span class="text-danger">*</span></label>
+                                <input type="text" name="phone" id="companyPhone" class="form-control form-control-sm"
                                     placeholder="Shop Phone">
                             </div>
                             <div class="form-group mb-3 col-md-6">
-                                <label for="address">Address<font style="color:red">*</font> </label>
-                                <input type="text" name="address" id="companyAddress" class="form-control form-group mb-3-sm"
-                                    placeholder="Shop Name">
+                                <label class="form-label" for="address">Address<span class="text-danger">*</span></label>
+                                <input type="text" name="address" id="companyAddress" class="form-control form-control-sm"
+                                    placeholder="Shop Address">
                             </div>
                             <div class="form-group mb-3 col-md-6">
-                                <label for="website">Website<font style="color:red">*</font> </label>
-                                <input type="text" name="website" id="companyWebsite" class="form-control form-group mb-3-sm"
+                                <label class="form-label" for="website">Website<span class="text-danger">*</span></label>
+                                <input type="text" name="website" id="companyWebsite" class="form-control form-control-sm"
                                     placeholder="Shop Website">
                             </div>
                             <div class="form-group mb-3 col-md-4">
-                                <label for="name">Month Year Format<font style="color:red">*</font> </label>
-                                <input type="text" name="month_year" id="month_year" class="form-control form-group mb-3-sm">
+                                <label class="form-label" for="name">Month Year Format<span class="text-danger">*</span></label>
+                                <input type="text" name="month_year" id="month_year" class="form-control form-control-sm">
                             </div>
                             <div class="form-group mb-3 col-md-4">
-                                <label for="name">Currency<font style="color:red">*</font> </label>
-                                <input type="text" name="currency" id="currency" class="form-control form-group mb-3-sm"
+                                <label class="form-label" for="name">Currency<span class="text-danger">*</span></label>
+                                <input type="text" name="currency" id="currency" class="form-control form-control-sm"
                                     placeholder="Currency">
                             </div>
                             <div class="form-group mb-3 col-md-4">
-                                <label for="manage_stock_to_sale">Manage_stock_to Sale 545</label>
-                                <select class="form-control" name="manage_stock_to_sale" id="companyStockManage">
+                                <label class="form-label" for="manage_stock_to_sale">Manage_stock_to Sale</label>
+                                <select class="form-select form-select-sm" name="manage_stock_to_sale" id="companyStockManage">
                                     <option value="">Select Option</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No </option>
@@ -66,8 +66,8 @@
                             </div>
 
                             <div class="form-group mb-3 col-md-4" style="display:none;">
-                                <label for="barcode_exits">Barcode_Exists</label>
-                                <select class="form-control" name="barcode_exists" id="companyBarcode">
+                                <label class="form-label" for="barcode_exits">Barcode_Exists</label>
+                                <select class="form-select form-select-sm" name="barcode_exists" id="companyBarcode">
                                     <option value="">Select Options </option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -75,60 +75,54 @@
                             </div>
 
                             <div class="form-group mb-3 col-md-12">
-                                <label for=""> Default Supplier : </label>
-                                <select class="form-control input-sm" id="default_party" name="default_party">
+                                <label class="form-label" for=""> Default Supplier : </label>
+                                <select class="form-select form-select-sm" id="default_party" name="default_party">
                                     <option value="">Select Supplier</option>
                                     <option value="-999">$supplier->name</option>
                                 </select>
                             </div>
-                            <div class="form-group mb-3 col-md-12">
-                                <label for="">Report Header</label>
+                            
+                            <!-- SIDE BY SIDE REPORTS -->
+                            <div class="form-group mb-3 col-md-6">
+                                <label class="form-label" for="">Report Header</label>
                                 <textarea class="ckeditor form-control" id="company_report_header" name="company_report_header"></textarea>
                             </div>
-                            <div class="form-group mb-3 col-md-12">
-                                <label for="">Report footer</label>
+                            <div class="form-group mb-3 col-md-6">
+                                <label class="form-label" for="">Report Footer</label>
                                 <textarea class="ckeditor form-control" id="company_report_footer" name="company_report_footer"></textarea>
                             </div>
 
                             <div class="form-group mb-3 col-md-12">
-                                <label for="">Terms and Conditions</label>
+                                <label class="form-label" for="">Terms and Conditions</label>
                                 <textarea class="ckeditor form-control" id="company_terms_conditions" name="company_terms_conditions"></textarea>
                             </div>
 
-                            <div class="form-group mb-3 col-md-4">
-                                <label for="watermark">Watermark <font style="color:red">*</font> </label>
-                                <input type="file" name="watermark" id="companyWatermark"
-                                    class="form-control form-group mb-3-sm" />
-                                <img id="watermark" src="{{ asset('upload/no_image.png') }}"
-                                    style="width: 100px;height: 110px; border:1px solid #000000;margin-top: 1%;">
+                            <div class="form-group mb-3 col-md-4 text-center">
+                                <label class="form-label" for="watermark">Watermark <span class="text-danger">*</span></label>
+                                <input type="file" name="watermark" id="companyWatermark" class="form-control form-control-sm mb-2" />
+                                <img id="watermark" src="{{ asset('upload/no_image.png') }}" class="img-thumbnail" style="width: 100px; height: 110px;">
                             </div>
-                            <div class="form-group mb-3 col-md-4">
-                                <label for="logo">Shop Logo <font style="color:red">*</font> </label>
-                                <input type="file" name="logo" id="companyLogo"
-                                    class="form-control form-group mb-3-sm" />
-                                    <img id="logo" src="{{ asset('upload/no_image.png') }}"
-                                    style="width: 200px;height: 110px; border:1px solid #000000;margin-top: 1%;">
+                            <div class="form-group mb-3 col-md-4 text-center">
+                                <label class="form-label" for="logo">Shop Logo <span class="text-danger">*</span></label>
+                                <input type="file" name="logo" id="companyLogo" class="form-control form-control-sm mb-2" />
+                                <img id="logo" src="{{ asset('upload/no_image.png') }}" class="img-thumbnail" style="width: 200px; height: 110px;">
                                 
                             </div>
 
-
-                            <div class="form-group mb-3 col-md-4">
-                                <label for="logo">Shop Logo(vertical) <font style="color:red">*</font> </label>
-                                <input type="file" name="vertical_logo" id="companyLogo_vertical"
-                                    class="form-control form-group mb-3-sm" />
-                                <img id="vertical_logo" src="{{ asset('upload/no_image.png') }}"
-                                    style="width: 200px;height: 110px; border:1px solid #000000;margin-top: 1%;">
-                            </div>
-
-                            <div class="form-group mb-3 col-md-4" style="padding-top: 30px">
-                                <button type="submit" class="btn btn-primary">Update</button>
+                            <div class="form-group mb-3 col-md-4 text-center">
+                                <label class="form-label" for="logo">Shop Logo (Vertical) <span class="text-danger">*</span></label>
+                                <input type="file" name="vertical_logo" id="companyLogo_vertical" class="form-control form-control-sm mb-2" />
+                                <img id="vertical_logo" src="{{ asset('upload/no_image.png') }}" class="img-thumbnail" style="width: 200px; height: 110px;">
                             </div>
 
                         </div>
 
-                    </form>
-
+                    
                 </div>
+                <div class="card-footer text-end">
+                    <button type="submit" class="btn btn-primary">Update Settings</button>
+                </div>
+                </form>
                 <!-- /.card -->
             </div>
             <!-- /.card -->
