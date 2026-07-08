@@ -221,7 +221,7 @@ class ReportController extends Controller
 
         $allExpense = ChartOfAccounts::where('parent_id', '=', $expenseId)->where('deleted', 'No')->get();
 
-        $purchase = ChartOfAccounts::where('name', '=', 'Purchases')->where('deleted', 'No')->first();
+        $purchase = ChartOfAccounts::where('name', '=', 'Purchase')->where('deleted', 'No')->first();
         $purchaseId = $purchase->id;
         $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get();
 
