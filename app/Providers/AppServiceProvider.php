@@ -6,6 +6,7 @@ use App\Models\CompanySetting;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use View;
 
@@ -28,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Paginator::defaultView('pagination::tabler');
+
         //
 
         View::composer('admin.master', function ($view) {

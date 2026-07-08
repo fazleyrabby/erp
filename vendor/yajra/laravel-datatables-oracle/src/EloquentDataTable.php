@@ -21,7 +21,7 @@ class EloquentDataTable extends QueryDataTable
     /**
      * Can the DataTable engine be created with these parameters.
      *
-     * @param mixed $source
+     * @param  mixed  $source
      * @return bool
      */
     public static function canCreate($source)
@@ -32,7 +32,7 @@ class EloquentDataTable extends QueryDataTable
     /**
      * EloquentEngine constructor.
      *
-     * @param mixed $model
+     * @param  mixed  $model
      */
     public function __construct($model)
     {
@@ -77,10 +77,10 @@ class EloquentDataTable extends QueryDataTable
     /**
      * Compile query builder where clause depending on configurations.
      *
-     * @param mixed  $query
-     * @param string $columnName
-     * @param string $keyword
-     * @param string $boolean
+     * @param  mixed  $query
+     * @param  string  $columnName
+     * @param  string  $keyword
+     * @param  string  $boolean
      */
     protected function compileQuerySearch($query, $columnName, $keyword, $boolean = 'or')
     {
@@ -106,7 +106,7 @@ class EloquentDataTable extends QueryDataTable
     /**
      * Resolve the proper column name be used.
      *
-     * @param string $column
+     * @param  string  $column
      * @return string
      */
     protected function resolveRelationColumn($column)
@@ -125,7 +125,7 @@ class EloquentDataTable extends QueryDataTable
     /**
      * Check if a relation is a morphed one or not.
      *
-     * @param  string $relation
+     * @param  string  $relation
      * @return bool
      */
     protected function isMorphRelation($relation)
@@ -144,7 +144,7 @@ class EloquentDataTable extends QueryDataTable
     /**
      * Check if a relation was not used on eager loading.
      *
-     * @param  string $relation
+     * @param  string  $relation
      * @return bool
      */
     protected function isNotEagerLoaded($relation)
@@ -157,9 +157,10 @@ class EloquentDataTable extends QueryDataTable
     /**
      * Join eager loaded relation and get the related column name.
      *
-     * @param string $relation
-     * @param string $relationColumn
+     * @param  string  $relation
+     * @param  string  $relationColumn
      * @return string
+     *
      * @throws \Yajra\DataTables\Exceptions\Exception
      */
     protected function joinEagerLoadedColumn($relation, $relationColumn)
@@ -188,15 +189,17 @@ class EloquentDataTable extends QueryDataTable
 
                 case $model instanceof HasOneThrough:
                     $pivot    = explode('.', $model->getQualifiedParentKeyName())[0]; // extract pivot table from key
-                    $pivotPK  = $pivot . '.' . $model->getLocalKeyName();
+                    $pivotPK  = $pivot . '.' . $model->getFirstKeyName();
                     $pivotFK  = $model->getQualifiedLocalKeyName();
                     $this->performJoin($pivot, $pivotPK, $pivotFK);
 
                     $related = $model->getRelated();
                     $table   = $related->getTable();
-                    $tablePK = $related->getForeignKey();
+                    $tablePK = $model->getSecondLocalKeyName();
                     $foreign = $pivot . '.' . $tablePK;
                     $other   = $related->getQualifiedKeyName();
+
+                    $lastQuery->addSelect($lastQuery->getModel()->getTable().'.*');
 
                     break;
 
@@ -225,10 +228,10 @@ class EloquentDataTable extends QueryDataTable
     /**
      * Perform join query.
      *
-     * @param string $table
-     * @param string $foreign
-     * @param string $other
-     * @param string $type
+     * @param  string  $table
+     * @param  string  $foreign
+     * @param  string  $other
+     * @param  string  $type
      */
     protected function performJoin($table, $foreign, $other, $type = 'left')
     {

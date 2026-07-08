@@ -4,12 +4,12 @@
     Options +FollowSymlinks
     #redirect http non-www to https://www
     RewriteCond %{HTTPS} off
-    RewriteCond %{HTTP_HOST} ^(www\.)?jtsc.jafreetraders\.com$
-    RewriteRule (.*) https://jtsc.jafreetraders.com/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} ^(www\.)?jtsc.abctraders\.com$
+    RewriteRule (.*) https://jtsc.abctraders.com/$1 [R=301,L]
     #redirect https non-www to www
     RewriteCond %{HTTPS} on
-    RewriteCond %{HTTP_HOST} ^jtsc.jafreetraders\.com$
-    RewriteRule (.*) https://www.jtsc.jafreetraders.com/$1 [R=301,L]
+    RewriteCond %{HTTP_HOST} ^jtsc.abctraders\.com$
+    RewriteRule (.*) https://www.jtsc.abctraders.com/$1 [R=301,L]
     #run from public folder
     RewriteRule ^(.*)$ public/$1 [L,NC]
 </IfModule>

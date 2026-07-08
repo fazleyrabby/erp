@@ -60,7 +60,7 @@ class Restorer
 
         foreach (array_keys($GLOBALS) as $key) {
             if ($key !== 'GLOBALS' &&
-                !in_array($key, $superGlobalArrays) &&
+                !in_array($key, $superGlobalArrays, true) &&
                 !$snapshot->excludeList()->isGlobalVariableExcluded($key)) {
                 if (array_key_exists($key, $globalVariables)) {
                     $GLOBALS[$key] = $globalVariables[$key];
@@ -84,8 +84,12 @@ class Restorer
         foreach ($snapshot->staticAttributes() as $className => $staticAttributes) {
             foreach ($staticAttributes as $name => $value) {
                 $reflector = new ReflectionProperty($className, $name);
-                $reflector->setAccessible(true);
-                $reflector->setValue($value);
+
+                if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                    $reflector->setAccessible(true);
+                }
+
+                $reflector->setValue(null, $value);
             }
         }
 
@@ -108,8 +112,11 @@ class Restorer
                     continue;
                 }
 
-                $attribute->setAccessible(true);
-                $attribute->setValue($defaults[$name]);
+                if (version_compare(PHP_VERSION, '8.1.0', '<')) {
+                    $attribute->setAccessible(true);
+                }
+
+                $attribute->setValue(null, $defaults[$name]);
             }
         }
     }

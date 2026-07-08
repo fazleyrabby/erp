@@ -52,7 +52,7 @@ class AttemptToAuthenticate
 
         if ($this->guard->attempt(
             $request->only(Fortify::username(), 'password'),
-            $request->filled('remember'))
+            $request->boolean('remember'))
         ) {
             return $next($request);
         }
@@ -70,13 +70,14 @@ class AttemptToAuthenticate
     protected function handleUsingCustomCallback($request, $next)
     {
         $user = call_user_func(Fortify::$authenticateUsingCallback, $request);
+
         if (! $user) {
             $this->fireFailedEvent($request);
 
             return $this->throwFailedAuthenticationException($request);
         }
 
-        $this->guard->login($user, $request->filled('remember'));
+        $this->guard->login($user, $request->boolean('remember'));
 
         return $next($request);
     }

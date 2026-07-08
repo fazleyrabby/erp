@@ -42,20 +42,20 @@
                             <div class="card-body">
                                 <div class="row">
                                     @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group mb-3 col-md-12">
                                             <label>Barcode: </label>
                                             <input class="form-control form-control-sm" id="barcode" type="text"
                                                 name="barcode" onkeyup="findProduct()">
                                             <span class="text-danger" id="barcodeError"></span>
                                         </div>
                                     @endif
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group mb-3 col-md-2">
                                         <label>Date : <span class="text-danger">*</span></label>
                                         <input type="date" id="saleDate" name="saleDate" class="form-control form-control-sm"
                                             value="{{ todayDate() }}" />
                                     </div>
                                     @if ($type != 'walkin_sale')
-                                        <div class="form-group col-md-7">
+                                        <div class="form-group mb-3 col-md-7">
                                             <label>Party Name : <span class="text-danger">*</span></label>
                                             <select id="customer" name="customer" class="abcd customer" style="width:100%"
                                                 required onchange="getCustomerById(this.value, 'Customer');">
@@ -68,7 +68,7 @@
                                             </select>
                                             <span class="text-danger" id="customerNameError"></span>
                                         </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group mb-3 col-md-3">
                                             <input type="hidden" id="customer" name="customer" value="0" />
                                             <label>Phone: </label>
                                             <div class="d-flex">
@@ -80,7 +80,7 @@
                                     @endif
 
                                     @if ($type == 'walkin_sale')
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <input type="hidden" id="customer" name="customer" value="0" />
                                             <label>Phone: <span class="text-danger">*</span></label>
                                             <div class="d-flex">
@@ -95,7 +95,7 @@
                                             <span class="text-danger" id="partyPhoneNumberError"></span>
                                         </div>
                                     @endif
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group mb-3 col-md-6">
                                         <label>Warehouse: <span class="text-danger">*</span></label>
                                         <select id="warehouse" name="warehouse" class="abcd" style="width:100%" required>
                                            {{--  <option value='' selected='true'> Select Warehouse </option> --}}
@@ -107,44 +107,44 @@
                                         </select>
                                         <span class="text-danger" id="warehouseError"></span>
                                     </div>
-                                    <div class="form-group col-md-6 ">
+                                    <div class="form-group mb-3 col-md-6 ">
                                         <label>Name: <span class="text-danger">*</span></label>
                                         <input type="text" id="customerName" name="customerName"
                                             class="form-control form-control-sm" />
                                         <span class="text-danger" id="customerNameError"></span>
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group mb-3 col-md-6">
                                         <label>Address: </label>
                                         <input type="text" id="customerAddress" name="customerAddress"
                                             class="form-control form-control-sm" />
                                         <span class="text-danger" id="customerAddressError"></span>
                                     </div>
                                     <input type="hidden" id="category_id" name="category" value="42">
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group mb-3 col-md-2">
                                         <label>Credit Limit
                                             ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                         <span class="btn btn-secondary float-right viewPurchase" style="height: 53%;"
                                             id="creditLimit">0</span>
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group mb-3 col-md-2">
                                         <label>Left credit
                                             ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                         <span class="btn btn-secondary float-right viewPurchase" style="height: 53%;"
                                             id="leftCredit">0</span>
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group mb-3 col-md-2">
                                         <label>Due ({{ Session::get('companySettings')[0]['currency'] }}):
                                         </label><br>
                                         <span class="btn btn-secondary float-right viewPurchase" style="height: 53%;"
                                             id="currentDue">0</span>
                                     </div>
-                                    <div class="form-group col-md-6 d-none">
+                                    <div class="form-group mb-3 col-md-6 d-none">
                                         <label>Total With Due
                                             ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                         <span class="btn btn-danger float-right viewPurchase" id="totalWithDue">0</span>
                                     </div>
 
-                                    <div class="form-group col-md-6 d-none">
+                                    <div class="form-group mb-3 col-md-6 d-none">
                                         <label>Category: </label>
                                         <select id="category" name="category" class="form-control form-control-sm">
                                             <option value="">Select Category</option>
@@ -153,7 +153,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-6 d-none">
+                                    <div class="form-group mb-3 col-md-6 d-none">
                                         <label>Brand : </label>
                                         <select id="brand" name="brand" class="form-control form-control-sm">
                                             <option value="">Select Brand</option>
@@ -163,7 +163,7 @@
                                             -->
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group mb-3 col-md-12">
                                         <label>Product Search : <span class="text-danger">*</span></label>
                                         <div class="d-flex">
                                             <select id="products" name="products" class="form-control form-control-sm"
@@ -178,7 +178,7 @@
                                                 onclick="showAdvanceSearch();"> <i class="fas fa-search"></i></button>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group mb-3 col-md-12">
                                         <label>Cart Details: </label>
                                         <div class="table-responsive">
                                         <table class="table table-vcenter table-bordered text-nowrap">
@@ -337,7 +337,7 @@
                 <div class="modal-body card-body">
                     <form id="serializeProductForm">
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <table border="1" style="font-size: 13px; width:100%;" class="table-bordered">
                                     <thead>
                                         <tr>
@@ -672,7 +672,7 @@
                 month++;
                 ymdFormat = year + '-' + setMonth + '-' + setDay;
                 emiPaymentDateArray[i] = ymdFormat;
-                // $( ".dynamic" ).append("<div class='form-group border border-primary tenurDate' id='tenurDate'><label class='col-form-label p-2'>"+(i+1)+". Amount: <span id='perTenurAmount'>"+perTenurAmount+"</span>, Tenure date: <span id='dayMonthYear'>"+ (year) +"-"+ (setMonth) +"-"+(setDay)+"</span></label></div>" );
+                // $( ".dynamic" ).append("<div class='form-group mb-3 border border-primary tenurDate' id='tenurDate'><label class='col-form-label p-2'>"+(i+1)+". Amount: <span id='perTenurAmount'>"+perTenurAmount+"</span>, Tenure date: <span id='dayMonthYear'>"+ (year) +"-"+ (setMonth) +"-"+(setDay)+"</span></label></div>" );
                 $(".dynamic").append("<tr class='tenurDate' id='tenurDate'><th scope='row'>" + (i + 1) +
                     ". </th><td> Amount: <span id='perTenurAmount'>" + perTenurAmount +
                     " </span></td><td> Tenure date: <span id='dayMonthYear'> " + (year) + "-" + (setMonth) + "-" + (

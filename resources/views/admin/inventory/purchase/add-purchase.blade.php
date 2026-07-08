@@ -17,19 +17,19 @@
                         @csrf
                         <div class="row">
                             @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label>Barcode: </label>
                                     <input class="form-control form-control-sm" id="barcode" type="text" name="barcode"
                                         onkeyup="findProduct()">
                                     <span class="text-danger" id="barcodeError"></span>
                                 </div>
                             @endif
-                            <div class="form-group col-md-2">
+                            <div class="form-group mb-3 col-md-2">
                                 <label>Date: <span class="text-danger">*</span></label>
                                 <input type="date" id="purchaseDate" name="purchaseDate" class="form-control form-control-sm"
                                     value="{{ date('Y-m-d') }}" />
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Warehouse: <span class="text-danger">*</span></label>
                                 <select id="warehouse" name="warehouse" class="abcd" style="width:100%" required>
                                     <option value=''> Select Warehouse </option>
@@ -41,7 +41,7 @@
                                 </select>
                                 <span class="text-danger" id="warehouseError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Supplier Name: <span class="text-danger">*</span></label>
                                 <select id="supplier" name="supplier" class="form-control form-control-sm">
                                     <option value="">Select Supplier</option>
@@ -54,7 +54,7 @@
 
                             <input type="hidden" id="category_id" name="category" value="30">
                             
-                            <div class="form-group col-md-2">
+                            <div class="form-group mb-3 col-md-2">
                                 <label class="labelPurchase">Previous Due
                                     ({{ Session::get('companySettings')[0]['currency'] }}): </label><br>
                                 <span class="btn btn-secondary float-right viewPurchase" id="currentDue"
@@ -62,13 +62,13 @@
                                 <span class="btn btn-secondary float-right viewPurchase" style="height: 55%;"
                                     id="currentDueDisplay">0</span>
                             </div>
-                            <div class="form-group col-md-2 d-none">
+                            <div class="form-group mb-3 col-md-2 d-none">
                                 <label class="labelPurchase">Total Due
                                     ({{ Session::get('companySettings')[0]['currency'] }}): </label><br>
                                 <span class="btn btn-danger viewPurchase" id="totalWithDueView">0</span>
                                 <span class="btn btn-danger viewPurchase" id="totalWithDue" hidden="hidden"></span>
                             </div>
-                            <div class="form-group col-md-6 d-none">
+                            <div class="form-group mb-3 col-md-6 d-none">
                                 <label>Category: </label>
                                 <select id="category" name="category" class="abcd" style="width:100%">
                                     <option value='0' selected='true'> Select Category </option>
@@ -77,7 +77,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-6 d-none">
+                            <div class="form-group mb-3 col-md-6 d-none">
                                 <label>Brand: </label>
                                 <select id="brand" name="brand" class="form-control form-control-sm" style="width:100%">
                                     <option value="">Select Brand</option>
@@ -102,7 +102,7 @@
                             </div>
 
 
-                            <div class="form-group col-md-12"><br>
+                            <div class="form-group mb-3 col-md-12"><br>
                                 <label>Cart Details: </label>
                                 <div class="table-responsive">
                                 <table class="table table-vcenter table-bordered text-nowrap">
@@ -232,7 +232,7 @@
                 <div class="modal-body card-body">
                     <form id="serializeProductForm">
                         <div class="row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <table border="1">
                                     <thead>
                                         <tr>
