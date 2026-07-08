@@ -16,13 +16,13 @@ class CompanySettingSeeder extends Seeder
     {
 
         $company = new CompanySetting;
-        $company->name = 'Example Company';
+        $company->name = 'RHTech';
         $company->email = 'example@gmail.com';
         $company->phone = '0181808080';
         $company->address = 'GEC Circle, CTG';
         $company->website = 'www.example.com';
         $company->report_header = 'company_report_header';
-        $company->report_footer = 'company_report_footer';
+        $company->report_footer = '<p>Powered by: RHTech</p>';
         $company->manage_stock_to_sale = 'No';
         $company->barcode_exists = 'No';
         $company->save();
