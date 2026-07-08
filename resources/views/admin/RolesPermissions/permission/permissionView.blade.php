@@ -98,14 +98,14 @@
                                 <form action="{{ route('permissionStore') }}" method="post" enctype="multipart/form-data">
                                     <div class="modal-body">
                                         @csrf
-                                        <div class="form-group">
+                                        <div class="form-group mb-3">
                                             <label class="col-form-label">Permission Name</label>
                                             <input type="text" class="form-control" id="name" name="name"
                                                 placeholder="Name">
                                             <span
                                                 class="text-danger">{{ $errors->has('title') ? $errors->first('title') : '' }}</span>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group mb-3">
                                             <label class="col-form-label">Group Name</label>
                                             <input type="text" class="form-control" id="group_name" name="group_name"
                                                 placeholder="Name">
@@ -145,7 +145,7 @@
                                     <div class="modal-body">
                                         @csrf
                                         <input type="hidden" id="editId" name="editId">
-                                        <div class="form-group">
+                                        <div class="form-group mb-3">
                                             <label class="col-form-label">Permission Name</label>
                                             <input type="text" class="form-control" id="editName" name="editName"
                                                 placeholder="Name">
@@ -153,7 +153,7 @@
                                                 class="text-danger">{{ $errors->has('title') ? $errors->first('title') : '' }}</span>
                                         </div>
 
-                                        <div class="form-group">
+                                        <div class="form-group mb-3">
                                             <label class="col-form-label">Group Name</label>
                                             <input type="text" class="form-control" id="editGroup_name"
                                                 name="editGroup_name" placeholder="Name">

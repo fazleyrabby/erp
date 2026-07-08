@@ -12,7 +12,7 @@ Admin Payroll Setting -View
         <div class="container">
             <form action="{{route('deductDayUpdate')}}" method="POST">
                 @csrf
-                <div class="row">
+                <div class="row g-3">
                     <h4 class="col-md-3">Absent Deduction:</h4>
                     <select class="form-control col-md-1" id="activation" name="activation" onchange="activationStatus()">
                         <option value="{{$datas->activation}}"selected>{{$datas->activation}}</option>

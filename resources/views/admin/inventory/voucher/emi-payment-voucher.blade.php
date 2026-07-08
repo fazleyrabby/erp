@@ -11,7 +11,7 @@
       <!-- Small boxes (Stat box) -->
       <!-- Main row -->
 	  <form id="saleProducts" method="POST" enctype="multipart/form-data">
-      <div class="row">
+      <div class="row g-3">
         <!-- Left col -->
         <section class="col-md-12">
           <!-- Custom tabs (Charts with tabs)-->
@@ -22,16 +22,16 @@
               </h3>
             </div><!-- /.card-header -->
             <div class="card-body">  
-				<div class="row">
+				<div class="row g-3">
 					@csrf
 					@if(Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-					<div class="form-group col-md-12">
+					<div class="form-group mb-3 col-md-12">
                           <label>Barcode: </label>
                           <input class="form-control input-sm" id="barcode" type="text" name="barcode" onkeyup="findProduct()" >
                           <span class="text-danger" id="barcodeError"></span>
                     </div>
 					@endif
-					<div class="form-group col-md-6">
+					<div class="form-group mb-3 col-md-6">
 							<input type="hidden"  id="sale_id" value="">
 							<label>Customer: </label>
 							<select id="customer" name="customer" class="form-control input-sm">
@@ -41,13 +41,13 @@
 								@endforeach
 							</select>
 						</div>
-					<div class="form-group col-md-6">
+					<div class="form-group mb-3 col-md-6">
                         <label>Invoice: </label>
                         <select id="invoice" name="invoice" onchange="getInvoice()" class="form-control input-sm">
 							<option value="">Select Invoice </option>
 						</select>
                     </div>
-					<div class="form-group col-md-12">
+					<div class="form-group mb-3 col-md-12">
 						<div style="font-weight: 900;" class="text-center bg-info text-light pt-2">
 							<label class="font-weight-bold">EMI Details Information : </label>
 							<label class="font-weight-bold">Total Amount For Tenure Payment : <span id="totalTenureAmount"></span> </label>
@@ -73,7 +73,7 @@
 				</div>
 			</div>
 			<div class="card-footer">
-				<div class="row">
+				<div class="row g-3">
 					<div class="col-md-12">
 						<a class="btn btn-success float-left" href="#" onclick="clearCart()"> <i class="fa fa-plus-circle"></i> Clear Cart </a>
 						<!-- <button type="button" id="checkOutCart" class="btn btn-success float-right"><i class="fa fa-plus-circle"> checkOut Cart </i> </button> -->
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group col-md-12 mt-2">
+			<div class="form-group mb-3 col-md-12 mt-2">
 						<div style="font-weight: 900;" class="text-center bg-warning text-dark pt-2">
 							<label class="font-weight-bold">EMI Deleted Details Information : </label>						</div>
 						<table border="1" class="table-striped" style="width:100%;text-align:center;">
@@ -118,30 +118,30 @@
                 </div> 
                 <div class="modal-body">
                 <form id="emiPaymentForm" method="POST" action="#">
-                  <div class="row">
+                  <div class="row g-3">
 					  @csrf
 					  <input type="hidden" name="saleId" id="saleId">
-					  <div class="form-group col-md-12">
+					  <div class="form-group mb-3 col-md-12">
 						  <label> Total Amount </label>
 						  <input class="form-control input-sm" id="totalAmount" type="text" name="totalAmount" value="" readonly>
 						  <span class="text-danger" id="totalAmountError"></span>
 					  </div>
-					  <div class="form-group col-md-6">
+					  <div class="form-group mb-3 col-md-6">
 						  <label> Payment  </label>
 						  <input class="form-control input-sm"  type="number" id="emiPayment" name="emiPayment" value="0" required>
 						  <span class="text-danger" id="emiPaymentError"></span>
 					  </div> 
-					  <div class="form-group col-md-6">
+					  <div class="form-group mb-3 col-md-6">
 						  <label> Payment Date (mm-dd-yyyy)  </label>
 						  <input class="form-control input-sm"  type="date" id="paymentDate" name="paymentDate" value="{{date('Y-m-d')}}" >
 						  <span class="text-danger" id="emiPaymentError"></span>
 					  </div> 
-					  <div class="form-group col-md-6">
+					  <div class="form-group mb-3 col-md-6">
 						  <label>Due(s)</label>
 						  <input class="form-control input-sm" id="emiDues" type="emiDues" name="emiDues" readonly>
 						  <span class="text-danger" id="emiDuesError"></span>
 					  </div> 
-					  <div class="form-group col-md-6">
+					  <div class="form-group mb-3 col-md-6">
 						  <label> Payment Type</label>
 						  <select  name="paymentType" id="paymentType" class="form-control input-sm">
 							<option value="Due">Due</option>

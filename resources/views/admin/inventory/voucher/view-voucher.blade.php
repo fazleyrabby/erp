@@ -129,12 +129,12 @@
 
 			<div class="modal-body">
 
-				<div class="row">
+				<div class="row g-3">
 			  		@csrf
 
 				  <input type="hidden" name="id">
 				  @if($type == 'Payment')
-					<div class="form-group col-md-4">
+					<div class="form-group mb-3 col-md-4">
                           <label > Party Name</label><br>
                           <select  name="party_id" id="party_id" class="form-control " onchange="getSupplierDue()">
                               <option value="0" selected disabled>Select Party</option>
@@ -145,7 +145,7 @@
                           <span class="text-danger" id="party_idError"></span>
                       </div>
 				@else
-					<div class="form-group col-md-4">
+					<div class="form-group mb-3 col-md-4">
                           <label > Party Name 45454</label><br>
                           <select  name="party_id" id="party_id" class="form-control " onchange="getproject()">
                               <option value="0" selected disabled>Select Party</option>
@@ -160,7 +160,7 @@
 
 
 				@if($type == 'Payment')
-				<div class="form-group col-md-4 d-none">
+				<div class="form-group mb-3 col-md-4 d-none">
 					  <label>Project </label>
 					  <select class="form-control" id="project_id" name="project_id" onchange="loadOrder()">
 							<option value='0' selected='true'> Select Project </option>
@@ -169,7 +169,7 @@
 					  </select>
 					  <span class="text-danger" id="project_idError"></span>
 				  </div>
-				  <div class="form-group col-md-4 d-none" >
+				  <div class="form-group mb-3 col-md-4 d-none" >
 
 					  <label >Work Order </label>
 					  <select class="form-control " id="work_order_id" name="work_order_id" onchange="loadDue()" >
@@ -178,14 +178,14 @@
 					  </select>
 				  </div>
 				@else
-				  <div class="form-group col-md-4 d-none" >
+				  <div class="form-group mb-3 col-md-4 d-none" >
 					  <label>Project </label>
 					  <select class="form-control" id="project_id" name="project_id" onchange="loadOrder()">
 							<option value='0' selected='true'> Select Project </option>
 					  </select>
 					  <span class="text-danger" id="project_idError"></span>
 				  </div>
-				  <div class="form-group col-md-4 d-none" >
+				  <div class="form-group mb-3 col-md-4 d-none" >
 
 					  <label >Work Order </label>
 					  <select class="form-control " id="work_order_id" name="work_order_id" onchange="loadDue()" >
@@ -195,20 +195,20 @@
   				@endif
 
 
-				  <div class="form-group col-md-4">
+				  <div class="form-group mb-3 col-md-4">
 					  <label >Date </label>
 					  <input class="form-control" id="paymentDate" type="date" name="paymentDate" value="{{  todayDate()  }}" />
 					  <span class="text-danger" id="paymentDateError"></span>
 				  </div>
 
-				  <div class="form-group col-md-4">
+				  <div class="form-group mb-3 col-md-4">
 
 					  <label>Due </label>
 					  <span id="currentDue" name="currentDue" class="btn-success form-control"></span>
 					  <span class="text-danger" id="dueError"></span>
 				  </div>
 				  @if($type != 'Discount')
-				  <div class="form-group col-md-4">
+				  <div class="form-group mb-3 col-md-4">
 
 					  <label >Payment Method </label>
 					  <select id="payment_method" name="payment_method" class="form-control input-sm" >
@@ -221,14 +221,14 @@
 				  <input type="hidden" id="payment_method" name="payment_method" value="Discount">
 				  @endif
 
-				  <div class="form-group col-md-4">
+				  <div class="form-group mb-3 col-md-4">
 
 					  <label >Amount ({{Session::get("companySettings")[0]['currency']}}) </label>
 					  <input class="form-control  input-sm" id="amount" type="text" name="amount" placeholder="Write Amount" maxlength = "10" onkeyup="digitCheck()">
 					  <span class="text-danger" id="creditError"></span>
 				  </div>
 
-				  <div class="form-group col-md-12">
+				  <div class="form-group mb-3 col-md-12">
 
 					  <label >Remarks:</label>
 					  <textarea class="form-control  input-sm" id="remark" type="text" name="remark" placeholder="Add Remarks" ></textarea>

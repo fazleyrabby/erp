@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -24,9 +24,9 @@
                                     </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         @csrf
-                                        <div class="form-group col-md-4" id="suppliersRow">
+                                        <div class="form-group mb-3 col-md-4" id="suppliersRow">
                                             <label>Party Type : </label>
                                             <select id="partyType" name="partyType" class="form-control input-sm">
                                                 <option value="">Select Party Type </option>
@@ -36,28 +36,28 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Date From: </label>
                                             <input type="date" class="form-control" id="dateFrom"
                                                 value="{{ todayDate() }}" aria-describedby="emailHelp">
 
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Date To: </label>
                                             <input type="date" class="form-control" id="dateTo"
                                                 aria-describedby="emailHelp" value="{{ todayDate() }}">
                                         </div>
-                                        <div class="form-group col-md-8"></div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-8"></div>
+                                        <div class="form-group mb-3 col-md-4">
                                             <label class="p-2"> </label>
                                             <button type="button" class="btn btn-success btn-lg btn-block "
                                                 onclick="generateReport()"> Generate Report </button>
                                         </div>
-                                        <div class="form-group col-md-12"></div>
+                                        <div class="form-group mb-3 col-md-12"></div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         <div class="col-md-12"></div>
                                     </div>
                                 </div>

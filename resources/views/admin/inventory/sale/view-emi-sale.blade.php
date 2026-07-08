@@ -89,14 +89,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group col-md-6">
+                    <div class="row g-3">
+                        <div class="form-group mb-3 col-md-6">
                             <div id="customerView">
 
                             </div>
                         </div> 
                         <!-- table -->
-                        <div class="form-group col-md-12">
+                        <div class="form-group mb-3 col-md-12">
                             <div style="font-weight: 900;" class="text-center bg-info text-light pt-2">
                                 <label class="font-weight-bold">EMI Details Information : </label>
                                 <label class="font-weight-bold">Total Amount For Tenure Payment : <span id="totalTenureAmount"></span> </label>
@@ -117,7 +117,7 @@
                             </table>
                         </div>
                         <!--deleted table -->
-                        <div class="form-group col-md-12 mt-2">
+                        <div class="form-group mb-3 col-md-12 mt-2">
                             <div style="font-weight: 900;" class="text-center bg-warning text-dark pt-2">
                                 <label class="font-weight-bold">EMI Deleted Details Information : </label>						</div>
                             <table border="1" class="table-striped table-hover table-info" style="width:100%;text-align:center;">

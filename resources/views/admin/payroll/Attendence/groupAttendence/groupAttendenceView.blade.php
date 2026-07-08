@@ -16,8 +16,8 @@ Admin Group Attendence
                     <div class="attendence-card" >
                         
                         
-                            <div class="row">
-                                <div class="form-group  col-sm-6">
+                            <div class="row g-3">
+                                <div class="form-group mb-3  col-sm-6">
                                     <label >Group:</label>
                                     <select class="form-control" id="group_id"  name="group_id" onchange="getMonthYear()">
                                     <option value="" selected disabled>Choose group</option>
@@ -28,7 +28,7 @@ Admin Group Attendence
                                     <span class="text-danger" id="group_idError"></span>
                                 </div>
 
-                                <div class="form-group  col-sm-6">
+                                <div class="form-group mb-3  col-sm-6">
                                     <label  >Month Year:</label>
                                     <select class="form-control" id="month_year" name="month_year" onchange="getDatesFromTo()">
                                         <option value="" selected>Choose Month Year</option>

@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -24,13 +24,13 @@
                                     </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-10 offset-md-2">
+                                    <div class="row g-3">
+                                        <div class="form-group mb-3 col-md-10 offset-md-2">
                                             <h1>Your Asset : </h1>
                                         </div>
-                                        <div class="form-group col-md-2">
+                                        <div class="form-group mb-3 col-md-2">
                                         </div>
-                                        <div class="form-group col-md-10">
+                                        <div class="form-group mb-3 col-md-10">
                                             <label><strong>Company Current Asset : </strong></label>
                                             <table border="1" style="width:60%;">
                                                 <thead>
@@ -59,7 +59,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         <div class="col-md-12">
                                             <a type="button" id="checkOutCart" class=" my_button float-right"
                                                 target="_blank"></a>

@@ -19,8 +19,8 @@ Admin Attendence -Add
                         <form action="{{route('attendenceStore')}}" method="POST">
                             @csrf
                             <input type="hidden" name="month_year" value="{{Date('F-Y')}}">
-                            <div class="row">
-                                <div class="form-group  col-sm-5">
+                            <div class="row g-3">
+                                <div class="form-group mb-3  col-sm-5">
                                     <label >Employee:</label>
                                     <select class="form-control" id="employee_id"  name="employee_id" required>
                                     <option value="" selected disabled>Choose Employee</option>
@@ -30,7 +30,7 @@ Admin Attendence -Add
                                     </select>
                                     <span class="text-danger">{{$errors->has('employee_id')?$errors->first('employee_id'):''}}</span>
                                 </div>
-                                <div class="form-group  col-sm-5">
+                                <div class="form-group mb-3  col-sm-5">
                                     <label  >Date:</label>
                                     <input type="text" class="form-control " id="date" name="date" value="{{ date('Y-m-d') }}" readonly> 
                                 </div>

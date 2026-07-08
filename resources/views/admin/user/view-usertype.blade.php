@@ -76,7 +76,7 @@
                   @csrf
                  
                       <input type="hidden" name="id">
-                      <div class="form-group">
+                      <div class="form-group mb-3">
                           <label> UserType Name</label>
                           <input class="form-control input-sm" id="name" type="text" name="name" autofocus="autofocus">
                           <span class="text-danger" id="nameError"></span>
@@ -107,12 +107,12 @@
                   @csrf
                  
                       <input type="hidden" name="editId" id="editId">
-                      <div class="form-group">
+                      <div class="form-group mb-3">
                           <label> Name</label>
                           <input class="form-control input-sm" id="editName" type="text" name="editName" required="">
 						  <span class="text-danger" id="editNameError"></span>
                       </div>
-                      <div class="form-group">
+                      <div class="form-group mb-3">
                           <label> Status</label>
                           <select id="editStatus" name="editStatus" class="form-control input-sm">
                             <option value="Active">Active</option>

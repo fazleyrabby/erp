@@ -84,7 +84,7 @@ Admin Salary Sheet -View
                 </div> 
                 <div class="modal-body">
                         @csrf
-                        <div class="form-group col-md-12">
+                        <div class="form-group mb-3 col-md-12">
                             <label for="carousalCaptionOffer" class="col-sm-5 col-form-label">Salary Sheet Name</label>
                             <input type="text" class="form-control" id="sheet_name" name="sheet_name" placeholder=" Write Salary Sheet Name" required>                                     
                             <span class="text-danger" id="sheet_nameError"></span>
@@ -112,16 +112,16 @@ Admin Salary Sheet -View
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
-                    <div class="row">
+                    <div class="row g-3">
                         @csrf
                         <input type="hidden" name="editId" id="editId">
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label>Salary Sheet Name</label>
                             <input class="form-control input-sm" id="editSalary_sheet" type="text" name="editSalary_sheet" required="">
                             <span class="text-danger" id="editSalary_sheetError"></span>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label> Status</label>
                             <select id="editStatus" name="editStatus" class="form-control input-sm">
                                 <option value="Active">Active</option>

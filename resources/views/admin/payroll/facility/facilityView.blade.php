@@ -94,7 +94,7 @@ Admin Facility -View
                 </div> 
                 <div class="modal-body">
                         @csrf
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <div class="col-sm-6">
                             <label for="carousalCaptionOffer">Group Name</label>
                             <select class="form-control" id="group_id" name="group_id">
@@ -117,7 +117,7 @@ Admin Facility -View
                             <span class="text-danger" id="facility_nameError"></span>
                         </div> 
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <div class="col-sm-6">
                             <label for="carousalCaptionOffer">Amount</label>
                             <input type="text" class="form-control" id="amount" name="amount" placeholder=" Write Amount" >                                     
@@ -129,7 +129,7 @@ Admin Facility -View
                             <span class="text-danger" id="lower_limitError"></span>
                         </div>
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Upper Limit</label>
                             <input type="text" class="form-control" id="upper_limit" name="upper_limit" placeholder=" Write Upper Limit" >                                     
@@ -172,7 +172,7 @@ Admin Facility -View
                 </div> 
                 <div class="modal-body">
                         <input type="hidden" name="editId" id="editId">
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer">Group Name</label>
                                 <select class="form-control" id="editGroup_id" name="editGroup_id">
@@ -195,7 +195,7 @@ Admin Facility -View
                                 <span class="text-danger" id="editFacility_nameError"></span>
                             </div>
                         </div>
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer" >Amount</label>
                                 <input type="text" class="form-control" id="editAmount" name="editAmount" >                                     
@@ -207,7 +207,7 @@ Admin Facility -View
                                 <span class="text-danger" id="editLower_limitError"></span>
                             </div>
                         </div>
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer">Upper Limit</label>
                                 <input type="text" class="form-control" id="editUpper_limit" name="editUpper_limit" >                                     
@@ -225,7 +225,7 @@ Admin Facility -View
                             </div>                       
                         </div>
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <label  for="carousalCaptionOffer"> Status</label>
                                 <select id="editStatus" name="editStatus" class="form-control input-sm">
                                     <option value="Active">Active</option>

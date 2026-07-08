@@ -21,7 +21,7 @@ Admin Create Loan
     </section>-->
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card card-primary">
                         <div class="card-header py-3">
@@ -37,7 +37,7 @@ Admin Create Loan
                         <form action="{{route('loanStore')}}" method='POST' enctype="multipart/form-data">
                             @csrf
                             
-                                <div class="form-group row col-md-12">
+                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-6">
                                     <label for="carousalCaptionOffer">Employee Name</label>
                                     <select class="form-control" id="user_id" name="user_id" required>
@@ -54,7 +54,7 @@ Admin Create Loan
                                         <span class="text-danger" id="amountError"></span>
                                     </div>
                                 </div>
-                                <div class="form-group row col-md-12">
+                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-6">
                                         <label for="carousalCaptionOffer">Tenure</label>
                                         <input type="text" class="form-control" id="tenure" name="tenure" placeholder="Write  Tenure" >
@@ -68,7 +68,7 @@ Admin Create Loan
                                     </div>
                                     
                                 </div>
-                                <div class="form-group row col-md-12">
+                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-6">
                                         <label for="carousalCaptionOffer"> Monthly Installment </label>
                                         <input type="text" class="form-control" id="installment" name="installment" placeholder="Monthly loan Amount + Interest" readonly>                          
@@ -81,7 +81,7 @@ Admin Create Loan
                                     </div>
                                 </div>
 
-                                <div class="form-group row col-md-12">
+                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-6">
                                         <label for="carousalCaptionOffer">Month Year</label>
                                             <select class="form-control" id="month_year" name="month_year">
@@ -107,7 +107,7 @@ Admin Create Loan
                                 </div>
                                 
 
-                                <div class="form-group row col-md-12">
+                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-12">
                                     <section style="padding:20px;">
 
@@ -119,7 +119,7 @@ Admin Create Loan
                                             <button class="btn btn-primary"   id="saveTenure"   style="display:none;"> Save </button>
                                         </div>
 
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group mb-3 col-md-12">
                                             <button type="submit" id="save_btn"  class="btn btn-primary btn-flat float-right"  onclick="tenureDataSave()" style="display:none;" ><i class="fa fa-save"></i> Save </button>
                                         </div>
                                     </section>

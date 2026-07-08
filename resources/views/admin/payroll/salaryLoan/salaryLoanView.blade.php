@@ -6,7 +6,7 @@ Admin Loan Salary -View
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -97,13 +97,13 @@ Admin Loan Salary -View
                         <input type="hidden" class="form-control" name="editUser_id" id="editUser_id">       
                        
                   
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <input type="hidden" class="form-control" id="editAmount" name="editAmount" >                                     
                         <span class="hidden-danger" id="editAmountError"></span>
                     </div>
 
 
-                    <div class="form-group row">
+                    <div class="form-group mb-3 row">
                         <div class="col-sm-8">
                             <input type="hidden" class="form-control" id="editTenure" name="editTenure" >                                     
                             <span class="hidden-danger" id="editTenureError"></span>
@@ -112,7 +112,7 @@ Admin Loan Salary -View
 
 
 
-                    <div class="form-group row">
+                    <div class="form-group mb-3 row">
                         <label for="carousalCaptionOffer" class="col-sm-4 col-form-label">Issue Date </label>
                         <div class="col-sm-8"> 
                             <input type="date" class="form-control" id="editApplicable_from" name="editApplicable_from"  >                          
@@ -121,7 +121,7 @@ Admin Loan Salary -View
                     </div>
 
 
-                    <div class="form-group row">
+                    <div class="form-group mb-3 row">
                         <label for="carousalCaptionOffer" class="col-sm-4 col-form-label">Cause</label>
                         <div class="col-sm-8">
                             <textarea type="text" class="form-control" id="editCause" name="editCause" placeholder="Write Short Cause" ></textarea>

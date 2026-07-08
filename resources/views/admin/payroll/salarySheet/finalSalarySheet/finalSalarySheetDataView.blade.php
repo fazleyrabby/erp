@@ -7,7 +7,7 @@ Final Salary Sheet -View
 
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -244,7 +244,7 @@ Final Salary Sheet -View
                                 }
                                 @endphp
 
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-12">
                                         <button  onclick="generateSalarySheetPdf({{$sheetid->id}})" class="btn btn-{{$color1}}" {{$enablity1}} ><i class="fas fa-file-pdf"></i> Genereate PDF</button>
                                         <span class="text-danger">{{$text1}}</span>

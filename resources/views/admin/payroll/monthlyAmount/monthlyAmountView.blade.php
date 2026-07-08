@@ -6,7 +6,7 @@ Admin Monthly Amount -View
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -81,7 +81,7 @@ Admin Monthly Amount -View
                 <div class="modal-body">
                         @csrf
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-sm-6">
                                 <label for="carousalCaptionOffer">Employee Name</label>
                                 <select class="form-control" id="user_id" name="user_id" required>
@@ -99,7 +99,7 @@ Admin Monthly Amount -View
                             </div>
                         </div>
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-sm-6">
                                 <label for="carousalCaptionOffer">Amount</label>
                                 <input type="text" class="form-control" id="amount" name="amount" placeholder="Write Amount" >
@@ -120,7 +120,7 @@ Admin Monthly Amount -View
                             </div>
                         </div>
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-sm-12">
                                 <label for="carousalCaptionOffer">Payment Type</label>
                                 <select class="form-control" id="type" name="type">
@@ -131,7 +131,7 @@ Admin Monthly Amount -View
                                 <span class="text-danger" id="typeError"></span>
                             </div>
                         </div>
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-sm-12">
                             <label for="carousalCaptionOffer">Remarks</label>
                             <textarea type="text" class="form-control" id="cause" name="cause" placeholder="Write Short Remarks" ></textarea>
@@ -166,7 +166,7 @@ Admin Monthly Amount -View
 
                         <input type="hidden" name="editId" id="editId">
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-sm-6">
                                 <label for="carousalCaptionOffer">Employee Name</label>
                                 <select class="form-control" id="editUser_id" name="editUser_id" required>
@@ -185,7 +185,7 @@ Admin Monthly Amount -View
                         </div>
 
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                             <label for="carousalCaptionOffer">Amount</label>
                                 <input type="text" class="form-control" id="editAmount" name="editAmount" >                                     
@@ -204,7 +204,7 @@ Admin Monthly Amount -View
 
 
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-12">
                                 <label for="carousalCaptionOffer">Cause</label>
                                 <textarea type="text" class="form-control" id="editCause" name="editCause" placeholder="Write Short Cause" ></textarea>

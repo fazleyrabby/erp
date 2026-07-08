@@ -102,7 +102,7 @@
   </div>
 
   <div class="container footer-text ">
-  <div class="row">
+  <div class="row g-3">
     <div class="col-md-12 text-center">
         {!!Session::get('companySettings')[0]['report_footer']!!}
     </div>

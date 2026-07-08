@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -24,14 +24,14 @@
                                     </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
-                                        {{-- <div class="form-group col-md-8"></div> --}}
-                                        {{-- <div class="form-group col-md-4">
+                                    <div class="row g-3">
+                                        {{-- <div class="form-group mb-3 col-md-8"></div> --}}
+                                        {{-- <div class="form-group mb-3 col-md-4">
                                             <label class="p-2"> </label>
                                             <button type="button" class="btn btn-info btn-lg btn-block "> Something
                                             </button>
                                         </div> --}}
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             @foreach ($dateArray as $date)
                                                 <input type="hidden" class="form-control" id="remainingDate"
                                                     name="remainingDate" value="{{ $date }}">
@@ -47,12 +47,12 @@
                                             <input type="date" class="form-control" id="date" name="date"
                                                 aria-describedby="emailHelp" value="{{ todayDate() }}"> --}}
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label class="pt-3"> </label>
                                             <button type="button" class="btn btn-success btn-lg btn-block "
                                                 onclick="viewCalculation()"> View Calculation </button>
                                         </div>
-                                        <div class="form-group col-md-6">
+                                        <div class="form-group mb-3 col-md-6">
                                             <label><strong>Daily Ledger Details:</strong></label>
                                             <table border="1" style="width:100%;">
                                                 <thead class="text-center">
@@ -70,23 +70,23 @@
                                             </table>
                                             </table>
                                         </div>
-                                        <div class="form-group col-md-2">
+                                        <div class="form-group mb-3 col-md-2">
                                             <input type="hidden" id="totalDr" name="totalDr" value="">
                                             <input type="hidden" id="totalCr" name="totalCr" value="">
                                             <input type="hidden" id="totalExpense" name="totalExpense" value="">
                                         </div>
-                                        <div class="form-group col-md-4"></div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4"></div>
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Opening Balance : </label>
                                             <input type="text" class="form-control" id="openingBalance"
                                                 name="openingBalance" aria-describedby="emailHelp" value="" disabled>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Total Amount (today) : </label>
                                             <input type="text" class="form-control" id="totalAmount" name="totalAmount"
                                                 aria-describedby="emailHelp" value="" disabled>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Closing Amount : </label>
                                             <input type="text" class="form-control" id="closingAmount"
                                                 name="closingAmount" aria-describedby="emailHelp" value="" disabled>
@@ -94,14 +94,14 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         <div class="col-md-8">
                                             <label> </label>
                                             <a type="button"
                                                 class="btn btn-success text-light my_button float-left mt-4 p-2"
                                                 onclick="clearInput();"> Clear </a>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> </label>
                                             <button type="button" class="btn btn-success btn-lg btn-block "
                                                 onclick="saveTodayReport()">Save Today Report</button>

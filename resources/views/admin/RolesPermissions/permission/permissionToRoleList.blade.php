@@ -93,9 +93,9 @@
                                 <div class="modal-body">
                                     <form method="POST" action="{{ route('roleToPermissionStore') }}">
                                         @csrf
-                                        <div class="row">
+                                        <div class="row g-3">
 
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group mb-3 col-md-12">
                                                 <label for="email" class=" col-form-label">Role Name :<span
                                                         class="text-danger"> * </span></label>
                                                     <select class="form-control" name="role_id" id="role_id"
@@ -106,7 +106,7 @@
                                                         @endforeach
                                                     </select>
                                             </div>
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group mb-3 col-md-12">
                                                 <p class="font-weight-bold">Permissions</p>
                                                 <div class="form-check ">
                                                     <input class="form-check-input" type="checkbox" id="checkPermissionAll"
@@ -183,14 +183,14 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" id="editId" name="editId">
-                                        <div class="form-group">
+                                        <div class="form-group mb-3">
                                             <label class="col-form-label">Permission Name</label>
                                             <input type="text" class="form-control" id="editName" name="editName"
                                                 placeholder="Name">
                                             <span
                                                 class="text-danger">{{ $errors->has('title') ? $errors->first('title') : '' }}</span>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group mb-3">
                                             <label class="col-form-label">Permission Group</label>
                                             <input type="text" class="form-control" id="editGroup_name"
                                                 name="editGroup_name" placeholder="Group Name">

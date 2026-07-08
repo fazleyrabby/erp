@@ -8,15 +8,15 @@ Admin Create Team Member
             <div class="card">
                 <div class="card-header"><h3>Create Employee</h3></div>
                         <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-12 p-4">
                                 <form method="POST"  action="{{ route('storeTeamMember') }}" enctype="multipart/form-data">
 
                                     @csrf
-                                <div class="row">
+                                <div class="row g-3">
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Employee Name</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -27,7 +27,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Team Leader</label>
 
                                     <div >
@@ -41,7 +41,7 @@ Admin Create Team Member
                                     <span class="text-danger">{{ $errors->has('leader_id') ? $errors->first('leader_id') : '' }}</span>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Priority</label>
                                     <span class="text-danger">*</span>
                                     <div >
@@ -52,7 +52,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Desingnation</label>
                                     <div>
                                         <input type="text" class="form-control"  name="member_desingnation" placeholder=" Write Member Desingnation">
@@ -62,7 +62,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Mobile</label>
                                     <span class="text-danger">*</span>
                                     <div >
@@ -74,7 +74,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Address</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -85,7 +85,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Job Location</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -94,7 +94,7 @@ Admin Create Team Member
                                     <span class="text-danger">{{ $errors->has('job_location') ? $errors->first('job_location') : '' }}</span>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Education</label>
                                     <div>
                                         <input type="text" class="form-control"  name="member_education" placeholder="Write About Your Educational Background Please" >
@@ -105,7 +105,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group mb-3 col-md-12">
                                     <label for="carousalCaptionOffer" class="form-label">Employee description</label>
                                     <div>
                                         <textarea type="text" class="form-control"  name="description" placeholder="Write something about you" ></textarea>
@@ -114,7 +114,7 @@ Admin Create Team Member
                                 </div>
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                 <span class="text-danger">*</span>
                                     <label for="carousalCaptionOffer" class="form-label">Joining Date</label>
                                     <div >
@@ -125,7 +125,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class=" col-form-label">Still Present Now</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -141,7 +141,7 @@ Admin Create Team Member
 
                                 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class=" col-form-label">Left Job Date</label>
                                     <div>
                                         <input type="date" class="form-control"  name="job_left_date" placeholder="if he is not in team anymore" >
@@ -151,7 +151,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Grade</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -165,7 +165,7 @@ Admin Create Team Member
                                     <span class="text-danger">{{ $errors->has('current_grade') ? $errors->first('current_grade') : '' }}</span>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Step</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -180,7 +180,7 @@ Admin Create Team Member
                                 </div>
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Salary</label>
                                     <div>
                                         <input type="text"  class="form-control"  name="salary" id="salary" placeholder="Enter salary amount" readonly>
@@ -188,7 +188,7 @@ Admin Create Team Member
                                     <span class="text-danger">{{ $errors->has('salary') ? $errors->first('salary') : '' }}</span>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Group</label>
                                     <span class="text-danger">*</span>
 
@@ -205,7 +205,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Salary Sheet</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -223,7 +223,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Working Hour</label>
                                     <div>
                                         <input type="text" class="form-control"  name="working_hour" placeholder="Write working hour" >
@@ -234,7 +234,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Referred By<span style="color:red;">(Optional)</span></label>
                                     <div>
                                         <input type="text" class="form-control"  name="referred_by" placeholder="Reffered by who" >                  
@@ -243,7 +243,7 @@ Admin Create Team Member
                                 </div>
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Salary Type</label>
                                     <span class="text-danger">*</span>
                                     <div>
@@ -258,7 +258,7 @@ Admin Create Team Member
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Account Number</label>
                                     <div>
                                         <input type="text" class="form-control"  name="account_no"  >                  
@@ -272,21 +272,21 @@ Admin Create Team Member
 
 
                                 <div class="col-md-12 row">
-                                        <div class="form-group  col-md-4" >
+                                        <div class="form-group mb-3  col-md-4" >
                                             <label for="carousalCaptionOffer" class="form-label">Laundry:</label>
                                             <div>
                                                 <input type="text" class="form-control"  name="laundry"  >                                                
                                             </div>
                                         </div>
                                         <span class="text-danger">{{ $errors->has('laundry') ? $errors->first('laundry') : '' }}</span>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label for="carousalCaptionOffer" class="form-label">Phone Bill:</label>
                                             <div>
                                             <input type="text" class="form-control" name="phone_bill"  >                                                
                                             </div>
                                         </div>
                                         <span class="text-danger">{{ $errors->has('phone_bill') ? $errors->first('phone_bill') : '' }}</span>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label for="carousalCaptionOffer" class="form-label">TA/Da:</label>
                                             <div>
                                             <input type="text" class="form-control" name="ta_da" >                                                 
@@ -295,7 +295,7 @@ Admin Create Team Member
                                         <span class="text-danger">{{ $errors->has('ta_da') ? $errors->first('ta_da') : '' }}</span>
                                 </div>
 
-                                <div class="form-group col-md-12">
+                                <div class="form-group mb-3 col-md-12">
                                     <label for="carousalCaptionOffer" class="form-label">Add Note<span style="color:red;">(Optional)</span></label>
                                     <div>
                                         <textarea type="text" class="form-control"  name="short_note" placeholder="Do you want to add any note?" ></textarea>
@@ -303,7 +303,7 @@ Admin Create Team Member
                                     <span class="text-danger">{{ $errors->has('short_note') ? $errors->first('short_note') : '' }}</span>
                                 </div>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="Memberimage" class="form-label">Employee Image</label>
                                     <div >
                                         <input type="file" id="member_image" name="member_image"  class="form-control input-sm"  onchange="loadPreview(this);"/>
@@ -311,7 +311,7 @@ Admin Create Team Member
                                     </div>
                                     <span class="text-danger">{{ $errors->has('member_image') ? $errors->first('member_image') : '' }}</span>
                                 </div> 
-                                <div class=" form-group row">
+                                <div class=" form-group mb-3 row">
                                     <div class="col-md-3"></div>
                                         <div class=" col-md-9">
                                             <label for="profile_image">Image Preview</label>
@@ -319,7 +319,7 @@ Admin Create Team Member
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <button type="submit" class="btn btn-primary btn-flat float-right" name="addBanner"><i class="fa fa-save"></i> Save </button>
                                 </div>
                                 </div>

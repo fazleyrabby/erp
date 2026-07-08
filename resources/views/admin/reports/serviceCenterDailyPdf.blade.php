@@ -78,7 +78,7 @@
    
            <div class="signatures">
            
-                <div class="row">
+                <div class="row g-3">
                     <div class="column">
                         Ali Tech
                         <br>-----------------------<br>                 

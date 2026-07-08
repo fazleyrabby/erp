@@ -84,7 +84,7 @@ Admin COA List
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Parent</label>
                                     <select type="text" class="form-control" id="parent_id" name="parent_id">
                                         <option value="0" selected>No Parent</option>
@@ -106,19 +106,19 @@ Admin COA List
                                     </select>
                                     <span class="text-danger" id="parent_idError">{{ $errors->has('parent_id') ? $errors->first('parent_id') : '' }}</span>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">
                                         Code
                                     </label>
                                     <input type="text" class="form-control" id="code" name="code" placeholder="Code">
                                     <span class="text-danger" id="codeError">{{ $errors->has('code') ? $errors->first('code') : '' }}</span>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Name</label>
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Name">
                                     <span class="text-danger" id="nameError">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Slug</label>
                                     <input type="text" class="form-control" id="slug" name="slug" placeholder="Slug" readonly>
                                     <span class="text-danger" id="slugError">{{ $errors->has('slug') ? $errors->first('slug') : '' }}</span>
@@ -152,7 +152,7 @@ Admin COA List
                             <div class="modal-body">
                                 <input type="hidden" id="editId">
 
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Parent</label>
                                     <select type="text" class="form-control" id="editParent_id" name="parent_id">
                                         <option style="font-weight: bold;" value="0">No Parent</option>
@@ -175,7 +175,7 @@ Admin COA List
                                     <span class="text-danger" id="editParent_idError">{{ $errors->has('parent_id') ? $errors->first('parent_id') : '' }}</span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Status</label>
                                     <select type="text" class="form-control" id="editStatus" name="Status">
                                         <option value="" selected disabled>Select Status</option>
@@ -185,19 +185,19 @@ Admin COA List
                                     <span class="text-danger" id="editStatusError">{{ $errors->has('Status') ? $errors->first('parent_id') : '' }}</span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Name</label>
                                     <input type="text" class="form-control" id="editName" name="name" placeholder="Name">
                                     <span class="text-danger" id="editNameError">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Slug</label>
                                     <input type="text" class="form-control" id="editSlug" name="slug" placeholder="Slug" readonly>
                                     <span class="text-danger" id="editSlugError">{{ $errors->has('slug') ? $errors->first('slug') : '' }}</span>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Code</label>
                                     <input type="text" class="form-control" id="editCode" name="code" placeholder="Code">
                                     <span class="text-danger" id="codeError">{{ $errors->has('code') ? $errors->first('code') : '' }}</span>

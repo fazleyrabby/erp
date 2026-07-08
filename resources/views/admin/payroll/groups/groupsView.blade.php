@@ -76,12 +76,12 @@ Admin Groups -View
                 <div class="modal-body">
 					
                     @csrf
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <label for="carousalCaptionOffer">Group Name</label>
                         <input type="text" class="form-control" id="group_name" name="group_name" placeholder=" Write Group Name" required>                                     
                         <span class="text-danger" id="group_nameError"></span>
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <label for="carousalCaptionOffer">Remarks</label>
                         <textarea type="text" class="form-control" id="note" name="note" placeholder="Write Short Note" ></textarea>
                         <span class="text-danger" id="noteError"></span>
@@ -111,7 +111,7 @@ Admin Groups -View
                 <div class="modal-body">
                 @csrf
                       <input type="hidden" name="editId" id="editId">
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                                 <label>Group Name</label>
                                 <input class="form-control input-sm" id="editGroupName" type="text" name="editGroupName" required="">
@@ -125,7 +125,7 @@ Admin Groups -View
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <label> Remarks </label>
                             <textarea class="form-control input-sm" id="editNote" type="text" name="editNote" ></textarea>
                             <span class="text-danger" id="editNoteError"></span>

@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -21,8 +21,8 @@
                                     <h3> Day Wise Cash Sales Reports View & Print </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
+                                    <div class="row g-3">
+                                        <div class="form-group mb-3 col-md-12">
                                             <h4 style="color: gray;text-align: center;">Day Wise Cash (All Hand Cash) Reports </h4>
 					                        <h5 style="text-align: center;">**Date wise ALL HAND CASH details view & Print As PDF **</h5>
                                         </div>
@@ -32,7 +32,7 @@
                                     
                                         <form  class="form-horizontal" method="POST">
                                             @csrf
-                							<div class="row">
+                							<div class="row g-3">
                 							    <div class="col-md-5">
                 							        <label for="categoryName" class="control-label">Select One :</label>
                     								

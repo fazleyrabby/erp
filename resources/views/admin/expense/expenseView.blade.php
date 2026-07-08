@@ -86,27 +86,27 @@
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" id="editId">
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
 
                                         <label class="col-form-label">Name</label>
                                         <input type="text" class="form-control" id="editName" name="name"
                                             placeholder="Name">
                                         <span class="text-danger" id="editNameError">{{ $errors->has('name') ? $errors->first('name') : '' }}</span>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label class="col-form-label">Slug</label>
                                         <input type="text" class="form-control" id="editSlug" name="slug"
                                             placeholder="Slug">
                                         <span class="text-danger" id="editSlugError">{{ $errors->has('slug') ? $errors->first('slug') : '' }}</span>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label class="col-form-label">Code</label>
                                         <input type="text" class="form-control" id="editCode" name="code"
                                             placeholder="Code">
                                         <span
                                             class="text-danger" id="codeError">{{ $errors->has('code') ? $errors->first('code') : '' }}</span>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label class="col-form-label">Parent</label>
                                         <select type="text" class="form-control" id="editParent_id" name="parent_id">
                                             <option value="0">Select Parent</option>
@@ -115,7 +115,7 @@
                                         <span
                                             class="text-danger" id="editParent_idError">{{ $errors->has('parent_id') ? $errors->first('parent_id') : '' }}</span>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label class="col-form-label">Status</label>
                                         <select type="text" class="form-control" id="editStatus" name="Status">
                                             <option value=""selected disabled>Select Parent</option>

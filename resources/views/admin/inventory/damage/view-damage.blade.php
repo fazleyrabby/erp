@@ -86,7 +86,7 @@
                         @csrf
 
                         <input type="hidden" name="id">
-                        <div class="form-group row">
+                        <div class="form-group mb-3 row">
                             <div class="col-md-12">
                                 <label> Date <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="date" type="date" name="date"
@@ -110,7 +110,7 @@
                                 <span class="text-danger" id="stock_warehouseError"></span>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group mb-3 row">
                             <div class="col-md-6">
                                 <label> Current Stock</label>
                                 <input class="form-control input-sm" id="current_stock" type="text" name="current_stock"
@@ -124,7 +124,7 @@
                                 <span class="text-danger" id="nameError"></span>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group mb-3 row">
                             <label> Remarks</label>
                             <input class="form-control input-sm" id="remark" type="text" name="remark">
                             <span class="text-danger" id="nameError"></span>

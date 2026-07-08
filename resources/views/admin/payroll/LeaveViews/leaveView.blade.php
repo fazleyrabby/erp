@@ -86,9 +86,9 @@ Admin Leave Management -View
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-					<div class="row">
+					<div class="row g-3">
                     @csrf
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label> Employee Name </label>
                         <select class="form-control" id="employee_id" name="employee_id" required>
                             <option value="0" selected disabled> Choose employee</option>
@@ -98,7 +98,7 @@ Admin Leave Management -View
                         </select>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label> Leave Type </label>
                         <select class="form-control" id="leave_type" name="leave_type" >
                             <option value="0" selected disabled> Choose leave type</option>
@@ -111,21 +111,21 @@ Admin Leave Management -View
 
 
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label>Leave Start Date </label>
                         <input type="date" class="form-control"  name="leave_start_date" id="leave_start_date" required>
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label>Leave End Date </label>
                         <input type="date" class="form-control"  name="leave_end_date" id="leave_end_date" >
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group mb-3 col-md-12">
                         <label> Leave Reason </label>
                         <textarea type="text" class="form-control"  name="leave_reason" id="leave_reason" placeholder="Add Leave Reason"></textarea>
                     </div>
 
-                    <div class="form-group col-md-12">
+                    <div class="form-group mb-3 col-md-12">
                         <label> Admin Remarks </label>
                         <textarea type="text" class="form-control"  name="admin_remarks" id="admin_remarks" placeholder="Add note"></textarea>
                     </div>
@@ -153,11 +153,11 @@ Admin Leave Management -View
                     </div> 
                     <div class="modal-body">
                     
-                        <div class="row">
+                        <div class="row g-3">
                             @csrf
                             <input type="hidden" name="editId" id="editId">
                         
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Leave Type </label>
                                 <select class="form-control" id="edit_leave_type" name="edit_leave_type" >
                                     <option value="0" selected disabled> Choose leave type</option>
@@ -168,17 +168,17 @@ Admin Leave Management -View
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Leave Start Date </label>
                                 <input type="date" class="form-control"  name="edit_leave_start_date" id="edit_leave_start_date" >
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Leave End Date </label>
                                 <input type="date" class="form-control"  name="edit_leave_end_date" id="edit_leave_end_date" >
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Leave Status</label>
                                 <select class="form-control" id="edit_leave_status" name="edit_leave_status" required>
                                     <option value="0" selected disabled> Choose status</option>
@@ -187,12 +187,12 @@ Admin Leave Management -View
                                     <option value="Reject">Reject</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label> Leave Reason </label>
                                 <textarea type="text" class="form-control"  name="edit_leave_reason" id="edit_leave_reason" placeholder="Add note"></textarea>
                             </div>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label> Admin Remarks </label>
                                 <textarea type="text" class="form-control"  name="edit_admin_remarks" id="edit_admin_remarks" placeholder="Add note"></textarea>
                             </div>

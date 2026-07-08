@@ -95,14 +95,14 @@
                 <div class="modal-body">
                     <form id="warehouseForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
-                            <div class="form-group col-md-12">
+                        <div class="row g-3">
+                            <div class="form-group mb-3 col-md-12">
                                 <label>Warehouse Name <span class="text-danger"> * </span></label>
                                 <input class="form-control  input-sm" id="warehouseName" type="text" name="warehouseName"
                                     placeholder=" Warehouse name">
                                 <span class="text-danger" id="warehouseNameError"></span>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label>Description / Notes <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="description" type="text" name="description"
                                     placeholder=" description">
@@ -133,21 +133,21 @@
                 <div class="modal-body">
                     <form id="editWarehouseForm" method="POST" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <input type="hidden" id="warehouseEditId" name="warehouseEditId">
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label>Warehouse Name <span class="text-danger"> * </span></label>
                                 <input class="form-control  input-sm" id="editWarehouseName" type="text"
                                     name="editWarehouseName" value="">
                                 <span class="text-danger" id="editWarehouseNameError"></span>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label>Description / Notes <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editdDscription" type="text" name="editdDscription"
                                     value="">
                                 <span class="text-danger" id="editDescriptionError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Status </label>
                                 <select id="editStatus" name="editStatus " class="form-control input-sm">
                                     <option value="Active">Active</option>

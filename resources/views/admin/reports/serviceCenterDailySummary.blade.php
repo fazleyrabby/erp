@@ -15,7 +15,7 @@ Service Center Daily Report
                 <div class="card-body">
                     
                     
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-3"></div>
                         <div class="col-md-4">
                             <input type="date" class="form-control" name="date_from" id="date_from" value="{{ date('Y-m-d') }}">

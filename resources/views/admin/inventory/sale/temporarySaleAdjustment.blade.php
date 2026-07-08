@@ -19,16 +19,16 @@
                     </div>
                     <form>
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="saleNo"> Date</label>
                                     <input type="date" class="form-control" name="date" id="date"
                                         aria-describedby="emailHelp" value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="customerId"> Customer</label>
                                     <select id="customer" name="customer" class="form-control input-sm"
                                         onchange="getTemporarySale(this.value);">
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="warehouse"> Return WareHouse </label>
                                     <select id="warehouse" name="warehouse" class="form-control input-sm">
                                         @foreach ($warehouses as $warehouse)
@@ -55,28 +55,28 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="project">  Name</label>
                                     <input type="text" class="form-control" name="project" id="project"
                                         aria-describedby="project" placeholder=" Name">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="requisitionNo"> Requisition No</label>
                                     <input type="text" class="form-control" name="requisitionNo" id="requisitionNo"
                                         aria-describedby="emailHelp" placeholder=" Requisition No">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="remarks"> Remarks</label>
                                     <input type="text" class="form-control" name="remark" id="remark"
                                         aria-describedby="emailHelp" placeholder="Remarks Here">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     <table width="100%" class="table table-bordered table-hover">
@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-6 ">
                                 <a href="#/" class="btn btn-primary btn-md" onclick="addjustment()" role="button"
                                     aria-pressed="true"><i class="fas fa-save"></i> Adjustment</a>

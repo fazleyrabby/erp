@@ -19,7 +19,7 @@
     <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
       <!-- Main row -->
-      <div class="row">
+      <div class="row g-3">
         <!-- Left col -->
         <section class="col-md-12">
           <!-- Custom tabs (Charts with tabs)-->
@@ -117,11 +117,11 @@
                    
                 </div> 
                 <div class="modal-body">
-					<div class="row">
+					<div class="row g-3">
                         
-                      <div class="form-group col-md-12">
+                      <div class="form-group mb-3 col-md-12">
                         <p> <b>Transfer From</b></p>
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-3">
                                 <label>Payment Method</label>
                                 <select class="form-control input-sm" id="transfer_from_payment_method" type="text" name="transfer_from" onchange="getTransferFromSource()">
@@ -152,9 +152,9 @@
                          
                       </div>
                       <br>
-                      <div class="form-group col-md-12">
+                      <div class="form-group mb-3 col-md-12">
                             <p><b>Transfer To</b></p>
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-md-3">
                                     <label>Payment Method</label>
                                     <select class="form-control input-sm" id="tbl_coa_to_id" type="text" name="tbl_coa_to_id"  onchange="getTransferToSource()">
@@ -180,17 +180,17 @@
                             </div>
                         </div>
 
-                      <div class="form-group col-md-6">
+                      <div class="form-group mb-3 col-md-6">
                           <label>Amount</label>
                           <input class="form-control input-sm" id="amount" type="text" name="amount" placeholder="Amount" onkeyup="checkTransferLimit()">
                           <span class="text-danger" id="amountError"></span>
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group mb-3 col-md-6">
                           <label>Transaction Date</label>
                           <input class="form-control input-sm" id="transaction_date" type="date" name="transaction_date" >
                           <span class="text-danger" id="transaction_dateError"></span>
                       </div>
-                      <div class="form-group col-md-12">
+                      <div class="form-group mb-3 col-md-12">
                           <label>Remarks</label>
                           <textarea class="form-control input-sm" id="remarkss" type="text" name="remarkss" ></textarea>
                           <span class="text-danger" id="remarksError"></span>

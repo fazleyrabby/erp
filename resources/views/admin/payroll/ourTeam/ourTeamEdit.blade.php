@@ -10,7 +10,7 @@ Admin Create Team Member
                     <h3 class="text">Edit Team Member</h3>
                 </div>
                     <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-12 p-4" >
 
                             <form method="POST"  action="{{route('UpdateOurTeam')}}" enctype="multipart/form-data">
@@ -18,11 +18,11 @@ Admin Create Team Member
                                 @csrf
                                 <input type="hidden"  name="member_id" value="{{$member->id}}"  >
                             
-                            <div class="row">
+                            <div class="row g-3">
                            
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Member Name</label>
 
                                 <div>
@@ -34,7 +34,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Leader</label>
 
                                 <div>
@@ -48,7 +48,7 @@ Admin Create Team Member
                             </div>
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Priority</label>
                                 <div>
                                     <input type="text" class="form-control"  name="priority" value="{{$member->priority}}" >                  
@@ -57,7 +57,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Desingnation</label>
 
                                 <div>
@@ -68,7 +68,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Mobile Number</label>
 
                                 <div>
@@ -80,7 +80,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Address</label>
 
                                 <div>
@@ -93,7 +93,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Job Location</label>
 
                                 <div>
@@ -103,7 +103,7 @@ Admin Create Team Member
                             </div>
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Education</label>
 
                                 <div>
@@ -115,7 +115,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label for="carousalCaptionOffer" class="form-label">Description</label>
 
                                 <div>
@@ -129,7 +129,7 @@ Admin Create Team Member
                             
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Joining Date</label>
 
                                 <div>
@@ -142,7 +142,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Is he Present Now</label>
 
                                 <div>
@@ -154,7 +154,7 @@ Admin Create Team Member
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Left Job At</label>
 
                                 <div>
@@ -168,7 +168,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Current Grade</label>
 
                                 <div>
@@ -181,7 +181,7 @@ Admin Create Team Member
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Current Step</label>
 
                                 <div>
@@ -198,7 +198,7 @@ Admin Create Team Member
 
                           
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Group</label>
                                 <div>
                                     <select class="form-control" id="exampleFormControlSelect1" name="group_id">
@@ -213,7 +213,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Salary Sheet</label>
 
                                 <div>
@@ -227,7 +227,7 @@ Admin Create Team Member
                             </div>
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Salary Type</label>
                                 <div>
                                     <select class="form-control" id="exampleFormControlSelect1" name="salary_type">
@@ -242,7 +242,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Working Hour</label>
 
                                 <div>
@@ -254,7 +254,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Referred By<span style="color:red;">(Optional)</span></label>
 
                                 <div>
@@ -265,7 +265,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Account Number</label>
                                 <div>
                                     <input type="text" class="form-control"  name="account_no" value="{{$member->account_no}}" >                  
@@ -273,7 +273,7 @@ Admin Create Team Member
                             </div>
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Salary<span style="color:red;">(Optional)</span></label>
                                 <div>
                                     <input type="text" value="{{$member->salary}}" class="form-control"  name="salary"  >
@@ -287,19 +287,19 @@ Admin Create Team Member
 
 
                             <div class="col-md-12 row">
-                                    <div class="form-group  col-md-4" >
+                                    <div class="form-group mb-3  col-md-4" >
                                         <label for="carousalCaptionOffer" class="form-label">Laundry:</label>
                                         <div>
                                             <input type="text" class="form-control"  name="laundry" value="{{$member->laundry}}" >                                                
                                         </div>
                                     </div>
-                                    <div class="form-group  col-md-4">
+                                    <div class="form-group mb-3  col-md-4">
                                         <label for="carousalCaptionOffer" class="form-label">phone Bill:</label>
                                         <div>
                                         <input type="text" class="form-control" name="phone_bill" value="{{$member->phone_bill}}" >                                                
                                         </div>
                                     </div>
-                                    <div class="form-group  col-md-4">
+                                    <div class="form-group mb-3  col-md-4">
                                         <label for="carousalCaptionOffer" class="form-label">TA/Da:</label>
                                         <div>
                                         <input type="text" class="form-control" name="ta_da" value="{{$member->ta_da}}">                                                 
@@ -308,7 +308,7 @@ Admin Create Team Member
                             </div>
 
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label for="carousalCaptionOffer" class="form-label">Social Site Links</label>
                                 <div>
                                     <textarea type="text"  class="form-control"  name="social_links" placeholder="Write your facebook url" >{{$member->social_links}}</textarea>
@@ -316,7 +316,7 @@ Admin Create Team Member
                             </div>
 
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label for="carousalCaptionOffer" class="form-label">Add Note<span style="color:red;">(Optional)</span></label>
 
                                 <div>
@@ -332,7 +332,7 @@ Admin Create Team Member
                             
                            
                            
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="Bannerstatus" class="form-label">Status</label>  
                                 <div>
                                     <select class="form-control"  id="Bannerstatus" name="status" >
@@ -345,7 +345,7 @@ Admin Create Team Member
 
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="Memberimage" class="form-label">Member Image</label>
                                 <div>
                                     <input type="hidden" name="oldImage" value="{{ $member->member_image }}">
@@ -359,7 +359,7 @@ Admin Create Team Member
 
 
                         </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <button type="submit" class="btn btn-primary btn-flat" name="addBanner"><i class="fa fa-save"></i> Save </button>
                             </div>
                         
@@ -368,7 +368,7 @@ Admin Create Team Member
 
 
                              <!-- image preview -->
-                        <div class=" form-group row">
+                        <div class=" form-group mb-3 row">
                         <div class="col-md-3"></div>
                             <div class=" col-md-9">
                                 <label for="profile_image">Image Preview</label>

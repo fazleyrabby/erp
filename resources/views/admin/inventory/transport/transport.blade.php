@@ -95,39 +95,39 @@
                 <div class="modal-body">
                     <form id="transportForm" method="POST" action="#">
                         @csrf
-                        <div class="row">
-                            <div class="form-group col-md-6">
+                        <div class="row g-3">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Transport Name <span class="text-danger"> * </span></label>
                                 <input class="form-control  input-sm" id="transportName" type="text" name="transportName"
                                     placeholder=" Transport Name">
                                 <span class="text-danger" id="transportNameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Person </label>
                                 <input class="form-control  input-sm" id="contactPerson" type="text" name="contactPerson"
                                     placeholder=" Contact Person">
                                 <span class="text-danger" id="contactPersonError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Number <span class="text-danger"> * </span></label>
                                 <input class="form-control  input-sm" id="contactNumber" type="text" name="contactNumber"
                                     placeholder=" Contact Number">
                                 <span class="text-danger" id="contactNumberError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Email </label>
                                 <input class="form-control  input-sm" id="contactEmail" type="email" name="contactEmail"
                                     placeholder=" Contact Email">
                                 <span class="text-danger" id="contactEmailError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Address <span class="text-danger"> * </span></label>
                                 <input class="form-control  input-sm" id="address" type="text" name="address"
                                     placeholder=" Address">
                                 <span class="text-danger" id="addressError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Remarks </label>
                                 <textarea class="form-control input-sm" rows="2" id="remark" type="text" name="remark"
                                     placeholder=" Remarks"></textarea>
@@ -158,46 +158,46 @@
                 <div class="modal-body">
                     <form id="editTransportForm" method="POST" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <input type="hidden" id="editTransportInfoId" name="editTransportInfoId">
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Transport Name <span class="text-danger"> * </span></label>
                                 <input class="form-control  input-sm" id="editTransportName" type="text"
                                     name="editTransportName" placeholder=" Transport Name">
                                 <span class="text-danger" id="editTransportNameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Person </label>
                                 <input class="form-control  input-sm" id="editContactPerson" type="text"
                                     name="editContactPerson" placeholder=" Contact Person">
                                 <span class="text-danger" id="editContactPersonError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Number <span class="text-danger"> * </span></label>
                                 <input class="form-control  input-sm" id="editContactNumber" type="text"
                                     name="editContactNumber" placeholder=" Contact Number">
                                 <span class="text-danger" id="editContactNumberError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Email </label>
                                 <input class="form-control  input-sm" id="editContactEmail" type="email"
                                     name="editContactEmail" placeholder=" Contact Email">
                                 <span class="text-danger" id="editContactEmailError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Address</label>
                                 <textarea class="form-control input-sm" rows="2" id="editAddress" type="text"
                                     name="editAddress" placeholder=" Address"></textarea>
                                 <span class="text-danger" id="editAddressError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Remarks</label>
                                 <textarea class="form-control input-sm" id="editRemark" type="text" name="editRemark"
                                     placeholder=" Remarks"></textarea>
                                 <span class="text-danger" id="editRemarkError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Status</label>
                                 <select class="form-control input-sm" id="editStatus" name="editStatus">
                                     <option value="Active">Active</option>

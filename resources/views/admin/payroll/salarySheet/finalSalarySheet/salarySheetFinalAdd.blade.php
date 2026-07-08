@@ -7,7 +7,7 @@ Admin Final Salary Sheet -View
 
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -16,7 +16,7 @@ Admin Final Salary Sheet -View
                         <form action="{{route('sheetDataStore')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                         
-                            <div class="form-group row ">
+                            <div class="form-group mb-3 row ">
                                 <div class="col-md-4">
                                     <label>Month Year</label>
                                     <select class="form-control" id="month_year" name="month_year">                                
@@ -82,7 +82,7 @@ Admin Final Salary Sheet -View
                            
                             </div>
                            
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-md-12">
                              <button id="save_btn" type="submit" class="btn btn-primary float-right" style="display:none;"><i class="fas fa-save"></i> Save</button>  
                                 </div>

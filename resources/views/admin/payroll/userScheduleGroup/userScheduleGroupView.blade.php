@@ -83,8 +83,8 @@ Admin Time Schedule Group -View
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
-					<div class="row">
-                        <div class="form-group col-md-6">
+					<div class="row g-3">
+                        <div class="form-group mb-3 col-md-6">
                             <label  > Employee Name </label>
                             <select class="form-control" id="employee_id" name="employee_id" required>
                                 <option value="0" selected disabled> Choose employee</option>
@@ -94,7 +94,7 @@ Admin Time Schedule Group -View
                             </select>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label> Schedule Group Name </label>
                             <select class="form-control" id="schedule_group_id" name="schedule_group_id" required>
                                 <option value="0" selected disabled> Choose Group Schedule</option>
@@ -104,17 +104,17 @@ Admin Time Schedule Group -View
                             </select>
                         </div>
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label> Start Date </label>
                                 <input type="date" class="form-control"  name="start_date" id="start_date" required>
                         </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label> End Date </label>
                         <input type="date" class="form-control"  name="end_date" id="end_date" >
                     </div>
 
-                    <div class="form-group col-md-12">
+                    <div class="form-group mb-3 col-md-12">
                         <label> Note </label>
                         <textarea type="text" class="form-control"  name="note" id="note" placeholder="Add note"></textarea>
                     </div>
@@ -142,9 +142,9 @@ Admin Time Schedule Group -View
                     </button>
                 </div>
                 <div class="modal-body">
-					<div class="row">
+					<div class="row g-3">
                         <input type="hidden" name="editId" id="editId">
-                        <div class="form-group row">
+                        <div class="form-group mb-3 row">
                             <label  class="col-sm-5 col-form-label"> Schedule Group Name </label>
                             <div class="col-sm-7">
                                 <select class="form-control" id="edit_schedule_group_id" name="edit_schedule_group_id" required>
@@ -155,19 +155,19 @@ Admin Time Schedule Group -View
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group mb-3 row">
                             <label  class="col-sm-5 col-form-label"> Start Date </label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control"  name="edit_start_date" id="edit_start_date" required>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group mb-3 row">
                             <label  class="col-sm-5 col-form-label"> End Date </label>
                             <div class="col-sm-7">
                                 <input type="date" class="form-control"  name="edit_end_date" id="edit_end_date" >
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group mb-3 row">
                             <label  class="col-sm-5 col-form-label"> Note </label>
                             <div class="col-sm-7">
                                 <textarea type="text" class="form-control"  name="edit_note" id="edit_note" placeholder="Add note"></textarea>

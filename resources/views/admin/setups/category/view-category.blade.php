@@ -138,7 +138,7 @@
               @csrf
              
                   <input type="hidden" name="editId" id="editId">
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Name <span class="text-danger"> * </span></label>
                             <input class="form-control" id="editName" type="text" name="editName" required="">

@@ -22,7 +22,7 @@ Admin Generate Salary Sheet  -View
 
 <section>
     <div class="container-fluid">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -30,7 +30,7 @@ Admin Generate Salary Sheet  -View
             
                         <div class="table">
                             <div class="container-fluid">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-12">
                                         <div class="card">
                                             <div class="card-header">

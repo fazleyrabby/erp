@@ -24,7 +24,7 @@ Account Settings
           <input type="hidden" name="editId" id="editId" value="1">
 
 
-          <div class="row">
+          <div class="row g-3">
             <table class="m-2">
               <thead>
                 @php
@@ -59,7 +59,7 @@ Account Settings
             </table>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-12" style="padding-top: 30px">
+            <div class="form-group mb-3 col-md-12" style="padding-top: 30px">
               <button type="submit" class="btn btn-primary float-right">Update</button>
             </div>
           </div>

@@ -20,42 +20,42 @@
                         <input type="hidden" name="editId" id="editId" value="1">
                         <div class="form-row">
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="name">Shop Name<font style="color:red">*</font> </label>
-                                <input type="text" name="name" id="companyName" class="form-control form-group-sm"
+                                <input type="text" name="name" id="companyName" class="form-control form-group mb-3-sm"
                                     placeholder="Shop Name">
                                 <span class="text-danger" id="companyNameError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="email">Email<font style="color:red">*</font> </label>
-                                <input type="text" name="email" id="companyEmail" class="form-control form-group-sm"
+                                <input type="text" name="email" id="companyEmail" class="form-control form-group mb-3-sm"
                                     placeholder="Shop email">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="phone">Phone No<font style="color:red">*</font> </label>
-                                <input type="text" name="phone" id="companyPhone" class="form-control form-group-sm"
+                                <input type="text" name="phone" id="companyPhone" class="form-control form-group mb-3-sm"
                                     placeholder="Shop Phone">
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="address">Address<font style="color:red">*</font> </label>
-                                <input type="text" name="address" id="companyAddress" class="form-control form-group-sm"
+                                <input type="text" name="address" id="companyAddress" class="form-control form-group mb-3-sm"
                                     placeholder="Shop Name">
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="website">Website<font style="color:red">*</font> </label>
-                                <input type="text" name="website" id="companyWebsite" class="form-control form-group-sm"
+                                <input type="text" name="website" id="companyWebsite" class="form-control form-group mb-3-sm"
                                     placeholder="Shop Website">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="name">Month Year Format<font style="color:red">*</font> </label>
-                                <input type="text" name="month_year" id="month_year" class="form-control form-group-sm">
+                                <input type="text" name="month_year" id="month_year" class="form-control form-group mb-3-sm">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="name">Currency<font style="color:red">*</font> </label>
-                                <input type="text" name="currency" id="currency" class="form-control form-group-sm"
+                                <input type="text" name="currency" id="currency" class="form-control form-group mb-3-sm"
                                     placeholder="Currency">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="manage_stock_to_sale">Manage_stock_to Sale 545</label>
                                 <select class="form-control" name="manage_stock_to_sale" id="companyStockManage">
                                     <option value="">Select Option</option>
@@ -65,7 +65,7 @@
                                 <span class="text-danger" id="companyStockManageError"></span>
                             </div>
 
-                            <div class="form-group col-md-4" style="display:none;">
+                            <div class="form-group mb-3 col-md-4" style="display:none;">
                                 <label for="barcode_exits">Barcode_Exists</label>
                                 <select class="form-control" name="barcode_exists" id="companyBarcode">
                                     <option value="">Select Options </option>
@@ -74,53 +74,53 @@
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label for=""> Default Supplier : </label>
                                 <select class="form-control input-sm" id="default_party" name="default_party">
                                     <option value="">Select Supplier</option>
                                     <option value="-999">$supplier->name</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label for="">Report Header</label>
                                 <textarea class="ckeditor form-control" id="company_report_header" name="company_report_header"></textarea>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label for="">Report footer</label>
                                 <textarea class="ckeditor form-control" id="company_report_footer" name="company_report_footer"></textarea>
                             </div>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label for="">Terms and Conditions</label>
                                 <textarea class="ckeditor form-control" id="company_terms_conditions" name="company_terms_conditions"></textarea>
                             </div>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="watermark">Watermark <font style="color:red">*</font> </label>
                                 <input type="file" name="watermark" id="companyWatermark"
-                                    class="form-control form-group-sm" />
+                                    class="form-control form-group mb-3-sm" />
                                 <img id="watermark" src="{{ asset('upload/no_image.png') }}"
                                     style="width: 100px;height: 110px; border:1px solid #000000;margin-top: 1%;">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="logo">Shop Logo <font style="color:red">*</font> </label>
                                 <input type="file" name="logo" id="companyLogo"
-                                    class="form-control form-group-sm" />
+                                    class="form-control form-group mb-3-sm" />
                                     <img id="logo" src="{{ asset('upload/no_image.png') }}"
                                     style="width: 200px;height: 110px; border:1px solid #000000;margin-top: 1%;">
                                 
                             </div>
 
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label for="logo">Shop Logo(vertical) <font style="color:red">*</font> </label>
                                 <input type="file" name="vertical_logo" id="companyLogo_vertical"
-                                    class="form-control form-group-sm" />
+                                    class="form-control form-group mb-3-sm" />
                                 <img id="vertical_logo" src="{{ asset('upload/no_image.png') }}"
                                     style="width: 200px;height: 110px; border:1px solid #000000;margin-top: 1%;">
                             </div>
 
-                            <div class="form-group col-md-4" style="padding-top: 30px">
+                            <div class="form-group mb-3 col-md-4" style="padding-top: 30px">
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
 

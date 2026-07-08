@@ -11,7 +11,7 @@
             <div class="container-fluid">
                 <!-- Small boxes (Stat box) -->
                 <!-- Main row -->
-                <div class="row">
+                <div class="row g-3">
                     <!-- Left col -->
                     <section class="col-md-12">
                         <!-- Custom tabs (Charts with tabs)-->

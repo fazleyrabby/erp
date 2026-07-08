@@ -85,7 +85,7 @@
                         <form action="{{ route('roleStore') }}" method="post" enctype="multipart/form-data">
                             <div class="modal-body">
                                 @csrf
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label class="col-form-label">Role Name</label>
                                     <input type="text" class="form-control" id="name" name="name"
                                         placeholder="Role Name">

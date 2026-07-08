@@ -16,7 +16,7 @@
                     <form id="purchaseProducts" enctype="multipart/form-data">
                         @csrf
                             <div class="col-md-12">
-                                <div class="row">
+                                <div class="row g-3">
                                 <input type="hidden" name="purchaseId" id="purchaseId" value="{{ $purchase->id }}">
                                 <input type="hidden" name="purchaseNo" id="purchaseNo"
                                     value="{{ $purchase->purchase_no }}">
@@ -24,35 +24,35 @@
                                     value="{{ $purchase->supplier_id }}">
                                 <input type="hidden" name="discount" id="discount" value="{{ $purchase->discount }}">
                                 <div class="col-md-4">
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label for="purchaseReturnDate"> Purchase Return Date</label>
                                         <input type="text" readonly class="form-control" name="DatePurchaseReturn"
                                             id="DatePurchaseReturn" aria-describedby="emailHelp" value="{{ todayDate() }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label for="supplierName"> Supplier Name</label>
                                         <input type="text" readonly class="form-control" name="supplierName" id="supplierName"
                                             aria-describedby="emailHelp" value="{{ $purchase->supplier_name }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label for="purchaseCode"> Invoice No</label>
                                         <input type="text" readonly class="form-control" name="purchaseCode" id="purchaseCode"
                                             aria-describedby="emailHelp" value="{{ $purchase->purchase_no }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label for="purchaseDate"> Purchase Date</label>
                                         <input type="text" readonly class="form-control" name="purchaseDate" id="purchaseDate"
                                             aria-describedby="emailHelp" value="{{ $purchase->date }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="form-group">
+                                    <div class="form-group mb-3">
                                         <label for="purchaseDate"> Warehouse <span class="text-danger">*</span></label>
                                        <select id="warehouse" name="warehouse" class="form-control" style="width:100%" Required >
                                            <option value='' selected='true'> Return Warehouse </option>
@@ -124,7 +124,7 @@
 
                     </form>
                     <div class="col-md-12">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-primary btn-md" onclick="purchaseReturn()"> <i
                                     class="fas fa-save"></i> Return purchase </button>

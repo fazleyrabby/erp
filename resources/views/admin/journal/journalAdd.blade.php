@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <form action="{{route('journalStore')}}" method="post">
                         @csrf
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-4">
                             <label class="form-label">Transaction Date</label>
                             <input type="date" class="form-control" name="transaction_date">
@@ -152,7 +152,7 @@
                         </table>
                         
                     </div>
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-12 ">
                             <div class="add-btn">
                                 <button class="btn btn-primary m-2" id="btn_addRow"> <i class="fas fa-plus"></i> Add row</button>

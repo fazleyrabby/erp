@@ -99,20 +99,20 @@
 
                     <form id="editOpeningDueForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <input type="hidden" name="editOpeningDueId" id="editOpeningDueId">
                                 <label> Party Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editOpeningDuePartyName" type="text" name="editOpeningDuePartyName" disabled>
                                 <span class="text-danger" id="editOpeningDuePartyNameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Opening Due </label>
                                 <input class="form-control input-sm" id="editOpeningDueInsert" type="number" name="editOpeningDueInsert">
                                 <span class="text-danger" id="editOpeningDueInsertError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Due Type </label>
                                 <select id="editOpeningDueType" name="editOpeningDueType" class="form-control input-sm">
                                     <option value="due">Due</option>
@@ -157,32 +157,32 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="row">
+                        <div class="row g-3">
                             @csrf
 
                             <input type="hidden" name="id">
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> {{ $type }} Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="name" type="text" name="name" placeholder=" Write {{ $type }} name"/>
                                 <span class="text-danger" id="nameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Email <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="email" type="text" name="email"  placeholder="Write {{ $type }} valid email" />
                                 <span class="text-danger" id="emailError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Person <span class="text-danger"> * </span> </label>
                                 <input class="form-control input-sm" id="contact_person" type="text" name="contact_person" placeholder=" Write contact person" />
                                 <span class="text-danger" id="contact_personError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Mobile No <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="contact" type="text" name="contact" placeholder=" Write {{ $type }} Mobile No" />
                                 <span class="text-danger" id="contactError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Country <span class="text-danger"> * </span></label>
                                 <select class="form-control input-sm" id="country_name" type="text" name="country_name">
 
@@ -436,11 +436,11 @@
                                 <span class="text-danger" id="country_nameError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Alternate Contact No</label>
                                 <input class="form-control input-sm" id="alternate_contact" type="text" name="alternate_contact" placeholder=" Write Alter Mobile No"/>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> District <span class="text-danger"> * </span></label>
                                 <select class="form-control input-sm" id="district" type="text" name="district">
                                     <option value="" selected disabled>Choose District</option>
@@ -511,13 +511,13 @@
                                 </select>
                                  <span class="text-danger" id="districtError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Credit limit <span class="text-danger"> * </span></label>
                                 <input id="credit_limit" type="text" name="credit_limit" class="form-control input-sm" value="0" placeholder=" Write Credit Limit"/>
                                  <span class="text-danger" id="credit_limitError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Customer Type <span class="text-danger"> * </span></label>
                                 <select id="party_variety" name="party_variety" class="form-control input-sm">
                                     <option value="">Choose party type</option>
@@ -526,7 +526,7 @@
                                 </select>
                                 <span class="text-danger" id="party_varietyError"></span>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label>Address <span class="text-danger"> * </span></label>
                                 <textarea class="form-control input-sm" id="address" type="text" name="address" placeholder="Write {{ $type }} address">  </textarea>
                                 <span class="text-danger" id="addressError"></span>
@@ -557,34 +557,34 @@
                     </div>
                     <div class="modal-body">
 
-                        <div class="row">
+                        <div class="row g-3">
                             @csrf
                             <input type="hidden" name="editId" id="editId">
                             @if($type == 'Walkin_Customer')
                                 <input type="hidden" name="editParty" id="editParty" value="{{ $type }}">
                             @endif
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>{{ $type }} Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editName" type="text" name="editName" required="">
                                 <span class="text-danger" id="editNameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Email <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editEmail" type="text" name="editEmail">
                                 <span class="text-danger" id="editEmailError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Person <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editContact_person" type="text"  name="editContact_person">
                                 <span class="text-danger" id="editContact_personError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Contact Number <span class="text-danger"> * </span> </label>
                                 <input class="form-control input-sm" id="editContact" type="text" name="editContact">
                                 <span class="text-danger" id="editContactError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Country</label>
                                 <select class="form-control input-sm" id="editCountry_name" type="text"
                                     name="editCountry_name">
@@ -838,12 +838,12 @@
                                 </select>
                                 <span class="text-danger" id="country_nameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Alternate Contact</label>
                                 <input class="form-control input-sm" id="editAlternate" type="text" name="editAlternate">
                                 <span class="text-danger" id="editAlternateError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> District</label>
                                 <select class="form-control input-sm" id="editDistrict" type="text" name="editDistrict">
                                     <option value="" selected disabled>Choose District</option>
@@ -914,18 +914,18 @@
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Status</label>
                                 <select id="editStatus" name="editStatus" class="form-control input-sm">
                                     <option value="Active">Active</option>
                                     <option value="Inactive">Inactive</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Credit limit</label>
                                 <input id="editCredit_limit" name="editCredit_limit" class="form-control input-sm">
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Customer Type</label>
                                 <select id="editParty_variety" name="editParty_variety" class="form-control input-sm">
                                     <option value="">Choose party type</option>
@@ -934,7 +934,7 @@
                                 </select>
                             </div>
                             @if($type != 'Walkin_Customer')
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Party Type</label>
                                 <select id="editParty" name="editParty" class="form-control input-sm">
                                     <option value="Supplier">Supplier</option>
@@ -943,7 +943,7 @@
                                 </select>
                             </div>
                             @endif
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label>Address <span class="text-danger"> * </span></label>
                                 <textarea class="form-control input-sm" id="editAddress" type="text" name="editAddress"></textarea>
                                 <span class="text-danger" id="editaddressError"></span>

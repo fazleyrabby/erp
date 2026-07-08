@@ -253,14 +253,14 @@
                             </div>
                             {{-- serializ --}}
                             <div class="form-group mb-3 col-md-12">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="form-group mb-3 col-md-3">
                                         <label for="">Image</label>
                                         <input type="file" name="image" id="image"
                                             class="form-control form-control-sm">
                                         <span class="text-danger" id="imageError"></span>
 
-                                        <div class="row">
+                                        <div class="row g-3">
                                             <div class="form-group mb-3 col-12">
                                                 <img id="showImage" src=" {{ asset('upload/no_image.png') }} "
                                                     alt="Image Not Found"
@@ -270,7 +270,7 @@
                                     </div>
                                     <!-- Start spec -->
                                     <div class=" col-md-9" id="specSection">
-                                        <div class="row">
+                                        <div class="row g-3">
                                             <div class=" col-4">
                                                 <label> Product Specification</label>
                                                 <input class="form-control input-sm" id="specName" type="text"
@@ -430,14 +430,14 @@
                             </div>
                             {{-- serializ --}}
                             <div class="form-group mb-3 col-md-12">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="form-group mb-3 col-md-3 d-none">
                                         <label for="">Image</label>
                                         <input type="file" name="serviceimage" id="serviceimage"
                                             class="form-control form-control-sm">
                                         <span class="text-danger" id="serviceimageError"></span>
 
-                                        <div class="row">
+                                        <div class="row g-3">
                                             <div class="form-group mb-3 col-12">
                                                 <img id="showImage" src=" {{ asset('upload/no_image.png') }} "
                                                     alt="Image Not Found"
@@ -453,7 +453,7 @@
                                         <span class="text-danger" id="servicenotesError"></span>
                                     </div>
                                     <div class=" col-md-9" id="specSection">
-                                        <div class="row">
+                                        <div class="row g-3">
                                             <div class=" col-5">
                                                 <label> Product Specification</label>
                                                 <input class="form-control input-sm" id="servicespecName" type="text"
@@ -623,13 +623,13 @@
                                 </div>
                             </div>
                             <div class="form-group mb-3 col-md-12">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="form-group mb-3 col-md-3 " id="ImageDiv">
                                         <label for="">Edit Image</label>
                                         <input type="file" name="editImage" id="editImage"
                                             class="form-control form-control-sm">
                                         <span class="text-danger" id="editImageError"></span>
-                                        <div class="row">
+                                        <div class="row g-3">
                                             <div class="form-group mb-3 col-12">
                                                 <img id="showImage" src="{{ asset('upload/no_image.png') }}"
                                                     style="width: 60%;height: 90px; border:1px solid #000000;margin: 2% 0% 0% 0%;">
@@ -642,7 +642,7 @@
                                     </div>
                                     <!-- Start edit spec -->
                                     <div class="col-md-7" id="editSpecSection">
-                                        <div class="row">
+                                        <div class="row g-3">
                                             <div class="col-12"></div>
 
                                             <div class="col-10">
@@ -685,7 +685,7 @@
                 <div class="modal-body">
                     <form id="editOpenStockProductForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
 
                             <div class="form-group mb-3 col-md-12">
                                 <input type="hidden" name="editOpenStockId" id="editOpenStockId">
@@ -761,7 +761,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body card-body">
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="form-group mb-3 col-md-12">
                             <table border="1">
                                 <thead>

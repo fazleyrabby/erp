@@ -13,8 +13,8 @@ Admin Monthly Attendence
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="attendence-card">
-                            <div class="row">
-                                <div class="form-group  col-sm-3">
+                            <div class="row g-3">
+                                <div class="form-group mb-3  col-sm-3">
                                     <label >Employee:</label>
                                     <select class="form-control" id="employee_id"  required>
                                     <option value="" selected disabled>Choose Employee</option>
@@ -24,11 +24,11 @@ Admin Monthly Attendence
                                     </select>
                                     <span class="text-danger">{{$errors->has('employee_id')?$errors->first('employee_id'):''}}</span>
                                 </div>
-                                <div class="form-group  col-sm-3">
+                                <div class="form-group mb-3  col-sm-3">
                                     <label>Date From:</label>
                                     <input type="date" class="form-control " id="date_from" value="{{ date('Y-m-01') }}"> 
                                 </div>
-                                <div class="form-group  col-sm-3">
+                                <div class="form-group mb-3  col-sm-3">
                                     <label>Date To:</label>
                                     <input type="date" class="form-control " id="date_to" value="{{ date('Y-m-d') }}"> 
                                 </div>

@@ -121,7 +121,7 @@
                         </table>
                         
                     </div>
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-12 ">
                             <button class="btn btn-primary m-2" id="btn_addRow"> <i class="fas fa-plus"></i> Add row</button>
                             <button type="submit" class="btn btn-primary float-right  m-2"> <i class="fas fa-save"></i> Save</button>

@@ -101,28 +101,28 @@
                 </div>
                 <form id="userForm" method="POST" action="#">
                     <div class="modal-body">
-                        <div class="row">
+                        <div class="row g-3">
                             @csrf
                             <input type="hidden" name="id">
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label> Full Name</label>
                                 <input class="form-control input-sm" id="name" type="text" name="name"
                                     placeholder="Full name">
                                 <span class="text-danger" id="nameError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Email </label>
                                 <input class="form-control input-sm" type="email" id="email" name="email"
                                     placeholder="Email">
                                 <span class="text-danger" id="emailError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Mobile No</label>
                                 <input class="form-control input-sm" type="text" id="mobile_no" name="mobile_no"
                                     placeholder="Mobile number">
                                 <span class="text-danger" id="mobileError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Password</label>
                                 <input class="form-control input-sm" type="password" id="password" name="password"
                                     placeholder="password">
@@ -130,25 +130,25 @@
                             </div>
 
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Designation</label>
                                 <input class="form-control input-sm" id="designation" type="text" name="designation"
                                     placeholder="designation">
                                 <span class="text-danger" id="designationError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Department</label>
                                 <input class="form-control input-sm" id="department" type="text" name="department"
                                     placeholder="department">
                                 <span class="text-danger" id="departmentError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Address</label>
                                 <input class="form-control input-sm" id="address" type="text" name="address"
                                     placeholder="address">
                                 <span class="text-danger" id="addressError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Roles</label>
                                 <select name="role" id="role" class="form-control input-sm">
 									<option value="" selected="selected">Select Role</option>
@@ -159,7 +159,7 @@
                                 <span class="text-danger" id="rolesError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="">Image</label>
                                 <input type="file" name="image" id="image" name="image"
                                     class="form-control form-control-sm">
@@ -168,18 +168,18 @@
                             </div>
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="">Signature:</label>
                                 <input type="file" id="signature" name="signature" class="form-control form-control-sm">
                                 <span class="text-danger" id="signatureError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <img id="showImage" src="{{ asset('upload/no_image.png') }}"
                                     style="width: 70px;height: 80px; border:1px solid #000000">
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <img id="showSignature" src="{{ asset('upload/no_image.png') }}"
                                     style="width: 70px;height: 80px; border:1px solid #000000">
                             </div>
@@ -206,44 +206,44 @@
                 <form id="editUserForm" method="POST" enctype="multipart/form-data" action="#">
                     <div class="modal-body">
 
-                        <div class="row">
+                        <div class="row g-3">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 
                             <input type="hidden" name="editId" id="editId">
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label> Full Name <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" id="editName" type="text" name="name" required="" />
                                 <span class="text-danger" id="editNameError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Email <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" type="text" id="editEmail" name="email" required="" />
                                 <span class="text-danger" id="editEmailError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Mobile No <span class="text-danger"> * </span></label>
                                 <input class="form-control input-sm" type="text" id="editMobile" name="mobile_no"
                                     required="" />
                                 <span class="text-danger" id="editMobileError"></span>
                             </div>
 
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Designation</label>
                                 <input class="form-control input-sm" id="editDesignation" type="text" name="designation" />
                                 <span class="text-danger" id="editDesignationError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Department</label>
                                 <input class="form-control input-sm" type="text" id="editDepartment" name="department" />
                                 <span class="text-danger" id="editDepartmentError"></span>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group mb-3 col-md-4">
                                 <label>Address</label>
                                 <input class="form-control input-sm" id="editAddress" type="text" name="address" />
                                 <span class="text-danger" id="editAddressError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Status</label>
                                 <select id="editStatus" name="editStatus" class="form-control input-sm">
                                     <option value="Active">Active</option>
@@ -251,7 +251,7 @@
                                 </select>
                                 <span class="text-danger" id="editStatusError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Roles <span class="text-danger"> * </span></label>
                                 <select name="role_name" id="role_name" class="form-control input-sm">
 									<option value="" selected="selected">Select Role</option>                                    @foreach ($roles as $role)
@@ -260,26 +260,26 @@
                                 </select>
                                 <span class="text-danger" id="role_nameError"></span>
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="">Edit Image</label>
                                 <input type="file" name="editImage" id="editImage" class="form-control form-control-sm" />
                                 <span class="text-danger">image size should must be lower then 2048 X 1848</span>
                                 <span class="text-danger" id="editImageError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label for="">Edit Signature:</label>
                                 <input type="file" id="editSignature" name="editSignature"
                                     class="form-control form-control-sm">
                                 <span class="text-danger" id="editSignatureError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <img id="editShowImage" src="{{ url('upload/no_image.png') }}"
                                     style="width: 70px;height: 80px; border:1px solid #000000">
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <img id="editShowSignature" src="{{ asset('upload/no_image.png') }}"
                                     style="width: 70px;height: 80px; border:1px solid #000000">
                             </div>

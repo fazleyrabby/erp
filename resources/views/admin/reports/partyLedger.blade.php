@@ -15,7 +15,7 @@
                 <div class="card-body">
                     
                     
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Choose Vendor</label>
                             <select type="date" class="form-control" name="vendor_id" id="vendor_id">
@@ -62,7 +62,7 @@
                         </table>
                         
                     </div>
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-12 " id="getVoucherButton"></div>
                     </div>
                     

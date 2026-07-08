@@ -15,7 +15,7 @@
                 <div class="card-body">
 
 
-                    <div class="row">
+                    <div class="row g-3">
 
                         <div class="col-md-4">
                             <label class="form-label">Date From</label>
@@ -42,7 +42,7 @@
 
                     <div id="monthYearHeader"></div>
                     <div class="table-responsive" id="tableData"></div>
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-12 " id="getVoucherButton"></div>
                     </div>
                     <div id="closingBtn"></div </div><!-- Card Content end -->

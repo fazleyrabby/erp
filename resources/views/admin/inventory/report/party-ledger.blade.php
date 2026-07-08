@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST" enctype="multipart/form-data">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -23,12 +23,12 @@
                                     </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         @csrf
                                       
 
 
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group mb-3 col-md-3">
                                             <label>Party Type </label>
                                             <select id="party_type" name="party_type" class="form-control input-sm" onchange="getParty()">
                                                 <option value=""selected >Select Party Type</option>
@@ -37,7 +37,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group col-md-3" id="customersRow">
+                                        <div class="form-group mb-3 col-md-3" id="customersRow">
                                             <label>Party: </label>
                                             <select id="party_id" name="party_id" class="form-control input-sm">
                                                 <option value="">Select Party</option>
@@ -48,7 +48,7 @@
                                         
                                       
 
-                                        <!--<div class="form-group col-md-3">
+                                        <!--<div class="form-group mb-3 col-md-3">
                                             <label>Project </label>
                                             <select class="form-control" id="project_id" name="project_id" onchange="loadOrder()">
                                                     <option value='0' selected> Select Project </option>
@@ -57,7 +57,7 @@
                                             <span class="text-danger" id="project_idError"></span>
                                         </div>
 
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group mb-3 col-md-3">
                                             <label >Work Order </label>
                                             <select class="form-control " id="work_order_id" name="work_order_id" >
                                                     <option value="">Select Work Order</option>
@@ -67,25 +67,25 @@
 
                                        
 
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group mb-3 col-md-3">
                                             <label>Date From: </label>
                                             <input type="date" class="form-control" id="dateFrom"
                                                 aria-describedby="emailHelp" value="{{ todayDate() }}">
 
                                         </div>
-                                        <div class="form-group col-md-3">
+                                        <div class="form-group mb-3 col-md-3">
                                             <label>Date To: </label>
                                             <input type="date" class="form-control" id="dateTo"
                                                 aria-describedby="emailHelp" value="{{ todayDate() }}">
                                         </div>
-                                     <div class="form-group col-md-8"></div>
-                                        <div class="form-group col-md-4">
+                                     <div class="form-group mb-3 col-md-8"></div>
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> </label>
                                             <span id="customerGenerateBtn"></span>
                                             <!-- <button type="button" class="btn btn-primary btn btn-block p-3"
                                                 onclick="getPartyLegder()">View Party Ledger </button> -->
                                         </div>
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group mb-3 col-md-12">
                                             <label>Party Ledger Details: </label>
                                             <table border="1" style="width:100%;text-align:center;">
                                                 <thead>
@@ -109,7 +109,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         <div class="col-md-12">
                                            <span id="customer_btn"></span>
                                           

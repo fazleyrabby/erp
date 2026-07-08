@@ -104,15 +104,15 @@ fieldset.scheduler-border {
                 <div class="modal-body">
                     <form id="warehouseForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <fieldset class="scheduler-border">
             					<legend class="scheduler-border">WareHouse From</legend>
-            					<div class="row">
-                					<div class="form-group col-md-3">
+            					<div class="row g-3">
+                					<div class="form-group mb-3 col-md-3">
                 					    <label for="transferDate">Transfer Date <span class="text-danger">*</span></label> 
                                         <input type="date" id="transferDate" name="transferDate" class="form-control input-sm" value="{{ todayDate() }}" />
                                     </div>
-                                    <div class="form-group col-md-9">
+                                    <div class="form-group mb-3 col-md-9">
                                         <label for="product"> Select Product <span class="text-danger">*</span></label> 
                                         <div class="d-flex">
                                             <select id="productId" name="productId" class="form-control input-sm" style="width:96%">
@@ -125,7 +125,7 @@ fieldset.scheduler-border {
                                              <button type="button" class="btn btn-primary input-group-addon" onclick="showAdvanceSearch();"> <i class="fas fa-search"></i></button>
                                         </div>
                                     </div>
-                					<div class="form-group col-md-6">
+                					<div class="form-group mb-3 col-md-6">
                                         <label for="wareHouseID">Select Warehouse <span class="text-danger">*</span></label> 
                                         <select class="form-control" name="wareHouseID" id="wareHouseID" style="width:100%;" required onchange="load_current_stock()">
                                             <option value=""> Warehouse Search </option>
@@ -137,11 +137,11 @@ fieldset.scheduler-border {
                                             
                                         </select>
                                     </div>
-                					<div class="form-group col-md-3">
+                					<div class="form-group mb-3 col-md-3">
             						    <label for="currentStock">Current Stock</label>  
                                         <input type="text" class="form-control" id="currentStock" name="currentStock" placeholder=" Current Stock " readonly>
             						</div>
-                					<div class="form-group col-md-3">
+                					<div class="form-group mb-3 col-md-3">
             						    <label for="remainingStock">Remaining Stock</label>  
                                         <input type="text" class="form-control" id="remainingStock" name="remainingStock" placeholder=" Remaining Stock " readonly>
             						</div>
@@ -150,8 +150,8 @@ fieldset.scheduler-border {
 					        
 					        <fieldset class="scheduler-border">
             					<legend class="scheduler-border">WareHouse To</legend>
-            					<div class="row">
-                					<div class="form-group col-md-6">
+            					<div class="row g-3">
+                					<div class="form-group mb-3 col-md-6">
                 					    <label for="transferWareHouse">Select Warehouse <span class="text-danger">*</span></label> 
                                         <select class="form-control" name="transferWareHouse" id="transferWareHouse" style="width:100%;" required>
                                            <option value=""> Warehouse Search </option>
@@ -160,7 +160,7 @@ fieldset.scheduler-border {
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group mb-3 col-md-6">
                                          <label for="transferStock">Transfer Quantity <span class="text-danger">*</span></label>  
                                         <input type="text" class="form-control" id="transferStock" name="transferStock" placeholder=" Transfer Quantity " oninput="remainingStockCalculation()">
                                     </div>

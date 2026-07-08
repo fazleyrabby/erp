@@ -12,7 +12,7 @@
             <!-- Main row -->
             <div id="msg_error"></div>
             <form id="productLedger" method="POST" enctype="multipart/form-data">
-                <div class="row">
+                <div class="row g-3">
                     <!-- Left col -->
                     <section class="col-md-12">
                         <!-- Custom tabs (Charts with tabs)-->
@@ -21,9 +21,9 @@
                                 <h3> Product Ledger</h3>
                             </div><!-- /.card-header -->
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row g-3">
                                     @csrf
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group mb-3 col-md-4">
                                         <label>Product: </label>
                                         <select id="products" name="products" class="form-control input-sm">
                                             <option value="">Select Product</option>
@@ -32,26 +32,26 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group mb-3 col-md-4">
                                         <label>Date From: </label>
                                         <input type="date" class="form-control" id="dateFrom"
                                                value="{{ todayDate() }}" aria-describedby="emailHelp">
 
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group mb-3 col-md-4">
                                         <label>Date To: </label>
                                         <input type="date" class="form-control" id="dateTo"
                                                aria-describedby="emailHelp" value="{{ todayDate() }}">
                                     </div>
-                                    <div class="form-group col-md-3"><button type="button" class="btn btn-primary btn-lg btn-block " id="btnLedgerDetails"
+                                    <div class="form-group mb-3 col-md-3"><button type="button" class="btn btn-primary btn-lg btn-block " id="btnLedgerDetails"
                                                 onclick="productDetailsLedger()"> Product Details Ledger</button></div>
-                                    <div class="form-group col-md-5"></div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group mb-3 col-md-5"></div>
+                                    <div class="form-group mb-3 col-md-4">
                                         <button type="button" class="btn btn-primary btn-lg btn-block "
                                                 onclick="generateReport()"> Generate Report</button>
                                     </div>
                                     
-                                     <div class="form-group col-md-12">
+                                     <div class="form-group mb-3 col-md-12">
                                             <label>Product Details: </label>
                                             <table border="1" style="width:100%;text-align:center;">
                                                 <thead>
@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-12">
                                     </div>
                                 </div>

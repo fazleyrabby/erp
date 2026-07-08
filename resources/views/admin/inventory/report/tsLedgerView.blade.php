@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -21,8 +21,8 @@
                                     <h3> Temporary Sale Ledger </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
+                                    <div class="row g-3">
+                                        <div class="form-group mb-3 col-md-12">
                                             <h4 style="color: gray;text-align: center;"> Method Wise Cash Ledger Wise Reports </h4>
 				                            <h5 style="text-align: center;">**Date wise payment method details view & Print As PDF **</h5>
                                         </div>
@@ -32,7 +32,7 @@
                                     
                                         <form  class="form-horizontal" method="POST">
                                             @csrf
-                                            <div class="row">
+                                            <div class="row g-3">
                     							<div class="col-md-1"></div>
                 							    <div class="col-md-2">
                     								<a href="{{url('report/tsledgerallpdf')}}" target="_blank" class="btn btn-default btn-flat pull-left" style="margin-top: 19%;width: 100%;"><i class="fa fa-file-pdf-o" style="color: red;"></i>  TS ALL </a>

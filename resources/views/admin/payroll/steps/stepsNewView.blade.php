@@ -86,7 +86,7 @@ Admin Steps -View
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div> 
                 <div class="modal-body">
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <div class="col-sm-6">
                             <label for="carousalCaptionOffer">Sequence</label>
                                 <input type="text" class="form-control" id="sequence" name="sequence" placeholder=" Write step sequence" required> <br>                                    
@@ -103,7 +103,7 @@ Admin Steps -View
                                 <span class="text-danger" id="grade_idError"></span>
                         </div>                       
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Step Name</label>
                             <input type="text" class="form-control" id="step_name" name="step_name" placeholder=" Write step Name" required> <br>                                    
@@ -115,7 +115,7 @@ Admin Steps -View
                             <span class="text-danger" id="salary_amountError"></span>                                   
                         </div>
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <label for="carousalCaptionOffer">Remarks</label>
                         <textarea type="text" class="form-control" id="note" name="note" placeholder="Write Short Note" ></textarea>
                         <span class="text-danger" id="noteError"></span>
@@ -156,7 +156,7 @@ Admin Steps -View
                 <div class="modal-body">
                     <input type="hidden" name="editId" id="editId">
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer">Sequence </label>
                                 <input type="text" class="form-control"  id="editSequence" name="editSequence" >  
@@ -174,7 +174,7 @@ Admin Steps -View
                             </div>                       
                         </div>
 
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer" >Step Name</label>
                                 <input class="form-control input-sm" id="editStepName" type="text" name="editStepName" required="">
@@ -186,7 +186,7 @@ Admin Steps -View
                                 <span class="text-danger" id="editSalary_amountError"></span>                                   
                             </div>
                         </div>
-                        <div class="form-group row col-md-12">
+                        <div class="form-group mb-3 row col-md-12">
                             <div class="col-md-6">
                                 <label for="carousalCaptionOffer"> Note</label>
                                 <textarea class="form-control input-sm" id="editNote" type="text" name="editNote" ></textarea>

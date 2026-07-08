@@ -28,7 +28,7 @@
         <section class="content box-border">
             <form id="saleProducts" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="row">
+                <div class="row g-3">
                     <!-- Left col -->
                     <section class="col-md-12">
                         <!-- Custom tabs (Charts with tabs)-->
@@ -52,7 +52,7 @@
                             <div class="card-body">
                                 <div class="row mx-auto">
                                     @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-                                        <div class="form-group col-md-12">
+                                        <div class="form-group mb-3 col-md-12">
                                             <label>Barcode: </label>
                                             <input class="form-control input-sm" id="barcode" type="text"
                                                 name="barcode" onkeyup="findProduct()">
@@ -62,8 +62,8 @@
 
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">Service Recieve Section</legend>
-                                        <div class="row">
-                                            <div class="form-group col-md-4 d-none">
+                                        <div class="row g-3">
+                                            <div class="form-group mb-3 col-md-4 d-none">
                                                 <label>Date: <span class="text-danger">*</span></label>
                                                 <input type="date" id="saleDate" name="saleDate"
                                                     class="form-control input-sm" value="{{ todayDate() }}" />
@@ -79,11 +79,11 @@
                                             @endphp
                                           
                                             @if($advance)
-                                            <div class="form-group col-md-12"><span>Customer can not be changed,because this customer already paid some advances before.</span></div>
+                                            <div class="form-group mb-3 col-md-12"><span>Customer can not be changed,because this customer already paid some advances before.</span></div>
                                             @else
-                                            <div class="form-group col-md-12 " style="{{$display}}">
-                                                <div class="row">
-                                                    <div class="form-group col-md-2">
+                                            <div class="form-group mb-3 col-md-12 " style="{{$display}}">
+                                                <div class="row g-3">
+                                                    <div class="form-group mb-3 col-md-2">
                                                         <label class="text-white">.</label><br>
                                                         <span class="btn btn-secondary" onclick="openproject_name()">Change Customer</span>
                                                     </div>
@@ -104,7 +104,7 @@
                                             @if($advance)
                                             @else  
                                             <!-- <div class="col-md-10" id="changeCustomerSuccess" style="{{$display2}}"><label class="text-white">.</label><br><span class="text-success">Customer was successfully switched to {{Session::get('companySettings')[0]['name']}} </span></div> -->
-                                            <div class=" form-group col-md-12"  style="{{$display2}}">
+                                            <div class=" form-group mb-3 col-md-12"  style="{{$display2}}">
                                                 <label >Project Name</label><br>
                                                 <input class="form-control" type="text" id="project_name" name="project_name" placeholder="Project name..." value="{{$saleOrder->project_name}}">
                                                 <span class="text-danger" id="project_nameError"></span>
@@ -114,7 +114,7 @@
 
 
                                             @if ($type != 'walkin_sale')
-                                                <div class="form-group col-md-7">
+                                                <div class="form-group mb-3 col-md-7">
                                                     <label>Party Name : <span class="text-danger">*</span></label>
                                                     <select id="customer" name="customer" class="abcd customer"
                                                         style="width:100%" required
@@ -128,7 +128,7 @@
                                                     </select>
                                                     <span class="text-danger" id="customerNameError"></span>
                                                 </div>
-                                                <div class="form-group col-md-3">
+                                                <div class="form-group mb-3 col-md-3">
                                                     <input type="hidden" id="customer" name="customer" value="0" />
                                                     <label>Phone: </label>
                                                     <div class="d-flex">
@@ -140,7 +140,7 @@
                                                 </div>
                                             @endif
                                             @if ($type == 'walkin_sale')
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group mb-3 col-md-4">
                                                     <input type="hidden" id="customer" name="customer"
                                                         value="{{ $customer->id }}" />
                                                     <input type="hidden" id="party_type" name="party_type"
@@ -154,35 +154,35 @@
                                                     <span class="text-danger" id="partyPhoneNumberError"></span>
                                                 </div>
                                             @endif
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Name: <span class="text-danger">*</span></label>
                                                 <input type="text" id="customerName" name="customerName"
                                                     class="form-control input-sm" placeholder=" Name"
                                                     value="{{ $customer->name ?: '' }}" readonly />
                                                 <span class="text-danger" id="customerNameError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Address: </label>
                                                 <input type="text" id="customerAddress" name="customerAddress"
                                                     class="form-control input-sm" placeholder=" Address"
                                                     value="{{ $customer->address ?: '' }}" readonly />
                                                 <span class="text-danger" id="customerAddressError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Defect Reported: 
                                                 <input type="text" id="defectReported" name="defectReported"
                                                     class="form-control input-sm" placeholder=" Defect Reported"
                                                     value="{{ $saleOrder->description ?: '' }}" />
                                                 <span class="text-danger" id="defectReportedError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Work Approval Date: <span class="text-danger">*</span></label>
                                                 <input type="date" id="workApprovalDate" name="workApprovalDate"
                                                     class="form-control input-sm" placeholder=" Work Approval Date"
                                                     value="{{ $saleOrder->work_approval_date ?: '' }}" />
                                                 <span class="text-danger" id="workApprovalDateError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Expected Delivery Date: <span class="text-danger">*</span></label>
                                                 <input type="date" id="expectedDeliveryDate"
                                                     name="expectedDeliveryDate" class="form-control input-sm"
@@ -190,42 +190,42 @@
                                                     value="{{ $saleOrder->expected_delivery_date ?: '' }}" />
                                                 <span class="text-danger" id="expectedDeliveryDateError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Brand: <span class="text-danger">*</span></label>
                                                 <input type="text" id="brand" name="brand"
                                                     class="form-control input-sm" placeholder=" Brand"
                                                     value="{{ $saleOrder->brand ?: '' }}" />
                                                 <span class="text-danger" id="brandError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Model: <span class="text-danger">*</span></label>
                                                 <input type="text" id="model" name="model"
                                                     class="form-control input-sm" placeholder=" Model"
                                                     value="{{ $saleOrder->model ?: '' }}" />
                                                 <span class="text-danger" id="modelError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Item: <span class="text-danger">*</span></label>
                                                 <input type="text" id="item" name="item"
                                                     class="form-control input-sm" placeholder=" Item"
                                                     value="{{ $saleOrder->item ?: '' }}" />
                                                 <span class="text-danger" id="itemError"></span>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Quantity: <span class="text-danger">*</span></label>
                                                 <input type="text" id="quantity" name="quantity"
                                                     class="form-control input-sm" placeholder=" Quantity"
                                                     value="{{ $saleOrder->quantity ?: '' }}" readonly />
                                                 <span class="text-danger" id="quantityError"></span>
                                                 <br>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6">
+                                                <div class="row g-3">
+                                                    <div class="form-group mb-3 col-md-6">
                                                         <label>Credit Limit
                                                             ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                                         <span class="btn btn-secondary float-right viewPurchase"
                                                             style="height: 53%;" id="creditLimit">0</span>
                                                     </div>
-                                                    <div class="form-group col-md-6">
+                                                    <div class="form-group mb-3 col-md-6">
                                                         <label>Left credit
                                                             ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                                         <span class="btn btn-secondary float-right viewPurchase"
@@ -233,22 +233,22 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-4">
+                                            <div class="form-group mb-3 col-md-4">
                                                 <label>Manufacturing SI. No: </label>
                                                 <input type="text" id="manufacturingSiNo" name="manufacturingSiNo"
                                                     class="form-control input-sm"
                                                     value="{{ $saleOrder->manufacturing_si_no ?: '' }}" />
                                                 <span class="text-danger" id="manufacturingSiNoError"></span>
                                                 <br>
-                                                <div class="row">
-                                                    <div class="form-group col-md-6">
+                                                <div class="row g-3">
+                                                    <div class="form-group mb-3 col-md-6">
                                                         <label>Due
                                                             ({{ Session::get('companySettings')[0]['currency'] }}):
                                                         </label><br>
                                                         <span class="btn btn-secondary float-right viewPurchase"
                                                             style="height: 53%;" id="currentDue">0</span>
                                                     </div>
-                                                    <div class="form-group col-md-6">
+                                                    <div class="form-group mb-3 col-md-6">
                                                         <label>Advance
                                                             ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                                         <span  class="btn btn-secondary float-right viewPurchase"
@@ -256,8 +256,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-4">
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group mb-3 col-md-4">
+                                            <div class="form-group mb-3 col-md-12">
                                                 <input type="hidden" id="category" name="category" value="42">
                                               {{--   <label>COA Heads: <span class="text-danger">*</span></label>
                                                 <select type="text" id="category" name="category"
@@ -323,7 +323,7 @@
                                                     <label class="form-check-label" for="inlineRadio1">Other
                                                         Accessories</label>
                                                 </div>
-                                                <div class="form-group">
+                                                <div class="form-group mb-3">
                                                     <input type="text" name="otherAccessories" id="otherAccessories"
                                                         class="form-control input-sm"
                                                         {{ strlen($saleOrder->other_accessories) > 0 ? '' : 'readonly' }}
@@ -335,25 +335,25 @@
                                             </div>
 
                                             
-                                            {{-- <div class="form-group col-md-2">
+                                            {{-- <div class="form-group mb-3 col-md-2">
                                                 <label>Credit Limit
                                                     ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                                 <span class="btn btn-success float-right viewPurchase"
                                                     style="height: 53%;" id="creditLimit">0</span>
                                             </div>
-                                            <div class="form-group col-md-2">
+                                            <div class="form-group mb-3 col-md-2">
                                                 <label>Left credit
                                                     ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                                 <span class="btn btn-warning float-right viewPurchase"
                                                     style="height: 53%;" id="leftCredit">0</span>
                                             </div>
-                                            <div class="form-group col-md-2">
+                                            <div class="form-group mb-3 col-md-2">
                                                 <label>Due ({{ Session::get('companySettings')[0]['currency'] }}):
                                                 </label><br>
                                                 <span class="btn btn-warning float-right viewPurchase"
                                                     style="height: 53%;" id="currentDue">0</span>
                                             </div> --}}
-                                            <div class="form-group col-md-6 d-none">
+                                            <div class="form-group mb-3 col-md-6 d-none">
                                                 <label>Total With Due1
                                                     ({{ Session::get('companySettings')[0]['currency'] }}):</label><br>
                                                 <span class="btn btn-danger float-right viewPurchase"
@@ -364,8 +364,8 @@
 
                                     <fieldset class="scheduler-border">
                                         <legend class="scheduler-border">Customer Communication Section</legend>
-                                        <div class="row">
-                                            <div class="form-group col-md-3">
+                                        <div class="row g-3">
+                                            <div class="form-group mb-3 col-md-3">
                                                 <label>Warehouse: <span class="text-danger">*</span></label>
                                                 <select id="warehouse" name="warehouse" class="abcd"
                                                     style="width:100%" required>
@@ -379,7 +379,7 @@
                                                 </select>
                                                 <span class="text-danger" id="warehouseError"></span>
                                             </div>
-                                            <div class="form-group col-md-8">
+                                            <div class="form-group mb-3 col-md-8">
                                                 <label>Product Search : <span class="text-danger">*</span></label>
                                                 <div class="d-flex">
                                                     <select id="products" name="products" class="form-control input-sm"
@@ -395,18 +395,18 @@
                                                             class="fas fa-search"></i></button>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-1">
+                                            <div class="form-group mb-3 col-md-1">
                                                 <label class="text-white">.</label>
                                                 <br>
-                                                <button type="button" class="form-group btn btn-info btn-lg"
+                                                <button type="button" class="form-group mb-3 btn btn-info btn-lg"
                                                     onclick="getOrderFeedbacks()"><i class="fa fa-info-circle"
                                                         aria-hidden="true"></i></button>
                                             </div>
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group mb-3 col-md-12">
                                                 <label>Service Note</label><br>
                                                 <textarea class="form-control" name="service_note" id="service_note" width="100%" rows="1" placeholder="Service note..">{{$saleOrder->service_note}}</textarea>
                                             </div>
-                                            <div class="form-group col-md-12">
+                                            <div class="form-group mb-3 col-md-12">
                                                 <label>Cart Details: </label>
                                                 <table border="1" style="font-size: 13px; width:100%;"
                                                     class="table-bordered">
@@ -551,7 +551,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-2">
                                         <a class="check-out-btn float-left" href="#" onclick="clearCart()"> <i
                                                 class="fa fa-trash"></i> <span class="check-out-text">  Clear Cart </span>  </a>
@@ -587,7 +587,7 @@
                 <div class="modal-body">
                     <form id="productForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <!--data listing table-->
                             <div class="table-responsive">
                                 <table id="advanceSearchProductTable" width="100%"
@@ -628,8 +628,8 @@
                 </div>
                 <div class="modal-body card-body">
                     <form id="serializeProductForm">
-                        <div class="row">
-                            <div class="form-group col-md-12">
+                        <div class="row g-3">
+                            <div class="form-group mb-3 col-md-12">
                                 <table border="1" style="font-size: 13px; width:100%;" class="table-bordered">
                                     <thead>
                                         <tr>
@@ -671,26 +671,26 @@
                 </div>
                 <div class="modal-body card-body">
                     <form id="orderFeedbackForm">
-                        <div class="row">
-                            <div class="form-group col-md-3">
+                        <div class="row g-3">
+                            <div class="form-group mb-3 col-md-3">
                                 <label>Date Of Contact: <span class="text-danger">*</span></label>
                                 <input type="date" id="dateOfContact" name="dateOfContact"
                                     class="form-control input-sm" value="{{ todayDate() }}" />
                                 <span class="text-danger" id="dateOfContactError"></span>
                             </div>
-                            <div class="form-group col-md-7">
+                            <div class="form-group mb-3 col-md-7">
                                 <label>Customer Response: <span class="text-danger">*</span></label>
                                 <input type="text" id="customerResponse" name="customerResponse"
                                     class="form-control input-sm" />
                                 <span class="text-danger" id="customerResponseError"></span>
                             </div>
-                            <div class="form-group col-md-2">
+                            <div class="form-group mb-3 col-md-2">
                                 <label class="text-white">*</label>
                                 <button type="button" id="addOrderFeedback"
                                     class="btn btn-success my_button float-right btn-block"><i class="fa fa-plus-circle"
                                         onclick="addOrderFeedback()"> Add </i> </button>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <table border="1" style="font-size: 13ppx; width:100%;" class="table-bordered">
                                     <thead>
                                         <tr>

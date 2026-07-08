@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST" enctype="multipart/form-data">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -24,9 +24,9 @@
                                     </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         @csrf
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Category: </label>
                                             <select id="category" name="category" class="form-control input-sm">
                                                 <option value="">Select Category</option>
@@ -36,19 +36,19 @@
                                             </select>
 
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Brand: </label>
                                             <select id="brand" name="brand" class="form-control input-sm">
                                                 <option value="">Select Brand</option>
                                             </select>
                                         </div>
-                                        {{-- <div class="form-group col-md-4">
+                                        {{-- <div class="form-group mb-3 col-md-4">
                                             <label>Product: </label>
                                             <select id="product" name="product" class="form-control input-sm">
                                                 <option value="">Select Product</option>
                                             </select>
                                         </div> --}}
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> </label>
                                             <button type="button" class="btn btn-success btn-lg btn-block"
                                                 onclick="generateCurrentStock()">Generate Current Stock</button>
@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         <div class="col-md-6">
                                         </div>
                                         <div class="col-md-3"></div>

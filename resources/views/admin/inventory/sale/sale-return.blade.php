@@ -20,16 +20,16 @@
                 <form>
                     @csrf
                     <div class="col-md-12">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="col-md-4 ">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="saleNo"> Sale Invoice No</label>
                                     <input type="text" readonly class="form-control" name="saleNo" id="saleNo"
                                         aria-describedby="emailHelp" value="{{ $sale->sale_no }}">
                                 </div>
                             </div>
                             <div class="col-md-4 ">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="customerId"> Customer Name</label>
                                     <input type="hidden" readonly name="customerId" id="customerId"
                                         value="{{ $sale->customer_id }}">
@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 ">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="saleDate"> Sale Date</label>
                                     <input type="hidden" name="saleId" id="saleId" value="{{ $sale->id }}">
                                     <input type="text" readonly class="form-control" name="saleDate" id="saleDate"
@@ -47,14 +47,14 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="dateOfSaleReturn"> Return Date</label>
                                     <input type="text" readonly class="form-control" name="dateOfSaleReturn"
                                         id="dateOfSaleReturn" aria-describedby="emailHelp" value="{{ date('Y-m-d') }}">
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="form-group">
+                                <div class="form-group mb-3">
                                     <label for="purchaseDate"> Warehouse <span class="text-danger">*</span></label>
                                     <select id="warehouse" name="warehouse" class="form-control" style="width:100%"
                                         Required>
@@ -124,7 +124,7 @@
                     </div>
                 </form>
                 <div class="col-md-12">
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-2">
                             <a href="#/" class="btn btn-primary btn-md" onclick="saleReturn()"
                                 aria-pressed="true"><i class="fas fa-save"></i> Return Sale</a>

@@ -12,7 +12,7 @@
                 <!-- Main row -->
                 <div id="msg_error"></div>
                 <form id="saleProducts" method="POST" enctype="multipart/form-data">
-                    <div class="row">
+                    <div class="row g-3">
                         <!-- Left col -->
                         <section class="col-md-12">
                             <!-- Custom tabs (Charts with tabs)-->
@@ -24,9 +24,9 @@
                                     </h3>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         @csrf
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Category: </label>
                                             <select id="category" name="category" class="form-control input-sm">
                                                 <option value="">Select Category</option>
@@ -35,44 +35,44 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Brand: </label>
                                             <select id="brand" name="brand" class="form-control input-sm">
                                                 <option value="">Select Brand</option>
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label>Product: </label>
                                             <select id="product" name="product" class="form-control input-sm">
                                                 <option value="">Select Product</option>
                                             </select>
                                         </div>
-                                        <div class="form-group col-md-8"></div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-8"></div>
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> </label>
                                             <button type="button" class="btn btn-info btn-lg btn-block p-3"
                                                 onclick="viewProduct()"> View Product Barcode </button>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> Product Name </label>
                                             <input type="text" id="productName" class="form-control input-sm" value=""
                                                 readonly>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> Purchase Price </label>
                                             <input type="text" id="purchasePrice" class="form-control input-sm" value=""
                                                 readonly>
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> Sale Price </label>
                                             <input type="text" id="salePrice" class="form-control input-sm" value="">
                                         </div>
-                                        <div class="form-group col-md-4">
+                                        <div class="form-group mb-3 col-md-4">
                                             <label> Product Qty </label>
                                             <input type="text" id="quantity" class="form-control input-sm" value="">
                                         </div>
 
-                                        {{-- <div class="form-group col-md-12">
+                                        {{-- <div class="form-group mb-3 col-md-12">
                                             <label>Product Details: </label>
                                             <table border="1" style="width:100%;text-align:center;">
                                                 <thead>
@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row">
+                                    <div class="row g-3">
                                         <div class="col-md-12">
                                             <h3>Barcode</h3>
                                             <div id="barcode"></div>

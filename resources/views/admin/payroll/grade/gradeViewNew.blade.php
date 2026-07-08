@@ -88,12 +88,12 @@ Admin Grade -View
                 <div class="modal-body">
                     
                         @csrf
-                        <div class="form-group col-md-12">
+                        <div class="form-group mb-3 col-md-12">
                             <label for="carousalCaptionOffer" class="col-sm-3 col-form-label">Grade Name</label>
                             <input type="text" class="form-control" id="grade_name" name="grade_name" placeholder=" Write Grade Name" required>                                     
                             <span class="text-danger" id="grade_nameError"></span>
                         </div>
-                        <div class="form-group col-md-12">
+                        <div class="form-group mb-3 col-md-12">
                             <label for="carousalCaptionOffer" class="col-sm-3 col-form-label">Remarks</label>
                             <textarea type="text" class="form-control" id="note" name="note" placeholder="Write Short Note" ></textarea>
                             <span class="text-danger" id="noteError"></span>
@@ -126,7 +126,7 @@ Admin Grade -View
                 <div class="modal-body">
                     @csrf
                     <input type="hidden" name="editId" id="editId">
-                    <div class="form-group row">
+                    <div class="form-group mb-3 row">
                         <div class="col-md-6">
                             <label>Grade Name</label>
                             <input class="form-control input-sm" id="editGradeName" type="text" name="editGradeName" required="">

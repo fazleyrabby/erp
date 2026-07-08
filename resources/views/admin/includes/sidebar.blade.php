@@ -481,7 +481,7 @@
                 <form id="userPasswordForm" method="POST" enctype="multipart/form-data" action="#">
                     @csrf
                     <input type="hidden" name="id">
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="mb-3">
                             <label class="form-label">User Name <span class="text-danger"> * </span></label>
                             <select id="selectUser" name="selectUser" class="form-select">

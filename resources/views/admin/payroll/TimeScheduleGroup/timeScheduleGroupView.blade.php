@@ -15,7 +15,7 @@ Admin Time Schedule -Add
                     <form id="timeScheduleAddForm">
                             @csrf
                         <div class="row ">
-                            <div class="form-group  col-md-6">
+                            <div class="form-group mb-3  col-md-6">
                                 <label >Group Name:</label>
                                 <select class="form-control" id="group_id" name="group_id" required>
                                     <option value=""selected disabled>Choose Group</option>
@@ -25,17 +25,17 @@ Admin Time Schedule -Add
                                 </select>  
                                 <span class="text-danger" id="group_nameError"></span>
                             </div>
-                            <div class="form-group  col-md-6">
+                            <div class="form-group mb-3  col-md-6">
                                 <label >Time From:</label>
                                 <input type="text" class="form-control " id="time_from" name="time_from" placeholder="Enter time from">
                                 <span class="text-danger" id="time_fromError"></span>
                             </div>
-                            <div class="form-group  col-md-6">
+                            <div class="form-group mb-3  col-md-6">
                                 <label >Time To:</label>
                                 <input type="text" class="form-control " id="time_to" name="time_to" placeholder="Enter time to">
                                 <span class="text-danger" id="time_toError"></span>
                             </div>
-                            <div class="form-group  col-md-6">
+                            <div class="form-group mb-3  col-md-6">
                                 <label >Working Hour:</label>
                                 <input type="text" class="form-control " id="working_hour" name="working_hour" placeholder="Enter working hour">
                                 <span class="text-danger" id="working_hourError"></span>
@@ -116,11 +116,11 @@ Admin Time Schedule -Add
                 </div> 
                 <div class="modal-body">
                 
-					<div class="row">	
+					<div class="row g-3">	
                                          
                       <input type="hidden" name="editId" id="editId">
                      
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label for="carousalCaptionOffer" >Group Name </label>
                         <select class="form-control" id="edit_group_id" name="edit_group_id" required>
                             <option value="" selected disabled>Choose Group</option>
@@ -132,25 +132,25 @@ Admin Time Schedule -Add
                     </div>
 
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label for="carousalCaptionOffer" >Work Hour</label>
                         <input type="text" class="form-control"  id="edit_work_hour" name="edit_work_hour"  required>  
                         <span class="text-danger" id="edit_work_hourError"></span>  
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                         <label for="carousalCaptionOffer" >Time From</label>
                         <input type="text" class="form-control"  id="edit_time_from" name="edit_time_from" required>  
                         <span class="text-danger" id="edittime_fromError"></span>                      
                     </div>
 
-                    <div class="form-group col-md-6">
+                    <div class="form-group mb-3 col-md-6">
                           <label for="carousalCaptionOffer" >Time To</label>
                             <input class="form-control input-sm" id="edit_time_to" type="text" name="edit_time_to" required>
                             <span class="text-danger" id="edittime_toError"></span>
                     </div>
 
-                      <div class="form-group col-md-6">
+                      <div class="form-group mb-3 col-md-6">
                           <label  for="carousalCaptionOffer" > Status</label>
                             <select id="editStatus" name="editStatus" class="form-control input-sm" >
                                 <option value="Active">Active</option>

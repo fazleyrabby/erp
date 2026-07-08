@@ -6,7 +6,7 @@ Admin Salary Sheet Instruction -View
 <div class="content-wrapper">
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
+            <div class="row g-3">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -92,7 +92,7 @@ Admin Salary Sheet Instruction -View
                      
                 <div class="col-md-12">
                     <div class="row" >
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer">Month Year</label>
                                 <select class="form-control col-md-12" id="editMonth_year" name="editMonth_year">
                                 @php
@@ -107,7 +107,7 @@ Admin Salary Sheet Instruction -View
                         </div>
     
 
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Sheet Name</label>
                                 <select class="form-control" id="editSheet_id" name="editSheet_id" required>
                                 <option value="" selected disabled>Choose Sheet</option>
@@ -117,33 +117,33 @@ Admin Salary Sheet Instruction -View
                                 </select>        
                                 <span class="text-danger" id="editSheet_idError"></span>                      
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Bank Name</label>
                             <input type="text" class="form-control" id="editBank_name" name="editBank_name" placeholder=" Write Bank Name" >                                     
                             <span class="text-danger" id="editBank_nameError"></span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Branch Name</label>
                             <input type="text" class="form-control" id="editBranch_name" name="editBranch_name" placeholder=" Write Branch Name" >                                     
                             <span class="text-danger" id="editBranch_nameError"></span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label for="carousalCaptionOffer" >Account No</label>
                             <input type="text" class="form-control" id="editMother_account_no" name="editMother_account_no" placeholder=" Write Account Number">                                     
                             <span class="text-danger" id="editMother_account_noError"></span>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group mb-3 col-md-6">
                             <label > Status</label>
                             <select id="editStatus" class="form-control" name="editStatus" >
                             <option value="Active">Active</option>
                             <option value="Inactive">Inactive</option>
                             </select>
                         </div>
-                        <div class="col-md-12 form-group ">
+                        <div class="col-md-12 form-group mb-3 ">
                             <label >Footer Description</label>
                             <textarea  class="form-control ckeditor" id="editFooter_instruction" name="editFooter_instruction"></textarea>
                         </div>
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-12 form-group mb-3">
                             <label >Letter Body</label>
                             <textarea  class="form-control ckeditor" id="editLetter_body" name="editLetter_body"></textarea>
                         </div>

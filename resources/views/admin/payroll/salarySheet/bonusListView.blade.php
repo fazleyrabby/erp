@@ -98,12 +98,12 @@ Admin Bonus Sheet -View
                 </div> 
                 <div class="modal-body">
                     @csrf
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <label for="carousalCaptionOffer">Bonus Sheet Name</label>
                         <input type="text" class="form-control" id="bonus_name" name="bonus_name" placeholder=" Write Bonus Name">                                     
                         <span class="text-danger" id="bonus_nameError"></span>
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Month Year</label>
                             <select class="form-control" id="month_year" name="month_year">   
@@ -120,7 +120,7 @@ Admin Bonus Sheet -View
                             <span class="text-danger" id="applicable_fromError"></span>
                         </div>
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <div class="col-md-6">
                             <label for="carousalCaptionOffer">Group</label>
                             <select class="form-control" id="group_id" name="group_id">    
@@ -137,7 +137,7 @@ Admin Bonus Sheet -View
                             <span class="text-danger" id="amountError"></span>
                         </div>
                     </div>
-                    <div class="form-group row col-md-12">
+                    <div class="form-group mb-3 row col-md-12">
                         <label for="carousalCaptionOffer">Remarks</label>
                             <textarea type="text" class="form-control" id="note" name="note"> </textarea>                                    
                             <span class="text-danger" id="noteError"></span>
@@ -171,8 +171,8 @@ Admin Bonus Sheet -View
                     
                         @csrf
                         <input type="hidden" name="editId" id="editId">
-                        <div class="row">
-                            <div class="form-group col-md-6">
+                        <div class="row g-3">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Bonus Name</label>
                                 <div>
                                     <input class="form-control input-sm" id="editBonus_name" type="text" name="editBonus_name" >
@@ -181,7 +181,7 @@ Admin Bonus Sheet -View
                             </div>
 
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Month Year</label>
                                 <div>
                                     <select class="form-control" id="editmonth_year" name="editmonth_year">   
@@ -194,7 +194,7 @@ Admin Bonus Sheet -View
                                 </div>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label>Issue Date</label>
                                 <div>
                                     <input type="date" class="form-control" id="editApplicable_from" name="editApplicable_from">                                     
@@ -218,7 +218,7 @@ Admin Bonus Sheet -View
                                 <span class="text-danger" id="editAmountError"></span>
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group mb-3 col-md-6">
                                 <label> Status</label>
                                 <select id="editStatus" name="editStatus" class="form-control input-sm">
                                     <option value="Active">Active</option>
@@ -226,7 +226,7 @@ Admin Bonus Sheet -View
                                 </select>
                             </div>
 
-                            <div class="form-group col-md-12">
+                            <div class="form-group mb-3 col-md-12">
                                 <label>Note</label>
                                 <div>
                                     <textarea type="text" class="form-control" id="editNote" name="editNote"> </textarea>                                    
