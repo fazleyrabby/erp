@@ -30,7 +30,7 @@ Admin Salary Sheet Intruction Add -View
                                         $inc = 36;
                                         for($i = 0; $i < 36; $i++)
                                         {
-                                        echo '<option>'.Date(SESSION::get('companySettings')[0]['month_year'], strtotime(Date("Y-m-d").' '.$i.' Month -1 Day')).'</option>';
+                                        echo '<option>'.Date(Session::get('companySettings')[0]['month_year'], strtotime(Date("Y-m-d").' '.$i.' Month -1 Day')).'</option>';
                                         }   
                                         @endphp
                                     </select>
