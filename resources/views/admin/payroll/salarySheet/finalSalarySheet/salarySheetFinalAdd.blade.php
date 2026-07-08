@@ -13,10 +13,10 @@ Admin Final Salary Sheet -View
                         <div class="card-header">
                             <h3 style="float:left;">Final Salary Sheet</h3>
                         </div>
-                        <form action="{{route('sheetDataStore')}}" method="POST" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <form action="{{route('sheetDataStore')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                        
-                            <div class="row g-3 align-items-end mb-3">
+                                <div class="row g-3 align-items-end mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Month Year</label>
                                     <select class="form-select form-select-sm" id="month_year" name="month_year">                                
@@ -43,11 +43,8 @@ Admin Final Salary Sheet -View
                                 </div>
                             </div>
 
-
-                        <!-- /.card-header -->
-                        <div class="card-body " >
                             <div class="table-responsive">
-                            <table id="manageSalarySheetInstructionTable"  class="table table-vcenter table-bordered table-striped " >
+                                <table id="manageSalarySheetInstructionTable" class="table table-vcenter table-bordered table-striped" >
                                 <thead>
                                     <tr>
                                         <td>SL</td>
@@ -80,14 +77,13 @@ Admin Final Salary Sheet -View
                            
                             </div>
                            
-                            <div class="row g-3">
-                                <div class="col-md-12">
-                             <button id="save_btn" type="submit" class="btn btn-primary float-right" style="display:none;"><i class="fas fa-save"></i> Save</button>  
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-12 text-end">
+                                    <button id="save_btn" type="submit" class="btn btn-primary" style="display:none;"><i class="fas fa-save me-1"></i> Save</button>  
                                 </div>
                             </div>
                             </form>
-                            
-                            </div>
+                        </div>
                            
                         </div>
                     </div>
