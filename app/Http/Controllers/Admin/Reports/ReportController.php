@@ -217,13 +217,17 @@ class ReportController extends Controller
         $allsales = ChartOfAccounts::where('parent_id', '=', $salesId)->where('deleted', 'No')->get();
 
         $expense = ChartOfAccounts::where('name', '=', 'Expense')->where('deleted', 'No')->first();
-        $expenseId = $expense->id;
+        $expenseId = $expense ? $expense->id : null;
 
-        $allExpense = ChartOfAccounts::where('parent_id', '=', $expenseId)->where('deleted', 'No')->get();
+        $allExpense = $expenseId
+            ? ChartOfAccounts::where('parent_id', '=', $expenseId)->where('deleted', 'No')->get()
+            : collect();
 
         $purchase = ChartOfAccounts::where('name', '=', 'Purchase')->where('deleted', 'No')->first();
-        $purchaseId = $purchase->id;
-        $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get();
+        $purchaseId = $purchase ? $purchase->id : null;
+        $allpurchases = $purchaseId
+            ? ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get()
+            : collect();
 
         $backDateFrom = date('0'.(date('m', strtotime($request->date_from)) - 1).'-d-Y');
 
@@ -266,13 +270,15 @@ class ReportController extends Controller
         $monthYearHeader .= '';
         $table = '';
         $closingBtn = '';
-        $table .= '<table class="table table-vcenter table-bordered" width="100%">
-                        <tr>
-                        <td>
-                            <table class="table table-vcenter table-bordered table-striped">
+        $table .= '<table class="table table-bordered" style="font-size:13px;" cellpadding="4">
+                        <tr valign="top">
+                        <td style="width:50%; padding:0;">
+                            <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
+                            <thead class="table-dark">
+                                <tr><th colspan="3" class="text-center">INCOME</th></tr>
+                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                            </thead>
                             <tbody>';
-
-        $table .= '<tr class="font-weight-bold text-center text-white bg-primary"><td colspan="3"> Income </td></tr>';
 
         $totalIncome = 0;
         foreach ($allIncomes as $income) {
@@ -292,8 +298,9 @@ class ReportController extends Controller
                 $amountDebitSum += $amount->debit;
             }
             $table .= '<tr>
-                            <td width="70%">'.$income->name.'</td>
-                            <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
+                            <td>'.$income->name.'</td>
+                            <td class="text-right">'.number_format($amountDebitSum).'</td>
+                            <td class="text-right"></td>
                         </tr>';
             $totalIncome += $amountDebitSum;
         }
@@ -339,11 +346,18 @@ class ReportController extends Controller
 
         $totalIncomeWithOpening = (($openingbalance + $totalIncome + $totalSales) - $totalSaleReturnAmount);
 
-        $table .= '</tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table class="table table-vcenter table-bordered table-striped">
+        $table .= '<tr class="font-weight-bold table-active">
+                            <td>Total Income</td>
+                            <td class="text-right">'.number_format($totalIncomeWithOpening).'</td>
+                            <td class="text-right"></td>
+                        </tr>';
+        $table .= '</tbody></table></td>
+                        <td style="width:50%; padding:0;">
+                            <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
+                            <thead class="table-dark">
+                                <tr><th colspan="3" class="text-center">EXPENDITURE</th></tr>
+                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                            </thead>
                             <tbody>';
 
         // Purchase Section
@@ -351,8 +365,6 @@ class ReportController extends Controller
         $totalPurchases = 0;
         $totalPurchaseReturnAmount = 0;
         $count = count($allpurchases) - 1;
-
-        $table .= '<tr class="font-weight-bold text-center bg-primary text-white"><td colspan="3"> Expenditure </td></tr>';
 
         foreach ($allpurchases as $key => $purchase) {
             $purchaseAmounts = DB::table('tbl_acc_voucher_details')
@@ -382,10 +394,10 @@ class ReportController extends Controller
                 $netPurchaseAmount = $totalPurchases - $totalPurchaseReturnAmount;
             }
 
-            $table .= '<tr style="border-bottom: 10px solid red;">
-                           <td width="50%">'.$purchase->name.'</td>
-                           <td width="25%" class="text-right">'.$setBracket.$amountSum.$setBracket2.'</td>
-                           <td width="25%" class="text-right">'.$netPurchaseAmount.'</td>
+            $table .= '<tr>
+                           <td>'.$purchase->name.'</td>
+                           <td class="text-right">'.$setBracket.$amountSum.$setBracket2.'</td>
+                           <td class="text-right">'.$netPurchaseAmount.'</td>
                         </tr>';
             if ($purchase->id != 43) {
                 $purchaseSum += $amountSum;
@@ -429,33 +441,21 @@ class ReportController extends Controller
                 </tr>'; */
 
         $totalExpense = (($expenseSum + $purchaseSum) - $totalPurchaseReturnAmount);
-        $table .= '</tbody>
-                            </table>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                        <td>
-                            <table class="table table-vcenter table-bordered table-striped">
-                                <tbody>
-                                    <tr class="font-weight-bold">
-                                        <td width="70%">Total Income: </td>
-                                        <td width="30%" class="text-right">'.number_format($totalIncomeWithOpening).'</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table class="table table-vcenter table-bordered table-striped">
-                                <tbody>
-                                    <tr class="font-weight-bold">
-                                        <td width="70%">Total Expense: </td>
-                                        <td width="30%" class="text-right">'.number_format($totalExpense).'</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>';
+        $table .= '<tr class="font-weight-bold table-active">
+                            <td>Total Expenditure</td>
+                            <td class="text-right">'.number_format($totalExpense).'</td>
+                            <td class="text-right"></td>
+                        </tr>';
+        $table .= '</tbody></table></td></tr></table>';
+
+        $table .= '<table class="table table-bordered table-sm mt-3" style="font-size:13px;" cellpadding="4">
+                        <tbody>
+                            <tr class="font-weight-bold table-active">
+                                <td style="width:25%;">Total Income</td>
+                                <td class="text-right" style="width:25%;">'.number_format($totalIncomeWithOpening).'</td>
+                                <td style="width:25%;">Total Expenditure</td>
+                                <td class="text-right" style="width:25%;">'.number_format($totalExpense).'</td>
+                            </tr>';
         $due = $totalIncomeWithOpening - $totalExpense;
         if ($totalIncomeWithOpening < $totalExpense) {
             $incomeClosing = $due;
@@ -597,21 +597,29 @@ class ReportController extends Controller
         $monthYear = date('F Y', $time);
 
         $income = ChartOfAccounts::where('name', '=', 'Income')->where('deleted', 'No')->first();
-        $incomeId = $income->id;
-        $allIncomes = ChartOfAccounts::where('parent_id', '=', $incomeId)->where('deleted', 'No')->get();
+        $incomeId = $income ? $income->id : null;
+        $allIncomes = $incomeId
+            ? ChartOfAccounts::where('parent_id', '=', $incomeId)->where('deleted', 'No')->get()
+            : collect();
 
         $sales = ChartOfAccounts::where('name', '=', 'Sales')->where('deleted', 'No')->first();
-        $salesId = $sales->id;
-        $allsales = ChartOfAccounts::where('parent_id', '=', $salesId)->where('deleted', 'No')->get();
+        $salesId = $sales ? $sales->id : null;
+        $allsales = $salesId
+            ? ChartOfAccounts::where('parent_id', '=', $salesId)->where('deleted', 'No')->get()
+            : collect();
 
         $expense = ChartOfAccounts::where('name', '=', 'Expense')->where('deleted', 'No')->first();
-        $expenseId = $expense->id;
+        $expenseId = $expense ? $expense->id : null;
 
-        $allExpense = ChartOfAccounts::where('parent_id', '=', $expenseId)->where('deleted', 'No')->get();
+        $allExpense = $expenseId
+            ? ChartOfAccounts::where('parent_id', '=', $expenseId)->where('deleted', 'No')->get()
+            : collect();
 
-        $purchase = ChartOfAccounts::where('name', '=', 'Purchases')->where('deleted', 'No')->first();
-        $purchaseId = $purchase->id;
-        $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get();
+        $purchase = ChartOfAccounts::where('name', '=', 'Purchase')->where('deleted', 'No')->first();
+        $purchaseId = $purchase ? $purchase->id : null;
+        $allpurchases = $purchaseId
+            ? ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get()
+            : collect();
 
         $backDateFrom = date('0'.(date('m', strtotime($date_from)) - 1).'-d-Y');
 
@@ -654,13 +662,15 @@ class ReportController extends Controller
         $monthYearHeader .= '';
         $table = '';
         $closingBtn = '';
-        $table .= '<table class="table  "  width="100%" >
-                        <tr>
-                        <td width="50%">
-                            <table class="table table-hover dataTable no-footer " style="margin-left:-10px; border-top: 1.5px solid black;" border="1">
+        $table .= '<table class="table table-bordered" style="font-size:13px;" cellpadding="4">
+                        <tr valign="top">
+                        <td style="width:50%; padding:0;">
+                            <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
+                            <thead class="table-dark">
+                                <tr><th colspan="3" class="text-center">INCOME</th></tr>
+                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                            </thead>
                             <tbody>';
-
-        $table .= '<tr class=" text-center  font-weight-bold" width="100%"><td colspan="3"> Income </td></tr>';
 
         $totalIncome = 0;
         foreach ($allIncomes as $income) {
@@ -679,15 +689,17 @@ class ReportController extends Controller
             foreach ($incomeAmounts as $amount) {
                 $amountDebitSum += $amount->debit;
             }
-            $table .= '<tr width="100%">
-                            <td width="70%">'.$income->name.'</td>
-                            <td width="30%" class="text-right">'.number_format($amountDebitSum).'</td>
+            $table .= '<tr>
+                            <td>'.$income->name.'</td>
+                            <td class="text-right">'.number_format($amountDebitSum).'</td>
+                            <td class="text-right"></td>
                         </tr>';
             $totalIncome += $amountDebitSum;
         }
 
         // Sale Section
         $totalSales = 0;
+        $totalSaleReturnAmount = 0;
         $count = count($allsales) - 1;
 
         foreach ($allsales as $key => $sale) {
@@ -729,19 +741,24 @@ class ReportController extends Controller
 
         $totalIncomeWithOpening = (($openingbalance + $totalIncome + $totalSales) - $totalSaleReturnAmount);
 
-        // Purchase Section
-        $table .= '</tbody>
-                            </table>
-                        </td>
-                        <td width="50%">
-                            <table class="table-hover dataTable no-footer" width="100%" style="margin-left:-24.5px;border-top: 1.5px solid black;" border="1"> 
+        $table .= '<tr class="font-weight-bold table-active">
+                            <td>Total Income</td>
+                            <td class="text-right">'.number_format($totalIncomeWithOpening).'</td>
+                            <td class="text-right"></td>
+                        </tr>';
+        $table .= '</tbody></table></td>
+                        <td style="width:50%; padding:0;">
+                            <table class="table table-bordered table-sm mb-0" style="font-size:13px;" cellpadding="4">
+                            <thead class="table-dark">
+                                <tr><th colspan="3" class="text-center">EXPENDITURE</th></tr>
+                                <tr><th>Particulars</th><th class="text-right" style="width:30%;">Amount</th><th class="text-right" style="width:30%;">Net</th></tr>
+                            </thead>
                             <tbody>';
 
         $purchaseSum = 0;
         $totalPurchases = 0;
+        $totalPurchaseReturnAmount = 0;
         $count = count($allpurchases) - 1;
-
-        $table .= '<tr class=" text-center font-weight-bold"><td colspan="3"> Expenditure </td></tr>';
 
         foreach ($allpurchases as $key => $purchase) {
             $purchaseAmounts = DB::table('tbl_acc_voucher_details')
@@ -813,26 +830,21 @@ class ReportController extends Controller
         }
 
         $totalExpense = (($expenseSum + $purchaseSum) - $totalPurchaseReturnAmount);
-        $table .= '</tbody>
-                            </table>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                        <td>
-                            <table class=" table-hover dataTable no-footer" width="207%" style="margin-left:-10px;border-top: 1.2px solid black; " border="1">
-                                <tbody>
-                                    <tr class=" font-weight-bold">
-                                        <td width="65%">Total Income: </td>
-                                        <td width="35%" class="text-right">'.number_format($totalIncomeWithOpening).'</td>
+        $table .= '<tr class="font-weight-bold table-active">
+                            <td>Total Expenditure</td>
+                            <td class="text-right">'.number_format($totalExpense).'</td>
+                            <td class="text-right"></td>
+                        </tr>';
+        $table .= '</tbody></table></td></tr></table>';
 
-                                        <td width="70%">Total Expense: </td>
-                                        <td width="30%" class="text-right font-weight-bold">'.number_format($totalExpense).'</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>';
+        $table .= '<table class="table table-bordered table-sm mt-3" style="font-size:13px;" cellpadding="4">
+                        <tbody>
+                            <tr class="font-weight-bold table-active">
+                                <td style="width:25%;">Total Income</td>
+                                <td class="text-right" style="width:25%;">'.number_format($totalIncomeWithOpening).'</td>
+                                <td style="width:25%;">Total Expenditure</td>
+                                <td class="text-right" style="width:25%;">'.number_format($totalExpense).'</td>
+                            </tr>';
         $due = $totalIncomeWithOpening - $totalExpense;
         if ($totalIncomeWithOpening < $totalExpense) {
             $incomeClosing = $due;
@@ -851,17 +863,9 @@ class ReportController extends Controller
         if ($totalIncomeWithOpening < $totalExpense) {
             $clss = 'bg-danger';
         }
-        $table .= '<tr>
-                        <td>
-                            <table class="table-hover dataTable no-footer" width="100%" style="margin-left:-10px;border-top: 1.2px solid black;" border="1">
-                                <tbody>
-                                    <tr class="font-weight-bold">
-                                        <td width="70%">Balance Closing: </td>
-                                        <td width="30%" class="text-right"><strong>'.number_format($expenseClosing).'</strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
+        $table .= '<tr class="font-weight-bold">
+                        <td>Balance Closing</td>
+                        <td class="text-right" colspan="3"><strong>'.number_format($expenseClosing).'</strong></td>
                     </tr>';
 
         // Start Voucher Section
@@ -879,26 +883,10 @@ class ReportController extends Controller
                 DB::raw('SUM(CASE WHEN type="Payment Received" THEN payment_vouchers.amount END) totalVoucherRcvAmount'),
                 DB::raw('SUM(CASE WHEN type="Payment" THEN payment_vouchers.amount END) totalVoucherPaymentAmount'),
             )->first();
-        $table .= '<tr>
-                    <td>
-                        <table class="table-hover dataTable no-footer" width="100%" style="margin-left:-10px;border-top: 1.2px solid black;" border="1">>
-                            <tbody>
-                                <tr class="">
-                                    <td width="70%"> Voucher Recipient </td>
-                                    <td width="30%" class="text-right"><strong>'.number_format($voucherSummary->totalVoucherRcvAmount).'</strong></td>
-                                </tr>
-                                <tr class="">
-                                    <td width="70%"> Payment Voucher </td>
-                                    <td width="30%" class="text-right"><strong>'.number_format($voucherSummary->totalVoucherPaymentAmount).'</strong></td>
-                                </tr>
-                                <tr class="">
-                                    <td width="70%"> Cash In Hand </td>
-                                    <td width="30%" class="text-right"><strong>'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</strong></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>';
+        $table .= '<tr><td>Voucher Recipient</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherRcvAmount).'</td></tr>';
+        $table .= '<tr><td>Payment Voucher</td><td class="text-right" colspan="3">'.number_format($voucherSummary->totalVoucherPaymentAmount).'</td></tr>';
+        $table .= '<tr class="font-weight-bold table-active"><td>Cash In Hand</td><td class="text-right" colspan="3">'.number_format(($voucherSummary->totalVoucherRcvAmount - $voucherSummary->totalVoucherPaymentAmount)).'</td></tr>';
+        $table .= '</tbody></table>';
         // End Voucher Section
 
         $lastTwoChar = substr(($date_to), -2);
@@ -1087,20 +1075,29 @@ class ReportController extends Controller
         $date = $year.'-'.$month.'-'.$day;
 
         $income = ChartOfAccounts::where('name', '=', 'Income')->where('deleted', 'No')->first();
-        $incomeId = $income->id;
-        $allIncomes = ChartOfAccounts::where('parent_id', '=', $incomeId)->where('deleted', 'No')->get();
+        $incomeId = $income ? $income->id : null;
+        $allIncomes = $incomeId
+            ? ChartOfAccounts::where('parent_id', '=', $incomeId)->where('deleted', 'No')->get()
+            : collect();
 
         $sales = ChartOfAccounts::where('name', '=', 'Sales')->where('deleted', 'No')->first();
-        $salesId = $sales->id;
-        $allsales = ChartOfAccounts::where('parent_id', '=', $salesId)->where('deleted', 'No')->get();
+        $salesId = $sales ? $sales->id : null;
+        $allsales = $salesId
+            ? ChartOfAccounts::where('parent_id', '=', $salesId)->where('deleted', 'No')->get()
+            : collect();
 
         $expense = ChartOfAccounts::where('name', '=', 'Expense')->where('deleted', 'No')->first();
-        $expenseId = $expense->id;
+        $expenseId = $expense ? $expense->id : null;
 
-        $allExpense = ChartOfAccounts::where('parent_id', '=', $expenseId)->where('deleted', 'No')->get();
+        $allExpense = $expenseId
+            ? ChartOfAccounts::where('parent_id', '=', $expenseId)->where('deleted', 'No')->get()
+            : collect();
 
-        $purchase = ChartOfAccounts::where('name', '=', 'Purchases')->where('deleted', 'No')->first();
-        // jjj
+        $purchase = ChartOfAccounts::where('name', '=', 'Purchase')->where('deleted', 'No')->first();
+        $purchaseId = $purchase ? $purchase->id : null;
+        $allpurchases = $purchaseId
+            ? ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get()
+            : collect();
 
         $purchaseId = $purchase->id;
         $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->where('deleted', 'No')->get();
@@ -1430,20 +1427,28 @@ class ReportController extends Controller
         $day = date('d', $time);
 
         $income = ChartOfAccounts::where('name', '=', 'Income')->first();
-        $incomeId = $income->id;
-        $allIncomes = ChartOfAccounts::where('parent_id', '=', $incomeId)->get();
+        $incomeId = $income ? $income->id : null;
+        $allIncomes = $incomeId
+            ? ChartOfAccounts::where('parent_id', '=', $incomeId)->get()
+            : collect();
 
         $sales = ChartOfAccounts::where('name', '=', 'Sale')->first();
-        $salesId = $sales->id;
-        $allsales = ChartOfAccounts::where('parent_id', '=', $salesId)->get();
+        $salesId = $sales ? $sales->id : null;
+        $allsales = $salesId
+            ? ChartOfAccounts::where('parent_id', '=', $salesId)->get()
+            : collect();
 
         $expense = ChartOfAccounts::where('name', '=', 'Expense')->first();
-        $expenseId = $expense->id;
-        $allExpense = ChartOfAccounts::where('parent_id', '=', $expenseId)->get();
+        $expenseId = $expense ? $expense->id : null;
+        $allExpense = $expenseId
+            ? ChartOfAccounts::where('parent_id', '=', $expenseId)->get()
+            : collect();
 
         $purchase = ChartOfAccounts::where('name', '=', 'Purchase')->first();
-        $purchaseId = $purchase->id;
-        $allpurchases = ChartOfAccounts::where('parent_id', '=', $purchaseId)->get();
+        $purchaseId = $purchase ? $purchase->id : null;
+        $allpurchases = $purchaseId
+            ? ChartOfAccounts::where('parent_id', '=', $purchaseId)->get()
+            : collect();
 
         $backDate = DailyReport::where('date', '<', $date)
             ->where('deleted', '=', 'No')
