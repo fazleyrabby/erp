@@ -7,8 +7,8 @@
 
 
     </style>
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">WareHouse List</h3>
@@ -80,11 +80,7 @@
                 </div>
                 <!-- /.card -->
             </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-
-    <!-- modal -->
+        <!-- modal -->
     <div class="modal fade" id="warehouseModal">
         <div class="modal-dialog">
             <div class="modal-content">

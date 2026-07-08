@@ -3,7 +3,7 @@
 Admin Salary Sheet Instruction -View
 @endsection
 @section('content')
-<div class="content-wrapper">
+
     <section class="content">
         <div class="container-fluid">
             <div class="row g-3">
@@ -74,11 +74,7 @@ Admin Salary Sheet Instruction -View
                 </div>
             </div>
         </div>
-    </section>
-</div>
-
-
-<!-- edit modal -->
+    <!-- edit modal -->
 <div class="modal fade" id="editModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

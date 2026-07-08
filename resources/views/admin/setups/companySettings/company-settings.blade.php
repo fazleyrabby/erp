@@ -7,7 +7,7 @@
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header">
                     <h3> Company Details
@@ -132,10 +132,7 @@
                 <!-- /.card -->
             </div>
             <!-- /.card -->
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-@endsection
+        @endsection
 
 @section('javascript')
     <script type="text/javascript">

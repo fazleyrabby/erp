@@ -3,7 +3,7 @@
 Final Salary Sheet -View
 @endsection
 @section('content')
-<div class="content-wrapper">
+
     <section class="content">
         <div class="container-fluid">
             <div class="row g-3">
@@ -59,9 +59,7 @@ Final Salary Sheet -View
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-@endsection
+        @endsection
 
 
 @section('contentJavaScripts') 

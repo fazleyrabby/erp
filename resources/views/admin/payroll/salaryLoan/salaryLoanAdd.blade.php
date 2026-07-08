@@ -3,7 +3,7 @@
 Admin Create Loan
 @endsection
 @section('content')
-<div class="content-wrapper">
+
 <!--    <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -122,10 +122,7 @@ Admin Create Loan
                                         <div class="form-group mb-3 col-md-12">
                                             <button type="submit" id="save_btn"  class="btn btn-primary btn-flat float-right"  onclick="tenureDataSave()" style="display:none;" ><i class="fa fa-save"></i> Save </button>
                                         </div>
-                                    </section>
                                     </div>
-
-                                </div>
 
 
 
@@ -136,18 +133,7 @@ Admin Create Loan
                 </div>
             </div>
         </div>
-    </section>  
-</div>
-
-
-
-
-
-
-
-
-
-@endsection
+    @endsection
 
 @section('contentJavaScripts')
 

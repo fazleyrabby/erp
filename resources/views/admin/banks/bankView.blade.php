@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Bank List</h3>
@@ -58,8 +58,7 @@
                     </div>
                     {{ $banks->links() }}
                 </div><!-- Card Content end -->
-        </section>
-    </div><!-- pc-container end -->
+        <!-- pc-container end -->
 @endsection
 
 

@@ -3,8 +3,8 @@
 {{Session::get("companySettings")[0]['name']}} Sale EMI View
 @endsection
 @section('content')
-<div class="content-wrapper">
-    <section class="content box-border">
+
+    
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">EMI Sale List</h3>
@@ -73,11 +73,7 @@
                 {{ $emiSales->links() }}
             </div>
         </div>
-    </section>
-</div>
-
-
-<!-- modal -->
+    <!-- modal -->
 <div class="modal fade bd-example-modal-lg" id="modalForCompletedEmiView" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

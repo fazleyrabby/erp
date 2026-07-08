@@ -3,8 +3,8 @@
     {{ Session::get('companySettings')[0]['name'] }} Sale View
 @endsection
 @section('content')
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title text-capitalize">
@@ -123,10 +123,7 @@
                 </div>
                 <!-- /.card -->
             </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-@endsection
+        @endsection
 @section('javascript')
     <script>
         function confirmDelete(id) {

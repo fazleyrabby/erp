@@ -6,7 +6,7 @@ Admin COA List
 
 @section('content')
 <div class="container-fluid">
-    <section class="content box-border">
+    
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Chart of Accounts</h3>
@@ -214,8 +214,7 @@ Admin COA List
                     </div>
                 </div>
             </div><!-- create model End -->
-    </section>
-</div><!-- pc-container end -->
+    <!-- pc-container end -->
 
 @endsection
 

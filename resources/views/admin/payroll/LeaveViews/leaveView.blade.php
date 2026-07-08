@@ -3,8 +3,8 @@
 Admin Leave Management -View
 @endsection
 @section('content')
-<div class="content-wrapper">
-    <section class="content box-border">
+
+    
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Leave list</h3>
@@ -73,10 +73,7 @@ Admin Leave Management -View
                 </div>
             </div>
         </div>
-    </section>
-</div>
-
- <!-- modal -->
+    <!-- modal -->
  <div class="modal fade" id="modal">
         <div class="modal-dialog">
             <div class="modal-content">

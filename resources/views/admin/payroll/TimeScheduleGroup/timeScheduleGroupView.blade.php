@@ -3,7 +3,7 @@
 Admin Time Schedule -Add
 @endsection
 @section('content')
-    <div class="content-wrapper">
+    
         <section class="content box-border" >    
             <div class="card ">
                 <div class="card-header">
@@ -100,10 +100,7 @@ Admin Time Schedule -Add
 
                 </div>     
             </div>
-        </section>
-        </div>
-
-<!-- edit modal -->
+        <!-- edit modal -->
 <div class="modal fade" id="editModal">
         <div class="modal-dialog">
             <div class="modal-content">

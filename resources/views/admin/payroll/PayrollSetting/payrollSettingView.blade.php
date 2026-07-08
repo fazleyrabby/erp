@@ -3,8 +3,8 @@
 Admin Payroll Setting -View
 @endsection
 @section('content')
-<div class="content-wrapper">
-    <section class="content box-border">
+
+    
         <div class="card">
             <h3>Payroll Setting</h3>    
             <h3 class="text-center text-success">{{Session::get('message')}}</h3>
@@ -52,9 +52,7 @@ Admin Payroll Setting -View
                 
             </form>
         </div> <br><br>
-    </section>
-</div>
-@endsection
+    @endsection
 
 
     @section('contentJavaScripts')

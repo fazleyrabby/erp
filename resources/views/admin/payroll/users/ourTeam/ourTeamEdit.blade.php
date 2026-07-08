@@ -3,7 +3,7 @@
 Admin Create Team Member
 @endsection
 @section('content')
-<div class="content-wrapper">
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -442,9 +442,7 @@ Admin Create Team Member
                 </div>
             </div>
         </div>
-    </section>
-</div>
-@endsection
+    @endsection
 
 @section('contentJavaScripts')
 

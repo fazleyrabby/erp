@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header">
                     <h3>Add Expense</h3>
@@ -159,8 +159,7 @@
                 </div><!-- Card Content end -->
                
                
-        </section>
-    </div><!-- pc-container end -->
+        <!-- pc-container end -->
 @endsection
 
 

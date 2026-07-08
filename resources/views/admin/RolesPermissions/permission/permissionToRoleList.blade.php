@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Give permission</h3>
@@ -213,8 +213,7 @@
                 </div><!-- update model End -->
 
             </div>
-        </section>
-    </div><!-- pc-container end -->
+        <!-- pc-container end -->
 @endsection
 
 

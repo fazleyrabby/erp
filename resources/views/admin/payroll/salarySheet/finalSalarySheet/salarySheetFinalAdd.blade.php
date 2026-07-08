@@ -3,7 +3,7 @@
 Admin Final Salary Sheet -View
 @endsection
 @section('content')
-<div class="content-wrapper">
+
 
     <section class="content">
         <div class="container-fluid">
@@ -96,14 +96,7 @@ Admin Final Salary Sheet -View
                 </div>
             </div>
                            
-        </section>
-    </div>
-
-
-   
-
-
-@endsection
+        @endsection
 
 
 

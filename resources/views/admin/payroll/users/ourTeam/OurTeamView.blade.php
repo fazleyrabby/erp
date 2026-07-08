@@ -3,7 +3,7 @@
 Admin Our Team -View
 @endsection
 @section('content')
-<div class="content-wrapper">
+
     <section class="content-header" style="padding: 0px 1.0rem;">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -98,9 +98,7 @@ Admin Our Team -View
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-    @endsection
+        @endsection
 
 
 

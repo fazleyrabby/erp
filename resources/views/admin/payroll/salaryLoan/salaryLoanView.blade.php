@@ -3,7 +3,7 @@
 Admin Loan Salary -View
 @endsection
 @section('content')
-<div class="content-wrapper">
+
     <section class="content">
         <div class="container-fluid">
             <div class="row g-3">
@@ -78,11 +78,7 @@ Admin Loan Salary -View
                 </div>
             </div>
         </div>
-    </section>
-</div>
-
-
-<!-- edit modal -->
+    <!-- edit modal -->
 <div class="modal fade" id="editModal">
     <div class="modal-dialog">
         <div class="modal-content">

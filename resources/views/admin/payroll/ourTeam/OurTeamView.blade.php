@@ -4,7 +4,7 @@ Admin Our Team -View
 @endsection
 @section('content')
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header">
                     <h3>Employee List <a class="btn btn-primary float-right" href="{{route('teamAdd')}}"> <i class="fa fa-plus-circle"></i> Add New Employee</a></h3>
@@ -57,9 +57,7 @@ Admin Our Team -View
                 </table>
                 </div>
                 </div>
-        </section>
-    </div>
-    @endsection
+        @endsection
 
 
 

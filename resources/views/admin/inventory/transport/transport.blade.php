@@ -6,8 +6,8 @@
     <style type="text/css">
 
     </style>
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Transport Information</h3>
@@ -81,10 +81,7 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-
-    <!-- modal -->
+        <!-- modal -->
     <div class="modal fade" id="transportModal">
         <div class="modal-dialog" style="max-width: 50%;">
             <div class="modal-content">

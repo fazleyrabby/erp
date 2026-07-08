@@ -4,7 +4,7 @@ Admin Create Team Member
 @endsection
 @section('content')
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header"><h3>Create Employee</h3></div>
                         <h3 class="text-center text-success">{{Session::get('message')}}</h3>
@@ -330,9 +330,7 @@ Admin Create Team Member
                         </div>
                 </div>
             </div>
-        </section>
-    </div>
-@endsection
+        @endsection
 
 @section('contentJavaScripts')
 

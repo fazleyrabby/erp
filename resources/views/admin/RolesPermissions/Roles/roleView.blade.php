@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Roles</h3>
@@ -103,8 +103,7 @@
                     </div>
                 </div>
             </div><!-- create modal End -->
-        </section>
-    </div><!-- pc-container end -->
+        <!-- pc-container end -->
 @endsection
 
 

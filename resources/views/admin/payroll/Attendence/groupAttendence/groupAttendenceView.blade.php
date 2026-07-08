@@ -3,8 +3,8 @@
 Admin Group Attendence
 @endsection
 @section('content')
-<div class="content-wrapper">
-    <section class="content box-border">
+
+    
             <div class="card">
                 <div class="card-header">
                 
@@ -47,10 +47,7 @@ Admin Group Attendence
                 </div>
             </div>
                 
-        </section>
-    </div>
-
-@endsection
+        @endsection
 
 
 

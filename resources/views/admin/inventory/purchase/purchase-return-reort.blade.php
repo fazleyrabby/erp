@@ -34,7 +34,7 @@
 </head>
 <body>
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -97,11 +97,7 @@
             </div>
             </div>
         </div>
-    </section>
-
-  </div>
-
-  <div class="container footer-text ">
+    <div class="container footer-text ">
   <div class="row g-3">
     <div class="col-md-12 text-center">
         {!!Session::get('companySettings')[0]['report_footer']!!}

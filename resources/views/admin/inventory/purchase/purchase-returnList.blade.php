@@ -3,7 +3,7 @@
     {{ Session::get('companySettings')[0]['name'] }} Purchase View
 @endsection
 @section('content')
-    <div class="content-wrapper">
+    
         <!-- Content Header (Page header) -->
 
         <!-- Main content -->
@@ -89,7 +89,7 @@
         </section>
         <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
+    
 @endsection
 @section('javascript')
     <script>

@@ -346,8 +346,6 @@
 </div>
 </div>
 </div>
-</section>
-</div>
 @else
 <div class="textCenter">Invoice Deleted Please check again !</div>
 @endif

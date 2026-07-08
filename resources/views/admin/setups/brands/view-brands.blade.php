@@ -4,8 +4,8 @@
 @endsection
 @section('content')
 
-<div class="content-wrapper">
-    <section class="content box-border">
+
+    
         <div class="card">
     <div class="card-header">
         <h3 class="card-title">Brand List</h3>
@@ -83,10 +83,7 @@
         {{ $brands->links() }}
     </div>
 </div>
-    </section>
-</div>
-
-<!-- modal -->
+    <!-- modal -->
 <div class="modal fade" id="modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">

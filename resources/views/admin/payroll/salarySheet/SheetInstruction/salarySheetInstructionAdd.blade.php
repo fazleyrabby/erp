@@ -4,7 +4,7 @@ Admin Salary Sheet Intruction Add -View
 @endsection
 
 @section('content')
-<div class="content-wrapper">
+
     <section class="content">
         <div class="container-fluid">
             <div class="row g-3">
@@ -86,6 +86,4 @@ Admin Salary Sheet Intruction Add -View
                 </div>
             </div>
         </div>
-    </section>
-</div>
-@endsection
+    @endsection

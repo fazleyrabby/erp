@@ -3,7 +3,7 @@
     {{ Session::get('companySettings')[0]['name'] }} Report
 @endsection
 @section('content')
-    <div class="content-wrapper">
+    
         <!-- Content Header (Page header) -->
         <!-- Main content -->
         <section class="content">
@@ -84,7 +84,7 @@
         </form>
         <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
+    
 
 @endsection
 @section('javascript')

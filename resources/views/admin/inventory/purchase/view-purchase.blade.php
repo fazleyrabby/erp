@@ -3,8 +3,8 @@
     {{ Session::get('companySettings')[0]['name'] }} Purchase View
 @endsection
 @section('content')
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Purchase List</h3>
@@ -95,10 +95,7 @@
                     {{ $purchases->links() }}
                 </div>
             </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-@endsection
+        @endsection
 @section('javascript')
     <script>
         $(document).ready(function() {});

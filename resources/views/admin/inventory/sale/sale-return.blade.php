@@ -11,8 +11,8 @@
             border-top: 1px solid #dee2e6;
         }
     </style>
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="shadow-lg p-3 mb-5 bg-white rounded">
                 <div class="col-md-12 text-center">
                     <h4><u> Sale Return </u></h4>
@@ -138,10 +138,7 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-@endsection
+        @endsection
 @section('javascript')
     <script>
         $("#warehouse").select2({

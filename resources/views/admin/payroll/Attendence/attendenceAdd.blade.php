@@ -3,8 +3,8 @@
 Admin Attendence -Add
 @endsection
 @section('content')
-<div class="content-wrapper">
-    <section class="content box-border">
+
+    
             <div class="card">
                 <div class="card-header">
                 
@@ -108,10 +108,7 @@ Admin Attendence -Add
                 </div>
             </div>
                 
-        </section>
-    </div>
-
-@endsection
+        @endsection
 
 
 

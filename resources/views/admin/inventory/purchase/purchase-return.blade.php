@@ -6,8 +6,8 @@
 <style>
     .table td, .table th {padding: .5rem;vertical-align: top;border-top: 1px solid #dee2e6;}
 </style>
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
                 <!-- Main row -->
                 <div class="shadow-lg p-3 mb-5 bg-white rounded">
                         <div class="col-md-12 text-center">
@@ -141,10 +141,7 @@
                     </div>
 
                 </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-@endsection
+        @endsection
 @section('javascript')
     <script>
         $("#warehouse").select2({

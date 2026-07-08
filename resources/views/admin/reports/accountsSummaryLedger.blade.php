@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header">
                     <h3>Income & Expenditure Statement</h3>
@@ -46,8 +46,7 @@
                         <div class="col-md-12 " id="getVoucherButton"></div>
                     </div>
                     <div id="closingBtn"></div </div><!-- Card Content end -->
-        </section>
-    </div><!-- pc-container end -->
+        <!-- pc-container end -->
 @endsection
 
 

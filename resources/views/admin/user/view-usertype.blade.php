@@ -7,8 +7,8 @@
 @endsection
 @section('content')
 
-<div class="content-wrapper">
-    <section class="content box-border">
+
+    
         <div class="card">
     <div class="card-header">
         <h3 class="card-title">Usertype List</h3>
@@ -58,9 +58,6 @@
         {{ $usertypes->links() }}
     </div>
 </div>
-    </section>
-</div>
-
     <!-- modal -->
     <div class="modal fade" id="modal">
         <div class="modal-dialog">

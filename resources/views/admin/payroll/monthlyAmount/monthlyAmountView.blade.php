@@ -3,7 +3,7 @@
 Admin Monthly Amount -View
 @endsection
 @section('content')
-<div class="content-wrapper">
+
     <section class="content">
         <div class="container-fluid">
             <div class="row g-3">
@@ -64,11 +64,7 @@ Admin Monthly Amount -View
                 </div>
             </div>
         </div>
-    </section>
-</div>
-
-
-<!-- Store modal -->
+    <!-- Store modal -->
 <div class="modal fade" id="modal">
     <div class="modal-dialog">
         <div class="modal-content">

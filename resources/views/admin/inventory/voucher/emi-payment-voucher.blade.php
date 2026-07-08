@@ -3,7 +3,7 @@
 {{Session::get("companySettings")[0]['name']}} EMI
 @endsection
 @section('content')
-<div class="content-wrapper">
+
   <!-- Content Header (Page header) -->
   <!-- Main content -->
   <section class="content">
@@ -102,8 +102,7 @@
 
           <!-- /.card -->
         </div>
-		</section>
-	</div><!-- /.container-fluid -->
+		<!-- /.container-fluid -->
   </section>
   </form>
  <!-- modal -->
@@ -163,7 +162,7 @@
     </div><!-- /.modal -->
   <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+
 
 @endsection
 @section('javascript')

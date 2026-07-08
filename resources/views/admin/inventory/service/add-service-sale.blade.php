@@ -24,8 +24,8 @@
         }
     </style>
 
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <form id="saleProducts" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
@@ -410,11 +410,8 @@
 
                             <!-- /.card -->
                         </div>
-                    </section>
-                </div><!-- /.container-fluid -->
-        </section>
-    </div>
-    </form>
+                    <!-- /.container-fluid -->
+        </form>
 
     <!-- /.content -->
     <!-- Product Advance Search modal -->
@@ -504,7 +501,7 @@
     </div>
     <!-- End Serialize Product Modal -->
     </div>
-    <!-- /.content-wrapper -->
+    
 @endsection
 @section('javascript')
     <script>

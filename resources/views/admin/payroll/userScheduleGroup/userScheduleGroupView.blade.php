@@ -3,8 +3,8 @@
 Admin Time Schedule Group -View
 @endsection
 @section('content')
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="card">
                 <!-- card header -->
                 <div class="card-header">
@@ -70,10 +70,7 @@ Admin Time Schedule Group -View
                     </div>
                 </div>
             </div>            
-        </section>
-    </div>
-
-    <!-- modal -->
+        <!-- modal -->
     <div class="modal fade" id="modal">
         <div class="modal-dialog">
             <div class="modal-content">

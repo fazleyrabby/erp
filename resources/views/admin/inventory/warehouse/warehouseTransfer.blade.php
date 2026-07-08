@@ -23,8 +23,8 @@ fieldset.scheduler-border {
     }
 
 </style>
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Warehouse Transfer List</h3>
@@ -90,11 +90,7 @@ fieldset.scheduler-border {
                             </div>
                             <!-- /.card -->
             </div>
-        </section>
-    </div>
-    <!-- /.content-wrapper -->
-
-    <!-- modal -->
+        <!-- modal -->
     <div class="modal fade" id="warehouseTranferModal" >
         <div class="modal-dialog" style="max-width: 50%;">
             <div class="modal-content">

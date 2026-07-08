@@ -3,8 +3,8 @@
     {{ Session::get('companySettings')[0]['name'] . ' ' . $type }}
 @endsection
 @section('content')
-    <div class="content-wrapper">
-        <section class="content box-border">
+    
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">{{ $type }} List</h3>
@@ -87,7 +87,7 @@
         </section>
         <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
+    
     <div class="modal fade" id="editOpeningDueModal">
         <div class="modal-dialog" style="max-width: 50%;">
             <div class="modal-content">

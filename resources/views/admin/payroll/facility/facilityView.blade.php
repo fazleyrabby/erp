@@ -13,8 +13,8 @@ Admin Facility -View
 
 
 
-<div class="content-wrapper">
-        <section class="content box-border">
+
+        
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Facility</h3>
@@ -79,11 +79,7 @@ Admin Facility -View
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-
-
-<!-- add modal -->
+        <!-- add modal -->
 <div class="modal fade" id="modal">
     <div class="modal-dialog">
         <div class="modal-content">

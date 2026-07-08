@@ -10,7 +10,7 @@
     color: #66a3ff;
   }
 </style>
-  <div class="content-wrapper">
+  
   <!-- Content Header (Page header) -->
    <!-- /.content-header -->
 
@@ -104,7 +104,7 @@
   </section>
   <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+
 
     <!-- modal -->
     <div class="modal fade" id="modal">

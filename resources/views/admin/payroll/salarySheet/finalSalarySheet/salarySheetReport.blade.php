@@ -188,11 +188,6 @@
             </div>
             </div>
         </div>
-    </section>
-  </div>
-  
-       
-    
     </main>   
             
         

@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     
-        <section class="content box-border">
+        
             <form id="saleProducts" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
@@ -279,11 +279,8 @@
 
                             <!-- /.card -->
                         </div>
-                    </section>
-                </div><!-- /.container-fluid -->
-        </section>
-    </div>
-    </form>
+                    <!-- /.container-fluid -->
+        </form>
 
     <!-- /.content -->
     <!-- Product Advance Search modal -->

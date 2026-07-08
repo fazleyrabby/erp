@@ -4,7 +4,7 @@
 @endsection
 @section('content')
     
-        <section class="content box-border">
+        
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title mb-0">Purchase Products</h3>
@@ -180,8 +180,7 @@
                     </div>
                 </div>
             </div>
-        </section>
-    </div><!-- /.container-fluid -->
+        <!-- /.container-fluid -->
 
     <div class="modal fade" id="showAdvanceSearchModal">
         <div class="modal-dialog" style="max-width: 90%;" role="document">
