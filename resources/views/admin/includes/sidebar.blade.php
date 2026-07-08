@@ -514,6 +514,7 @@
 
         $(function() {
             $("#selectUser").select2({
+                dropdownParent: $("#modalUser"),
                 width: '100%'
             });
         });

@@ -224,11 +224,13 @@ Admin COA List
     $(function() {
         $('#parent_id').select2({
             placeholder: "No parent",
+            dropdownParent: $("#modal"),
             allowClear: true,
             width: '100%'
         });
         $('#editParent_id').select2({
             placeholder: "No parent",
+            dropdownParent: $("#editModal"),
             allowClear: true,
             width: '100%'
         });
