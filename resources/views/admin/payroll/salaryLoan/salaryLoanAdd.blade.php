@@ -33,107 +33,88 @@ Admin Create Loan
                                 @endif
                             </span>
                         </div>
-                        <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                        <form action="{{route('loanStore')}}" method='POST' enctype="multipart/form-data">
-                            @csrf
-                            
-                                <div class="form-group mb-3 row col-md-12">
+                        <div class="card-body">
+                            <form action="{{route('loanStore')}}" method='POST' enctype="multipart/form-data">
+                                @csrf
+                                <div class="row g-3 align-items-end mb-3">
                                     <div class="col-md-6">
-                                    <label for="carousalCaptionOffer">Employee Name</label>
-                                    <select class="form-control" id="user_id" name="user_id" required>
-                                        <option value="" selected disabled>Choose Employee</option>
-                                        @foreach($employees as $employee)
-                                        <option value="{{$employee->id}}">{{$employee->member_name}}</option>
-                                        @endforeach                                   
-                                    </select>        
-                                    <span class="text-danger" id="user_idError"></span>
+                                        <label class="form-label">Employee Name</label>
+                                        <select class="form-select form-select-sm" id="user_id" name="user_id" required>
+                                            <option value="" selected disabled>Choose Employee</option>
+                                            @foreach($employees as $employee)
+                                            <option value="{{$employee->id}}">{{$employee->member_name}}</option>
+                                            @endforeach                                   
+                                        </select>        
+                                        <span class="text-danger" id="user_idError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="carousalCaptionOffer">Amount</label>
-                                        <input type="text" class="form-control" id="amount" name="amount" placeholder="Write Amount" >
+                                        <label class="form-label">Amount</label>
+                                        <input type="text" class="form-control form-control-sm" id="amount" name="amount" placeholder="Write Amount" >
                                         <span class="text-danger" id="amountError"></span>
                                     </div>
-                                </div>
-                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-6">
-                                        <label for="carousalCaptionOffer">Tenure</label>
-                                        <input type="text" class="form-control" id="tenure" name="tenure" placeholder="Write  Tenure" >
+                                        <label class="form-label">Tenure</label>
+                                        <input type="text" class="form-control form-control-sm" id="tenure" name="tenure" placeholder="Write  Tenure" >
                                         <span class="text-danger" id="tenureError"></span>
                                     </div>    
-                                   
                                     <div class="col-md-6">
-                                        <label for="carousalCaptionOffer"> Interest rate % </label>
-                                        <input type="text" class="form-control" id="percent" name="percent" placeholder="Numeric Interest value. Don't use'%' " >                          
+                                        <label class="form-label">Interest rate %</label>
+                                        <input type="text" class="form-control form-control-sm" id="percent" name="percent" placeholder="Numeric Interest value. Don't use'%' " >                          
                                         <span class="text-danger" id="percentError"></span>
                                     </div>
-                                    
-                                </div>
-                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-6">
-                                        <label for="carousalCaptionOffer"> Monthly Installment </label>
-                                        <input type="text" class="form-control" id="installment" name="installment" placeholder="Monthly loan Amount + Interest" readonly>                          
+                                        <label class="form-label">Monthly Installment</label>
+                                        <input type="text" class="form-control form-control-sm" id="installment" name="installment" placeholder="Monthly loan Amount + Interest" readonly>                          
                                         <span class="text-danger" id="installmentError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="carousalCaptionOffer"> Issue Date </label>
-                                        <input type="date" class="form-control" id="applicable_from" name="applicable_from"  >                          
+                                        <label class="form-label">Issue Date</label>
+                                        <input type="date" class="form-control form-control-sm" id="applicable_from" name="applicable_from"  >                          
                                         <span class="text-danger" id="applicable_fromError"></span>
                                     </div>
-                                </div>
-
-                                <div class="form-group mb-3 row col-md-12">
                                     <div class="col-md-6">
-                                        <label for="carousalCaptionOffer">Month Year</label>
-                                            <select class="form-control" id="month_year" name="month_year">
-                                            @php
-                                                $inc = 36;
-                                                for($i = 0; $i < 12; $i++)
-                                                {
-                                                    echo '<option>'.Date('F-Y', strtotime(Date("Y-m-d").' '.$i.' Month -1 Day')).'</option>';
-                                                }                                               
-                                            @endphp
-                                            </select>
-                                            <span class="text-danger" id="month_yearError"></span>
+                                        <label class="form-label">Month Year</label>
+                                        <select class="form-select form-select-sm" id="month_year" name="month_year">
+                                        @php
+                                            $inc = 36;
+                                            for($i = 0; $i < 12; $i++)
+                                            {
+                                                echo '<option>'.Date('F-Y', strtotime(Date("Y-m-d").' '.$i.' Month -1 Day')).'</option>';
+                                            }                                               
+                                        @endphp
+                                        </select>
+                                        <span class="text-danger" id="month_yearError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="carousalCaptionOffer">Cause</label>
-                                            <textarea type="text" class="form-control" id="cause" name="cause" placeholder="Write Short Cause" ></textarea>
-                                            <span class="text-danger" id="causeError"></span>
+                                        <label class="form-label">Cause</label>
+                                        <textarea class="form-control form-control-sm" id="cause" name="cause" placeholder="Write Short Cause" rows="1"></textarea>
+                                        <span class="text-danger" id="causeError"></span>
                                     </div>
-                                    <div class="col-md-2" style="margin-top: 3.1%;">
-                                        <a class="btn btn-primary" onclick="generateTenure()" style="color:#fff;">Generate Tenure</a>
+                                    <div class="col-md-4">
+                                        <button type="button" class="btn btn-primary w-100" onclick="generateTenure()">Generate Tenure</button>
                                     </div>
-                                    
                                 </div>
                                 
 
-                                <div class="form-group mb-3 row col-md-12">
+                                <div class="row g-3">
                                     <div class="col-md-12">
-                                    <section style="padding:20px;">
-
-                                        <div id="tenureData" ></div>
+                                        <div id="tenureData" class="mt-3"></div>
                                         <div class= "netAmount" >
-                                            <p style="display:none;" id="netAmountP" >Total Net Payable:<span id="netAmount" > </span></p>                                      
+                                            <p style="display:none;" id="netAmountP" >Total Net Payable: <span id="netAmount" class="fw-bold text-success"></span></p>                                      
                                         </div>
-                                        <div >
-                                            <button class="btn btn-primary"   id="saveTenure"   style="display:none;"> Save </button>
-                                        </div>
-
-                                        <div class="form-group mb-3 col-md-12">
-                                            <button type="submit" id="save_btn"  class="btn btn-primary btn-flat float-right"  onclick="tenureDataSave()" style="display:none;" ><i class="fa fa-save"></i> Save </button>
+                                        <div class="text-end mt-3">
+                                            <button type="submit" id="save_btn" class="btn btn-primary" onclick="tenureDataSave()" style="display:none;"><i class="fa fa-save me-1"></i> Save</button>
                                         </div>
                                     </div>
-
-
-
-
-                            </div>
-                        </form>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    @endsection
+    </section>
+@endsection
 
 @section('contentJavaScripts')
 
