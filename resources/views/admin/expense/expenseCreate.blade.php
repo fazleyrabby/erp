@@ -15,12 +15,11 @@
                 <div class="card-body">
                     <form action="{{route('expenseStore')}}" method="post">
                         @csrf
-                    <div class="row m-1">
+                    <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Pay to</label>
-                            <select type="date" class="form-control" name="vendor_id" id="vendor_id">
+                            <select class="form-select form-select-sm" name="vendor_id" id="vendor_id">
                                 <option value="0"selected>Choose Employee</option>
-                                
                                 @foreach($suppliers as $supplier)
                                     <option value="{{$supplier->id}}">{{$supplier->member_name}}</option>
                                 @endforeach
@@ -29,22 +28,22 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Transaction Date</label>
-                            <input type="date" class="form-control" name="transaction_date">
+                            <input type="date" class="form-control form-control-sm" name="transaction_date">
                             <span class="text-danger" id="transaction_dateError">{{ $errors->has('transaction_date') ? $errors->first('transaction_date') : '' }}</span>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Reference</label>
-                            <input type="text" class="form-control" name="reference" placeholder="Reference ">
+                            <input type="text" class="form-control form-control-sm" name="reference" placeholder="Reference ">
                             <span class="text-danger" id="referenceError">{{ $errors->has('reference') ? $errors->first('reference') : '' }}</span>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Expense Reason</label>
-                            <input type="text" class="form-control" name="particulars" placeholder="Reason...">
+                            <input type="text" class="form-control form-control-sm" name="particulars" placeholder="Reason...">
                             <span class="text-danger" id="particularsError">{{ $errors->has('particulars') ? $errors->first('particulars') : '' }}</span>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Payment method</label>
-                            <select type="text" class="form-control" name="payment_method" id="payment_method" onchange="getAccountStatus()">
+                            <select class="form-select form-select-sm" name="payment_method" id="payment_method" onchange="getAccountStatus()">
                                 <option value="0"selected >Select Payment Method</option>
                                 @foreach($methods as $method)
                                 <option value="{{$method->id}}">{{$method->name}}</option>
@@ -54,33 +53,29 @@
                         </div>
                         <div class="col-md-3" style="display:none;" id="div_account_status">
                             <label class="form-label" >Accounts</label>
-                            <select type="text" class="form-control" name="account_status" id="account_status" onchange="getAmount()" >
+                            <select class="form-select form-select-sm" name="account_status" id="account_status" onchange="getAmount()" >
                                 <option value="0" selected disabled>Select Bank</option>
                             </select>
                             <span class="text-danger" id="account_statusError">{{ $errors->has('account_status') ? $errors->first('account_status') : '' }}</span>
                         </div>
-                        
                         <div class="col-md-3" style="display:none;" id="div_credit_amount">
                             <label class="form-label">Credit Amount</label>
-                            <input type="text" class="form-control" name="credit_amount" id="credit_amount" readonly>
+                            <input type="text" class="form-control form-control-sm" name="credit_amount" id="credit_amount" readonly>
                             <span class="text-danger" id="credit_amountError">{{ $errors->has('credit_amount') ? $errors->first('credit_amount') : '' }}</span>
                         </div>
                         <div class="col-md-3" style="display:none;" id="div_transaction_id">
                             <label class="form-label">Transaction No</label>
-                            <input type="text" class="form-control" name="transaction_id" id="transaction_id" >
+                            <input type="text" class="form-control form-control-sm" name="transaction_id" id="transaction_id" >
                             <span class="text-danger" id="transaction_idError">{{ $errors->has('transaction_id') ? $errors->first('transaction_id') : '' }}</span>
-                           </div>
+                        </div>
                         <div class="col-md-9">
                             <label class="form-label">Address</label>
-                            <input type="text" class="form-control" name="address" placeholder="Type address">
+                            <input type="text" class="form-control form-control-sm" name="address" placeholder="Type address">
                             <span class="text-danger" id="addressError">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                         </div>
-                        
                     </div>
-                        
-                    
-                    <div class="table-responsive ">
-                        <table class="table table-bordered table-hover dataTable no-footer m-1" id="manageJournalTable" width="100%">
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-hover table-vcenter" id="manageJournalTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>
@@ -92,9 +87,9 @@
                             </thead>
                             <tbody>
                                 <tr class="row0">
-                                    <td>#</td>
+                                    <td class="text-center align-middle">#</td>
                                     <td>
-                                        <select class="form-control ddl_account" name="account[]">
+                                        <select class="form-select form-select-sm ddl_account" name="account[]">
                                             <option value="" selected>Choose COA</option>
                                             @php 
                                                 $status='';
@@ -115,29 +110,25 @@
                                         @error('account.0')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
-                                       
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="particular[]" placeholder="Particulars">
+                                        <input type="text" class="form-control form-control-sm" name="particular[]" placeholder="Particulars">
                                         <span class="text-danger" id="particularError">{{ $errors->has('particular') ? $errors->first('particular') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="amount[]" value="0" onkeyup="totalBalance()"  style="text-align:right;">
+                                        <input type="number" class="form-control form-control-sm" name="amount[]" value="0" onkeyup="totalBalance()"  style="text-align:right;">
                                         <span class="text-danger" id="amountError">{{ $errors->has('amount') ? $errors->first('amount') : '' }}</span>
                                     </td>
-                                    <td>
-                                        <label style="display:none;">.</label><br><br>
-                                        <a href="#/" class="text-danger" onclick="remove_btn(this)"><i class="fas fa-trash"></i></a>
+                                    <td class="text-center align-middle">
+                                        <a href="#/" class="text-danger" onclick="remove_btn(this)" style="font-size: 1.25rem;"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
-                                
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td>#</td>
-                                    <td colspan="2" style="text-align:right;">Total:</td>
+                                    <td colspan="3" class="text-end fw-bold align-middle">Total:</td>
                                     <td>
-                                        <input type="text" class="form-control" name="amountTotal" id="amountTotal"   style="text-align:right;">
+                                        <input type="text" class="form-control form-control-sm fw-bold text-success" name="amountTotal" id="amountTotal" style="text-align:right;" readonly>
                                         <span class="text-danger" id="amountTotalError">{{ $errors->has('amountTotal') ? $errors->first('amountTotal') : '' }}</span>
                                     </td>
                                     <td></td>

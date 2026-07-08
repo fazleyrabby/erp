@@ -19,24 +19,23 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Date From</label>
-                            <input type="date" class="form-control" name="date_from" id="date_from"
+                            <input type="date" class="form-control form-control-sm" name="date_from" id="date_from"
                                 value="{{ date('Y-m-01') }}">
                             <span class="text-danger"
                                 id="date_fromError">{{ $errors->has('date_from') ? $errors->first('date_from') : '' }}</span>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Date To</label>
-                            <input type="date" class="form-control" name="date_to" id="date_to"
+                            <input type="date" class="form-control form-control-sm" name="date_to" id="date_to"
                                 value="{{ date('Y-m-d') }}">
                             <span class="text-danger"
                                 id="date_toError">{{ $errors->has('date_to') ? $errors->first('date_to') : '' }}</span>
                         </div>
-                        <div class="col-md-2">
-                            <label class="form-label">.</label><br>
-                            <button class="btn btn-primary" onclick="generateReport()">Generate </button>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button class="btn btn-primary w-100" onclick="generateReport()">Generate </button>
                         </div>
-                        <div class="col-md-2">
-                            <div class="mt-4" id="generatePdf"></div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <div class="w-100" id="generatePdf"></div>
                         </div>
                     </div>
 

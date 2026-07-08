@@ -20,31 +20,30 @@ Admin Attendence -Add
                             @csrf
                             <input type="hidden" name="month_year" value="{{Date('F-Y')}}">
                             <div class="row g-3">
-                                <div class="form-group mb-3  col-sm-5">
-                                    <label >Employee:</label>
-                                    <select class="form-control" id="employee_id"  name="employee_id" required>
-                                    <option value="" selected disabled>Choose Employee</option>
-                                    @foreach($teams as $team)
-                                    <option value="{{$team->id}}">{{$team->member_name}}</option>
-                                    @endforeach
+                                <div class="form-group mb-3 col-sm-5">
+                                    <label class="form-label">Employee:</label>
+                                    <select class="form-select form-select-sm" id="employee_id" name="employee_id" required>
+                                        <option value="" selected disabled>Choose Employee</option>
+                                        @foreach($teams as $team)
+                                            <option value="{{$team->id}}">{{$team->member_name}}</option>
+                                        @endforeach
                                     </select>
                                     <span class="text-danger">{{$errors->has('employee_id')?$errors->first('employee_id'):''}}</span>
                                 </div>
-                                <div class="form-group mb-3  col-sm-5">
-                                    <label  >Date:</label>
-                                    <input type="text" class="form-control " id="date" name="date" value="{{ date('Y-m-d') }}" readonly> 
+                                <div class="form-group mb-3 col-sm-5">
+                                    <label class="form-label">Date:</label>
+                                    <input type="text" class="form-control form-control-sm" id="date" name="date" value="{{ date('Y-m-d') }}" readonly> 
                                 </div>
-                                <div class="col-md-2">
-                                    <label  >.</label><br>
-                                    <button class="btn btn-primary " type="submit" > Save</button>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button class="btn btn-primary w-100" type="submit">Save</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <br>
                     <h3 style=" float: left;" >Attendence List</h3> 
-                    <div class="table-responsive" >
-                        <table  id="attendenceTable" class="table table-bordered table-striped">
+                    <div class="table-responsive mt-3" >
+                        <table  id="attendenceTable" class="table table-vcenter table-bordered table-striped">
                             <thead>
                                 <tr>
                                     <th width="5%">SL</th>

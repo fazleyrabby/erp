@@ -26,7 +26,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Member Name</label>
 
                                 <div>
-                                    <input type="text" value="{{$member->member_name}}" class="form-control"  name="member_name" placeholder=" Write Member Name" required>
+                                    <input type="text" value="{{$member->member_name}}" class="form-control form-control-sm"  name="member_name" placeholder=" Write Member Name" required>
                                     
                                 </div>
                             </div>
@@ -38,7 +38,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Leader</label>
 
                                 <div>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="leader_id">
+                                    <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="leader_id">
                                     <option value="{{$member->leader_id}}" selected >Choose Leader</option>
                         @foreach(App\Models\payroll\OurTeam::where('deleted','=','No')->get() as $leader)
                                         <option value="{{$leader->id}}">{{$leader->member_name}}</option>
@@ -51,7 +51,7 @@ Admin Create Team Member
                             <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Priority</label>
                                 <div>
-                                    <input type="text" class="form-control"  name="priority" value="{{$member->priority}}" >                  
+                                    <input type="text" class="form-control form-control-sm"  name="priority" value="{{$member->priority}}" >                  
                                 </div>
                             </div>
 
@@ -61,7 +61,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Desingnation</label>
 
                                 <div>
-                                    <input type="text" value="{{$member->member_desingnation}}" class="form-control"  name="member_desingnation" placeholder=" Write Member Desingnation" required>
+                                    <input type="text" value="{{$member->member_desingnation}}" class="form-control form-control-sm"  name="member_desingnation" placeholder=" Write Member Desingnation" required>
                                     
                                 </div>
                             </div>
@@ -72,7 +72,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Mobile Number</label>
 
                                 <div>
-                                    <input type="text" value="{{$member->mobile_number}}" class="form-control"  name="mobile_number" placeholder="018XXXXXXXX" required>
+                                    <input type="text" value="{{$member->mobile_number}}" class="form-control form-control-sm"  name="mobile_number" placeholder="018XXXXXXXX" required>
                                     
                                 </div>
                             </div>
@@ -84,7 +84,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Address</label>
 
                                 <div>
-                                    <input type="text" class="form-control"  name="address" placeholder="Write Address" value="{{$member->address}}">
+                                    <input type="text" class="form-control form-control-sm"  name="address" placeholder="Write Address" value="{{$member->address}}">
                                     
                                 </div>
                             </div>
@@ -97,7 +97,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Job Location</label>
 
                                 <div>
-                                    <input type="text" class="form-control"  name="job_location" value="{{$member->job_location}}" >
+                                    <input type="text" class="form-control form-control-sm"  name="job_location" value="{{$member->job_location}}" >
                                     
                                 </div>
                             </div>
@@ -107,7 +107,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Education</label>
 
                                 <div>
-                                    <input type="text" value="{{$member->member_education}}" class="form-control"  name="member_education" placeholder="Write About Your Educational Background Please" >
+                                    <input type="text" value="{{$member->member_education}}" class="form-control form-control-sm"  name="member_education" placeholder="Write About Your Educational Background Please" >
                                     
                                 </div>
                             </div>
@@ -119,7 +119,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Description</label>
 
                                 <div>
-                                    <textarea type="text"  class="form-control"  name="description" placeholder="Write something about you" >{{$member->description}}</textarea>
+                                    <textarea type="text"  class="form-control form-control-sm"  name="description" placeholder="Write something about you" >{{$member->description}}</textarea>
                                     
                                 </div>
                             </div>
@@ -133,7 +133,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Joining Date</label>
 
                                 <div>
-                                <input type="date" value="{{$member->joining_date}}" class="form-control"  name="joining_date" placeholder="Enter Joining Date" required>
+                                <input type="date" value="{{$member->joining_date}}" class="form-control form-control-sm"  name="joining_date" placeholder="Enter Joining Date" required>
                                     
                                 </div>
                             </div>
@@ -146,7 +146,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Is he Present Now</label>
 
                                 <div>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="is_employee">
+                                    <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="is_employee">
                                         <option value="{{$member->is_employee}}" selected >{{$member->is_employee}}</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -158,7 +158,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Left Job At</label>
 
                                 <div>
-                                <input type="date"  value="{{$member->job_left_date}}" class="form-control"  name="job_left_date" placeholder="if he is not in team anymore" >
+                                <input type="date"  value="{{$member->job_left_date}}" class="form-control form-control-sm"  name="job_left_date" placeholder="if he is not in team anymore" >
                                     
                                 </div>
                             </div>
@@ -172,7 +172,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Current Grade</label>
 
                                 <div>
-                                    <select class="form-control" id="current_grade" name="current_grade" onchange="loadStep()">
+                                    <select class="form-select form-select-sm" id="current_grade" name="current_grade" onchange="loadStep()">
                                         <option value="{{$member->current_grade}}" selected >Choose Grade</option>
                         @foreach(App\Models\payroll\Grade::all()->where('status','=','Active')->where('deleted','=','No') as $grd)
                                         <option value="{{$grd->id}}">{{$grd->grade_name}}</option>
@@ -185,7 +185,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Current Step</label>
 
                                 <div>
-                                    <select class="form-control" id="current_step" name="current_step" onchange="salryGenerate()">
+                                    <select class="form-select form-select-sm" id="current_step" name="current_step" onchange="salryGenerate()">
                                     <option value="{{$member->current_step}}" selected >Choose Steps</option>
                         @foreach(App\Models\payroll\Steps::all()->where('status','=','Active')->where('deleted','=','No')->sortByDesc('id') as $stps)
                                         <option value="{{$stps->id}}">{{$stps->step_name}}</option>
@@ -201,7 +201,7 @@ Admin Create Team Member
                             <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Group</label>
                                 <div>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="group_id">
+                                    <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="group_id">
                                     <option value="{{$member->group_id}}" selected >Choose Group</option>
                         @foreach(App\Models\payroll\Group::all()->where('status','=','Active')->where('deleted','=','No')->sortByDesc('id') as $grps)
                                         <option value="{{$grps->id}}">{{$grps->groupName}}</option>
@@ -217,7 +217,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Salary Sheet</label>
 
                                 <div>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="sheet_id" >
+                                    <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="sheet_id" >
                                     <option value="{{$member->sheet_id}}" selected >Choose sheet</option>
                         @foreach(App\Models\payroll\SalarySheet::all()->where('status','=','Active')->where('deleted','=','No') as $sSheet)
                                         <option value="{{$sSheet->id}}">{{$sSheet->sheet_name}}</option>
@@ -230,7 +230,7 @@ Admin Create Team Member
                             <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Salary Type</label>
                                 <div>
-                                    <select class="form-control" id="exampleFormControlSelect1" name="salary_type">
+                                    <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="salary_type">
                                     <option value="{{$member->salary_type}}" selected >{{$member->salary_type}}</option>    
                                     <option value="consulate">Consulate</option>    
                                     <option value="scale">Scale</option>                                    
@@ -246,7 +246,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Working Hour</label>
 
                                 <div>
-                                    <input type="text" class="form-control"  name="working_hour" value="{{$member->working_hour}}" >
+                                    <input type="text" class="form-control form-control-sm"  name="working_hour" value="{{$member->working_hour}}" >
                                     
                                 </div>
                             </div>
@@ -258,7 +258,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Referred By<span style="color:red;">(Optional)</span></label>
 
                                 <div>
-                                    <input type="text" value="{{$member->referred_by}}" class="form-control"  name="referred_by"  >
+                                    <input type="text" value="{{$member->referred_by}}" class="form-control form-control-sm"  name="referred_by"  >
                                     
                                 </div>
                             </div>
@@ -268,7 +268,7 @@ Admin Create Team Member
                             <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Account Number</label>
                                 <div>
-                                    <input type="text" class="form-control"  name="account_no" value="{{$member->account_no}}" >                  
+                                    <input type="text" class="form-control form-control-sm"  name="account_no" value="{{$member->account_no}}" >                  
                                 </div>
                             </div>
 
@@ -276,7 +276,7 @@ Admin Create Team Member
                             <div class="form-group mb-3 col-md-6">
                                 <label for="carousalCaptionOffer" class="form-label">Salary<span style="color:red;">(Optional)</span></label>
                                 <div>
-                                    <input type="text" value="{{$member->salary}}" class="form-control"  name="salary"  >
+                                    <input type="text" value="{{$member->salary}}" class="form-control form-control-sm"  name="salary"  >
                                 </div>
                             </div>
 
@@ -290,19 +290,19 @@ Admin Create Team Member
                                     <div class="form-group mb-3  col-md-4" >
                                         <label for="carousalCaptionOffer" class="form-label">Laundry:</label>
                                         <div>
-                                            <input type="text" class="form-control"  name="laundry" value="{{$member->laundry}}" >                                                
+                                            <input type="text" class="form-control form-control-sm"  name="laundry" value="{{$member->laundry}}" >                                                
                                         </div>
                                     </div>
                                     <div class="form-group mb-3  col-md-4">
                                         <label for="carousalCaptionOffer" class="form-label">phone Bill:</label>
                                         <div>
-                                        <input type="text" class="form-control" name="phone_bill" value="{{$member->phone_bill}}" >                                                
+                                        <input type="text" class="form-control form-control-sm" name="phone_bill" value="{{$member->phone_bill}}" >                                                
                                         </div>
                                     </div>
                                     <div class="form-group mb-3  col-md-4">
                                         <label for="carousalCaptionOffer" class="form-label">TA/Da:</label>
                                         <div>
-                                        <input type="text" class="form-control" name="ta_da" value="{{$member->ta_da}}">                                                 
+                                        <input type="text" class="form-control form-control-sm" name="ta_da" value="{{$member->ta_da}}">                                                 
                                         </div>
                                     </div>
                             </div>
@@ -311,7 +311,7 @@ Admin Create Team Member
                             <div class="form-group mb-3 col-md-12">
                                 <label for="carousalCaptionOffer" class="form-label">Social Site Links</label>
                                 <div>
-                                    <textarea type="text"  class="form-control"  name="social_links" placeholder="Write your facebook url" >{{$member->social_links}}</textarea>
+                                    <textarea type="text"  class="form-control form-control-sm"  name="social_links" placeholder="Write your facebook url" >{{$member->social_links}}</textarea>
                                 </div>
                             </div>
 
@@ -320,7 +320,7 @@ Admin Create Team Member
                                 <label for="carousalCaptionOffer" class="form-label">Add Note<span style="color:red;">(Optional)</span></label>
 
                                 <div>
-                                    <textarea type="text" value="{{$member->short_note}}" class="form-control"  name="short_note" placeholder="Do you want to add any note?" >{{$member->short_note}}</textarea>
+                                    <textarea type="text" value="{{$member->short_note}}" class="form-control form-control-sm"  name="short_note" placeholder="Do you want to add any note?" >{{$member->short_note}}</textarea>
                                     
                                 </div>
                             </div>
@@ -335,7 +335,7 @@ Admin Create Team Member
                             <div class="form-group mb-3 col-md-6">
                                 <label for="Bannerstatus" class="form-label">Status</label>  
                                 <div>
-                                    <select class="form-control"  id="Bannerstatus" name="status" >
+                                    <select class="form-select form-select-sm"  id="Bannerstatus" name="status" >
                                         <option value="{{$member->status}}" selected >{{$member->status}}</option>
                                         <option value="Active">Active</option>
                                         <option value="Inactive">Inactive</option>
@@ -349,7 +349,7 @@ Admin Create Team Member
                                 <label for="Memberimage" class="form-label">Member Image</label>
                                 <div>
                                     <input type="hidden" name="oldImage" value="{{ $member->member_image }}">
-                                    <input type="file" class="form-control" id="member_image" name="member_image"  onchange="loadPreview(this);">
+                                    <input type="file" class="form-control form-control-sm" id="member_image" name="member_image"  onchange="loadPreview(this);">
                                     <span style="color:gray;">Image should must be 1600*500 Size</span>                                     
                                 </div>
                                 <div class="col-sm-5">

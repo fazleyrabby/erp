@@ -31,26 +31,21 @@
                                                     name="remainingDate" value="{{ $date }}">
                                             @endforeach
 
-                                            <label>Date: </label>
-                                            <input type="date" class="form-control" id="date" name="date"
-                                                aria-describedby="emailHelp" value="{{ todayDate() }}">
+                                            <label class="form-label">Date:</label>
+                                            <input type="date" class="form-control form-control-sm" id="date" name="date"
+                                                value="{{ todayDate() }}">
                                         </div>
-                                        <div class="form-group mb-3 col-md-4">
-                                            <label class="pt-3"> </label>
-                                            <button type="button" class="btn btn-success btn-lg btn-block "
+                                        <div class="form-group mb-3 col-md-4 d-flex align-items-end">
+                                            <button type="button" class="btn btn-success w-100"
                                                 onclick="viewCalculation()"> View Calculation </button>
                                         </div>
                                         <div class="form-group mb-3 col-md-6">
-                                            <label><strong>Daily Ledger Details:</strong></label>
-                                            <table border="1" style="width:100%;">
-                                                <thead class="text-center">
-                                                </thead>
+                                            <label class="form-label"><strong>Daily Ledger Details:</strong></label>
+                                            <table class="table table-bordered table-vcenter table-sm w-100">
                                                 <tbody class="text-center" id="manageReportTable">
                                                     <th>Type</th>
                                                     <th>Amount</th>
-
                                                 </tbody>
-                                            </table>
                                             </table>
                                         </div>
                                         <div class="form-group mb-3 col-md-2">
@@ -60,33 +55,31 @@
                                         </div>
                                         <div class="form-group mb-3 col-md-4"></div>
                                         <div class="form-group mb-3 col-md-4">
-                                            <label>Opening Balance : </label>
-                                            <input type="text" class="form-control" id="openingBalance"
-                                                name="openingBalance" aria-describedby="emailHelp" value="" disabled>
+                                            <label class="form-label">Opening Balance:</label>
+                                            <input type="text" class="form-control form-control-sm" id="openingBalance"
+                                                name="openingBalance" value="" disabled>
                                         </div>
                                         <div class="form-group mb-3 col-md-4">
-                                            <label>Total Amount (today) : </label>
-                                            <input type="text" class="form-control" id="totalAmount" name="totalAmount"
-                                                aria-describedby="emailHelp" value="" disabled>
+                                            <label class="form-label">Total Amount (today):</label>
+                                            <input type="text" class="form-control form-control-sm" id="totalAmount" name="totalAmount"
+                                                value="" disabled>
                                         </div>
                                         <div class="form-group mb-3 col-md-4">
-                                            <label>Closing Amount : </label>
-                                            <input type="text" class="form-control" id="closingAmount"
-                                                name="closingAmount" aria-describedby="emailHelp" value="" disabled>
+                                            <label class="form-label">Closing Amount:</label>
+                                            <input type="text" class="form-control form-control-sm" id="closingAmount"
+                                                name="closingAmount" value="" disabled>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <div class="row g-3">
+                                    <div class="row g-3 align-items-end">
                                         <div class="col-md-8">
-                                            <label> </label>
                                             <a type="button"
-                                                class="btn btn-success text-light my_button float-left mt-4 p-2"
+                                                class="btn btn-secondary w-25"
                                                 onclick="clearInput();"> Clear </a>
                                         </div>
-                                        <div class="form-group mb-3 col-md-4">
-                                            <label> </label>
-                                            <button type="button" class="btn btn-success btn-lg btn-block "
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-success w-100"
                                                 onclick="saveTodayReport()">Save Today Report</button>
                                         </div>
                                     </div>

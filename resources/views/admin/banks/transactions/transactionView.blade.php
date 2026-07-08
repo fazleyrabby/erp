@@ -219,22 +219,42 @@
 
 $(function() {
             $("#transfer_from").select2({
+                dropdownParent: $("#modal"),
                 width:'100%',
                 placeholder: "Select transfer from"
             });
             $("#transfer_to").select2({
+                dropdownParent: $("#modal"),
                 width:'100%',
                 placeholder: "Select transfer to"
             });
             $("#transfer_from_payment_method").select2({
+                dropdownParent: $("#modal"),
                 width:'100%',
                 placeholder: "Select Payment Method"
             });
             $("#transfer_from_source").select2({
+                dropdownParent: $("#modal"),
                 width:'100%',
                 placeholder: "Select Source"
             });
             $("#transfer_from_ac_no").select2({
+                dropdownParent: $("#modal"),
+                width:'100%',
+                placeholder: "Select Source"
+            });
+            $("#tbl_coa_to_id").select2({
+                dropdownParent: $("#modal"),
+                width:'100%',
+                placeholder: "Select Payment Method"
+            });
+            $("#transfer_to_source").select2({
+                dropdownParent: $("#modal"),
+                width:'100%',
+                placeholder: "Select Source"
+            });
+            $("#transfer_to_ac_no").select2({
+                dropdownParent: $("#modal"),
                 width:'100%',
                 placeholder: "Select Source"
             });

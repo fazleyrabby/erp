@@ -15,10 +15,10 @@
                 <div class="card-body">
                     <form action="{{route('billStore')}}" method="post">
                         @csrf
-                    <div class="row ">
+                    <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Pay to</label> <span class="text-danger">*</span>
-                            <select type="date" class="form-control" name="vendor_id" id="vendor_id">
+                            <select class="form-select form-select-sm" name="vendor_id" id="vendor_id">
                                 <option value="0"selected>Choose Supplier</option>
                                 @foreach($suppliers as $supplier)
                                     <option value="{{$supplier->id}}">{{$supplier->name}}</option>
@@ -28,27 +28,27 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Bill Date</label> <span class="text-danger">*</span>
-                            <input type="date" class="form-control" name="bill_date">
+                            <input type="date" class="form-control form-control-sm" name="bill_date">
                             <span class="text-danger" id="bill_dateError">{{ $errors->has('bill_date') ? $errors->first('bill_date') : '' }}</span>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Due Date</label> <span class="text-danger">*</span>
-                            <input type="date" class="form-control" name="due_date">
+                            <input type="date" class="form-control form-control-sm" name="due_date">
                             <span class="text-danger" id="due_dateError">{{ $errors->has('due_date') ? $errors->first('due_date') : '' }}</span>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Reference</label>
-                            <input type="text" class="form-control" name="reference" placeholder="Reference ">
+                            <input type="text" class="form-control form-control-sm" name="reference" placeholder="Reference ">
                             <span class="text-danger" id="referenceError">{{ $errors->has('reference') ? $errors->first('reference') : '' }}</span>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Bill Address</label>
-                            <textarea type="text" class="form-control" name="address" placeholder="Type address"></textarea>
+                            <textarea class="form-control form-control-sm" name="address" placeholder="Type address" rows="2"></textarea>
                             <span class="text-danger" id="addressError">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Particulars</label>
-                            <textarea type="text" class="form-control" name="particulars" placeholder="Type particulars"></textarea>
+                            <textarea class="form-control form-control-sm" name="particulars" placeholder="Type particulars" rows="2"></textarea>
                             <span class="text-danger" id="particularsError">{{ $errors->has('particulars') ? $errors->first('particulars') : '' }}</span>
                         </div>
                     </div>
@@ -57,8 +57,8 @@
                         
                         
                     
-                    <div class="table-responsive ">
-                        <table class="table table-bordered table-hover dataTable no-footer m-1" id="manageJournalTable" width="100%">
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-hover table-vcenter" id="manageJournalTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>
@@ -70,9 +70,9 @@
                             </thead>
                             <tbody>
                                 <tr class="row0">
-                                    <td>#</td>
+                                    <td class="text-center align-middle">#</td>
                                     <td>
-                                        <select class="form-control ddl_account" name="account[]">
+                                        <select class="form-select form-select-sm ddl_account" name="account[]">
                                             <option value="0" selected>Choose COA</option>
                                             @php 
                                                 $status='';
@@ -93,26 +93,23 @@
                                         <span class="text-danger" id="accountError">{{ $errors->has('account') ? $errors->first('account') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" name="particular[]" placeholder="Particulars">
+                                        <input type="text" class="form-control form-control-sm" name="particular[]" placeholder="Particulars">
                                         <span class="text-danger" id="particularError">{{ $errors->has('particular') ? $errors->first('particular') : '' }}</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="amount[]" value="0" oninput="totalBalance()" style="text-align:right;">
+                                        <input type="number" class="form-control form-control-sm" name="amount[]" value="0" oninput="totalBalance()" style="text-align:right;">
                                         <span class="text-danger" id="amountError">{{ $errors->has('amount') ? $errors->first('amount') : '' }}</span>
                                     </td>
-                                    <td>
-                                        <label style="display:none;">.</label><br><br>
-                                        <a href="#/" class="text-danger" onclick="remove_btn(this)"><i class="fas fa-trash"></i></a>
+                                    <td class="text-center align-middle">
+                                        <a href="#/" class="text-danger" onclick="remove_btn(this)" style="font-size: 1.25rem;"><i class="fas fa-trash"></i></a>
                                     </td>
                                 </tr>
-                                
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td>#</td>
-                                    <td colspan="2" style="text-align:right;">Total:</td>
+                                    <td colspan="3" class="text-end fw-bold align-middle">Total:</td>
                                     <td>
-                                        <input type="text" class="form-control" name="amountTotal" id="amountTotal"   style="text-align:right;">
+                                        <input type="text" class="form-control form-control-sm fw-bold text-success" name="amountTotal" id="amountTotal" style="text-align:right;" readonly>
                                         <span class="text-danger" id="amountTotalError">{{ $errors->has('amountTotal') ? $errors->first('amountTotal') : '' }}</span>
                                     </td>
                                     <td></td>

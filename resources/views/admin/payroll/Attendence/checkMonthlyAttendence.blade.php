@@ -14,33 +14,32 @@ Admin Monthly Attendence
                 <div class="card-body">
                     <div class="attendence-card">
                             <div class="row g-3">
-                                <div class="form-group mb-3  col-sm-3">
-                                    <label >Employee:</label>
-                                    <select class="form-control" id="employee_id"  required>
-                                    <option value="" selected disabled>Choose Employee</option>
-                                    @foreach($teams as $team)
-                                    <option value="{{$team->id}}">{{$team->member_name}}</option>
-                                    @endforeach
+                                <div class="form-group mb-3 col-sm-3">
+                                    <label class="form-label">Employee:</label>
+                                    <select class="form-select form-select-sm" id="employee_id" required>
+                                        <option value="" selected disabled>Choose Employee</option>
+                                        @foreach($teams as $team)
+                                            <option value="{{$team->id}}">{{$team->member_name}}</option>
+                                        @endforeach
                                     </select>
                                     <span class="text-danger">{{$errors->has('employee_id')?$errors->first('employee_id'):''}}</span>
                                 </div>
-                                <div class="form-group mb-3  col-sm-3">
-                                    <label>Date From:</label>
-                                    <input type="date" class="form-control " id="date_from" value="{{ date('Y-m-01') }}"> 
+                                <div class="form-group mb-3 col-sm-3">
+                                    <label class="form-label">Date From:</label>
+                                    <input type="date" class="form-control form-control-sm" id="date_from" value="{{ date('Y-m-01') }}"> 
                                 </div>
-                                <div class="form-group mb-3  col-sm-3">
-                                    <label>Date To:</label>
-                                    <input type="date" class="form-control " id="date_to" value="{{ date('Y-m-d') }}"> 
+                                <div class="form-group mb-3 col-sm-3">
+                                    <label class="form-label">Date To:</label>
+                                    <input type="date" class="form-control form-control-sm" id="date_to" value="{{ date('Y-m-d') }}"> 
                                 </div>
-                                <div class="col-md-3">
-                                    <label  >.</label><br>
-                                    <button class="btn btn-primary" onclick="generateAttendence()" >Generate Attendence</button>
+                                <div class="col-md-3 d-flex align-items-end">
+                                    <button class="btn btn-primary w-100" onclick="generateAttendence()">Generate Attendence</button>
                                 </div>
                             </div>
                     </div>
-                     <div class="header" id="header"></div>
-                    <div class="table-responsive" >
-                        <table id="attendenceTable"  class="table table-bordered table-striped"></table>
+                     <div class="header mt-4" id="header"></div>
+                    <div class="table-responsive mt-3" >
+                        <table id="attendenceTable" class="table table-vcenter table-bordered table-striped"></table>
                     </div>
                 </div>
             </div>

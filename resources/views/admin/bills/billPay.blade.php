@@ -15,10 +15,10 @@
                 <div class="card-body">
                     <form action="{{route('billPayStore')}}" method="post">
                         @csrf
-                    <div class="row ">
+                    <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Pay to</label> <span class="text-danger">*</span>
-                            <select type="date" class="form-control" name="vendor_id" id="vendor_id" onchange="getBillData()">
+                            <select class="form-select form-select-sm" name="vendor_id" id="vendor_id" onchange="getBillData()">
                                 <option value="0"selected>Choose Supplier</option>
                                 @foreach($suppliers as $supplier)
                                     <option value="{{$supplier->id}}">{{$supplier->name}}</option>
@@ -28,45 +28,40 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Payment Date</label> <span class="text-danger">*</span>
-                            <input type="date" class="form-control" name="payment_date">
+                            <input type="date" class="form-control form-control-sm" name="payment_date">
                             <span class="text-danger" id="payment_dateError">{{ $errors->has('payment_date') ? $errors->first('payment_date') : '' }}</span>
                         </div>
-                        
                         <div class="col-md-3">
                             <label class="form-label">Reference No</label>
-                            <input type="text" class="form-control" name="reference" placeholder="Reference ">
+                            <input type="text" class="form-control form-control-sm" name="reference" placeholder="Reference ">
                             <span class="text-danger" id="referenceError">{{ $errors->has('reference') ? $errors->first('reference') : '' }}</span>
                         </div>
-                        <div class="col-md-3"></div>
                         <div class="col-md-3">
                             <label class="form-label">Payment method</label>
-                            <select type="text" class="form-control" name="payment_method" id="payment_method" onchange="getAccountStatus()">
+                            <select class="form-select form-select-sm" name="payment_method" id="payment_method" onchange="getAccountStatus()">
                                 <option value="0"selected >Select Payment Method</option>
                                 <option value="{{$cashId->id}}">Cash</option>
                                 @foreach($banks as $bank)
                                 <option value="{{$bank->id}}">{{$bank->name}}</option>
                                 @endforeach
-                               
                             </select>
                             <span class="text-danger" id="payment_methodError">{{ $errors->has('payment_method') ? $errors->first('payment_method') : '' }}</span>
                         </div>
-
-                        <div class="col-md-3" style="display:none;" id="div_account_status">
+                        <div class="col-md-4" style="display:none;" id="div_account_status">
                             <label class="form-label" >Accounts</label>
-                            <select type="text" class="form-control" name="account_status" id="account_status" onchange="getAmount()">
+                            <select class="form-select form-select-sm" name="account_status" id="account_status" onchange="getAmount()">
                                 <option value="0" selected disabled>Select Bank</option>
                             </select>
                             <span class="text-danger" id="account_statusError">{{ $errors->has('account_status') ? $errors->first('account_status') : '' }}</span>
                         </div>
-                        
-                        <div class="col-md-3" style="display:none;" id="div_credit_amount">
+                        <div class="col-md-4" style="display:none;" id="div_credit_amount">
                             <label class="form-label">Credit Amount</label>
-                            <input type="text" class="form-control" name="credit_amount" id="credit_amount" readonly>
+                            <input type="text" class="form-control form-control-sm" name="credit_amount" id="credit_amount" readonly>
                             <span class="text-danger" id="credit_amountError">{{ $errors->has('credit_amount') ? $errors->first('credit_amount') : '' }}</span>
                         </div>
-                        <div class="col-md-3" style="display:none;" id="div_transaction_id">
+                        <div class="col-md-4" style="display:none;" id="div_transaction_id">
                             <label class="form-label">Transaction No</label>
-                            <input type="text" class="form-control" name="transaction_id" id="transaction_id" >
+                            <input type="text" class="form-control form-control-sm" name="transaction_id" id="transaction_id" >
                             <span class="text-danger" id="transaction_idError">{{ $errors->has('transaction_id') ? $errors->first('transaction_id') : '' }}</span>
                         </div>
                     </div>
@@ -75,8 +70,8 @@
                         
                         
                     
-                    <div class="table-responsive ">
-                        <table class="table table-bordered table-hover dataTable no-footer m-1"  width="100%">
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-hover table-vcenter" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>
@@ -89,10 +84,7 @@
                             </thead>
                             <tbody id="manageBillPayTable"></tbody>
                             <tfoot id="manageBillPayTableFoot"></tfoot>
-                                
-                            
                         </table>
-                        
                     </div>
                     <div class="row g-3">
                         <div class="col-md-12 ">

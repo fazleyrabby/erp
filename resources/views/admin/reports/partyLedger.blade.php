@@ -18,7 +18,7 @@
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label">Choose Vendor</label>
-                            <select type="date" class="form-control" name="vendor_id" id="vendor_id">
+                            <select class="form-select form-select-sm" name="vendor_id" id="vendor_id">
                                 <option value="0"selected>Choose Supplier</option>
                                 @foreach($suppliers as $supplier)
                                     <option value="{{$supplier->id}}">{{$supplier->name}}</option>
@@ -28,23 +28,22 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Date From</label>
-                            <input type="date" class="form-control" name="date_from" id="date_from" >
+                            <input type="date" class="form-control form-control-sm" name="date_from" id="date_from" >
                             <span class="text-danger" id="date_fromError">{{ $errors->has('date_from') ? $errors->first('date_from') : '' }}</span>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Date To</label>
-                            <input type="date" class="form-control" name="date_to" id="date_to">
+                            <input type="date" class="form-control form-control-sm" name="date_to" id="date_to">
                             <span class="text-danger" id="date_toError">{{ $errors->has('date_to') ? $errors->first('date_to') : '' }}</span>
                         </div>
-                        <div class="col-md-3">
-                            <label class="form-label">.</label><br>
-                            <button class="btn btn-primary" onclick="generateVoucher()">Generate</button>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button class="btn btn-primary w-100" onclick="generateVoucher()">Generate</button>
                         </div>
                     </div>
 
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover dataTable no-footer"  width="100%">
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-hover table-vcenter"  width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>

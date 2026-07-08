@@ -17,7 +17,7 @@ Admin Salary Sheet -View
                 <div class="card-header">
                     <h3 class="card-title">Salary Sheet</h3>
                     <div class="card-actions">
-                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fa fa-plus circle"></i> Add Salary Sheet</button>
+                        <button type="button" class="btn btn-primary" onclick="create()"><i class="fa fa-plus-circle me-1"></i> Add Salary Sheet</button>
                     </div>
                 </div><!-- /.card-header -->
                 <h3 class="text-center text-success">{{Session::get('message')}}</h3>
@@ -25,7 +25,7 @@ Admin Salary Sheet -View
                 <!-- /.card-header -->
                 <div class="card-body">
                     <x-filter-bar route="{{ route('SalarySheetView') }}" searchPlaceholder="Search salary sheets..." :sortOptions="['id' => 'ID', 'sheet_name' => 'Name']" :defaultSort="'id'" :defaultDirection="'DESC'" />
-                    <table width="100%" class="table table-bordered table-striped">
+                    <table width="100%" class="table table-vcenter table-bordered table-striped">
                         <thead>
                             <tr>
                                 <td width="6%">SL</td>
@@ -82,8 +82,8 @@ Admin Salary Sheet -View
                 <div class="modal-body">
                         @csrf
                         <div class="form-group mb-3 col-md-12">
-                            <label for="carousalCaptionOffer" class="col-sm-5 col-form-label">Salary Sheet Name</label>
-                            <input type="text" class="form-control" id="sheet_name" name="sheet_name" placeholder=" Write Salary Sheet Name" required>                                     
+                            <label class="form-label">Salary Sheet Name</label>
+                            <input type="text" class="form-control form-control-sm" id="sheet_name" name="sheet_name" placeholder="Write Salary Sheet Name" required>                                     
                             <span class="text-danger" id="sheet_nameError"></span>
                         </div>
                 </div>
@@ -113,14 +113,14 @@ Admin Salary Sheet -View
                         @csrf
                         <input type="hidden" name="editId" id="editId">
                         <div class="form-group mb-3 col-md-6">
-                            <label>Salary Sheet Name</label>
-                            <input class="form-control input-sm" id="editSalary_sheet" type="text" name="editSalary_sheet" required="">
+                            <label class="form-label">Salary Sheet Name</label>
+                            <input class="form-control form-control-sm" id="editSalary_sheet" type="text" name="editSalary_sheet" required="">
                             <span class="text-danger" id="editSalary_sheetError"></span>
                         </div>
 
                         <div class="form-group mb-3 col-md-6">
-                            <label> Status</label>
-                            <select id="editStatus" name="editStatus" class="form-control input-sm">
+                            <label class="form-label">Status</label>
+                            <select id="editStatus" name="editStatus" class="form-select form-select-sm">
                                 <option value="Active">Active</option>
                                 <option value="Inactive">Inactive</option>
                             </select>

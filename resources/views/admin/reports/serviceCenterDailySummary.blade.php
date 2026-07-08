@@ -16,14 +16,13 @@ Service Center Daily Report
                     
                     
                     <div class="row g-3">
-                        <div class="col-md-3"></div>
                         <div class="col-md-4">
-                            <input type="date" class="form-control" name="date_from" id="date_from" value="{{ date('Y-m-d') }}">
+                            <label class="form-label">Select Date</label>
+                            <input type="date" class="form-control form-control-sm" name="date_from" id="date_from" value="{{ date('Y-m-d') }}">
                             <span class="text-danger" id="date_fromError">{{ $errors->has('date_from') ? $errors->first('date_from') : '' }}</span>
                         </div>
-                        
-                        <div class="col-md-3">
-                            <button class="btn btn-primary" onclick="generateServiceReport()">Generate Report</button>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button class="btn btn-primary w-100" onclick="generateServiceReport()">Generate Report</button>
                         </div>
                     </div>
 

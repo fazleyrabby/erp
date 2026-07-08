@@ -20,7 +20,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Employee Name</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <input type="text" class="form-control"  name="member_name" placeholder="Write Employee Name" >
+                                        <input type="text" class="form-control form-control-sm"  name="member_name" placeholder="Write Employee Name" >
                                     </div>
                                     <span class="text-danger">{{ $errors->has('member_name') ? $errors->first('member_name') : '' }}</span>
                                 </div>
@@ -31,7 +31,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Team Leader</label>
 
                                     <div >
-                                        <select class="form-control" id="exampleFormControlSelect1" name="leader_id">
+                                        <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="leader_id">
                                         <option value="0" selected >Choose Leader</option>
                                         @foreach(App\Models\payroll\OurTeam::where('deleted','=','No')->get() as $leader)
                                             <option value="{{$leader->member_id}}">{{$leader->member_name}}</option>
@@ -45,7 +45,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Priority</label>
                                     <span class="text-danger">*</span>
                                     <div >
-                                        <input type="text" class="form-control"  name="priority" placeholder="Enter priority">                  
+                                        <input type="text" class="form-control form-control-sm"  name="priority" placeholder="Enter priority">                  
                                     </div>
                                     <span class="text-danger">{{ $errors->has('priority') ? $errors->first('priority') : '' }}</span>
                                 </div>
@@ -55,7 +55,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Desingnation</label>
                                     <div>
-                                        <input type="text" class="form-control"  name="member_desingnation" placeholder=" Write Member Desingnation">
+                                        <input type="text" class="form-control form-control-sm"  name="member_desingnation" placeholder=" Write Member Desingnation">
                                     </div>
                                     <span class="text-danger">{{ $errors->has('member_desingnation') ? $errors->first('member_desingnation') : '' }}</span>
                                 </div>
@@ -66,7 +66,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Mobile</label>
                                     <span class="text-danger">*</span>
                                     <div >
-                                        <input type="text" class="form-control"  name="mobile_number" placeholder="018XXXXXXXX" >
+                                        <input type="text" class="form-control form-control-sm"  name="mobile_number" placeholder="018XXXXXXXX" >
                                     </div>
                                     <span class="text-danger">{{ $errors->has('mobile_number') ? $errors->first('mobile_number') : '' }}</span>
                                 </div>
@@ -78,7 +78,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Address</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <input type="text" class="form-control"  name="address" placeholder="Write Address">
+                                        <input type="text" class="form-control form-control-sm"  name="address" placeholder="Write Address">
                                     </div>
                                     <span class="text-danger">{{ $errors->has('address') ? $errors->first('address') : '' }}</span>
                                 </div>
@@ -89,7 +89,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Job Location</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <input type="text" class="form-control"  name="job_location" placeholder="Enter workplace location" value="{{Session::get('companySettings')[0]['address']}}">
+                                        <input type="text" class="form-control form-control-sm"  name="job_location" placeholder="Enter workplace location" value="{{Session::get('companySettings')[0]['address']}}">
                                     </div>
                                     <span class="text-danger">{{ $errors->has('job_location') ? $errors->first('job_location') : '' }}</span>
                                 </div>
@@ -97,7 +97,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Education</label>
                                     <div>
-                                        <input type="text" class="form-control"  name="member_education" placeholder="Write About Your Educational Background Please" >
+                                        <input type="text" class="form-control form-control-sm"  name="member_education" placeholder="Write About Your Educational Background Please" >
                                     </div>
                                     <span class="text-danger">{{ $errors->has('member_education') ? $errors->first('member_education') : '' }}</span>
                                 </div>
@@ -108,7 +108,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-12">
                                     <label for="carousalCaptionOffer" class="form-label">Employee description</label>
                                     <div>
-                                        <textarea type="text" class="form-control"  name="description" placeholder="Write something about you" ></textarea>
+                                        <textarea type="text" class="form-control form-control-sm"  name="description" placeholder="Write something about you" ></textarea>
                                     </div>
                                     <span class="text-danger">{{ $errors->has('description') ? $errors->first('description') : '' }}</span>
                                 </div>
@@ -118,7 +118,7 @@ Admin Create Team Member
                                 <span class="text-danger">*</span>
                                     <label for="carousalCaptionOffer" class="form-label">Joining Date</label>
                                     <div >
-                                    <input type="date" class="form-control"  name="joining_date" placeholder="Enter Joining Date">
+                                    <input type="date" class="form-control form-control-sm"  name="joining_date" placeholder="Enter Joining Date">
                                     </div>
                                     <span class="text-danger">{{ $errors->has('joining_date') ? $errors->first('joining_date') : '' }}</span>
                                 </div>
@@ -129,7 +129,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class=" col-form-label">Still Present Now</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="is_employee">
+                                        <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="is_employee">
                                             <option value="0" selected disabled>Choose</option>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
@@ -144,7 +144,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class=" col-form-label">Left Job Date</label>
                                     <div>
-                                        <input type="date" class="form-control"  name="job_left_date" placeholder="if he is not in team anymore" >
+                                        <input type="date" class="form-control form-control-sm"  name="job_left_date" placeholder="if he is not in team anymore" >
                                     </div>
                                     <span class="text-danger">{{ $errors->has('job_left_date') ? $errors->first('job_left_date') : '' }}</span>
                                 </div>
@@ -155,7 +155,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Grade</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <select class="form-control" id="current_grade" onchange="loadStep()" name="current_grade">
+                                        <select class="form-select form-select-sm" id="current_grade" onchange="loadStep()" name="current_grade">
                                             <option value="" selected >Choose Grade</option>
                                     @foreach(App\Models\payroll\Grade::all()->where('status','=','Active')->where('deleted','=','No') as $grd)
                                             <option value="{{$grd->id}}">{{$grd->grade_name}}</option>
@@ -169,7 +169,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Step</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <select class="form-control" id="current_step" onchange="salryGenerate()" name="current_step">
+                                        <select class="form-select form-select-sm" id="current_step" onchange="salryGenerate()" name="current_step">
                                         <option value="" selected >Choose Steps</option>
                                     @foreach(App\Models\payroll\Steps::where('status','=','Active')->where('deleted','=','No')->get() as $stps)
                                             <option value="{{$stps->id}}">{{$stps->step_name}}</option>
@@ -183,7 +183,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Salary</label>
                                     <div>
-                                        <input type="text"  class="form-control"  name="salary" id="salary" placeholder="Enter salary amount" readonly>
+                                        <input type="text"  class="form-control form-control-sm"  name="salary" id="salary" placeholder="Enter salary amount" readonly>
                                     </div>
                                     <span class="text-danger">{{ $errors->has('salary') ? $errors->first('salary') : '' }}</span>
                                 </div>
@@ -193,7 +193,7 @@ Admin Create Team Member
                                     <span class="text-danger">*</span>
 
                                     <div>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="group_id">
+                                        <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="group_id">
                                         <option value="" selected >Choose Group</option>
                                     @foreach(App\Models\payroll\Group::all()->where('status','=','Active')->where('deleted','=','No')->sortByDesc('id') as $grps)
                                             <option value="{{$grps->id}}">{{$grps->name}}</option>
@@ -209,7 +209,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Salary Sheet</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="sheet_id">
+                                        <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="sheet_id">
                                         <option value="" selected >Choose sheet</option>
                                         @foreach(App\Models\payroll\SalarySheet::all()->where('status','=','Active')->where('deleted','=','No') as $sSheet)
                                             <option value="{{$sSheet->id}}">{{$sSheet->sheet_name}}</option>
@@ -226,7 +226,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Working Hour</label>
                                     <div>
-                                        <input type="text" class="form-control"  name="working_hour" placeholder="Write working hour" >
+                                        <input type="text" class="form-control form-control-sm"  name="working_hour" placeholder="Write working hour" >
                                     </div>
                                     <span class="text-danger">{{ $errors->has('working_hour') ? $errors->first('working_hour') : '' }}</span>
                                 </div>
@@ -237,7 +237,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Referred By<span style="color:red;">(Optional)</span></label>
                                     <div>
-                                        <input type="text" class="form-control"  name="referred_by" placeholder="Reffered by who" >                  
+                                        <input type="text" class="form-control form-control-sm"  name="referred_by" placeholder="Reffered by who" >                  
                                     </div>
                                     <span class="text-danger">{{ $errors->has('referred_by') ? $errors->first('referred_by') : '' }}</span>
                                 </div>
@@ -247,7 +247,7 @@ Admin Create Team Member
                                     <label for="carousalCaptionOffer" class="form-label">Salary Type</label>
                                     <span class="text-danger">*</span>
                                     <div>
-                                        <select class="form-control" id="exampleFormControlSelect1" name="salary_type" placeholder="Salary">
+                                        <select class="form-select form-select-sm" id="exampleFormControlSelect1" name="salary_type" placeholder="Salary">
                                         <option value="0" selected disabled>Choose Salary Type</option>    
                                         <option value="consulate">Consulate</option>    
                                         <option value="scale">Scale</option>                                    
@@ -261,7 +261,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Account Number</label>
                                     <div>
-                                        <input type="text" class="form-control"  name="account_no"  >                  
+                                        <input type="text" class="form-control form-control-sm"  name="account_no"  >                  
                                     </div>
                                     <span class="text-danger">{{ $errors->has('account_no') ? $errors->first('account_no') : '' }}</span>
                                 </div>
@@ -275,21 +275,21 @@ Admin Create Team Member
                                         <div class="form-group mb-3  col-md-4" >
                                             <label for="carousalCaptionOffer" class="form-label">Laundry:</label>
                                             <div>
-                                                <input type="text" class="form-control"  name="laundry"  >                                                
+                                                <input type="text" class="form-control form-control-sm"  name="laundry"  >                                                
                                             </div>
                                         </div>
                                         <span class="text-danger">{{ $errors->has('laundry') ? $errors->first('laundry') : '' }}</span>
                                         <div class="form-group mb-3 col-md-4">
                                             <label for="carousalCaptionOffer" class="form-label">Phone Bill:</label>
                                             <div>
-                                            <input type="text" class="form-control" name="phone_bill"  >                                                
+                                            <input type="text" class="form-control form-control-sm" name="phone_bill"  >                                                
                                             </div>
                                         </div>
                                         <span class="text-danger">{{ $errors->has('phone_bill') ? $errors->first('phone_bill') : '' }}</span>
                                         <div class="form-group mb-3 col-md-4">
                                             <label for="carousalCaptionOffer" class="form-label">TA/Da:</label>
                                             <div>
-                                            <input type="text" class="form-control" name="ta_da" >                                                 
+                                            <input type="text" class="form-control form-control-sm" name="ta_da" >                                                 
                                             </div>
                                         </div>
                                         <span class="text-danger">{{ $errors->has('ta_da') ? $errors->first('ta_da') : '' }}</span>
@@ -298,7 +298,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-12">
                                     <label for="carousalCaptionOffer" class="form-label">Add Note<span style="color:red;">(Optional)</span></label>
                                     <div>
-                                        <textarea type="text" class="form-control"  name="short_note" placeholder="Do you want to add any note?" ></textarea>
+                                        <textarea type="text" class="form-control form-control-sm"  name="short_note" placeholder="Do you want to add any note?" ></textarea>
                                     </div>
                                     <span class="text-danger">{{ $errors->has('short_note') ? $errors->first('short_note') : '' }}</span>
                                 </div>
@@ -306,7 +306,7 @@ Admin Create Team Member
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="Memberimage" class="form-label">Employee Image</label>
                                     <div >
-                                        <input type="file" id="member_image" name="member_image"  class="form-control input-sm"  onchange="loadPreview(this);"/>
+                                        <input type="file" id="member_image" name="member_image"  class="form-control form-control-sm"  onchange="loadPreview(this);"/>
                                         <span style="color:gray;">Image should must be 500*500 Size</span>
                                     </div>
                                     <span class="text-danger">{{ $errors->has('member_image') ? $errors->first('member_image') : '' }}</span>

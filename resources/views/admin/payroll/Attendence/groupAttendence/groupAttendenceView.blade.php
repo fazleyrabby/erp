@@ -18,8 +18,8 @@ Admin Group Attendence
                         
                             <div class="row g-3">
                                 <div class="form-group mb-3  col-sm-6">
-                                    <label >Group:</label>
-                                    <select class="form-control" id="group_id"  name="group_id" onchange="getMonthYear()">
+                                    <label class="form-label">Group:</label>
+                                    <select class="form-select form-select-sm" id="group_id"  name="group_id" onchange="getMonthYear()">
                                     <option value="" selected disabled>Choose group</option>
                                     @foreach($groups as $group)
                                     <option value="{{$group->id}}">{{$group->name}}</option>
@@ -29,8 +29,8 @@ Admin Group Attendence
                                 </div>
 
                                 <div class="form-group mb-3  col-sm-6">
-                                    <label  >Month Year:</label>
-                                    <select class="form-control" id="month_year" name="month_year" onchange="getDatesFromTo()">
+                                    <label class="form-label">Month Year:</label>
+                                    <select class="form-select form-select-sm" id="month_year" name="month_year" onchange="getDatesFromTo()">
                                         <option value="" selected>Choose Month Year</option>
                                     </select>
                                     <span class="text-danger" id="month_yearError"></span>
