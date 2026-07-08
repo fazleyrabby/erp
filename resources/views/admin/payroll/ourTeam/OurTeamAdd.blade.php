@@ -8,9 +8,8 @@ Admin Create Team Member
             <div class="card">
                 <div class="card-header"><h3>Create Employee</h3></div>
                         <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                        <div class="row g-3">
-                            <div class="col-md-12 p-4">
-                                <form method="POST"  action="{{ route('storeTeamMember') }}" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <form method="POST"  action="{{ route('storeTeamMember') }}" enctype="multipart/form-data">
 
                                     @csrf
                                 <div class="row g-3">
@@ -271,28 +270,20 @@ Admin Create Team Member
                              
 
 
-                                <div class="col-md-12 row">
-                                        <div class="form-group mb-3  col-md-4" >
-                                            <label for="carousalCaptionOffer" class="form-label">Laundry:</label>
-                                            <div>
-                                                <input type="text" class="form-control form-control-sm"  name="laundry"  >                                                
-                                            </div>
-                                        </div>
-                                        <span class="text-danger">{{ $errors->has('laundry') ? $errors->first('laundry') : '' }}</span>
-                                        <div class="form-group mb-3 col-md-4">
-                                            <label for="carousalCaptionOffer" class="form-label">Phone Bill:</label>
-                                            <div>
-                                            <input type="text" class="form-control form-control-sm" name="phone_bill"  >                                                
-                                            </div>
-                                        </div>
-                                        <span class="text-danger">{{ $errors->has('phone_bill') ? $errors->first('phone_bill') : '' }}</span>
-                                        <div class="form-group mb-3 col-md-4">
-                                            <label for="carousalCaptionOffer" class="form-label">TA/Da:</label>
-                                            <div>
-                                            <input type="text" class="form-control form-control-sm" name="ta_da" >                                                 
-                                            </div>
-                                        </div>
-                                        <span class="text-danger">{{ $errors->has('ta_da') ? $errors->first('ta_da') : '' }}</span>
+                                <div class="form-group mb-3 col-md-4">
+                                    <label class="form-label">Laundry</label>
+                                    <input type="text" class="form-control form-control-sm"  name="laundry"  >                                                
+                                    <span class="text-danger">{{ $errors->has('laundry') ? $errors->first('laundry') : '' }}</span>
+                                </div>
+                                <div class="form-group mb-3 col-md-4">
+                                    <label class="form-label">Phone Bill</label>
+                                    <input type="text" class="form-control form-control-sm" name="phone_bill"  >                                                
+                                    <span class="text-danger">{{ $errors->has('phone_bill') ? $errors->first('phone_bill') : '' }}</span>
+                                </div>
+                                <div class="form-group mb-3 col-md-4">
+                                    <label class="form-label">TA/Da</label>
+                                    <input type="text" class="form-control form-control-sm" name="ta_da" >                                                 
+                                    <span class="text-danger">{{ $errors->has('ta_da') ? $errors->first('ta_da') : '' }}</span>
                                 </div>
 
                                 <div class="form-group mb-3 col-md-12">
@@ -304,31 +295,22 @@ Admin Create Team Member
                                 </div>
 
                                 <div class="form-group mb-3 col-md-6">
-                                    <label for="Memberimage" class="form-label">Employee Image</label>
-                                    <div >
-                                        <input type="file" id="member_image" name="member_image"  class="form-control form-control-sm"  onchange="loadPreview(this);"/>
-                                        <span style="color:gray;">Image should must be 500*500 Size</span>
-                                    </div>
+                                    <label class="form-label">Employee Image</label>
+                                    <input type="file" id="member_image" name="member_image" class="form-control form-control-sm" onchange="loadPreview(this);"/>
+                                    <small class="form-hint">Image should be 500x500 size</small>
                                     <span class="text-danger">{{ $errors->has('member_image') ? $errors->first('member_image') : '' }}</span>
                                 </div> 
-                                <div class=" form-group mb-3 row">
-                                    <div class="col-md-3"></div>
-                                        <div class=" col-md-9">
-                                            <label for="profile_image">Image Preview</label>
-                                            <img id="preview_img" src="" alt=" Select image to preview!" class="" width="50" height="50"/>
-                                        </div>
+                                <div class="form-group mb-3 col-md-6">
+                                    <label class="form-label">Image Preview</label>
+                                    <div class="border rounded p-2 text-center" style="min-height: 58px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                                        <img id="preview_img" src="" alt="Select image to preview!" style="max-height: 50px;" class="img-fluid"/>
                                     </div>
                                 </div>
-                                <div class="form-group mb-3">
-                                    <button type="submit" class="btn btn-primary btn-flat float-right" name="addBanner"><i class="fa fa-save"></i> Save </button>
+                                <div class="col-md-12 text-end mt-3">
+                                    <button type="submit" class="btn btn-primary" name="addBanner"><i class="fa fa-save me-1"></i> Save</button>
                                 </div>
-                                </div>
-                                
                             </form>
-
-                            
                         </div>
-                </div>
             </div>
         @endsection
 

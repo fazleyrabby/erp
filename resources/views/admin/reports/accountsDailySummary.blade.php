@@ -19,7 +19,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <h3> Daily Report
-                                        <a class="btn btn-success float-right" href="{{ url('sale/') }}"> <i
+                                        <a class="btn btn-primary float-right" href="{{ url('sale/') }}"> <i
                                                 class="fa fa-plus-circle"></i> view Sale</a>
                                     </h3>
                                 </div><!-- /.card-header -->
@@ -36,7 +36,7 @@
                                                 value="{{ todayDate() }}">
                                         </div>
                                         <div class="form-group mb-3 col-md-4 d-flex align-items-end">
-                                            <button type="button" class="btn btn-success w-100"
+                                            <button type="button" class="btn btn-primary w-100"
                                                 onclick="viewCalculation()"> View Calculation </button>
                                         </div>
                                         <div class="form-group mb-3 col-md-6">
@@ -79,7 +79,7 @@
                                                 onclick="clearInput();"> Clear </a>
                                         </div>
                                         <div class="col-md-4">
-                                            <button type="button" class="btn btn-success w-100"
+                                            <button type="button" class="btn btn-primary w-100"
                                                 onclick="saveTodayReport()">Save Today Report</button>
                                         </div>
                                     </div>
