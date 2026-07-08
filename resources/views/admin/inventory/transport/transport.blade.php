@@ -132,7 +132,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">x Close</button>
                             <button type="submit" class="btn btn-primary " id="savebankAccountInfo"><i
                                     class="fa fa-save"></i>
                                 Save Transport</button>
@@ -204,7 +204,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">x Close</button>
                             <button type="submit" class="btn btn-primary " id="updatebankAccountInfo"><i
                                     class="fa fa-save"></i>
                                 Update Transport</button>

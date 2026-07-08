@@ -146,7 +146,7 @@ Admin Salary Sheet Instruction -View
                         
                     </div>
                     <div class="modal-footer col-md-12">
-                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X Close</button>
                         <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save me-1"></i>Update</button>
                     </div>
 

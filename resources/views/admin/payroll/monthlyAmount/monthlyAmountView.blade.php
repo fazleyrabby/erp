@@ -136,7 +136,7 @@ Admin Monthly Amount -View
                         </div>
                     </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X Close</button>
                     <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
             </form>
@@ -213,7 +213,7 @@ Admin Monthly Amount -View
                     </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X Close</button>
                     <button type="submit" class="btn btn-primary btnUpate float-right"><i class="fa fa-save me-1"></i>Update</button>
                 </div>
             </form>

@@ -257,7 +257,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">x
                                 Close</button>
                             <button type="button" class="btn btn-success " onclick="addRow();"> <span
                                     class="glyphicon glyphicon-plus"

@@ -128,7 +128,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary btnSave" id="saveDamage"><i
                                     class="fa fa-save"></i> Save Damage</button>
                         </div>

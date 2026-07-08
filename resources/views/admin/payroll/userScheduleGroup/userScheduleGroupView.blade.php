@@ -118,7 +118,7 @@ Admin Time Schedule Group -View
                 </div>
 
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">X Close</button>
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X Close</button>
                      <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
 

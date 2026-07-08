@@ -182,7 +182,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">x Close</button>
                         <button type="submit" class="btn btn-primary btnSave" id="saveCategory"><i
                                 class="fa fa-save"></i> Save</button>
                     </div>
@@ -282,7 +282,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">x Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">x Close</button>
                         <button type="submit" class="btn btn-primary btnUpate" id="editCategory"><i
                                 class="fa fa-save"></i> Update</button>
                     </div>

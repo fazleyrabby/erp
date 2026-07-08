@@ -88,7 +88,7 @@ Admin Groups -View
                 </div>
               
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>X Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>X Close</button>
                     <button type="submit" class="btn btn-primary float-right" id="saveGroup"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
 		</form>
@@ -131,7 +131,7 @@ Admin Groups -View
                       
 		</div>
 		<div class="modal-footer">
-                      <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-primary btnUpate float-right" id="editGroup"><i class="fa fa-save me-1"></i>Update</button>
                 </div>
 		</form>

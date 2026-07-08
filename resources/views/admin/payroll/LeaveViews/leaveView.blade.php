@@ -130,7 +130,7 @@ Admin Leave Management -View
                 </div>
               </div>
                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>Close</button>
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-close me-1"></i>Close</button>
                      <button type="submit" class="btn btn-primary " id="saveSheet"><i class="fa fa-save me-1"></i>Save</button>
                 </div>
 			  </form>
@@ -196,7 +196,7 @@ Admin Leave Management -View
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary mr-auto" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary btnUpate" id="editGroup"><i class="fa fa-save me-1"></i>Update</button>
                     </div>
                 </form>
