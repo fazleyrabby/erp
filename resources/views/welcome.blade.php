@@ -6,6 +6,14 @@
     <meta name="description" content="RHTECH ERP - Premium Enterprise Resource Planning crafted for SMEs, manufacturing, retail, and wholesale in Bangladesh. Scale operations, automate workflows, and drive business growth.">
     <title>RHTECH ERP - Elevate & Automate Your Business Operations</title>
     
+    <!-- Open Graph / SEO sharing tags -->
+    <meta property="og:title" content="RHTECH ERP - Elevate & Automate Your Business Operations">
+    <meta property="og:description" content="RHTECH ERP - Premium Enterprise Resource Planning crafted for SMEs, manufacturing, retail, and wholesale in Bangladesh. Scale operations, automate workflows, and drive business growth.">
+    <meta property="og:image" content="{{ asset('landing/og-image.png') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
