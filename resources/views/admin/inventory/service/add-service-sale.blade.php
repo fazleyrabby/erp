@@ -90,15 +90,17 @@
                                             @if ($type == 'walkin_sale')
                                                 <div class="form-group mb-3 col-md-4">
                                                     <input type="hidden" id="customer" name="customer" value="0" />
-                                                    <label>Phone: <span class="text-danger">*</span></label>
-                                                    <div class="d-flex">
-                                                        <input type="text" id="partyPhoneNumber" name="partyPhoneNumber"
-                                                            onchange="getCustomerInfo(0,'Walkin_Customer')"
-                                                            class="form-control input-sm" placeholder=" Phone Number"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
-                                                        <a class="btn btn-primary"
-                                                            onclick="getCustomerInfo(0,'Walkin_Customer')"><i
-                                                                class="fas fa-sync"></i></a>
+                                                    <label class="form-label">Phone: <span class="text-danger">*</span></label>
+                                                    <div class="d-flex gap-2">
+                                                        <div class="flex-grow-1">
+                                                            <input type="text" id="partyPhoneNumber" name="partyPhoneNumber"
+                                                                onchange="getCustomerInfo(0,'Walkin_Customer')"
+                                                                class="form-control form-control-sm" placeholder="Phone Number"
+                                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
+                                                        </div>
+                                                        <a class="btn btn-primary" onclick="getCustomerInfo(0,'Walkin_Customer')">
+                                                            <i class="fas fa-sync"></i>
+                                                        </a>
                                                     </div>
                                                     <span class="text-danger" id="partyPhoneNumberError"></span>
                                                 </div>
@@ -270,19 +272,20 @@
                                                 <span class="text-danger" id="warehouseError"></span>
                                             </div>
                                             <div class="form-group mb-3 col-md-8">
-                                                <label>Product Search : <span class="text-danger">*</span></label>
-                                                <div class="d-flex">
-                                                    <select id="products" name="products" class="form-control input-sm"
-                                                        style="width:96%">
-                                                        <option value=""> Product Search </option>
-                                                        @foreach ($products as $product)
-                                                            <option value="{{ $product->id }}">
-                                                                {{ $product->name . ' - ' . $product->code }} </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <button type="button" class="btn btn-primary input-group-addon"
-                                                        onclick="showAdvanceSearch();"> <i
-                                                            class="fas fa-search"></i></button>
+                                                <label class="form-label">Product Search: <span class="text-danger">*</span></label>
+                                                <div class="d-flex gap-2">
+                                                    <div class="flex-grow-1">
+                                                        <select id="products" name="products" class="form-select form-select-sm"
+                                                            style="width:100%">
+                                                            <option value=""> Product Search </option>
+                                                            @foreach ($products as $product)
+                                                                <option value="{{ $product->id }}">
+                                                                    {{ $product->name . ' - ' . $product->code }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <button type="button" class="btn btn-primary"
+                                                        onclick="showAdvanceSearch();"> <i class="fas fa-search"></i></button>
                                                 </div>
                                             </div>
                                             <div class="form-group mb-3 col-md-12">
