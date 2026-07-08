@@ -266,10 +266,10 @@ class ReportController extends Controller
         $monthYearHeader .= '';
         $table = '';
         $closingBtn = '';
-        $table .= '<table class="table table-bordered table-hover dataTable no-footer"  width="100%">
+        $table .= '<table class="table table-vcenter table-bordered" width="100%">
                         <tr>
                         <td>
-                            <table class="table table-bordered table-hover dataTable no-footer">
+                            <table class="table table-vcenter table-bordered table-striped">
                             <tbody>';
 
         $table .= '<tr class="font-weight-bold text-center text-white bg-primary"><td colspan="3"> Income </td></tr>';
@@ -343,7 +343,7 @@ class ReportController extends Controller
                             </table>
                         </td>
                         <td>
-                            <table class=" table-bordered table-hover dataTable no-footer">
+                            <table class="table table-vcenter table-bordered table-striped">
                             <tbody>';
 
         // Purchase Section
@@ -436,7 +436,7 @@ class ReportController extends Controller
                     </tr>
                     <tr>
                         <td>
-                            <table class=" table-bordered table-hover dataTable no-footer">
+                            <table class="table table-vcenter table-bordered table-striped">
                                 <tbody>
                                     <tr class="font-weight-bold">
                                         <td width="70%">Total Income: </td>
@@ -446,7 +446,7 @@ class ReportController extends Controller
                             </table>
                         </td>
                         <td>
-                            <table class=" table-bordered table-hover dataTable no-footer">
+                            <table class="table table-vcenter table-bordered table-striped">
                                 <tbody>
                                     <tr class="font-weight-bold">
                                         <td width="70%">Total Expense: </td>
@@ -476,7 +476,7 @@ class ReportController extends Controller
         }
         $table .= '<tr>
                         <td>
-                            <table class=" table-bordered table-hover dataTable no-footer">
+                            <table class="table table-vcenter table-bordered table-striped">
                                 <tbody>
                                     <tr class="font-weight-bold">
                                         <td width="70%">Balance Closing: </td>
@@ -504,7 +504,7 @@ class ReportController extends Controller
             )->first();
         $table .= '<tr>
                     <td>
-                        <table class=" table-bordered table-hover dataTable no-footer">
+                        <table class="table table-vcenter table-bordered table-striped">
                             <tbody>
                                 <tr class="font-weight-bold">
                                     <td width="70%"> Voucher Recipient </td>
