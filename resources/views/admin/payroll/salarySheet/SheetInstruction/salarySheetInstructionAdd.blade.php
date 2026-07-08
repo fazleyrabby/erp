@@ -19,11 +19,11 @@ Admin Salary Sheet Intruction Add -View
                                 @endif
                             </h3>
                         </div>
-                        <h3 class="text-center text-success">{{Session::get('message')}}</h3>
-                        <form id="SalaySheetFormStore" action="{{route('sheetInstructionStore')}}" method="post" enctype="multipart/form-data" >
-                            @csrf
-                            <div class="form-group mb-3 row col-md-12">
-                                <div class="col-md-6">
+                        <div class="card-body">
+                            <form id="SalaySheetFormStore" action="{{route('sheetInstructionStore')}}" method="post" enctype="multipart/form-data" >
+                                @csrf
+                                <div class="row g-3">
+                                    <div class="col-md-6">
                                     <label for="carousalCaptionOffer">Month Year</label>
                                     <select class="form-select form-select-sm" id="month_year" name="month_year">
                                         @php
@@ -37,7 +37,7 @@ Admin Salary Sheet Intruction Add -View
                                     <span class="text-danger" id="month_yearError"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="carousalCaptionOffer">Sheet Name</label>
+                                    <label class="form-label">Sheet Name</label>
                                     <select class="form-select form-select-sm" id="sheet_id" name="sheet_id" required>
                                         <option value="" selected disabled>Choose Sheet</option>
                                         @foreach($sheets as $sheet)
@@ -46,43 +46,35 @@ Admin Salary Sheet Intruction Add -View
                                     </select>        
                                     <span class="text-danger" id="sheet_idError"></span>
                                 </div>
-                            </div>
-                            <div class="form-group mb-3 row col-md-12">
                                 <div class="col-md-6">
-                                    <label for="carousalCaptionOffer">Bank Name</label>
+                                    <label class="form-label">Bank Name</label>
                                     <input type="text" class="form-control form-control-sm" id="bank_name" name="bank_name" placeholder=" Write Bank Name" >                                     
                                     <span class="text-danger" id="bank_nameError"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="carousalCaptionOffer">Branch Name</label>
+                                    <label class="form-label">Branch Name</label>
                                     <input type="text" class="form-control form-control-sm" id="branch_name" name="branch_name" placeholder=" Write Branch Name" >                                     
                                     <span class="text-danger" id="branch_nameError"></span>
                                 </div>
-                            </div>
-                            <div class="form-group mb-3 row col-md-12">
                                 <div class="col-md-6">
-                                    <label for="carousalCaptionOffer">Account No</label>
+                                    <label class="form-label">Account No</label>
                                     <input type="text" class="form-control form-control-sm" id="mother_account_no" name="mother_account_no" placeholder=" Write Account Number">                                     
                                     <span class="text-danger" id="mother_account_noError"></span>
                                 </div>
-                            </div>
-                            <div class="form-group mb-3 row col-md-12">
                                 <div class="col-md-6">
-                                    <label>Footer Description</label>
+                                    <label class="form-label">Footer Description</label>
                                     <textarea  class="form-control ckeditor" id="contentDescriptionCkeditor" name="footer_instruction"></textarea>
                                 </div>
                                 <div class="col-md-6">
-                                    <label >Letter Body</label>
+                                    <label class="form-label">Letter Body</label>
                                     <textarea  class="form-control ckeditor" id="contentDescriptionCkeditor22" name="letter_body"></textarea>
                                 </div>
-                            </div>
-                            <div class="form-group mb-3 row col-md-12">
-                                <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary float-right " id="saveSheet"><i class="fa fa-save"></i> Save</button>
+                                <div class="col-md-12 text-end mt-3">
+                                    <button type="submit" class="btn btn-primary" id="saveSheet"><i class="fa fa-save me-1"></i> Save</button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
                 </div>
             </div>
         </div>
