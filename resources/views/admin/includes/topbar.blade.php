@@ -1,14 +1,6 @@
-<header class="navbar navbar-expand-md d-print-none" data-bs-theme="dark">
+<header class="navbar navbar-expand-md d-none d-lg-flex d-print-none" data-bs-theme="dark">
     <div class="container-fluid">
-        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="navbar-brand navbar-brand-autodark d-lg-none">
-            <a href="{{route('dashboard')}}">
-                <span style="font-size:1.1rem; font-weight:600;">{{Session::get('companySettings')[0]['name']}}</span>
-            </a>
-        </div>
 
         <div class="navbar-nav flex-row ms-auto">
             <div class="nav-item dropdown">

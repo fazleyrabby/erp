@@ -1,9 +1,22 @@
 <aside class="navbar navbar-vertical navbar-expand-lg" data-bs-theme="dark">
     <div class="container-fluid">
-        <div class="navbar-brand navbar-brand-autodark">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <h1 class="navbar-brand navbar-brand-autodark">
             <a href="{{route('dashboard')}}">
                 <span style="font-size:1rem; font-weight:600;">{{Session::get('companySettings')[0]['name']}}</span>
             </a>
+        </h1>
+        <div class="navbar-nav flex-row d-lg-none">
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link d-flex lh-1 p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                    <span class="avatar avatar-sm" style="background-image: url({{!empty(Auth::user()->image) ? url('upload/user_images/'.Auth::user()->image) : url('upload/no-image.jpg')}})"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                </div>
+            </div>
         </div>
 
         <div class="collapse navbar-collapse" id="sidebar-menu">

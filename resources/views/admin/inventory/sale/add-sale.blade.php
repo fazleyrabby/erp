@@ -7,16 +7,16 @@
         <section class="content box-border">
             <form id="saleProducts" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="row">
+                <div class="row g-3">
                     <!-- Left col -->
                     <section class="col-md-12">
                         <!-- Custom tabs (Charts with tabs)-->
                         <div class="card">
                             <input type="hidden" name="saleType" id="saleType" value="{{ $type }}">
-                            <div class="card-header">
-                                <h3>
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h3 class="card-title mb-0">
                                     @if ($type == 'walkin_sale')
-                                        walkin Sale
+                                        Walkin Sale
                                     @elseif ($type == 'party_sale')
                                         Party Sale
                                     @elseif ($type == 'ts')
@@ -24,8 +24,11 @@
                                     @elseif ($type == 'FS')
                                         Final Sale
                                     @endif
-                                    <a class="btn btn-primary float-right"
+                                </h3>
+                                <div class="card-actions">
+                                    <a class="btn btn-primary"
                                         href="{{ route('sale.sales', ['type' => $type]) }}">
+                                        <i class="fa fa-reply me-2"></i>
                                         @if ($type == 'walkin_sale')
                                             Back To Walkin Sale List
                                         @elseif ($type == 'party_sale')
@@ -35,12 +38,11 @@
                                         @elseif ($type == 'FS')
                                             Back To Final Sale List
                                         @endif
-                                        <i class="fa fa-reply"></i>
                                     </a>
-                                </h3>
+                                </div>
                             </div><!-- /.card-header -->
                             <div class="card-body">
-                                <div class="row">
+                                <div class="row g-3">
                                     @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
                                         <div class="form-group mb-3 col-md-12">
                                             <label>Barcode: </label>
@@ -295,7 +297,7 @@
                 <div class="modal-body">
                     <form id="productForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <!--data listing table-->
                             <div class="table-responsive">
                                 <table id="advanceSearchProductTable" width="100%"
@@ -336,7 +338,7 @@
                 </div>
                 <div class="modal-body card-body">
                     <form id="serializeProductForm">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="form-group mb-3 col-md-12">
                                 <table border="1" style="font-size: 13px; width:100%;" class="table-bordered">
                                     <thead>

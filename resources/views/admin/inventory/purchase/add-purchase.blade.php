@@ -6,16 +6,18 @@
     
         <section class="content box-border">
             <div class="card">
-                <div class="card-header">
-                    <h3>Purchase Products
-                        <a class="btn btn-primary float-right" href="{{ route('purchase.index') }}">
-                            Back To Purchase List <i class="fa fa-reply"></i></a>
-                    </h3>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title mb-0">Purchase Products</h3>
+                    <div class="card-actions">
+                        <a class="btn btn-primary" href="{{ route('purchase.index') }}">
+                            <i class="fa fa-reply me-2"></i> Back To Purchase List
+                        </a>
+                    </div>
                 </div><!-- /.card-header -->
                 <div class="card-body">
                     <form>
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
                                 <div class="form-group mb-3 col-md-6">
                                     <label>Barcode: </label>
@@ -191,7 +193,7 @@
                 <div class="modal-body">
                     <form id="productForm" method="POST" enctype="multipart/form-data" action="#">
                         @csrf
-                        <div class="row">
+                        <div class="row g-3">
                             <!--data listing table-->
                             <div class="table-responsive">
                                 <table id="advanceSearchProductTable" width="100%"
@@ -231,7 +233,7 @@
                 </div>
                 <div class="modal-body card-body">
                     <form id="serializeProductForm">
-                        <div class="row">
+                        <div class="row g-3">
                             <div class="form-group mb-3 col-md-12">
                                 <table border="1">
                                     <thead>
