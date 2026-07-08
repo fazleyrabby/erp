@@ -1679,7 +1679,9 @@ class ReportController extends Controller
         $table .= '</tbody>';
         $table .= '</table>';
 
-        $coas = ChartOfAccounts::where('parent_id', '=', 31)->where('name', '!=', 'Sales')->get();
+        $income = ChartOfAccounts::where('name', '=', 'Income')->where('deleted', 'No')->first();
+        $incomeId = $income ? $income->id : 3;
+        $coas = ChartOfAccounts::where('parent_id', '=', $incomeId)->where('name', '!=', 'Sales')->get();
         $table .= '<h3 class="text-center" style="padding-top:30px;">Total Jobs</h3>';
         $table .= '<table class="table table-bordered table-hover dataTable no-footer">';
         $table .= '<thead>';
@@ -1741,7 +1743,9 @@ class ReportController extends Controller
             ->where('sale_orders.status', '=', 'Active')
             ->get();
 
-        $coas = ChartOfAccounts::where('parent_id', '=', 31)->where('name', '!=', 'Sales')->get();
+        $income = ChartOfAccounts::where('name', '=', 'Income')->where('deleted', 'No')->first();
+        $incomeId = $income ? $income->id : 3;
+        $coas = ChartOfAccounts::where('parent_id', '=', $incomeId)->where('name', '!=', 'Sales')->get();
         $pdf = PDF::loadView(
             'admin.reports.serviceCenterDailyPdf',
             [
