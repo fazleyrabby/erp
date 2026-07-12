@@ -13,6 +13,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->hasRole('Employee')) {
+            return view('admin.includes.employee_dashboard');
+        }
+
 
         $supplier = Party::where('deleted', '=', 'No')->where('status', '=', 'Active')->where('party_type', '=', 'Supplier')->count();
         $customer = Party::where('deleted', '=', 'No')->where('status', '=', 'Active')->where('party_type', '=', 'Customer')->count();

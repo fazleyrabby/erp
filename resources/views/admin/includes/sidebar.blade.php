@@ -29,6 +29,26 @@
                     </a>
                 </li>
 
+                @if (Auth::user()->hasRole('Employee') || Auth::user()->hasRole('Super Admin'))
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#navbar-ess" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-user-circle"></i></span>
+                        <span class="nav-link-title">Employee Portal</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> My Payslips
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> My Leaves
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> My Attendance
+                        </a>
+                    </div>
+                </li>
+                @endif
+
                 @if (Auth::guard('web')->user()->can('Inventory'))
                 @php
                     $invRoutes = ['products.*', 'damage.*', 'warehouse.*', 'purchase.*', 'purchase_orders.*', 'sale.*', 'sale.service.*', 'quotations.*'];

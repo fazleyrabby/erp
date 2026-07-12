@@ -68,19 +68,24 @@
                     <h3 class="h3 text-center mb-3">Demo Login</h3>
                     <p class="text-secondary text-center mb-3">Click a role to login instantly</p>
                     <div class="row g-2">
-                        <div class="col">
+                        <div class="col-6">
                             <a href="#" class="btn btn-2 w-100" onclick="demoLogin('super.admin@gmail.com', '12345678')">
                                 <i class="fa fa-user-shield me-2"></i>Super Admin
                             </a>
                         </div>
-                        <div class="col">
+                        <div class="col-6">
                             <a href="#" class="btn btn-2 w-100" onclick="demoLogin('manager@demo.com', 'demo1234')">
                                 <i class="fa fa-user-tie me-2"></i>Manager
                             </a>
                         </div>
-                        <div class="col">
+                        <div class="col-6">
                             <a href="#" class="btn btn-2 w-100" onclick="demoLogin('salesman@demo.com', 'demo1234')">
                                 <i class="fa fa-user me-2"></i>Sales Man
+                            </a>
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="btn btn-2 w-100" onclick="demoLogin('employee@demo.com', 'demo1234')">
+                                <i class="fa fa-users me-2"></i>Employee
                             </a>
                         </div>
                     </div>

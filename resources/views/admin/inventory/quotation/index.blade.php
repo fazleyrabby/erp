@@ -8,7 +8,7 @@
             <div class="card-header">
                 <h3 class="card-title">All Quotations</h3>
                 <div class="card-options">
-                    <a href="{{ route('quotations.add') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add New Quotation</a>
+                    <a href="{{ route('quotations.add') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus me-1"></i> Add New Quotation</a>
                 </div>
             </div>
             <div class="card-body">
@@ -37,9 +37,9 @@
                                 <span class="badge badge-{{ $quotation->status == 'Pending' ? 'warning' : 'success' }}">{{ $quotation->status }}</span>
                             </td>
                             <td>
-                                <a href="{{ route('quotations.pdf', $quotation->id) }}" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-file-pdf-o"></i> PDF</a>
+                                <a href="{{ route('quotations.pdf', $quotation->id) }}" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-file-pdf-o me-1"></i> PDF</a>
                                 @if($quotation->status !== 'Converted')
-                                    <a href="{{ route('quotations.convert', $quotation->id) }}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to convert this quotation to a Sale Order?')"><i class="fa fa-exchange"></i> Convert to Order</a>
+                                    <a href="{{ route('quotations.convert', $quotation->id) }}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to convert this quotation to a Sale Order?')"><i class="fa fa-exchange me-1"></i> Convert to Order</a>
                                 @endif
                             </td>
                         </tr>

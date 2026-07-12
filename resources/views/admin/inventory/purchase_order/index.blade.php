@@ -8,7 +8,7 @@
             <div class="card-header">
                 <h3 class="card-title">All Purchase Orders</h3>
                 <div class="card-options">
-                    <a href="{{ route('purchase_orders.add') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Request Purchase Order</a>
+                    <a href="{{ route('purchase_orders.add') }}" class="btn btn-primary btn-sm"><i class="fa fa-plus me-1"></i> Request Purchase Order</a>
                 </div>
             </div>
             <div class="card-body">
@@ -48,15 +48,15 @@
                                 @endif
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-info"><i class="fa fa-eye"></i> View</button>
+                                <a href="{{ route('purchase_orders.view', $po->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye me-1"></i> View</a>
                                 
                                 @if($po->status == 'Pending')
-                                    <a href="{{ route('purchase_orders.approve', $po->id) }}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to approve this PO?')"><i class="fa fa-check"></i> Approve</a>
+                                    <a href="{{ route('purchase_orders.approve', $po->id) }}" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to approve this PO?')"><i class="fa fa-check me-1"></i> Approve</a>
+                                @elseif($po->status == 'Approved')
+                                    <a href="{{ route('purchase_orders.convert', $po->id) }}" class="btn btn-sm btn-primary" onclick="return confirm('Are you sure you want to convert this into a Purchase? This will clear your current cart.')"><i class="fa fa-exchange me-1"></i> Convert to Purchase</a>
                                 @endif
                                 
-                                @if($po->status == 'Approved')
-                                    <button class="btn btn-sm btn-primary"><i class="fa fa-shopping-cart"></i> Convert to Purchase</button>
-                                @endif
+
                             </td>
                         </tr>
                         @empty

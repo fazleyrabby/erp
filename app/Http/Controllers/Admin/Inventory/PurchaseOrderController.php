@@ -103,4 +103,55 @@ class PurchaseOrderController extends Controller
 
         return back()->with('success', 'Purchase Order approved successfully.');
     }
+
+    public function view($id)
+    {
+        $po = PurchaseOrder::with(['products.product', 'supplier', 'creator', 'approver'])->findOrFail($id);
+        return view('admin.inventory.purchase_order.view', compact('po'));
+    }
+
+    public function convertToPurchase($id)
+    {
+        $po = PurchaseOrder::with('products')->findOrFail($id);
+        
+        if ($po->status !== 'Approved') {
+            return back()->with('error', 'Only approved Purchase Orders can be converted.');
+        }
+
+        $warehouse = \App\Models\inventory\Warehouse::where('deleted', 'No')->first();
+        if (!$warehouse) {
+            return back()->with('error', 'No warehouse found in the system. Please create a warehouse first.');
+        }
+        
+        \Illuminate\Support\Facades\Session::forget('purchase_cart_array');
+        
+        $cartArray = [];
+        foreach ($po->products as $item) {
+            $productInfo = \App\Models\inventory\Product::find($item->product_id);
+            if (!$productInfo) continue;
+            
+            $cartArray[] = [
+                'product_id' => $productInfo->id,
+                'product_name' => $productInfo->name.' - '.$productInfo->code,
+                'product_image' => $productInfo->image,
+                'available_qty' => 0,
+                'product_price' => $item->unit_price,
+                'product_quantity' => $item->quantity,
+                'product_discount' => 0,
+                'barcode_no' => $productInfo->barcode_no,
+                'warehouse_id' => $warehouse->id,
+                'warehouse_name' => $warehouse->wareHouseName,
+                'product_type' => $productInfo->type,
+                'items_in_box' => $productInfo->items_in_box ?? 1,
+                'serialNumbers' => [],
+                'stockQuantities' => [],
+            ];
+        }
+        
+        \Illuminate\Support\Facades\Session::put('purchase_cart_array', $cartArray);
+        
+        $po->update(['status' => 'Converted']);
+        
+        return redirect()->route('purchase.add')->with('success', 'Purchase Order items loaded into cart. Please review and Save Purchase.');
+    }
 }

@@ -124,6 +124,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/add', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'add'])->name('add');
         Route::post('/store', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'store'])->name('store');
         Route::get('/approve/{id}', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'approve'])->name('approve');
+        Route::get('/view/{id}', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'view'])->name('view');
+        Route::get('/convert/{id}', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'convertToPurchase'])->name('convert');
     });
 
     Route::prefix('purchase')->group(function () {
