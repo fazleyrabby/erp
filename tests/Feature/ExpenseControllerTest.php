@@ -13,7 +13,7 @@ beforeEach(function () {
     $this->actingAs($this->user);
     
     // Set required session data for views globally
-    session(['companySettings' => [['name' => 'Test Company']]]);
+    session(['companySettings' => [['name' => 'Test Company', 'currency' => '$']]]);
 });
 
 it('can render the expense index page', function () {
