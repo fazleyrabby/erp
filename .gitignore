@@ -21,3 +21,5 @@ yarn-error.log
 *.swp
 *.swo
 .DS_Store
+ERP_ROADMAP.md
+doc.md

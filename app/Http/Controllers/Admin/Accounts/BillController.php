@@ -50,8 +50,8 @@ class BillController extends Controller
     {
         $expense = ChartOfAccounts::where('name', '=', 'Expense')->first();
         $expense_id = $expense->id;
-        $coas = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->orderBy('code', 'asc')->where('parent_id', '=', $expense_id)->get();
-        $suppliers = Party::where('party_type', '=', 'Supplier')->where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
+        $coas = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->orderBy('code', 'asc')->where('parent_id', '=', $expense_id)->toBase()->get();
+        $suppliers = Party::where('party_type', '=', 'Supplier')->where('deleted', '=', 'No')->where('status', '=', 'Active')->toBase()->get();
 
         return view('admin.bills.billCreate', ['coas' => $coas, 'suppliers' => $suppliers]);
     }
@@ -246,9 +246,9 @@ class BillController extends Controller
         $expense_id = $expense->id;
         $bank = ChartOfAccounts::where('name', '=', 'Bank')->first();
         $bank_id = $bank->id;
-        $coas = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->orderBy('code', 'asc')->where('parent_id', '=', $expense_id)->get();
-        $suppliers = Party::where('party_type', '=', 'Supplier')->where('deleted', '=', 'No')->where('status', '=', 'Active')->get();
-        $banks = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->orderBy('code', 'asc')->where('parent_id', '=', $bank_id)->where('name', '!=', 'Cash')->get();
+        $coas = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->orderBy('code', 'asc')->where('parent_id', '=', $expense_id)->toBase()->get();
+        $suppliers = Party::where('party_type', '=', 'Supplier')->where('deleted', '=', 'No')->where('status', '=', 'Active')->toBase()->get();
+        $banks = ChartOfAccounts::where('deleted', '=', 'No')->where('status', '=', 'Active')->orderBy('code', 'asc')->where('parent_id', '=', $bank_id)->where('name', '!=', 'Cash')->toBase()->get();
         $cashId = ChartOfAccounts::where('name', '=', 'Cash')->first();
 
         return view('admin.bills.billPay', ['coas' => $coas, 'suppliers' => $suppliers, 'banks' => $banks, 'cashId' => $cashId]);

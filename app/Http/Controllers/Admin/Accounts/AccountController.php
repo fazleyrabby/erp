@@ -30,14 +30,14 @@ class AccountController extends Controller
             ->paginate($limit)
             ->appends($request->all());
 
-        $allCoas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->orderBy('code', 'asc')->get();
+        $allCoas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->orderBy('code', 'asc')->toBase()->get();
 
         return view('admin.account.chartOfAccount', compact('coas', 'allCoas'));
     }
 
     public function getCOA()
     {
-        $coas = ChartOfAccounts::where('deleted', '=', 'No')->orderBy('code', 'asc')->get();
+        $coas = ChartOfAccounts::where('deleted', '=', 'No')->orderBy('code', 'asc')->toBase()->get();
         $output = ['data' => []];
         $i = 1;
         foreach ($coas as $coa) {

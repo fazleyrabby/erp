@@ -93,7 +93,7 @@ class TransactionController extends Controller
 
     public function getTransferFromSource(Request $request)
     {
-        $sources = ChartOfAccounts::where('parent_id', '=', $request->payment_method)->get();
+        $sources = ChartOfAccounts::where('parent_id', '=', $request->payment_method)->toBase()->get();
         $data = '';
         $data .= '<option value=""selected >Select Source</option>';
         foreach ($sources as $source) {
@@ -105,7 +105,7 @@ class TransactionController extends Controller
 
     public function getTransferToSource(Request $request)
     {
-        $sources = ChartOfAccounts::where('parent_id', '=', $request->payment_method)->get();
+        $sources = ChartOfAccounts::where('parent_id', '=', $request->payment_method)->toBase()->get();
         $data = '';
         $data .= '<option value=""selected >Select Source</option>';
         foreach ($sources as $source) {
@@ -117,7 +117,7 @@ class TransactionController extends Controller
 
     public function getTransferFromAcNo(Request $request)
     {
-        $acNos = ChartOfAccounts::where('parent_id', '=', $request->source)->get();
+        $acNos = ChartOfAccounts::where('parent_id', '=', $request->source)->toBase()->get();
 
         $data = '';
         $data .= '<option value=""selected >Select Source</option>';
@@ -130,7 +130,7 @@ class TransactionController extends Controller
 
     public function getTransferToAcNo(Request $request)
     {
-        $acNos = ChartOfAccounts::where('parent_id', '=', $request->source2)->where('parent_id', '!=', $request->source1)->get();
+        $acNos = ChartOfAccounts::where('parent_id', '=', $request->source2)->where('parent_id', '!=', $request->source1)->toBase()->get();
 
         $data = '';
         $data .= '<option value=""selected >Select Source</option>';
