@@ -24,22 +24,27 @@ class ExpenseController extends Controller
         $sortDirection = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 
-        $expenses = DB::table('tbl_acc_expenses')
-            ->leftjoin('our_teams', 'tbl_acc_expenses.tbl_crm_vendor_id', '=', 'our_teams.id')
-            ->select('tbl_acc_expenses.*', 'our_teams.member_name')
-            ->where('tbl_acc_expenses.deleted', 'No');
+        $expenses = Expense::with('vendor')->where('deleted', 'No');
 
         if ($searchTerm) {
             $expenses->where(function ($q) use ($searchTerm) {
-                $q->where('tbl_acc_expenses.particulars', 'like', "%{$searchTerm}%")
-                    ->orWhere('our_teams.member_name', 'like', "%{$searchTerm}%")
-                    ->orWhere('tbl_acc_expenses.amount', 'like', "%{$searchTerm}%");
+                $q->where('particulars', 'like', "%{$searchTerm}%")
+                    ->orWhereHas('vendor', function ($q) use ($searchTerm) {
+                        $q->where('member_name', 'like', "%{$searchTerm}%");
+                    })
+                    ->orWhere('amount', 'like', "%{$searchTerm}%");
             });
         }
 
         $expenses = $expenses->orderBy($sortBy, $sortDirection)
             ->paginate($limit)
             ->appends($request->all());
+
+        // Attach member_name to the model to avoid changing the view
+        $expenses->getCollection()->transform(function ($expense) {
+            $expense->member_name = $expense->vendor->member_name ?? '';
+            return $expense;
+        });
 
         return view('admin.expense.expenseView', compact('expenses'));
     }
