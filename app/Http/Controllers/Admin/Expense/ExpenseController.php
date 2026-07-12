@@ -45,11 +45,9 @@ class ExpenseController extends Controller
     public function getExpense()
     {
 
-        $expenses = DB::table('tbl_acc_expenses')
-            ->leftjoin('our_teams', 'tbl_acc_expenses.tbl_crm_vendor_id', '=', 'our_teams.id')
-            ->select('tbl_acc_expenses.*', 'our_teams.member_name')
-            ->where('tbl_acc_expenses.deleted', '=', 'No')
-            ->orderby('tbl_acc_expenses.id', 'Desc')
+        $expenses = Expense::with('vendor')
+            ->where('deleted', 'No')
+            ->orderBy('id', 'desc')
             ->get();
 
         $output = ['data' => []];
@@ -78,7 +76,7 @@ class ExpenseController extends Controller
             </div>';
             $output['data'][] = [
                 $i++.'<input type="hidden" name="id" id="id" value="'.$expense->id.'" />',
-                $expense->member_name,
+                $expense->vendor->member_name ?? '',
                 $expense->transaction_date,
                 $expense->particulars,
                 $expense->amount,
@@ -186,7 +184,7 @@ class ExpenseController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_expense_details')->insert($item_array);
+            \App\Models\Expense\ExpenseDetails::insert($item_array);
         }
 
         /* add to voucher */
@@ -217,7 +215,7 @@ class ExpenseController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_voucher_details')->insert($item_array);
+            \App\Models\Accounts\VoucherDetails::insert($item_array);
 
             $expense = ChartOfAccounts::find($request->account[$j]);
             $expense->increment('amount', $request->amount[$j]);
@@ -233,7 +231,7 @@ class ExpenseController extends Controller
             'created_by' => Auth::user()->id,
             'created_date' => date('Y-m-d h:s'),
         ];
-        DB::table('tbl_acc_voucher_details')->insert($item_array_single);
+        \App\Models\Accounts\VoucherDetails::insert($item_array_single);
 
         $expense = ChartOfAccounts::find($request->account_status);
         $expense->decrement('amount', $request->amountTotal);
@@ -273,12 +271,14 @@ class ExpenseController extends Controller
     public function seeDetails($id)
     {
 
-        $details = DB::table('tbl_acc_expense_details')
-            ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'tbl_acc_expense_details.tbl_acc_coa_id')
-            ->select('tbl_acc_expense_details.*', 'tbl_acc_coas.name as coa_name')
-            ->where('tbl_acc_expense_details.deleted', 'No')
-            ->where('tbl_acc_expense_details.tbl_acc_expense_id', $id)
-            ->get();
+        $details = \App\Models\Expense\ExpenseDetails::with('coa')
+            ->where('deleted', 'No')
+            ->where('tbl_acc_expense_id', $id)
+            ->get()
+            ->map(function ($detail) {
+                $detail->coa_name = $detail->coa->name ?? '';
+                return $detail;
+            });
 
         $expenses = Expense::find($id);
         $party = OurTeam::find($expenses->tbl_crm_vendor_id);

@@ -10,4 +10,14 @@ class ExpenseDetails extends Model
     use HasFactory;
 
     protected $table = 'tbl_acc_expense_details';
+
+    public function expense()
+    {
+        return $this->belongsTo(\App\Models\Expense\Expense::class, 'tbl_acc_expense_id', 'id');
+    }
+
+    public function coa()
+    {
+        return $this->belongsTo(\App\Models\Accounts\ChartOfAccounts::class, 'tbl_acc_coa_id', 'id');
+    }
 }
