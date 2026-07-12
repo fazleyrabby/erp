@@ -57,11 +57,9 @@ class BillController extends Controller
     public function getBill()
     {
 
-        $bills = DB::table('tbl_acc_bills')
-            ->leftjoin('parties', 'parties.id', '=', 'tbl_acc_bills.tbl_crm_vendor_id')
-            ->select('tbl_acc_bills.*', 'parties.name')
-            ->where('tbl_acc_bills.deleted', '=', 'No')
-            ->orderby('tbl_acc_bills.id', 'Desc')
+        $bills = Bill::with('vendor')
+            ->where('deleted', 'No')
+            ->orderBy('id', 'desc')
             ->get();
         $output = ['data' => []];
         $i = 1;
@@ -92,7 +90,7 @@ class BillController extends Controller
 
             $output['data'][] = [
                 $i++.'<input type="hidden" name="id" id="id" value="'.$bill->id.'" />',
-                $bill->name,
+                $bill->vendor->name ?? '',
                 $bill->transaction_date,
                 $bill->particulars,
                 $bill->amount,
@@ -148,7 +146,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_bill_details')->insert($item_array);
+            \App\Models\Bill\BillDetails::insert($item_array);
         }
 
         /* voucher entry */
@@ -178,7 +176,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_voucher_details')->insert($item_array);
+            \App\Models\Accounts\VoucherDetails::insert($item_array);
 
             $expense = ChartOfAccounts::find($request->account[$j]);
             $expense->increment('amount', $request->amount[$j]);
@@ -217,12 +215,14 @@ class BillController extends Controller
     public function seeDetails($id)
     {
 
-        $details = DB::table('tbl_acc_bill_details')
-            ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'tbl_acc_bill_details.tbl_acc_coa_id')
-            ->select('tbl_acc_bill_details.*', 'tbl_acc_coas.name as coa_name')
-            ->where('tbl_acc_bill_details.deleted', 'No')
-            ->where('tbl_acc_bill_details.tbl_acc_bill_id', $id)
-            ->get();
+        $details = \App\Models\Bill\BillDetails::with('coa')
+            ->where('deleted', 'No')
+            ->where('tbl_acc_bill_id', $id)
+            ->get()
+            ->map(function ($detail) {
+                $detail->coa_name = $detail->coa->name ?? '';
+                return $detail;
+            });
 
         $bills = Bill::find($id);
         $payment = 0;
@@ -325,7 +325,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_bill_payment_details')->insert($item_array);
+            \App\Models\Bill\BillPaymentDetails::insert($item_array);
 
             if ($request->amount == $request->dueAmount) {
                 $bills = Bill::find($request->billId[$i]);
@@ -369,7 +369,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_voucher_details')->insert($item_array);
+            \App\Models\Accounts\VoucherDetails::insert($item_array);
 
             $expense = ChartOfAccounts::find($request->account_status);
             $expense->decrement('amount', $request->amountTotal);
