@@ -19,11 +19,10 @@ class TransactionController extends Controller
         $sortDirection = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 
-        $transactions = DB::table('tbl_acc_transactions')
-            ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'tbl_acc_transactions.tbl_coa_to_id')
-            ->select('tbl_acc_transactions.*', 'tbl_acc_coas.name')
-            ->where('tbl_acc_transactions.deleted', 'No')
-            ->where('tbl_acc_transactions.status', 'Active');
+        $transactions = Transactions::query()
+            ->with('coaTo')
+            ->where('deleted', 'No')
+            ->where('status', 'Active');
 
         if ($searchTerm) {
             $transactions->where(function ($q) use ($searchTerm) {
@@ -34,13 +33,11 @@ class TransactionController extends Controller
             });
         }
 
-        $transactions = $transactions->orderBy('tbl_acc_transactions.' . $sortBy, $sortDirection)
+        $transactions = $transactions->orderBy($sortBy, $sortDirection)
             ->paginate($limit)
             ->appends($request->all());
 
-        $config = DB::table('tbl_acc_coas')
-            ->where('tbl_acc_coas.name', '=', 'Bank')
-            ->first();
+        $config = ChartOfAccounts::where('name', 'Bank')->first();
         $configId = $config->id;
         $banks = ChartOfAccounts::where('parent_id', $configId)
             ->where('deleted', 'No')
@@ -52,12 +49,9 @@ class TransactionController extends Controller
 
     public function geData()
     {
-        $transactions = DB::table('tbl_acc_transactions')
-            // ->leftjoin('tbl_acc_coas','tbl_acc_coas.id','=','tbl_acc_transactions.tbl_coa_from_id')
-            ->leftjoin('tbl_acc_coas', 'tbl_acc_coas.id', '=', 'tbl_acc_transactions.tbl_coa_to_id')
-            ->select('tbl_acc_transactions.*', 'tbl_acc_coas.name')
-            ->where('tbl_acc_transactions.deleted', '=', 'No')
-            ->where('tbl_acc_transactions.status', '=', 'Active')
+        $transactions = Transactions::with('coaTo')
+            ->where('deleted', 'No')
+            ->where('status', 'Active')
             ->get();
 
         // $transactions='';
@@ -84,7 +78,7 @@ class TransactionController extends Controller
             $output['data'][] = [
                 $i++.'<input type="hidden" name="id" id="id" value="'.$transaction->id.'" />',
                 $transaction->transaction_id,
-                $transaction->name,
+                $transaction->coaTo->name ?? '',
                 $transaction->amount,
                 $transaction->remarks,
                 $transaction->transaction_date,
@@ -151,9 +145,7 @@ class TransactionController extends Controller
         $amount = ChartOfAccounts::where('id', '=', $request->transfer_from)->first();
         $fromAmount = $amount->amount;
 
-        $config = DB::table('tbl_acc_coas')
-            ->where('tbl_acc_coas.name', '=', 'Bank')
-            ->first();
+        $config = ChartOfAccounts::where('name', 'Bank')->first();
 
         $configId = $config->id;
 
@@ -179,9 +171,7 @@ class TransactionController extends Controller
         $amount = ChartOfAccounts::where('id', '=', $request->transfer_to)->first();
         $toAmount = $amount->amount;
 
-        $config = DB::table('tbl_acc_configurations')
-            ->where('tbl_acc_configurations.name', '=', 'Bank')
-            ->first();
+        $config = \App\Models\Accounts\AccountConfiguration::where('name', 'Bank')->first();
 
         $configId = $config->tbl_acc_coa_id;
 
@@ -303,7 +293,7 @@ class TransactionController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_voucher_details')->insert($item_array_debit);
+            \App\Models\Accounts\VoucherDetails::insert($item_array_debit);
             /* debit */
             $item_array_credit = [
                 'tbl_acc_voucher_id' => $voucherId,
@@ -315,7 +305,7 @@ class TransactionController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            DB::table('tbl_acc_voucher_details')->insert($item_array_credit);
+            \App\Models\Accounts\VoucherDetails::insert($item_array_credit);
 
             return response()->json(['success' => ' Transaction successfull']);
         } else {
