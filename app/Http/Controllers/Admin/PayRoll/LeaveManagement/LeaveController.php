@@ -26,9 +26,9 @@ class LeaveController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('our_teams.member_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_payroll_leaves.leave_type', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_payroll_leaves.leave_reason', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_payroll_leaves.admin_remarks', 'like', "%{$searchTerm}%");
+                    ->orWhere('tbl_payroll_leaves.leave_type', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_payroll_leaves.leave_reason', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_payroll_leaves.admin_remarks', 'like', "%{$searchTerm}%");
             });
         }
 

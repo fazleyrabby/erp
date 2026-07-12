@@ -27,7 +27,7 @@ class TimeGroupController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('groups.name', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_payroll_time_schedule_groups.working_hour', 'like', "%{$searchTerm}%");
+                    ->orWhere('tbl_payroll_time_schedule_groups.working_hour', 'like', "%{$searchTerm}%");
             });
         }
 

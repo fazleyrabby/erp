@@ -86,9 +86,9 @@ class SaleServiceController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('sale_orders.sale_no', 'like', "%{$searchTerm}%")
-                  ->orWhere('parties.name', 'like', "%{$searchTerm}%")
-                  ->orWhere('sale_orders.brand', 'like', "%{$searchTerm}%")
-                  ->orWhere('sale_orders.model', 'like', "%{$searchTerm}%");
+                    ->orWhere('parties.name', 'like', "%{$searchTerm}%")
+                    ->orWhere('sale_orders.brand', 'like', "%{$searchTerm}%")
+                    ->orWhere('sale_orders.model', 'like', "%{$searchTerm}%");
             });
         }
 

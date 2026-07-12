@@ -32,13 +32,13 @@ return new class extends Migration
             $table->index('deleted');
             $table->index('status');
         });
-        
+
         Schema::table('products', function (Blueprint $table) {
             $table->index('type');
             $table->index('deleted');
             $table->index('status');
         });
-        
+
         Schema::table('sale_orders', function (Blueprint $table) {
             $table->index('order_status');
             $table->index('deleted');
@@ -72,13 +72,13 @@ return new class extends Migration
             $table->dropIndex(['deleted']);
             $table->dropIndex(['status']);
         });
-        
+
         Schema::table('products', function (Blueprint $table) {
             $table->dropIndex(['type']);
             $table->dropIndex(['deleted']);
             $table->dropIndex(['status']);
         });
-        
+
         Schema::table('sale_orders', function (Blueprint $table) {
             $table->dropIndex(['order_status']);
             $table->dropIndex(['deleted']);

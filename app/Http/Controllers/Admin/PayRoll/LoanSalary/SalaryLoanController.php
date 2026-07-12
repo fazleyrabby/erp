@@ -32,7 +32,7 @@ class SalaryLoanController extends Controller
             });
         }
 
-        $loans = $query->orderBy('salary_loans.' . $sortBy, $sortDirection)
+        $loans = $query->orderBy('salary_loans.'.$sortBy, $sortDirection)
             ->paginate($limit)
             ->appends($request->all());
 

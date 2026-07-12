@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
 use Image;
 use PDF;
 
@@ -835,8 +834,8 @@ class ProductController extends Controller
         if ($searchTerm = $request->q) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('products.name', 'like', "%{$searchTerm}%")
-                  ->orWhere('products.code', 'like', "%{$searchTerm}%")
-                  ->orWhere('damage_products.damage_order_no', 'like', "%{$searchTerm}%");
+                    ->orWhere('products.code', 'like', "%{$searchTerm}%")
+                    ->orWhere('damage_products.damage_order_no', 'like', "%{$searchTerm}%");
             });
         }
 

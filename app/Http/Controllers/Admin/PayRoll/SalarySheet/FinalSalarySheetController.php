@@ -375,12 +375,12 @@ class FinalSalarySheetController extends Controller
         $footertext = SalaryInstruction::where('month_year', '=', $monthYear)->where('deleted', '=', 'No')->where('status', '=', 'Active')->Where('sheet_id', '=', $sheetId)->first();
 
         $pdf = PDF::loadView('admin.payroll.salarySheet.finalSalarySheet.salarySheetReport',
-            ['sheets' => $sheets, 'footertext' => $footertext])->setPaper('legal','landscape');
+            ['sheets' => $sheets, 'footertext' => $footertext])->setPaper('legal', 'landscape');
 
         $pdf->output();
         $dom_pdf = $pdf->getDomPDF();
         $canvas = $dom_pdf->get_canvas();
-        $canvas->page_text(930 , 587, 'Page {PAGE_NUM} of {PAGE_COUNT}', null, 10, [0, 0, 0]);
+        $canvas->page_text(930, 587, 'Page {PAGE_NUM} of {PAGE_COUNT}', null, 10, [0, 0, 0]);
 
         return $pdf->stream('salary-sheet-pdf.pdf', ['Attachment' => false]);
 

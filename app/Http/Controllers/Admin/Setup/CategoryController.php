@@ -139,7 +139,7 @@ class CategoryController extends Controller
             $s = $request->search;
             $query->where(function ($q) use ($s) {
                 $q->where('wareHouseName', 'like', "%{$s}%")
-                  ->orWhere('wareHouseAddress', 'like', "%{$s}%");
+                    ->orWhere('wareHouseAddress', 'like', "%{$s}%");
             });
         }
 
@@ -224,8 +224,8 @@ class CategoryController extends Controller
             $s = $request->q;
             $query->where(function ($q) use ($s) {
                 $q->where('products.name', 'like', "%{$s}%")
-                  ->orWhere('tbl_warehouse.wareHouseName', 'like', "%{$s}%")
-                  ->orWhere('warehouse.wareHouseName', 'like', "%{$s}%");
+                    ->orWhere('tbl_warehouse.wareHouseName', 'like', "%{$s}%")
+                    ->orWhere('warehouse.wareHouseName', 'like', "%{$s}%");
             });
         }
 
@@ -328,7 +328,6 @@ class CategoryController extends Controller
             return response()->json(['error' => 'Warehouse Transfer rollBack '.$e]);
         }
     }
-
 
     public function deleteWarehouseTransfer(Request $request)
     {

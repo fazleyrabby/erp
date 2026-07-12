@@ -4,9 +4,10 @@ namespace App\Providers;
 
 use App\Models\CompanySetting;
 use DB;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use View;
 
@@ -32,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::defaultView('pagination::tabler');
 
         if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+            URL::forceScheme('https');
         }
 
         View::composer('admin.master', function ($view) {

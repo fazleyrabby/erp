@@ -31,9 +31,9 @@ class TransportController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('tbl_transportinfo.transportName', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_transportinfo.address', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_transportinfo.contactNo', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_transportinfo.contactPerson', 'like', "%{$searchTerm}%");
+                    ->orWhere('tbl_transportinfo.address', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_transportinfo.contactNo', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_transportinfo.contactPerson', 'like', "%{$searchTerm}%");
             });
         }
 

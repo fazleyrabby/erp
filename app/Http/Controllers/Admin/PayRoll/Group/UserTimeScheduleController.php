@@ -28,8 +28,8 @@ class UserTimeScheduleController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('our_teams.member_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('groups.name', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_payroll_user_time_schedules.note', 'like', "%{$searchTerm}%");
+                    ->orWhere('groups.name', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_payroll_user_time_schedules.note', 'like', "%{$searchTerm}%");
             });
         }
 

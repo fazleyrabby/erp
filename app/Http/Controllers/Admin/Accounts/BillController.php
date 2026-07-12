@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Accounts\ChartOfAccounts;
 use App\Models\Accounts\PaymentVoucher;
 use App\Models\Accounts\Voucher;
+use App\Models\Accounts\VoucherDetails;
 use App\Models\Bill\Bill;
+use App\Models\Bill\BillDetails;
 use App\Models\Bill\BillPayment;
 use App\Models\Bill\BillPaymentDetails;
 use App\Models\Crm\Party;
@@ -32,12 +34,12 @@ class BillController extends Controller
         if ($searchTerm) {
             $bills->where(function ($q) use ($searchTerm) {
                 $q->where('tbl_acc_bills.particulars', 'like', "%{$searchTerm}%")
-                  ->orWhere('parties.name', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_acc_bills.amount', 'like', "%{$searchTerm}%");
+                    ->orWhere('parties.name', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_acc_bills.amount', 'like', "%{$searchTerm}%");
             });
         }
 
-        $bills = $bills->orderBy('tbl_acc_bills.' . $sortBy, $sortDirection)
+        $bills = $bills->orderBy('tbl_acc_bills.'.$sortBy, $sortDirection)
             ->paginate($limit)
             ->appends($request->all());
 
@@ -146,7 +148,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Bill\BillDetails::insert($item_array);
+            BillDetails::insert($item_array);
         }
 
         /* voucher entry */
@@ -176,7 +178,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Accounts\VoucherDetails::insert($item_array);
+            VoucherDetails::insert($item_array);
 
             $expense = ChartOfAccounts::find($request->account[$j]);
             $expense->increment('amount', $request->amount[$j]);
@@ -215,12 +217,13 @@ class BillController extends Controller
     public function seeDetails($id)
     {
 
-        $details = \App\Models\Bill\BillDetails::with('coa')
+        $details = BillDetails::with('coa')
             ->where('deleted', 'No')
             ->where('tbl_acc_bill_id', $id)
             ->get()
             ->map(function ($detail) {
                 $detail->coa_name = $detail->coa->name ?? '';
+
                 return $detail;
             });
 
@@ -325,7 +328,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Bill\BillPaymentDetails::insert($item_array);
+            BillPaymentDetails::insert($item_array);
 
             if ($request->amount == $request->dueAmount) {
                 $bills = Bill::find($request->billId[$i]);
@@ -369,7 +372,7 @@ class BillController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Accounts\VoucherDetails::insert($item_array);
+            VoucherDetails::insert($item_array);
 
             $expense = ChartOfAccounts::find($request->account_status);
             $expense->decrement('amount', $request->amountTotal);
@@ -402,6 +405,6 @@ class BillController extends Controller
         $PaymentVoucher->created_date = date('Y-m-d h:s');
         $PaymentVoucher->save();
 
-        return redirect('account/bills/view')->with('message','Bill paid successfully');
+        return redirect('account/bills/view')->with('message', 'Bill paid successfully');
     }
 }

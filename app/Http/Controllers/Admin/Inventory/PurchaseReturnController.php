@@ -211,8 +211,8 @@ class PurchaseReturnController extends Controller
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
                 $q->where('purchase_returns.purchase_return_no', 'like', "%{$search}%")
-                  ->orWhere('purchase_returns.purchase_no', 'like', "%{$search}%")
-                  ->orWhere('parties.name', 'like', "%{$search}%");
+                    ->orWhere('purchase_returns.purchase_no', 'like', "%{$search}%")
+                    ->orWhere('parties.name', 'like', "%{$search}%");
             });
         }
 

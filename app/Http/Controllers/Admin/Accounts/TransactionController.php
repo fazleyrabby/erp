@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin\Accounts;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\AccountConfiguration;
 use App\Models\Accounts\ChartOfAccounts;
 use App\Models\Accounts\Transactions;
 use App\Models\Accounts\Voucher;
+use App\Models\Accounts\VoucherDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -27,9 +28,9 @@ class TransactionController extends Controller
         if ($searchTerm) {
             $transactions->where(function ($q) use ($searchTerm) {
                 $q->where('tbl_acc_transactions.transaction_id', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_acc_coas.name', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_acc_transactions.amount', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_acc_transactions.remarks', 'like', "%{$searchTerm}%");
+                    ->orWhere('tbl_acc_coas.name', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_acc_transactions.amount', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_acc_transactions.remarks', 'like', "%{$searchTerm}%");
             });
         }
 
@@ -171,7 +172,7 @@ class TransactionController extends Controller
         $amount = ChartOfAccounts::where('id', '=', $request->transfer_to)->first();
         $toAmount = $amount->amount;
 
-        $config = \App\Models\Accounts\AccountConfiguration::where('name', 'Bank')->first();
+        $config = AccountConfiguration::where('name', 'Bank')->first();
 
         $configId = $config->tbl_acc_coa_id;
 
@@ -293,7 +294,7 @@ class TransactionController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Accounts\VoucherDetails::insert($item_array_debit);
+            VoucherDetails::insert($item_array_debit);
             /* debit */
             $item_array_credit = [
                 'tbl_acc_voucher_id' => $voucherId,
@@ -305,7 +306,7 @@ class TransactionController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Accounts\VoucherDetails::insert($item_array_credit);
+            VoucherDetails::insert($item_array_credit);
 
             return response()->json(['success' => ' Transaction successfull']);
         } else {
@@ -329,10 +330,10 @@ class TransactionController extends Controller
         $amount = $transactions->amount;
 
         $coasFrom = ChartOfAccounts::find($fromId);
-        $coasFrom->increment('amount',$amount);
+        $coasFrom->increment('amount', $amount);
 
         $coasTo = ChartOfAccounts::find($toId);
-        $coasTo->decrement('amount',$amount);
+        $coasTo->decrement('amount', $amount);
 
     }
 }

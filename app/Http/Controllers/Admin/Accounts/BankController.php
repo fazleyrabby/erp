@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin\Accounts;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\AccountConfiguration;
 use App\Models\Accounts\ChartOfAccounts;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class BankController extends Controller
 {
@@ -16,7 +16,7 @@ class BankController extends Controller
         $sortDirection = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 
-        $config = \App\Models\Accounts\AccountConfiguration::where('name', 'Bank')->first();
+        $config = AccountConfiguration::where('name', 'Bank')->first();
         $configId = $config->tbl_acc_coa_id;
 
         $banks = ChartOfAccounts::where('parent_id', $configId)
@@ -45,7 +45,7 @@ class BankController extends Controller
     public function geData()
     {
 
-        $config = \App\Models\Accounts\AccountConfiguration::where('name', 'Bank')->first();
+        $config = AccountConfiguration::where('name', 'Bank')->first();
 
         $configId = $config->tbl_acc_coa_id;
 

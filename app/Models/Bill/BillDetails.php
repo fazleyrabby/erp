@@ -2,6 +2,7 @@
 
 namespace App\Models\Bill;
 
+use App\Models\Accounts\ChartOfAccounts;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,11 +14,11 @@ class BillDetails extends Model
 
     public function bill()
     {
-        return $this->belongsTo(\App\Models\Bill\Bill::class, 'tbl_acc_bill_id', 'id');
+        return $this->belongsTo(Bill::class, 'tbl_acc_bill_id', 'id');
     }
 
     public function coa()
     {
-        return $this->belongsTo(\App\Models\Accounts\ChartOfAccounts::class, 'tbl_acc_coa_id', 'id');
+        return $this->belongsTo(ChartOfAccounts::class, 'tbl_acc_coa_id', 'id');
     }
 }

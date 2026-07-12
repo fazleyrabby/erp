@@ -25,7 +25,7 @@ class JournalController extends Controller
         if ($searchTerm) {
             $journals->where(function ($q) use ($searchTerm) {
                 $q->where('reference', 'like', "%{$searchTerm}%")
-                  ->orWhere('internal_information', 'like', "%{$searchTerm}%");
+                    ->orWhere('internal_information', 'like', "%{$searchTerm}%");
             });
         }
 

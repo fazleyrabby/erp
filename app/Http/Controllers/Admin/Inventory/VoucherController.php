@@ -113,7 +113,7 @@ class VoucherController extends Controller
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
                 $q->where('payment_vouchers.voucherNo', 'like', "%{$search}%")
-                  ->orWhere('parties.name', 'like', "%{$search}%");
+                    ->orWhere('parties.name', 'like', "%{$search}%");
             });
         }
 
@@ -393,7 +393,7 @@ class VoucherController extends Controller
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
                 $q->where('sales.sale_no', 'like', "%{$search}%")
-                  ->orWhere('parties.name', 'like', "%{$search}%");
+                    ->orWhere('parties.name', 'like', "%{$search}%");
             });
         }
 

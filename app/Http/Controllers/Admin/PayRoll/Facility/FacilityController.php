@@ -29,7 +29,7 @@ class FacilityController extends Controller
             });
         }
 
-        $facilities = $query->orderBy('facilities.' . $sortBy, $sortDirection)
+        $facilities = $query->orderBy('facilities.'.$sortBy, $sortDirection)
             ->paginate($limit)
             ->appends($request->all());
 

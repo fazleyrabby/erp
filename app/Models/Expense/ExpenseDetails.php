@@ -2,6 +2,7 @@
 
 namespace App\Models\Expense;
 
+use App\Models\Accounts\ChartOfAccounts;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,11 +14,11 @@ class ExpenseDetails extends Model
 
     public function expense()
     {
-        return $this->belongsTo(\App\Models\Expense\Expense::class, 'tbl_acc_expense_id', 'id');
+        return $this->belongsTo(Expense::class, 'tbl_acc_expense_id', 'id');
     }
 
     public function coa()
     {
-        return $this->belongsTo(\App\Models\Accounts\ChartOfAccounts::class, 'tbl_acc_coa_id', 'id');
+        return $this->belongsTo(ChartOfAccounts::class, 'tbl_acc_coa_id', 'id');
     }
 }

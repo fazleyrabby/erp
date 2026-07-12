@@ -29,7 +29,7 @@ class StepNewController extends Controller
             });
         }
 
-        $steps = $query->orderBy('steps.' . $sortBy, $sortDirection)
+        $steps = $query->orderBy('steps.'.$sortBy, $sortDirection)
             ->paginate($limit)
             ->appends($request->all());
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\RolePermission;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Spatie\Permission\Exceptions\PermissionAlreadyExists;
 use Spatie\Permission\Models\permission;
 
 class PermissionController extends Controller
@@ -42,7 +43,7 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'       => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'group_name' => 'required|string|max:255',
         ]);
 
@@ -54,10 +55,10 @@ class PermissionController extends Controller
 
             if (! $permissionExist) {
                 permission::create([
-                    'name'       => $request->group_name,
+                    'name' => $request->group_name,
                     'group_name' => $request->group_name,
-                    'deleted'    => 'No',
-                    'status'     => 'Active',
+                    'deleted' => 'No',
+                    'status' => 'Active',
                 ]);
             }
 
@@ -66,28 +67,27 @@ class PermissionController extends Controller
 
             if ($alreadyExists) {
                 return redirect('permission/view')
-                    ->with('error', 'Permission "' . $request->name . '" already exists.');
+                    ->with('error', 'Permission "'.$request->name.'" already exists.');
             }
 
             permission::create([
-                'name'       => $request->name,
+                'name' => $request->name,
                 'group_name' => $request->group_name,
-                'deleted'    => 'No',
-                'status'     => 'Active',
+                'deleted' => 'No',
+                'status' => 'Active',
             ]);
 
             return redirect('permission/view')
-                ->with('message', $request->name . ' saved successfully');
+                ->with('message', $request->name.' saved successfully');
 
-        } catch (\Spatie\Permission\Exceptions\PermissionAlreadyExists $e) {
+        } catch (PermissionAlreadyExists $e) {
             return redirect('permission/view')
-                ->with('error', 'Permission "' . $request->name . '" already exists.');
+                ->with('error', 'Permission "'.$request->name.'" already exists.');
         } catch (\Exception $e) {
             return redirect('permission/view')
-                ->with('error', 'An error occurred: ' . $e->getMessage());
+                ->with('error', 'An error occurred: '.$e->getMessage());
         }
     }
-
 
     public function edit(Request $request)
     {

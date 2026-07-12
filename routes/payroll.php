@@ -181,10 +181,10 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* Leave Mangement system routes */
         Route::get('leave/management/index', [LeaveController::class, 'index'])->name('leaveIndex');
-        Route::post('leave/management/store',[LeaveController::class, 'store'])->name('leaveStore');
-        Route::get('leave/management/get/edit',[LeaveController::class, 'edit'])->name('leaveEdit');
-        Route::post('leave/management/get/update',[LeaveController::class, 'update'])->name('leaveUpdate');
-        Route::post('leave/management/get/delete',[LeaveController::class, 'delete'])->name('leaveDelete');
+        Route::post('leave/management/store', [LeaveController::class, 'store'])->name('leaveStore');
+        Route::get('leave/management/get/edit', [LeaveController::class, 'edit'])->name('leaveEdit');
+        Route::post('leave/management/get/update', [LeaveController::class, 'update'])->name('leaveUpdate');
+        Route::post('leave/management/get/delete', [LeaveController::class, 'delete'])->name('leaveDelete');
 
     });
 

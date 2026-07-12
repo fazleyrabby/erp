@@ -27,10 +27,10 @@ class BonusController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('bonus_lists.bonus_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('bonus_lists.month_year', 'like', "%{$searchTerm}%")
-                  ->orWhere('bonus_lists.amount', 'like', "%{$searchTerm}%")
-                  ->orWhere('bonus_lists.note', 'like', "%{$searchTerm}%")
-                  ->orWhere('groups.name', 'like', "%{$searchTerm}%");
+                    ->orWhere('bonus_lists.month_year', 'like', "%{$searchTerm}%")
+                    ->orWhere('bonus_lists.amount', 'like', "%{$searchTerm}%")
+                    ->orWhere('bonus_lists.note', 'like', "%{$searchTerm}%")
+                    ->orWhere('groups.name', 'like', "%{$searchTerm}%");
             });
         }
 

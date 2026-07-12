@@ -11,7 +11,7 @@ class PayrollSettingController extends Controller
 {
     public function index()
     {
-        $datas = payrollSetting::first();
+        $datas = PayrollSetting::first();
 
         return view('admin.payroll.PayrollSetting.payrollSettingView', ['datas' => $datas]);
     }
@@ -23,7 +23,7 @@ class PayrollSettingController extends Controller
             'deduct_amount_for_absent' => 'numeric',
         ]);
 
-        $data = payrollSetting::find($request->id);
+        $data = PayrollSetting::find($request->id);
         $data->absent = $request->absent;
         $data->activation = $request->activation;
         $data->deduct_amount_for_absent = $request->deduct_amount_for_absent;
@@ -44,7 +44,7 @@ class PayrollSettingController extends Controller
 
     public function activationStatus(Request $request)
     {
-        $settings = payrollSetting::find(1);
+        $settings = PayrollSetting::find(1);
         $settings->activation = $request->activation;
         $settings->save();
 

@@ -27,11 +27,11 @@ class MonthlyAmountController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('our_teams.member_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('monthly_amounts.facility_name', 'like', "%{$searchTerm}%");
+                    ->orWhere('monthly_amounts.facility_name', 'like', "%{$searchTerm}%");
             });
         }
 
-        $monthlyAmounts = $query->orderBy('monthly_amounts.' . $sortBy, $sortDirection)
+        $monthlyAmounts = $query->orderBy('monthly_amounts.'.$sortBy, $sortDirection)
             ->paginate($limit)
             ->appends($request->all());
 

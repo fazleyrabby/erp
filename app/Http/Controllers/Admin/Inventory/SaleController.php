@@ -89,7 +89,7 @@ class SaleController extends Controller
             if ($search = $request->q) {
                 $query->where(function ($q) use ($search) {
                     $q->where('tbl_temporary_sale.tsNo', 'like', "%{$search}%")
-                      ->orWhere('parties.name', 'like', "%{$search}%");
+                        ->orWhere('parties.name', 'like', "%{$search}%");
                 });
             }
 
@@ -131,7 +131,7 @@ class SaleController extends Controller
             if ($search = $request->q) {
                 $query->where(function ($q) use ($search) {
                     $q->where('sales.sale_no', 'like', "%{$search}%")
-                      ->orWhere('parties.name', 'like', "%{$search}%");
+                        ->orWhere('parties.name', 'like', "%{$search}%");
                 });
             }
 
@@ -173,7 +173,7 @@ class SaleController extends Controller
             if ($search = $request->q) {
                 $query->where(function ($q) use ($search) {
                     $q->where('sales.sale_no', 'like', "%{$search}%")
-                      ->orWhere('parties.name', 'like', "%{$search}%");
+                        ->orWhere('parties.name', 'like', "%{$search}%");
                 });
             }
 
@@ -187,7 +187,6 @@ class SaleController extends Controller
             return view('admin.inventory.sale.view-sale', $data);
         }
     }
-
 
     public function addToCart(Request $request)
     {
@@ -880,7 +879,7 @@ class SaleController extends Controller
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
                 $q->where('sales.sale_no', 'like', "%{$search}%")
-                  ->orWhere('parties.name', 'like', "%{$search}%");
+                    ->orWhere('parties.name', 'like', "%{$search}%");
             });
         }
 

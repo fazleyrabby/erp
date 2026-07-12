@@ -22,7 +22,7 @@ class AccountController extends Controller
         if ($searchTerm) {
             $coas->where(function ($q) use ($searchTerm) {
                 $q->where('name', 'like', "%{$searchTerm}%")
-                  ->orWhere('code', 'like', "%{$searchTerm}%");
+                    ->orWhere('code', 'like', "%{$searchTerm}%");
             });
         }
 

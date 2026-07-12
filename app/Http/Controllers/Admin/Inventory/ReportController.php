@@ -1269,19 +1269,19 @@ class ReportController extends Controller
             })
             ->selectRaw('SUM(payment_vouchers.amount) AS amount, payment_vouchers.paymentDate, DAYNAME(payment_vouchers.paymentDate) AS dayName, payment_vouchers.customerType')
             ->where('payment_vouchers.deleted', '=', 'No')
-            ->where('payment_vouchers.status','Active')
-            ->where('payment_vouchers.type','!=','Discount')
-            ->where('payment_vouchers.type','!=','Payable')
-            ->where('payment_vouchers.type','!=','Party Payable')
-            ->where('payment_vouchers.type','!=','Adjustment')
-            ->where('payment_vouchers.type','!=','Payment Adjustment')
-            ->where('payment_vouchers.payment_method','Cash')
+            ->where('payment_vouchers.status', 'Active')
+            ->where('payment_vouchers.type', '!=', 'Discount')
+            ->where('payment_vouchers.type', '!=', 'Payable')
+            ->where('payment_vouchers.type', '!=', 'Party Payable')
+            ->where('payment_vouchers.type', '!=', 'Adjustment')
+            ->where('payment_vouchers.type', '!=', 'Payment Adjustment')
+            ->where('payment_vouchers.payment_method', 'Cash')
             ->where('payment_vouchers.paymentDate', '>=', $from)
             ->where('payment_vouchers.paymentDate', '<=', $to)
             ->groupby('payment_vouchers.paymentDate')
             ->groupby('payment_vouchers.customerType')
-            ->orderBy('payment_vouchers.paymentDate','ASC')
-            ->orderBy('payment_vouchers.customerType','ASC')
+            ->orderBy('payment_vouchers.paymentDate', 'ASC')
+            ->orderBy('payment_vouchers.customerType', 'ASC')
             ->get();
         $info = '<div class="table-responsive"> 
                     <table class="table table-bordered" id="customers">
@@ -1305,12 +1305,12 @@ class ReportController extends Controller
         					<td>'.$receivedBalance->paymentDate.' </td>
         					<td style="text-align: left;">'.$receivedBalance->dayName.'</td>
         					<td style="text-align: left;">'.$receivedBalance->customerType.'</td>
-        					<td style="text-align: right;">'.number_format($receivedBalance->amount,2).'</td>
+        					<td style="text-align: right;">'.number_format($receivedBalance->amount, 2).'</td>
         					
                         </tr>';
         }
         $info .= '</tbody></table></div>';
-        $pdf = PDF::loadView('admin.inventory.report.datewiseReceivedViewPdf',  ['info' => $info]);
+        $pdf = PDF::loadView('admin.inventory.report.datewiseReceivedViewPdf', ['info' => $info]);
 
         return $pdf->stream('product-report-pdf.pdf', ['Attachment' => false]);
     }

@@ -217,8 +217,8 @@ class SaleReturnController extends Controller
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
                 $q->where('sale_returns.sale_return_no', 'like', "%{$search}%")
-                  ->orWhere('sale_returns.sale_no', 'like', "%{$search}%")
-                  ->orWhere('parties.name', 'like', "%{$search}%");
+                    ->orWhere('sale_returns.sale_no', 'like', "%{$search}%")
+                    ->orWhere('parties.name', 'like', "%{$search}%");
             });
         }
 

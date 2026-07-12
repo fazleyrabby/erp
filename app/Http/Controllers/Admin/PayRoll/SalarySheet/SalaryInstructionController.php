@@ -29,9 +29,9 @@ class SalaryInstructionController extends Controller
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('salary_sheets.sheet_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('salary_instructions.bank_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('salary_instructions.branch_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('salary_instructions.month_year', 'like', "%{$searchTerm}%");
+                    ->orWhere('salary_instructions.bank_name', 'like', "%{$searchTerm}%")
+                    ->orWhere('salary_instructions.branch_name', 'like', "%{$searchTerm}%")
+                    ->orWhere('salary_instructions.month_year', 'like', "%{$searchTerm}%");
             });
         }
 

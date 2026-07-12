@@ -39,7 +39,7 @@ class ComposerStaticInit4f42e769a118c0ec590c96b37300bb9d
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '377b22b161c09ed6e5152de788ca020a' => __DIR__ . '/..' . '/spatie/laravel-permission/src/helpers.php',
         '0b47d6d4a00ca9112ba3953b49e7c9a4' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/helper.php',
-        'd8429bd6f4f307e7b72c6b28db814fb0' => __DIR__ . '/../..' . '/app/Helpers/helpers.php',
+        'ec4bece2cc30e545ea2502b5fb0892b1' => __DIR__ . '/../..' . '/app/Helpers/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -776,14 +776,18 @@ class ComposerStaticInit4f42e769a118c0ec590c96b37300bb9d
         'App\\Models\\payroll\\FinalSalarySheet' => __DIR__ . '/../..' . '/app/Models/payroll/FinalSalarySheet.php',
         'App\\Models\\payroll\\Grade' => __DIR__ . '/../..' . '/app/Models/payroll/Grade.php',
         'App\\Models\\payroll\\Group' => __DIR__ . '/../..' . '/app/Models/payroll/Group.php',
+        'App\\Models\\payroll\\Leave' => __DIR__ . '/../..' . '/app/Models/payroll/Leave.php',
         'App\\Models\\payroll\\OurTeam' => __DIR__ . '/../..' . '/app/Models/payroll/OurTeam.php',
         'App\\Models\\payroll\\PayrollAttendence' => __DIR__ . '/../..' . '/app/Models/payroll/PayrollAttendence.php',
+        'App\\Models\\payroll\\PayrollSetting' => __DIR__ . '/../..' . '/app/Models/payroll/PayrollSetting.php',
         'App\\Models\\payroll\\SalaryInstruction' => __DIR__ . '/../..' . '/app/Models/payroll/SalaryInstruction.php',
         'App\\Models\\payroll\\SalaryLoan' => __DIR__ . '/../..' . '/app/Models/payroll/SalaryLoan.php',
         'App\\Models\\payroll\\SalaryLoanDetails' => __DIR__ . '/../..' . '/app/Models/payroll/SalaryLoanDetails.php',
         'App\\Models\\payroll\\SalarySheet' => __DIR__ . '/../..' . '/app/Models/payroll/SalarySheet.php',
         'App\\Models\\payroll\\SavedSalarySheet' => __DIR__ . '/../..' . '/app/Models/payroll/SavedSalarySheet.php',
         'App\\Models\\payroll\\Steps' => __DIR__ . '/../..' . '/app/Models/payroll/Steps.php',
+        'App\\Models\\payroll\\TimeScheduleGroup' => __DIR__ . '/../..' . '/app/Models/payroll/TimeScheduleGroup.php',
+        'App\\Models\\payroll\\UserTimeSchedule' => __DIR__ . '/../..' . '/app/Models/payroll/UserTimeSchedule.php',
         'App\\Policies\\TeamPolicy' => __DIR__ . '/../..' . '/app/Policies/TeamPolicy.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',

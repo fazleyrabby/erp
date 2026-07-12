@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Accounts\ChartOfAccounts;
 use App\Models\Accounts\PaymentVoucher;
 use App\Models\Accounts\Voucher;
+use App\Models\Accounts\VoucherDetails;
 use App\Models\Expense\Expense;
+use App\Models\Expense\ExpenseDetails;
 use App\Models\payroll\OurTeam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,8 +32,8 @@ class ExpenseController extends Controller
         if ($searchTerm) {
             $expenses->where(function ($q) use ($searchTerm) {
                 $q->where('tbl_acc_expenses.particulars', 'like', "%{$searchTerm}%")
-                  ->orWhere('our_teams.member_name', 'like', "%{$searchTerm}%")
-                  ->orWhere('tbl_acc_expenses.amount', 'like', "%{$searchTerm}%");
+                    ->orWhere('our_teams.member_name', 'like', "%{$searchTerm}%")
+                    ->orWhere('tbl_acc_expenses.amount', 'like', "%{$searchTerm}%");
             });
         }
 
@@ -184,7 +186,7 @@ class ExpenseController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Expense\ExpenseDetails::insert($item_array);
+            ExpenseDetails::insert($item_array);
         }
 
         /* add to voucher */
@@ -215,7 +217,7 @@ class ExpenseController extends Controller
                 'created_by' => Auth::user()->id,
                 'created_date' => date('Y-m-d h:s'),
             ];
-            \App\Models\Accounts\VoucherDetails::insert($item_array);
+            VoucherDetails::insert($item_array);
 
             $expense = ChartOfAccounts::find($request->account[$j]);
             $expense->increment('amount', $request->amount[$j]);
@@ -231,7 +233,7 @@ class ExpenseController extends Controller
             'created_by' => Auth::user()->id,
             'created_date' => date('Y-m-d h:s'),
         ];
-        \App\Models\Accounts\VoucherDetails::insert($item_array_single);
+        VoucherDetails::insert($item_array_single);
 
         $expense = ChartOfAccounts::find($request->account_status);
         $expense->decrement('amount', $request->amountTotal);
@@ -271,19 +273,20 @@ class ExpenseController extends Controller
     public function seeDetails($id)
     {
 
-        $details = \App\Models\Expense\ExpenseDetails::with('coa')
+        $details = ExpenseDetails::with('coa')
             ->where('deleted', 'No')
             ->where('tbl_acc_expense_id', $id)
             ->get()
             ->map(function ($detail) {
                 $detail->coa_name = $detail->coa->name ?? '';
+
                 return $detail;
             });
 
         $expenses = Expense::find($id);
         $party = OurTeam::find($expenses->tbl_crm_vendor_id);
 
-        $pdf = PDF::loadView('admin.expense.expensePdf',  ['details' => $details, 'expenses' => $expenses, 'party' => $party]);
+        $pdf = PDF::loadView('admin.expense.expensePdf', ['details' => $details, 'expenses' => $expenses, 'party' => $party]);
 
         return $pdf->stream('expense-report-pdf.pdf', ['Attachment' => false]);
 

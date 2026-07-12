@@ -59,9 +59,9 @@ class PurchaseController extends Controller
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
                 $q->where('purchases.purchase_no', 'like', "%{$search}%")
-                  ->orWhere('parties.name', 'like', "%{$search}%")
-                  ->orWhere('parties.code', 'like', "%{$search}%")
-                  ->orWhere('parties.contact', 'like', "%{$search}%");
+                    ->orWhere('parties.name', 'like', "%{$search}%")
+                    ->orWhere('parties.code', 'like', "%{$search}%")
+                    ->orWhere('parties.contact', 'like', "%{$search}%");
             });
         }
 
