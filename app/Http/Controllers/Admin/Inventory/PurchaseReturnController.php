@@ -188,35 +188,21 @@ class PurchaseReturnController extends Controller
 
     public function purchaseReturnList(Request $request)
     {
-        $query = DB::table('purchase_returns')
-            ->join('parties', 'purchase_returns.supplier_id', '=', 'parties.id')
-            ->join('users', 'purchase_returns.created_by', '=', 'users.id')
-            ->select(
-                'purchase_returns.purchase_return_no',
-                'purchase_returns.purchase_no',
-                'purchase_returns.purchase_return_date',
-                'purchase_returns.grand_total',
-                'purchase_returns.discount',
-                'purchase_returns.id',
-                'purchase_returns.purchase_date',
-                'parties.name',
-                'parties.code',
-                'parties.address',
-                'parties.contact',
-                'parties.alternate_contact',
-                'users.name as userName'
-            )
-            ->where('purchase_returns.deleted', 'No');
+        $query = Purchase_Return::with(['supplier', 'creator'])
+            ->where('deleted', 'No');
 
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
-                $q->where('purchase_returns.purchase_return_no', 'like', "%{$search}%")
-                    ->orWhere('purchase_returns.purchase_no', 'like', "%{$search}%")
-                    ->orWhere('parties.name', 'like', "%{$search}%");
+                $q->where('purchase_return_no', 'like', "%{$search}%")
+                    ->orWhere('purchase_no', 'like', "%{$search}%")
+                    ->orWhereHas('supplier', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
-        $sortBy = $request->sort_by ?? 'purchase_returns.id';
+        $sortBy = $request->sort_by ?? 'id';
+        $sortBy = str_replace('purchase_returns.', '', $sortBy);
         $sortDir = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 

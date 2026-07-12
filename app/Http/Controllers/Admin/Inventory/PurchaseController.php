@@ -34,38 +34,22 @@ class PurchaseController extends Controller
 
     public function index(Request $request)
     {
-        $query = DB::table('purchases')
-            ->join('parties', 'purchases.supplier_id', '=', 'parties.id')
-            ->leftjoin('users', 'purchases.created_by', '=', 'users.id')
-            ->select(
-                'purchases.purchase_no',
-                'purchases.created_date',
-                'purchases.total_amount',
-                'purchases.current_payment',
-                'purchases.discount',
-                'purchases.carrying_cost',
-                'purchases.id',
-                'purchases.grand_total',
-                'purchases.status as purchaseStatus',
-                'parties.name',
-                'parties.code',
-                'parties.address',
-                'parties.contact',
-                'parties.alternate_contact',
-                'users.name as userName'
-            )
-            ->where('purchases.deleted', 'No');
+        $query = Purchase::with(['supplier', 'creator'])
+            ->where('deleted', 'No');
 
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
-                $q->where('purchases.purchase_no', 'like', "%{$search}%")
-                    ->orWhere('parties.name', 'like', "%{$search}%")
-                    ->orWhere('parties.code', 'like', "%{$search}%")
-                    ->orWhere('parties.contact', 'like', "%{$search}%");
+                $q->where('purchase_no', 'like', "%{$search}%")
+                    ->orWhereHas('supplier', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%")
+                           ->orWhere('code', 'like', "%{$search}%")
+                           ->orWhere('contact', 'like', "%{$search}%");
+                    });
             });
         }
 
-        $sortBy = $request->sort_by ?? 'purchases.id';
+        $sortBy = $request->sort_by ?? 'id';
+        $sortBy = str_replace('purchases.', '', $sortBy);
         $sortDir = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 
@@ -76,12 +60,12 @@ class PurchaseController extends Controller
 
     public function add()
     {
-        $data['categories'] = Category::where('deleted', 'No')->where('status', 'Active')->get();
-        $data['brands'] = Brand::where('deleted', 'No')->where('status', 'Active')->get();
-        $data['products'] = Product::where('deleted', 'No')->where('status', 'Active')->where('type', '!=', 'service')->get();
-        $data['suppliers'] = Party::where('deleted', 'No')->where('status', 'Active')->whereIn('party_type', ['Supplier', 'Both'])->get();
-        $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status', 'Active')->get();
-        $data['coas'] = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->where('parent_id', '=', '30')->get();
+        $data['categories'] = Category::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $data['brands'] = Brand::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $data['products'] = Product::with('brand')->where('deleted', 'No')->where('status', 'Active')->where('type', '!=', 'service')->get();
+        $data['suppliers'] = Party::where('deleted', 'No')->where('status', 'Active')->whereIn('party_type', ['Supplier', 'Both'])->toBase()->get();
+        $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $data['coas'] = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->where('parent_id', '=', '30')->toBase()->get();
 
         return view('admin.inventory.purchase.add-purchase', $data);
     }

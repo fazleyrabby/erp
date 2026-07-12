@@ -31,7 +31,7 @@
 
                 @if (Auth::guard('web')->user()->can('Inventory'))
                 @php
-                    $invRoutes = ['products.*', 'damage.*', 'warehouse.*', 'purchase.*', 'sale.*', 'sale.service.*'];
+                    $invRoutes = ['products.*', 'damage.*', 'warehouse.*', 'purchase.*', 'purchase_orders.*', 'sale.*', 'sale.service.*', 'quotations.*'];
                     $invActive = request()->routeIs($invRoutes);
                 @endphp
                 <li class="nav-item dropdown {{ $invActive ? 'show' : '' }}">
@@ -57,12 +57,15 @@
                         @endif
 
                         @if (Auth::guard('web')->user()->can('Purchase'))
-                        @php $purchActive = request()->routeIs('purchase.*'); @endphp
+                        @php $purchActive = request()->routeIs(['purchase.*', 'purchase_orders.*']); @endphp
                         <div class="dropend {{ $purchActive ? 'show' : '' }}">
                             <a class="dropdown-item dropdown-toggle {{ $purchActive ? 'active' : '' }}" href="#navbar-purchase" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $purchActive ? 'true' : 'false' }}">
                                 <i class="fa fa-shopping-cart icon-inline me-1"></i> Purchase Management
                             </a>
                             <div class="dropdown-menu {{ $purchActive ? 'show' : '' }}">
+                                <a class="dropdown-item {{ request()->routeIs('purchase_orders.*') ? 'active' : '' }}" href="{{ route('purchase_orders.index') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Orders
+                                </a>
                                 @if (Auth::guard('web')->user()->can('purchase.view'))
                                 <a class="dropdown-item {{ request()->routeIs('purchase.index') ? 'active' : '' }}" href="{{ route('purchase.index') }}">
                                     <i class="fa fa-check-circle icon-inline me-1"></i> Purchase
@@ -78,12 +81,15 @@
                         @endif
 
                         @if (Auth::guard('web')->user()->can('Sale'))
-                        @php $saleActive = request()->routeIs(['sale.*', 'sale.service.*']); @endphp
+                        @php $saleActive = request()->routeIs(['sale.*', 'sale.service.*', 'quotations.*']); @endphp
                         <div class="dropend {{ $saleActive ? 'show' : '' }}">
                             <a class="dropdown-item dropdown-toggle {{ $saleActive ? 'active' : '' }}" href="#navbar-sale" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $saleActive ? 'true' : 'false' }}">
                                 <i class="fa fa-shopping-bag icon-inline me-1"></i> Sale Management
                             </a>
                             <div class="dropdown-menu {{ $saleActive ? 'show' : '' }}">
+                                <a class="dropdown-item {{ request()->routeIs('quotations.*') ? 'active' : '' }}" href="{{ route('quotations.index') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Quotations
+                                </a>
                                 @if (Auth::guard('web')->user()->can('sale.service.view'))
                                 <a class="dropdown-item {{ request()->routeIs('sale.service.*') ? 'active' : '' }}" href="{{ route('sale.service.SaleOrders') }}">
                                     <i class="fa fa-check-circle icon-inline me-1"></i> Service Orders

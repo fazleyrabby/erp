@@ -21,11 +21,9 @@ class FinalSalarySheetController extends Controller
     public function index()
     {
 
-        $sheets = DB::table('salary_sheets')
-            ->join('saved_salary_sheets', 'saved_salary_sheets.sheet_id', '=', 'salary_sheets.id')
-            ->select('saved_salary_sheets.*', 'salary_sheets.sheet_name', 'salary_sheets.id as sheetID')
-            ->where('saved_salary_sheets.deleted', '=', 'No')
-            ->orderby('saved_salary_sheets.id', 'Desc')
+        $sheets = SavedSalarySheet::with('salarySheet')
+            ->where('deleted', 'No')
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('admin.payroll.salarySheet.finalSalarySheet.finalSalarySheetView', ['sheets' => $sheets]);

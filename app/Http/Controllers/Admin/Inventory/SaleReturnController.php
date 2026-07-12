@@ -191,38 +191,22 @@ class SaleReturnController extends Controller
 
     public function saleReturnView($type, Request $request)
     {
-        $query = DB::table('sale_returns')
-            ->join('parties', 'sale_returns.customer_id', '=', 'parties.id')
-            ->leftjoin('users', 'users.id', '=', 'sale_returns.created_by')
-            ->select(
-                'sale_returns.sale_return_no',
-                'sale_returns.sale_no',
-                'sale_returns.sale_return_date',
-                'sale_returns.grand_total',
-                'sale_returns.discount',
-                'sale_returns.id',
-                'sale_returns.sale_id',
-                'sale_returns.sale_date',
-                'sale_returns.status as saleStatus',
-                'parties.name',
-                'parties.code',
-                'parties.address',
-                'parties.contact',
-                'parties.alternate_contact',
-                'users.name as userName'
-            )
-            ->where('sale_returns.deleted', 'No')
-            ->where('sale_returns.sales_type', $type);
+        $query = SaleReturn::with(['customer', 'creator'])
+            ->where('deleted', 'No')
+            ->where('sales_type', $type);
 
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
-                $q->where('sale_returns.sale_return_no', 'like', "%{$search}%")
-                    ->orWhere('sale_returns.sale_no', 'like', "%{$search}%")
-                    ->orWhere('parties.name', 'like', "%{$search}%");
+                $q->where('sale_return_no', 'like', "%{$search}%")
+                    ->orWhere('sale_no', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($q2) use ($search) {
+                        $q2->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
-        $sortBy = $request->sort_by ?? 'sale_returns.id';
+        $sortBy = $request->sort_by ?? 'id';
+        $sortBy = str_replace('sale_returns.', '', $sortBy);
         $sortDir = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 

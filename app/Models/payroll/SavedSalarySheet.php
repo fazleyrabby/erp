@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class SavedSalarySheet extends Model
 {
     use HasFactory;
+
+    public function salarySheet()
+    {
+        return $this->belongsTo(SalarySheet::class, 'sheet_id', 'id');
+    }
+
+    public function getSheetNameAttribute() { return $this->salarySheet->sheet_name ?? ''; }
+    public function getSheetIDAttribute() { return $this->attributes['sheet_id'] ?? null; }
 }

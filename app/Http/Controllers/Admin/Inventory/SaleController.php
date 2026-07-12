@@ -46,12 +46,12 @@ class SaleController extends Controller
 
     public function add($type)
     {
-        $categories = Category::where('deleted', 'No')->where('status', 'Active')->get();
-        $brands = Brand::where('deleted', 'No')->where('status', 'Active')->get();
-        $products = Product::where('deleted', 'No')->where('status', 'Active')->where('type', '!=', 'service')->get();
-        $warehouses = Warehouse::where('deleted', 'No')->where('status', 'Active')->get();
-        $customers = Party::where('deleted', 'No')->where('status', 'Active')->whereIn('party_type', ['Customer', 'Both'])->get();
-        $coas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->where('parent_id', '=', '31')->get();
+        $categories = Category::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $brands = Brand::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $products = Product::with('brand')->where('deleted', 'No')->where('status', 'Active')->where('type', '!=', 'service')->get();
+        $warehouses = Warehouse::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $customers = Party::where('deleted', 'No')->where('status', 'Active')->whereIn('party_type', ['Customer', 'Both'])->toBase()->get();
+        $coas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->where('parent_id', '=', '31')->toBase()->get();
 
         return view('admin.inventory.sale.add-sale', compact('categories', 'brands', 'products', 'warehouses', 'customers', 'type', 'coas'));
     }
@@ -70,30 +70,20 @@ class SaleController extends Controller
     public function getSale($type, Request $request)
     {
         if ($type == 'ts') {
-            $query = DB::table('tbl_temporary_sale')
-                ->join('parties', 'tbl_temporary_sale.tbl_customerId', '=', 'parties.id')
-                ->leftjoin('users', 'tbl_temporary_sale.tbl_userId', '=', 'users.id')
-                ->select(
-                    'tbl_temporary_sale.tsNo',
-                    'tbl_temporary_sale.tSalesDate as date',
-                    'tbl_temporary_sale.id',
-                    'parties.name',
-                    'parties.code',
-                    'parties.address',
-                    'parties.contact',
-                    'parties.alternate_contact',
-                    'users.name as user_name'
-                )
-                ->where('tbl_temporary_sale.deleted', 'No');
+            $query = \App\Models\inventory\TemporarySale::with(['customer', 'creator'])
+                ->where('deleted', 'No');
 
             if ($search = $request->q) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('tbl_temporary_sale.tsNo', 'like', "%{$search}%")
-                        ->orWhere('parties.name', 'like', "%{$search}%");
+                    $q->where('tsNo', 'like', "%{$search}%")
+                        ->orWhereHas('customer', function ($q2) use ($search) {
+                            $q2->where('name', 'like', "%{$search}%");
+                        });
                 });
             }
 
-            $sortBy = $request->sort_by ?? 'tbl_temporary_sale.id';
+            $sortBy = $request->sort_by ?? 'id';
+            $sortBy = str_replace('tbl_temporary_sale.', '', $sortBy);
             $sortDir = $request->sort_direction ?? 'DESC';
             $limit = $request->limit ?? 10;
 
@@ -102,40 +92,21 @@ class SaleController extends Controller
 
             return view('admin.inventory.sale.view-sale', $data);
         } elseif ($type == 'walkin_sale') {
-            $query = DB::table('sales')
-                ->join('parties', 'sales.customer_id', '=', 'parties.id')
-                ->leftjoin('users', 'users.id', '=', 'sales.created_by')
-                ->select(
-                    'sales.sale_no',
-                    'sales.created_date',
-                    'sales.sales_type as type',
-                    'sales.total_amount',
-                    'sales.current_payment',
-                    'sales.discount',
-                    'sales.carrying_cost',
-                    'sales.vat',
-                    'sales.ait',
-                    'sales.id',
-                    'sales.status as saleStatus',
-                    'sales.grand_total',
-                    'parties.name',
-                    'parties.code',
-                    'parties.address',
-                    'parties.contact',
-                    'parties.alternate_contact',
-                    'users.name as userName'
-                )
-                ->where('sales.sales_type', 'walkin_sale')
-                ->where('sales.deleted', 'No');
+            $query = Sale::with(['customer', 'creator'])
+                ->where('sales_type', 'walkin_sale')
+                ->where('deleted', 'No');
 
             if ($search = $request->q) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('sales.sale_no', 'like', "%{$search}%")
-                        ->orWhere('parties.name', 'like', "%{$search}%");
+                    $q->where('sale_no', 'like', "%{$search}%")
+                        ->orWhereHas('customer', function ($q2) use ($search) {
+                            $q2->where('name', 'like', "%{$search}%");
+                        });
                 });
             }
 
-            $sortBy = $request->sort_by ?? 'sales.id';
+            $sortBy = $request->sort_by ?? 'id';
+            $sortBy = str_replace('sales.', '', $sortBy);
             $sortDir = $request->sort_direction ?? 'DESC';
             $limit = $request->limit ?? 10;
 
@@ -144,40 +115,21 @@ class SaleController extends Controller
 
             return view('admin.inventory.sale.view-sale', $data);
         } elseif ($type == 'service') {
-            $query = DB::table('sales')
-                ->join('parties', 'sales.customer_id', '=', 'parties.id')
-                ->leftjoin('users', 'users.id', '=', 'sales.created_by')
-                ->select(
-                    'sales.sale_no',
-                    'sales.created_date',
-                    'sales.sales_type as type',
-                    'sales.total_amount',
-                    'sales.current_payment',
-                    'sales.discount',
-                    'sales.carrying_cost',
-                    'sales.vat',
-                    'sales.ait',
-                    'sales.id',
-                    'sales.status as saleStatus',
-                    'sales.grand_total',
-                    'parties.name',
-                    'parties.code',
-                    'parties.address',
-                    'parties.contact',
-                    'parties.alternate_contact',
-                    'users.name as userName'
-                )
-                ->where('sales.sales_type', 'walkin_sale')
-                ->where('sales.deleted', 'No');
+            $query = Sale::with(['customer', 'creator'])
+                ->where('sales_type', 'walkin_sale')
+                ->where('deleted', 'No');
 
             if ($search = $request->q) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('sales.sale_no', 'like', "%{$search}%")
-                        ->orWhere('parties.name', 'like', "%{$search}%");
+                    $q->where('sale_no', 'like', "%{$search}%")
+                        ->orWhereHas('customer', function ($q2) use ($search) {
+                            $q2->where('name', 'like', "%{$search}%");
+                        });
                 });
             }
 
-            $sortBy = $request->sort_by ?? 'sales.id';
+            $sortBy = $request->sort_by ?? 'id';
+            $sortBy = str_replace('sales.', '', $sortBy);
             $sortDir = $request->sort_direction ?? 'DESC';
             $limit = $request->limit ?? 10;
 

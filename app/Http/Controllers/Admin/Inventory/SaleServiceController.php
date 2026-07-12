@@ -44,51 +44,26 @@ class SaleServiceController extends Controller
         session(['type' => $saleType]);
 
         $searchTerm = $request->q;
-        $sortBy = $request->sort_by ?? 'sale_orders.id';
+        $sortBy = $request->sort_by ?? 'id';
+        $sortBy = str_replace('sale_orders.', '', $sortBy);
         $sortDirection = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 
-        $query = DB::table('sale_orders')
-            ->join('parties', 'sale_orders.customer_id', '=', 'parties.id')
-            ->leftjoin('users', 'users.id', '=', 'sale_orders.created_by')
-            ->select(
-                'sale_orders.sale_no',
-                'sale_orders.date',
-                'sale_orders.total_amount',
-                'sale_orders.current_payment',
-                'sale_orders.discount',
-                'sale_orders.carrying_cost',
-                'sale_orders.vat',
-                'sale_orders.ait',
-                'sale_orders.id',
-                'sale_orders.sale_id',
-                'sale_orders.grand_total',
-                'sale_orders.order_status',
-                'sale_orders.ready_to_deliver_date',
-                'sale_orders.created_date',
-                'sale_orders.service_start_date',
-                'sale_orders.delivered_date',
-                'sale_orders.brand',
-                'sale_orders.model',
-                'sale_orders.item',
-                'sale_orders.project_name',
-                'parties.name',
-                'parties.code',
-                'parties.address',
-                'parties.contact',
-                'parties.alternate_contact',
-                'users.name as userName'
-            )
-            ->where('sale_orders.sales_type', $saleType)
-            ->where('sale_orders.deleted', 'No')
-            ->where('parties.deleted', 'No');
+        $query = SaleOrder::with(['customer', 'creator'])
+            ->where('sales_type', $saleType)
+            ->where('deleted', 'No')
+            ->whereHas('customer', function($q) {
+                $q->where('deleted', 'No');
+            });
 
         if ($searchTerm) {
             $query->where(function ($q) use ($searchTerm) {
-                $q->where('sale_orders.sale_no', 'like', "%{$searchTerm}%")
-                    ->orWhere('parties.name', 'like', "%{$searchTerm}%")
-                    ->orWhere('sale_orders.brand', 'like', "%{$searchTerm}%")
-                    ->orWhere('sale_orders.model', 'like', "%{$searchTerm}%");
+                $q->where('sale_no', 'like', "%{$searchTerm}%")
+                    ->orWhere('brand', 'like', "%{$searchTerm}%")
+                    ->orWhere('model', 'like', "%{$searchTerm}%")
+                    ->orWhereHas('customer', function ($q2) use ($searchTerm) {
+                        $q2->where('name', 'like', "%{$searchTerm}%");
+                    });
             });
         }
 
@@ -119,13 +94,13 @@ class SaleServiceController extends Controller
 
     public function add()
     {
-        $categories = Category::where('deleted', 'No')->where('status', 'Active')->get();
-        $brands = Brand::where('deleted', 'No')->where('status', 'Active')->get();
-        $products = Product::where('deleted', 'No')->where('status', 'Active')->get();
-        $warehouses = Warehouse::where('deleted', 'No')->where('status', 'Active')->get();
-        $customers = Party::where('deleted', 'No')->where('status', 'Active')->where('party_type', 'Customer')->get();
+        $categories = Category::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $brands = Brand::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $products = Product::with('brand')->where('deleted', 'No')->where('status', 'Active')->get();
+        $warehouses = Warehouse::where('deleted', 'No')->where('status', 'Active')->toBase()->get();
+        $customers = Party::where('deleted', 'No')->where('status', 'Active')->where('party_type', 'Customer')->toBase()->get();
         $type = 'walkin_sale';
-        $coas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->where('parent_id', '=', '31')->get();
+        $coas = ChartOfAccounts::where('deleted', 'No')->where('status', 'Active')->where('parent_id', '=', '31')->toBase()->get();
 
         return view('admin.inventory.service.add-service-sale', compact('categories', 'brands', 'products', 'coas', 'warehouses', 'customers', 'type'));
     }

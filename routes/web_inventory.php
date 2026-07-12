@@ -119,6 +119,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     // Purchase Routes
+    Route::prefix('purchase_orders')->name('purchase_orders.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'index'])->name('index');
+        Route::get('/add', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'add'])->name('add');
+        Route::post('/store', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'store'])->name('store');
+        Route::get('/approve/{id}', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'approve'])->name('approve');
+    });
+
     Route::prefix('purchase')->group(function () {
         Route::name('purchase.')->group(function () {
             Route::get('/', [PurchaseController::class, 'index'])->name('index');
@@ -208,6 +215,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('service/orderInvoice/{id}', [SaleServiceController::class, 'orderInvoice'])->name('orderInvoice');
         Route::get('service/completeInvoice/{id}', [SaleServiceController::class, 'completeInvoice'])->name('completeInvoice');
         Route::get('service/sale/invoice/{id}', [SaleServiceController::class, 'createPDF'])->name('serviceSaleInvoice');
+    });
+
+    // Quotation Routes
+    Route::name('quotations.')->prefix('quotations')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'index'])->name('index');
+        Route::get('/add', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'add'])->name('add');
+        Route::post('/store', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'store'])->name('store');
+        Route::get('/convert/{id}', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'convertToSaleOrder'])->name('convert');
+        Route::get('/pdf/{id}', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'createPDF'])->name('pdf');
     });
 
     // Damage Routes

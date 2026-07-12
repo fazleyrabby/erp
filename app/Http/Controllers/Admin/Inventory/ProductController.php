@@ -37,28 +37,25 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $data['categories'] = Category::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->get();
-        $data['brands'] = Brand::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->get();
-        $data['units'] = Unit::where('deleted', 'No')->where('status', '=', 'Active')->get();
-        $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status', '=', 'Active')->get();
+        $data['categories'] = Category::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->toBase()->get();
+        $data['brands'] = Brand::where('deleted', 'No')->where('status', '=', 'Active')->where('name', '!=', 'Service')->toBase()->get();
+        $data['units'] = Unit::where('deleted', 'No')->where('status', '=', 'Active')->toBase()->get();
+        $data['warehouses'] = Warehouse::where('deleted', 'No')->where('status', '=', 'Active')->toBase()->get();
 
-        $query = DB::table('products')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->join('units', 'products.unit_id', '=', 'units.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('products.id', 'products.status', 'products.type', 'products.image', 'products.name', 'products.model_no', 'products.code', 'products.barcode_no', 'products.opening_stock', 'products.current_stock', 'products.remainder_quantity', 'products.purchase_price', 'products.sale_price', 'products.discount', 'categories.name as categoryName', 'brands.name as brandName', 'units.name as unitName')
-            ->where('products.deleted', 'No');
+        $query = Product::with(['brand', 'unit', 'category'])
+            ->where('deleted', 'No');
 
         if ($search = $request->q) {
             $query->where(function ($q) use ($search) {
-                $q->where('products.name', 'like', "%{$search}%")
-                    ->orWhere('products.model_no', 'like', "%{$search}%")
-                    ->orWhere('products.code', 'like', "%{$search}%")
-                    ->orWhere('products.barcode_no', 'like', "%{$search}%");
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('model_no', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhere('barcode_no', 'like', "%{$search}%");
             });
         }
 
-        $sortBy = $request->sort_by ?? 'products.id';
+        $sortBy = $request->sort_by ?? 'id';
+        $sortBy = str_replace('products.', '', $sortBy);
         $sortDir = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 
@@ -70,13 +67,9 @@ class ProductController extends Controller
     public function getAdvanceSearchProducts(Request $request)
     {
 
-        $products = DB::table('products')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->join('units', 'products.unit_id', '=', 'units.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('products.id', 'products.status', 'products.image', 'products.name', 'products.code', 'products.barcode_no', 'products.opening_stock', 'products.current_stock', 'products.remainder_quantity', 'products.purchase_price', 'products.sale_price', 'products.discount', 'categories.name as categoryName', 'brands.name as brandName', 'units.name as unitName')
-            ->where('products.deleted', 'No')
-            ->orderBy('products.id', 'DESC')
+        $products = Product::with(['brand', 'unit', 'category'])
+            ->where('deleted', 'No')
+            ->orderBy('id', 'DESC')
             ->get();
         $output = ['data' => []];
         $i = 1;

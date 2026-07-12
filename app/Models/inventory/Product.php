@@ -2,9 +2,9 @@
 
 namespace App\Models\inventory;
 
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Unit;
+use App\Models\inventory\Brand;
+use App\Models\inventory\Category;
+use App\Models\inventory\Unit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,5 +33,20 @@ class Product extends Model
     public function serializeProducts()
     {
         return $this->hasMany(SerializeProduct::class, 'tbl_productsId');
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        return $this->category->name ?? '';
+    }
+
+    public function getBrandNameAttribute()
+    {
+        return $this->brand->name ?? '';
+    }
+
+    public function getUnitNameAttribute()
+    {
+        return $this->unit->name ?? '';
     }
 }
