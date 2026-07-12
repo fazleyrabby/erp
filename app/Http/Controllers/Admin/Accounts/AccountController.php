@@ -101,8 +101,7 @@ class AccountController extends Controller
 
         if ($request->parent_id == '0' || $request->parent_id == 'null') {
             $assetCode = '';
-            $assets = DB::table('tbl_acc_coas')
-                ->select(DB::raw('IFNULL(MAX(substr(our_code, 1,1)),0)+1 as code'))
+            $assets = ChartOfAccounts::select(DB::raw('IFNULL(MAX(substr(our_code, 1,1)),0)+1 as code'))
                 ->WHERE('parent_id', '0')
                 ->WHERE('deleted', 'No')
                 ->toSql();

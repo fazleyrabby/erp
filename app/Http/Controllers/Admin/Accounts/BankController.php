@@ -16,9 +16,7 @@ class BankController extends Controller
         $sortDirection = $request->sort_direction ?? 'DESC';
         $limit = $request->limit ?? 10;
 
-        $config = DB::table('tbl_acc_configurations')
-            ->where('tbl_acc_configurations.name', '=', 'Bank')
-            ->first();
+        $config = \App\Models\Accounts\AccountConfiguration::where('name', 'Bank')->first();
         $configId = $config->tbl_acc_coa_id;
 
         $banks = ChartOfAccounts::where('parent_id', $configId)
@@ -47,9 +45,7 @@ class BankController extends Controller
     public function geData()
     {
 
-        $config = DB::table('tbl_acc_configurations')
-            ->where('tbl_acc_configurations.name', '=', 'Bank')
-            ->first();
+        $config = \App\Models\Accounts\AccountConfiguration::where('name', 'Bank')->first();
 
         $configId = $config->tbl_acc_coa_id;
 
