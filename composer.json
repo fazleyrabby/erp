@@ -33,6 +33,8 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "pestphp/pest": "^1.23",
+        "pestphp/pest-plugin-laravel": "^1.4",
         "phpunit/phpunit": "^9.3.3"
     },
     "config": {
@@ -42,6 +44,10 @@
         "audit": {
             "ignore": ["PKSA-qstp-ffwg-8hp6", "PKSA-5vz3-q51h-7mg4", "PKSA-7ztm-rpt3-qqzk", "PKSA-4jrs-y99s-q8j6", "PKSA-hbk6-2vfz-8f8n", "PKSA-kj9c-tr41-t8mj", "PKSA-872h-8556-2chm", "PKSA-99tj-gg5v-4g74", "PKSA-qsyb-3psh-f1t3", "PKSA-3dsp-r6t7-8xmz", "PKSA-cwpj-dtf9-6fg1"],
             "block-insecure": false
+        },
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "pestphp/pest": true
         }
     },
     "extra": {
