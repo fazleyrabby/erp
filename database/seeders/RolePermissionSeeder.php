@@ -126,6 +126,11 @@ class RolePermissionSeeder extends Seeder
             'sale.service.statusComplete',
             'sale.service.createOrderToWalkinSale',
 
+            'invoices.view',
+            'invoices.add',
+            'invoices.edit',
+            'invoices.delete',
+
         ];
 
         // Create Permissions

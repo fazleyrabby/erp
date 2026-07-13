@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Admin\Usertype;
+use App\Models\payroll\OurTeam;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -68,6 +69,11 @@ class User extends Authenticatable
     {
 
         return $this->belongsTo(Usertype::class, 'usertype_id', 'id');
+    }
+
+    public function employee()
+    {
+        return $this->hasOne(OurTeam::class, 'user_id', 'id');
     }
 
     public static function getPermissionGroups()

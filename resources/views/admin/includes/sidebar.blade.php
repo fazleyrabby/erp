@@ -30,17 +30,24 @@
                 </li>
 
                 @if (Auth::user()->hasRole('Employee') || Auth::user()->hasRole('Super Admin'))
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#navbar-ess" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="false">
+                @php
+                    $essRoutes = ['employee.my-leaves', 'employee.apply-leave', 'employee.leave-store'];
+                    $essActive = request()->routeIs($essRoutes);
+                @endphp
+                <li class="nav-item dropdown {{ $essActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $essActive ? 'active' : '' }}" href="#navbar-ess" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $essActive ? 'true' : 'false' }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-user-circle"></i></span>
                         <span class="nav-link-title">Employee Portal</span>
                     </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> My Payslips
+                    <div class="dropdown-menu {{ $essActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->routeIs('employee.my-leaves') ? 'active' : '' }}" href="{{ route('employee.my-leaves') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> My Leaves
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('employee.apply-leave') ? 'active' : '' }}" href="{{ route('employee.apply-leave') }}">
+                            <i class="fa fa-plus-circle icon-inline me-1"></i> Apply for Leave
                         </a>
                         <a class="dropdown-item" href="#">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> My Leaves
+                            <i class="fa fa-check-circle icon-inline me-1"></i> My Payslips
                         </a>
                         <a class="dropdown-item" href="#">
                             <i class="fa fa-check-circle icon-inline me-1"></i> My Attendance
@@ -150,6 +157,26 @@
                                     <i class="fa fa-check-circle icon-inline me-1"></i> FS Return
                                 </a>
                                 @endif
+                            </div>
+                        </div>
+                        @endif
+
+                        @if (Auth::guard('web')->user()->can('invoices.view'))
+                        @php $invActive = request()->routeIs('invoices.*'); @endphp
+                        <div class="dropend {{ $invActive ? 'show' : '' }}">
+                            <a class="dropdown-item dropdown-toggle {{ $invActive ? 'active' : '' }}" href="#navbar-invoice" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $invActive ? 'true' : 'false' }}">
+                                <i class="fa fa-file-text icon-inline me-1"></i> Invoicing & Billing
+                            </a>
+                            <div class="dropdown-menu {{ $invActive ? 'show' : '' }}">
+                                <a class="dropdown-item {{ request()->routeIs('invoices.index') && request('type') === 'Sales' ? 'active' : '' }}" href="{{ route('invoices.index', ['type' => 'Sales']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Sales Invoices
+                                </a>
+                                <a class="dropdown-item {{ request()->routeIs('invoices.index') && request('type') === 'Purchase' ? 'active' : '' }}" href="{{ route('invoices.index', ['type' => 'Purchase']) }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Bills
+                                </a>
+                                <a class="dropdown-item {{ request()->routeIs('invoices.add') ? 'active' : '' }}" href="{{ route('invoices.add') }}">
+                                    <i class="fa fa-plus-circle icon-inline me-1"></i> New Invoice
+                                </a>
                             </div>
                         </div>
                         @endif

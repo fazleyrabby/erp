@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PayRoll\Group\GroupController;
 use App\Http\Controllers\Admin\PayRoll\Group\TimeGroupController;
 use App\Http\Controllers\Admin\PayRoll\Group\UserTimeScheduleController;
 use App\Http\Controllers\Admin\PayRoll\LeaveManagement\LeaveController;
+use App\Http\Controllers\Admin\PayRoll\LeaveManagement\EmployeeLeaveController;
 use App\Http\Controllers\Admin\PayRoll\LoanSalary\SalaryLoanController;
 use App\Http\Controllers\Admin\PayRoll\MonthlyAmount\MonthlyAmountController;
 use App\Http\Controllers\Admin\PayRoll\SalarySheet\BonusController;
@@ -185,6 +186,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('leave/management/get/edit', [LeaveController::class, 'edit'])->name('leaveEdit');
         Route::post('leave/management/get/update', [LeaveController::class, 'update'])->name('leaveUpdate');
         Route::post('leave/management/get/delete', [LeaveController::class, 'delete'])->name('leaveDelete');
+
+        /* Employee self-service leave routes */
+        Route::name('employee.')->prefix('employee')->group(function () {
+            Route::get('leaves', [EmployeeLeaveController::class, 'myLeaves'])->name('my-leaves');
+            Route::get('leaves/apply', [EmployeeLeaveController::class, 'showApplyForm'])->name('apply-leave');
+            Route::post('leaves/store', [EmployeeLeaveController::class, 'apply'])->name('leave-store');
+        });
 
     });
 

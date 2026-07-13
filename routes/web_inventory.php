@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Inventory\InventoryReportController;
+use App\Http\Controllers\Admin\Inventory\InvoiceController;
 use App\Http\Controllers\Admin\Inventory\ProductController;
 use App\Http\Controllers\Admin\Inventory\PurchaseController;
 use App\Http\Controllers\Admin\Inventory\PurchaseReturnController;
@@ -226,6 +227,22 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/store', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'store'])->name('store');
         Route::get('/convert/{id}', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'convertToSaleOrder'])->name('convert');
         Route::get('/pdf/{id}', [\App\Http\Controllers\Admin\Inventory\QuotationController::class, 'createPDF'])->name('pdf');
+    });
+
+    // Invoice Routes
+    Route::name('invoices.')->prefix('invoices')->group(function () {
+        Route::get('/', [InvoiceController::class, 'index'])->name('index');
+        Route::get('/add', [InvoiceController::class, 'add'])->name('add');
+        Route::post('/store', [InvoiceController::class, 'store'])->name('store');
+        Route::get('/show/{id}', [InvoiceController::class, 'show'])->name('show');
+        Route::get('/edit/{id}', [InvoiceController::class, 'edit'])->name('edit');
+        Route::post('/update/{id}', [InvoiceController::class, 'update'])->name('update');
+        Route::post('/delete', [InvoiceController::class, 'delete'])->name('delete');
+        Route::post('/status/{id}', [InvoiceController::class, 'updateStatus'])->name('status');
+        Route::post('/payment/{id}', [InvoiceController::class, 'addPayment'])->name('payment');
+        Route::get('/pdf/{id}', [InvoiceController::class, 'createPDF'])->name('pdf');
+        Route::get('/convert-from-sale/{id}', [InvoiceController::class, 'convertFromSale'])->name('convert-from-sale');
+        Route::get('/convert-from-purchase/{id}', [InvoiceController::class, 'convertFromPurchase'])->name('convert-from-purchase');
     });
 
     // Damage Routes
