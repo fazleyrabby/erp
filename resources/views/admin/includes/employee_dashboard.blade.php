@@ -5,9 +5,13 @@
 @php
     $employee = auth()->user()->employee;
     $year = date('Y');
+    $month = date('m');
     $balances = $employee ? \App\Models\payroll\LeaveBalance::where('employee_id', $employee->id)->where('year', $year)->get() : collect();
     $totalLeaves = $employee ? \App\Models\payroll\Leave::where('employee_id', $employee->id)->whereYear('created_at', $year)->where('deleted', 'No')->count() : 0;
     $pendingLeaves = $employee ? \App\Models\payroll\Leave::where('employee_id', $employee->id)->where('leave_status', 'Pending')->where('deleted', 'No')->count() : 0;
+    $presentDays = $employee ? \App\Models\payroll\PayrollAttendence::forEmployee($employee->id)->forMonth($year, $month)->where('time_in', '!=', null)->count() : 0;
+    $totalWorkingDays = now()->startOfMonth()->diffInDays(now()->endOfMonth()) + 1;
+    $attendancePct = $totalWorkingDays > 0 ? round(($presentDays / $totalWorkingDays) * 100) : 0;
 @endphp
 
 <div class="row row-deck row-cards mt-4">
@@ -56,6 +60,20 @@
         <div class="card bg-info-lt">
             <div class="card-body">
                 <div class="d-flex align-items-center">
+                    <div class="subheader">Attendance ({{ date('F') }})</div>
+                </div>
+                <div class="h1 mb-3">{{ $presentDays }} / {{ $totalWorkingDays }}</div>
+                <div class="d-flex mb-2">
+                    <div>{{ $attendancePct }}% Present</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+        <div class="card bg-warning-lt">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
                     <div class="subheader">My Applications</div>
                 </div>
                 <div class="h1 mb-3">{{ $totalLeaves }}</div>
@@ -80,15 +98,15 @@
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="{{ route('employee.my-leaves') }}" class="btn btn-outline-success w-100 py-3">
-                            <i class="fa fa-list fa-2x mb-2 d-block"></i>
-                            My Leaves
+                        <a href="{{ route('employee.my-attendance') }}" class="btn btn-outline-success w-100 py-3">
+                            <i class="fa fa-clock-o fa-2x mb-2 d-block"></i>
+                            My Attendance
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="#" class="btn btn-outline-info w-100 py-3">
-                            <i class="fa fa-file-text-o fa-2x mb-2 d-block"></i>
-                            Download Payslip
+                        <a href="{{ route('employee.my-leaves') }}" class="btn btn-outline-info w-100 py-3">
+                            <i class="fa fa-list fa-2x mb-2 d-block"></i>
+                            My Leaves
                         </a>
                     </div>
                 </div>

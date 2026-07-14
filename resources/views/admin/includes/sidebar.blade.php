@@ -49,7 +49,7 @@
                         <a class="dropdown-item" href="#">
                             <i class="fa fa-check-circle icon-inline me-1"></i> My Payslips
                         </a>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item {{ request()->routeIs('employee.my-attendance') ? 'active' : '' }}" href="{{ route('employee.my-attendance') }}">
                             <i class="fa fa-check-circle icon-inline me-1"></i> My Attendance
                         </a>
                     </div>
@@ -84,7 +84,7 @@
                         @endif
 
                         @if (Auth::guard('web')->user()->can('Purchase'))
-                        @php $purchActive = request()->routeIs(['purchase.*', 'purchase_orders.*']); @endphp
+                        @php $purchActive = request()->routeIs(['purchase.*', 'purchase_orders.*', 'goods_receipts.*']); @endphp
                         <div class="dropend {{ $purchActive ? 'show' : '' }}">
                             <a class="dropdown-item dropdown-toggle {{ $purchActive ? 'active' : '' }}" href="#navbar-purchase" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $purchActive ? 'true' : 'false' }}">
                                 <i class="fa fa-shopping-cart icon-inline me-1"></i> Purchase Management
@@ -103,6 +103,9 @@
                                     <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Return
                                 </a>
                                 @endif
+                                <a class="dropdown-item {{ request()->routeIs('goods_receipts.*') ? 'active' : '' }}" href="{{ route('goods_receipts.index') }}">
+                                    <i class="fa fa-check-circle icon-inline me-1"></i> Goods Receipt Notes
+                                </a>
                             </div>
                         </div>
                         @endif

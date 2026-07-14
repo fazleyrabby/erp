@@ -31,4 +31,9 @@ class OurTeam extends Model
         $year = date('Y');
         return $this->leaveBalances()->where('year', $year)->get();
     }
+
+    public function attendences()
+    {
+        return $this->hasMany(PayrollAttendence::class, 'employee_id', 'id');
+    }
 }

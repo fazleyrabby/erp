@@ -119,6 +119,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/deleteSpec', [ProductController::class, 'deleteSpec'])->name('deleteSpec');
     });
 
+    // Goods Receipt Routes
+    Route::prefix('goods_receipts')->name('goods_receipts.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\Inventory\GoodsReceiptController::class, 'index'])->name('index');
+        Route::get('/create', [\App\Http\Controllers\Admin\Inventory\GoodsReceiptController::class, 'create'])->name('create');
+        Route::post('/store', [\App\Http\Controllers\Admin\Inventory\GoodsReceiptController::class, 'store'])->name('store');
+        Route::get('/load-po-products/{poId}', [\App\Http\Controllers\Admin\Inventory\GoodsReceiptController::class, 'loadPoProducts'])->name('load-po-products');
+        Route::get('/{id}', [\App\Http\Controllers\Admin\Inventory\GoodsReceiptController::class, 'show'])->name('show');
+    });
+
     // Purchase Routes
     Route::prefix('purchase_orders')->name('purchase_orders.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\Inventory\PurchaseOrderController::class, 'index'])->name('index');

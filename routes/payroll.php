@@ -3,6 +3,7 @@
 /* For Payroll Start */
 use App\Http\Controllers\Admin\PayRoll\Attendence\AttendenceController;
 use App\Http\Controllers\Admin\PayRoll\Attendence\AttendenceGroupWiseController;
+use App\Http\Controllers\Admin\PayRoll\Attendence\EmployeeAttendenceController;
 use App\Http\Controllers\Admin\PayRoll\Facility\FacilityController;
 use App\Http\Controllers\Admin\PayRoll\gradeAndStep\GradeNewController;
 use App\Http\Controllers\Admin\PayRoll\gradeAndStep\StepNewController;
@@ -192,6 +193,11 @@ Route::group(['middleware' => ['auth']], function () {
             Route::get('leaves', [EmployeeLeaveController::class, 'myLeaves'])->name('my-leaves');
             Route::get('leaves/apply', [EmployeeLeaveController::class, 'showApplyForm'])->name('apply-leave');
             Route::post('leaves/store', [EmployeeLeaveController::class, 'apply'])->name('leave-store');
+
+            /* Employee self-service attendance routes */
+            Route::get('attendance', [EmployeeAttendenceController::class, 'myAttendance'])->name('my-attendance');
+            Route::post('attendance/clock-in', [EmployeeAttendenceController::class, 'clockIn'])->name('clock-in');
+            Route::post('attendance/clock-out', [EmployeeAttendenceController::class, 'clockOut'])->name('clock-out');
         });
 
     });
