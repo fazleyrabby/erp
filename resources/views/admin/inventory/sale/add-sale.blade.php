@@ -43,20 +43,66 @@
                             </div><!-- /.card-header -->
                             <div class="card-body">
                                 <div class="row g-3">
-                                    @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
-                                        <div class="form-group mb-3 col-md-12">
-                                            <label>Barcode: </label>
-                                            <input class="form-control form-control-sm" id="barcode" type="text"
-                                                name="barcode" onkeyup="findProduct()">
-                                            <span class="text-danger" id="barcodeError"></span>
+                                    {{-- Touch-friendly POS header (walkin) --}}
+                                    @if ($type == 'walkin_sale')
+                                        <div class="col-md-12">
+                                            <div class="pos-bar d-flex flex-wrap gap-2 align-items-end">
+                                                <div class="pos-field flex-grow-1" style="min-width:220px;">
+                                                    <label class="form-label">Warehouse <span class="text-danger">*</span></label>
+                                                    <select id="warehouse" name="warehouse" class="form-select form-select-lg" required>
+                                                        @foreach ($warehouses as $warehouse)
+                                                            <option value='{{ $warehouse->id }}'>{{ $warehouse->wareHouseName }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <span class="text-danger" id="warehouseError"></span>
+                                                </div>
+                                                @if (Session::get('companySettings')[0]['barcode_exists'] == 'Yes')
+                                                <div class="pos-field flex-grow-1" style="min-width:260px;">
+                                                    <label class="form-label">Barcode Scan</label>
+                                                    <input class="form-control form-control-lg" id="barcode" type="text"
+                                                        name="barcode" placeholder="Scan or type barcode…" onkeyup="findProduct()" autocomplete="off">
+                                                    <span class="text-danger" id="barcodeError"></span>
+                                                </div>
+                                                @endif
+                                                <div class="pos-field" style="min-width:160px;">
+                                                    <label class="form-label">Date</label>
+                                                    <input type="date" id="saleDate" name="saleDate" class="form-control form-control-lg" value="{{ todayDate() }}" />
+                                                </div>
+                                            </div>
                                         </div>
-                                    @endif
-                                    <div class="form-group mb-3 col-md-2">
-                                        <label>Date : <span class="text-danger">*</span></label>
-                                        <input type="date" id="saleDate" name="saleDate" class="form-control form-control-sm"
-                                            value="{{ todayDate() }}" />
-                                    </div>
-                                    @if ($type != 'walkin_sale')
+
+                                        <div class="col-md-12 mt-2">
+                                            <div class="pos-bar d-flex flex-wrap gap-2 align-items-end">
+                                                <div class="pos-field flex-grow-1" style="min-width:200px;">
+                                                    <label class="form-label">Customer Phone <span class="text-danger">*</span></label>
+                                                    <div class="input-group input-group-lg">
+                                                        <input type="text" id="partyPhoneNumber" name="partyPhoneNumber"
+                                                            onchange="getCustomerInfo(0,'Walkin_Customer')"
+                                                            class="form-control" placeholder="Phone Number"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
+                                                        <button type="button" class="btn btn-primary" onclick="getCustomerInfo(0,'Walkin_Customer')"><i class="fa fa-search"></i></button>
+                                                    </div>
+                                                    <input type="hidden" id="customer" name="customer" value="0" />
+                                                    <span class="text-danger" id="partyPhoneNumberError"></span>
+                                                </div>
+                                                <div class="pos-field flex-grow-1" style="min-width:200px;">
+                                                    <label class="form-label">Customer Name</label>
+                                                    <input type="text" id="customerName" name="customerName" class="form-control form-control-lg" />
+                                                    <span class="text-danger" id="customerNameError"></span>
+                                                </div>
+                                                <div class="pos-field flex-grow-1" style="min-width:200px;">
+                                                    <label class="form-label">Address</label>
+                                                    <input type="text" id="customerAddress" name="customerAddress" class="form-control form-control-lg" />
+                                                    <span class="text-danger" id="customerAddressError"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="form-group mb-3 col-md-2">
+                                            <label>Date : <span class="text-danger">*</span></label>
+                                            <input type="date" id="saleDate" name="saleDate" class="form-control form-control-sm"
+                                                value="{{ todayDate() }}" />
+                                        </div>
                                         <div class="form-group mb-3 col-md-7">
                                             <label>Party Name : <span class="text-danger">*</span></label>
                                             <select id="customer" name="customer" class="abcd customer" style="width:100%"
@@ -79,48 +125,26 @@
                                             </div>
                                             <span class="text-danger" id="partyPhoneNumberError"></span>
                                         </div>
-                                    @endif
-
-                                    @if ($type == 'walkin_sale')
-                                        <div class="form-group mb-3 col-md-4">
-                                            <input type="hidden" id="customer" name="customer" value="0" />
-                                            <label>Phone: <span class="text-danger">*</span></label>
-                                            <div class="d-flex">
-                                                <input type="text" id="partyPhoneNumber" name="partyPhoneNumber"
-                                                    onchange="getCustomerInfo(0,'Walkin_Customer')"
-                                                    class="form-control form-control-sm" placeholder=" Phone Number"
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
-                                                <a class="btn btn-primary"
-                                                    onclick="getCustomerInfo(0,'Walkin_Customer')"><i
-                                                        class="fas fa-sync"></i></a>
-                                            </div>
-                                            <span class="text-danger" id="partyPhoneNumberError"></span>
+                                        <div class="form-group mb-3 col-md-6">
+                                            <label>Warehouse: <span class="text-danger">*</span></label>
+                                            <select id="warehouse" name="warehouse" class="abcd" style="width:100%" required>
+                                                @foreach ($warehouses as $warehouse)
+                                                    <option value='{{ $warehouse->id }}'>{{ $warehouse->wareHouseName }}</option>
+                                                @endforeach
+                                            </select>
+                                            <span class="text-danger" id="warehouseError"></span>
+                                        </div>
+                                        <div class="form-group mb-3 col-md-6 ">
+                                            <label>Name: <span class="text-danger">*</span></label>
+                                            <input type="text" id="customerName" name="customerName" class="form-control form-control-sm" />
+                                            <span class="text-danger" id="customerNameError"></span>
+                                        </div>
+                                        <div class="form-group mb-3 col-md-6">
+                                            <label>Address: </label>
+                                            <input type="text" id="customerAddress" name="customerAddress" class="form-control form-control-sm" />
+                                            <span class="text-danger" id="customerAddressError"></span>
                                         </div>
                                     @endif
-                                    <div class="form-group mb-3 col-md-6">
-                                        <label>Warehouse: <span class="text-danger">*</span></label>
-                                        <select id="warehouse" name="warehouse" class="abcd" style="width:100%" required>
-                                           {{--  <option value='' selected='true'> Select Warehouse </option> --}}
-                                            @foreach ($warehouses as $warehouse)
-                                                <option value='{{ $warehouse->id }}'>
-                                                    {{ $warehouse->wareHouseName }}
-                                                </option>
-                                            @endforeach  
-                                        </select>
-                                        <span class="text-danger" id="warehouseError"></span>
-                                    </div>
-                                    <div class="form-group mb-3 col-md-6 ">
-                                        <label>Name: <span class="text-danger">*</span></label>
-                                        <input type="text" id="customerName" name="customerName"
-                                            class="form-control form-control-sm" />
-                                        <span class="text-danger" id="customerNameError"></span>
-                                    </div>
-                                    <div class="form-group mb-3 col-md-6">
-                                        <label>Address: </label>
-                                        <input type="text" id="customerAddress" name="customerAddress"
-                                            class="form-control form-control-sm" />
-                                        <span class="text-danger" id="customerAddressError"></span>
-                                    </div>
                                     <input type="hidden" id="category_id" name="category" value="42">
                                     <div class="form-group mb-3 col-md-2">
                                         <label>Credit Limit
@@ -165,25 +189,48 @@
                                             -->
                                         </select>
                                     </div>
-                                    <div class="form-group mb-3 col-md-12">
-                                        <label class="form-label">Product Search : <span class="text-danger">*</span></label>
-                                        <div class="d-flex">
-                                            <div class="flex-grow-1">
-                                                <select id="products" name="products" class="form-control form-control-sm">
-                                                    <option value=""> Product Search </option>
-                                                    @foreach ($products as $product)
-                                                        <option value="{{ $product->id }}">
-                                                            {{ $product->name . ' - ' . $product->code }} </option>
-                                                    @endforeach
-                                                </select>
+                                    @if ($type == 'walkin_sale')
+                                        {{-- Touch product grid --}}
+                                        <div class="col-md-12 pos-grid-wrap">
+                                            <div class="input-group mb-2">
+                                                <span class="input-group-text"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg></span>
+                                                <input type="text" id="posSearch" class="form-control form-control-lg" placeholder="Search products by name or code…" autocomplete="off">
+                                                <button class="btn btn-outline-secondary" type="button" id="posSearchClear">Clear</button>
                                             </div>
-                                            <button type="button" class="btn btn-primary ms-2"
-                                                onclick="showAdvanceSearch();"> <i class="fas fa-search"></i></button>
+                                            <ul class="nav nav-pills pos-cat-tabs mb-2" id="posCatTabs">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" href="#" data-cat="">All</a>
+                                                </li>
+                                                @foreach ($categories as $category)
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#" data-cat="{{ $category->id }}">{{ $category->name }}</a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            <div id="posProductGrid" class="pos-product-grid"></div>
+                                            <div id="posGridLoading" class="text-center text-muted py-4 d-none">Loading products…</div>
                                         </div>
-                                    </div>
+                                    @else
+                                        <div class="form-group mb-3 col-md-12">
+                                            <label class="form-label">Product Search : <span class="text-danger">*</span></label>
+                                            <div class="d-flex">
+                                                <div class="flex-grow-1">
+                                                    <select id="products" name="products" class="form-control form-control-sm">
+                                                        <option value=""> Product Search </option>
+                                                        @foreach ($products as $product)
+                                                            <option value="{{ $product->id }}">
+                                                                {{ $product->name . ' - ' . $product->code }} </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <button type="button" class="btn btn-primary ms-2"
+                                                    onclick="showAdvanceSearch();"> <i class="fas fa-search"></i></button>
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="form-group mb-3 col-md-12">
                                         <label>Cart Details: </label>
-                                        <div class="table-responsive">
+                                        <div class="table-responsive pos-cart">
                                         <table class="table table-vcenter table-bordered text-nowrap">
                                             <thead>
                                                 <tr>
@@ -203,7 +250,7 @@
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
                                                 <td class="text-end font-weight-bold"> <input type="text"
                                                         id="discount" name="discount" onblur="calculateTotal()"
-                                                        class="form-control text-end" /> </td>
+                                                        class="form-control form-control-lg text-end" /> </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -211,7 +258,7 @@
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
                                                 <td class="text-end font-weight-bold"><input type="text"
                                                         id="transport" name="transport" onblur="calculateTotal()"
-                                                        class="form-control text-end" /></td>
+                                                        class="form-control form-control-lg text-end" /></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -219,7 +266,7 @@
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
                                                 <td class="text-end font-weight-bold"><input type="text"
                                                         id="vat" name="vat" onblur="calculateTotal()"
-                                                        class="form-control text-end" /></td>
+                                                        class="form-control form-control-lg text-end" /></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -227,13 +274,13 @@
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
                                                 <td class="text-end font-weight-bold"><input type="text"
                                                         id="ait" name="ait" onblur="calculateTotal()"
-                                                        class="form-control text-end" /></td>
+                                                        class="form-control form-control-lg text-end" /></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="6" class="text-end align-middle">Grand Total
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
-                                                <td class="text-end"><span class="form-control-plaintext text-end fw-bold"
+                                                <td class="text-end"><span class="form-control-plaintext text-end fw-bold fs-3"
                                                         id="grandSum">0</span>
                                                 </td>
                                                 <td></td>
@@ -242,7 +289,7 @@
                                                 <td colspan="6" class="text-end align-middle">Payment Method : </td>
                                                 <td>
                                                     <select id="paymentMethod" name="paymentMethod"
-                                                        class="form-select text-center">
+                                                        class="form-select form-select-lg text-center">
                                                         <option value="Cash" selected>Cash</option>
                                                     </select>
                                                 </td>
@@ -253,7 +300,7 @@
                                                     {{ Session::get('companySettings')[0]['currency'] }} : </td>
                                                 <td>
                                                     <input type="text" id="payment" name="payment"
-                                                        class="form-control text-end" value="0"
+                                                        class="form-control form-control-lg text-end" value="0"
                                                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
                                                 </td>
                                                 <td></td>
@@ -518,6 +565,9 @@
             var warehouseId = warehouseId;
             if (warehouseId != '') {
                 var warehouseName = $("#wrhs_name" + warehouseId).text();
+                if (!warehouseName) {
+                    warehouseName = $("#warehouse option:selected").text();
+                }
                 var saleType = $("#saleType").val();
                 var _token = $('input[name="_token"]').val();
                 var fd = new FormData();
@@ -1330,5 +1380,125 @@
             url = url.replace(':id', id);
             window.open(url);
         }
+
+        /* ============ Touch POS Product Grid ============ */
+        var posSearchTimer;
+        function loadPosProducts(categoryId, search) {
+            categoryId = categoryId || '';
+            search = (search === undefined) ? $("#posSearch").val() : search;
+            search = (search || '').trim();
+            var warehouseId = $("#warehouse").val();
+            if (!warehouseId) {
+                Swal.fire("warning", "Please select a warehouse first", "warning");
+                return;
+            }
+            $("#posGridLoading").removeClass('d-none');
+            $("#posProductGrid").html('');
+            $.ajax({
+                url: "{{ route('brandAndCategoryWise') }}",
+                method: "POST",
+                data: {
+                    _token: $('input[name="_token"]').val(),
+                    warehouseId: warehouseId,
+                    categoryId: categoryId,
+                    brandId: '',
+                    search: search,
+                    type: 'walkin_sale'
+                },
+                dataType: "json",
+                success: function(result) {
+                    $("#posGridLoading").addClass('d-none');
+                    var html = '';
+                    if (result.length === 0) {
+                        html = '<div class="text-center text-muted py-4">No products found for this filter.</div>';
+                    }
+                    $.each(result, function(i, p) {
+                        var stock = (p.currentStock !== undefined) ? p.currentStock : 0;
+                        var img = p.image ? '/storage/' + p.image : '';
+                        var name = p.name + (p.code ? ' (' + p.code + ')' : '');
+                        html += '<button type="button" class="pos-product-tile" onclick="selectProducts(' + p.id + ',' + warehouseId + ')">' +
+                            (img ? '<img src="' + img + '" class="pos-tile-img" onerror="this.style.display=\'none\'">' : '') +
+                            '<span class="pos-tile-name">' + name + '</span>' +
+                            '<span class="pos-tile-price">' + parseFloat(p.sale_price).toFixed(2) + '</span>' +
+                            '<span class="pos-tile-stock">Stock: ' + stock + '</span>' +
+                            '</button>';
+                    });
+                    $("#posProductGrid").html(html);
+                },
+                error: function() {
+                    $("#posGridLoading").addClass('d-none');
+                    $("#posProductGrid").html('<div class="text-center text-danger py-4">Failed to load products.</div>');
+                }
+            });
+        }
+
+        $("#posCatTabs a").on('click', function(e) {
+            e.preventDefault();
+            $("#posCatTabs a").removeClass('active');
+            $(this).addClass('active');
+            loadPosProducts($(this).data('cat'));
+        });
+
+        @if ($type == 'walkin_sale')
+            $("#warehouse").on('change', function() {
+                loadPosProducts($("#posCatTabs a.active").data('cat'));
+            });
+            $("#posSearch").on('input', function() {
+                clearTimeout(posSearchTimer);
+                var term = $(this).val();
+                posSearchTimer = setTimeout(function() {
+                    loadPosProducts($("#posCatTabs a.active").data('cat'), term);
+                }, 300);
+            });
+            $("#posSearchClear").on('click', function() {
+                $("#posSearch").val('');
+                loadPosProducts($("#posCatTabs a.active").data('cat'), '');
+            });
+            $(document).ready(function() {
+                loadPosProducts('');
+            });
+        @endif
     </script>
+
+    <style>
+        .pos-bar { margin-bottom: .5rem; }
+        .pos-field { display: flex; flex-direction: column; }
+        .pos-grid-wrap { margin-top: .25rem; }
+        .pos-cat-tabs .nav-link {
+            font-size: 1rem;
+            padding: .6rem 1rem;
+            border-radius: .5rem;
+            margin-right: .35rem;
+            margin-bottom: .35rem;
+        }
+        .pos-product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: .6rem;
+        }
+        .pos-product-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 110px;
+            padding: .6rem .4rem;
+            border: 1px solid #e6e7e9;
+            border-radius: .65rem;
+            background: #fff;
+            cursor: pointer;
+            transition: transform .05s ease, box-shadow .15s ease;
+        }
+        .pos-product-tile:hover { box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+        .pos-product-tile:active { transform: scale(.96); background: #f1f5ff; }
+        .pos-tile-img { width: 44px; height: 44px; object-fit: contain; margin-bottom: .3rem; }
+        .pos-tile-name { font-weight: 600; font-size: .9rem; line-height: 1.15; }
+        .pos-tile-price { color: #198754; font-weight: 700; font-size: .95rem; margin-top: .15rem; }
+        .pos-tile-stock { color: #6c757d; font-size: .75rem; }
+        .pos-cart table input { min-height: 44px; }
+        @media (max-width: 768px) {
+            .pos-product-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+        }
+    </style>
 @endsection

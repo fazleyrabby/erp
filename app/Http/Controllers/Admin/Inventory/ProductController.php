@@ -135,6 +135,7 @@ class ProductController extends Controller
         $categoryId = $request->categoryId;
         $brandId = $request->brandId;
         $warehouseId = $request->warehouseId;
+        $search = trim((string) $request->search);
         // Added By Hamid (line: 150 to 161)
         if ($categoryId != '' && $brandId != '' && $warehouseId != '') {
             // WarehouseWise Product(s)
@@ -145,67 +146,36 @@ class ProductController extends Controller
                 ->where('products.category_id', $categoryId)
                 ->where('products.brand_id', $brandId)
                 ->where('tbl_currentstock.tbl_wareHouseId', $warehouseId)
-                ->where('products.deleted', 'No')
-                ->get();
+                ->where('products.deleted', 'No');
+            if ($search != '') {
+                $product->where(function ($q) use ($search) {
+                    $q->where('products.name', 'like', '%' . $search . '%')
+                        ->orWhere('products.code', 'like', '%' . $search . '%');
+                });
+            }
+            $product = $product->get();
             // End Added By Hamid
-        } elseif ($categoryId == '' && $brandId == '') {
-            if ($request->type == 'purchase') {
-                $product = Product::where('deleted', 'No')
-                    ->where('status', 'Active')
-                    ->get();
-            } else {
-                $product = Product::where('deleted', 'No')
-                    ->where('current_stock', '>', 0)
-                    ->where('status', 'Active')
-                    ->get();
-            }
-        } elseif ($categoryId == '') {
-            if ($request->type == 'purchase') {
-                $product = DB::table('products')
-                    ->where('deleted', 'No')
-                    ->where('brand_id', $brandId)
-                    ->where('status', 'Active')
-                    ->get();
-            } else {
-                $product = DB::table('products')
-                    ->where('deleted', 'No')
-                    ->where('brand_id', $brandId)
-                    ->where('status', 'Active')
-                    ->where('current_stock', '>', 0)
-                    ->get();
-            }
-        } elseif ($brandId == '') {
-            if ($request->type == 'purchase') {
-                $product = DB::table('products')
-                    ->where('deleted', 'No')
-                    ->where('category_id', $categoryId)
-                    ->where('status', 'Active')
-                    ->get();
-            } else {
-                $product = DB::table('products')
-                    ->where('deleted', 'No')
-                    ->where('category_id', $categoryId)
-                    ->where('status', 'Active')
-                    ->where('current_stock', '>', 0)
-                    ->get();
-            }
         } else {
-            if ($request->type == 'purchase') {
-                $product = DB::table('products')
-                    ->where('deleted', 'No')
-                    ->where('category_id', $categoryId)
-                    ->where('brand_id', $brandId)
-                    ->where('status', 'Active')
-                    ->get();
-            } else {
-                $product = DB::table('products')
-                    ->where('deleted', 'No')
-                    ->where('category_id', $categoryId)
-                    ->where('brand_id', $brandId)
-                    ->where('status', 'Active')
-                    ->where('current_stock', '>', 0)
-                    ->get();
+            $query = $request->type == 'purchase'
+                ? Product::query()
+                : DB::table('products');
+            $query->where('deleted', 'No')->where('status', 'Active');
+            if ($request->type != 'purchase') {
+                $query->where('current_stock', '>', 0);
             }
+            if ($categoryId != '') {
+                $query->where('category_id', $categoryId);
+            }
+            if ($brandId != '') {
+                $query->where('brand_id', $brandId);
+            }
+            if ($search != '') {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('code', 'like', '%' . $search . '%');
+                });
+            }
+            $product = $query->get();
         }
 
         return $product;
