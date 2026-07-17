@@ -11,6 +11,8 @@ class PayrollAttendence extends Model
 
     protected $table = 'tbl_payroll_attendences';
 
+    protected $fillable = ['employee_id', 'date', 'time_in', 'time_out', 'note', 'deleted', 'status'];
+
     public function employee()
     {
         return $this->belongsTo(OurTeam::class, 'employee_id', 'id');
