@@ -27,6 +27,19 @@ Admin Create Team Member
 
 
                                 <div class="form-group mb-3 col-md-6">
+                                    <label for="carousalCaptionOffer" class="form-label">User Account</label>
+                                    <div>
+                                        <select class="form-select form-select-sm" name="user_id">
+                                            <option value="">No account linked</option>
+                                            @foreach(App\Models\User::whereDoesntHave('employee')->get() as $u)
+                                                <option value="{{$u->id}}">{{$u->name}} ({{$u->email}})</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <span class="text-danger">{{ $errors->has('user_id') ? $errors->first('user_id') : '' }}</span>
+                                </div>
+
+                                <div class="form-group mb-3 col-md-6">
                                     <label for="carousalCaptionOffer" class="form-label">Team Leader</label>
 
                                     <div >

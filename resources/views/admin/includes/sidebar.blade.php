@@ -29,7 +29,7 @@
                     </a>
                 </li>
 
-                @if (Auth::user()->hasRole('Employee') || Auth::user()->hasRole('Super Admin'))
+                @if (Auth::user()->hasRole('Employee'))
                 @php
                     $essRoutes = ['employee.my-leaves', 'employee.apply-leave', 'employee.leave-store'];
                     $essActive = request()->routeIs($essRoutes);

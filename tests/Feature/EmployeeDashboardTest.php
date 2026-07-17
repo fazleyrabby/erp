@@ -30,7 +30,7 @@ beforeEach(function () {
 it('renders the employee dashboard for an employee user', function () {
     $response = $this->get('/dashboard');
     $response->assertStatus(200);
-    $response->assertSee('Welcome');
+    $response->assertSee('Employee Dashboard');
     $response->assertSee('Attendance');
     $response->assertSee('My Attendance');
     $response->assertSee('My Leaves');
