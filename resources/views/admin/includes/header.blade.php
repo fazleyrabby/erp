@@ -33,6 +33,7 @@
 
     <!-- Custom Styles -->
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('css/tabler-polish.css')}}" rel="stylesheet">
 
     <style>
         #loading {

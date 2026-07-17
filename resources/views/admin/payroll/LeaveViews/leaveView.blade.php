@@ -16,7 +16,7 @@ Admin Leave Management -View
             <!-- /.card-header -->
             <div class="card-body">
                 <x-filter-bar route="{{ route('leaveIndex') }}" searchPlaceholder="Search leaves..." :sortOptions="['id' => 'ID', 'leave_type' => 'Leave Type']" :defaultSort="'id'" :defaultDirection="'DESC'" />
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
                             <th>SL</th>

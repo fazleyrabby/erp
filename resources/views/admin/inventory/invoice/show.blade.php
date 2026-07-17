@@ -47,7 +47,7 @@
                 @endif
 
                 <div class="table-responsive mb-3">
-                    <table class="table table-bordered table-vcenter">
+                    <table class="table table-bordered table-vcenter table-hover">
                         <thead>
                             <tr>
                                 <th>SL</th>
@@ -152,7 +152,7 @@
                 @if($invoice->payments->count() > 0)
                 <div class="mt-4">
                     <h5>Payment History</h5>
-                    <table class="table table-bordered table-sm">
+                    <table class="table table-bordered table-sm table-hover">
                         <thead>
                             <tr>
                                 <th>Date</th>

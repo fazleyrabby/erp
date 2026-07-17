@@ -41,7 +41,7 @@
                     <div id="poProductsSection" class="mt-4 d-none">
                         <h5>PO Items</h5>
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="poProductsTable">
+                            <table class="table table-bordered table-hover" id="poProductsTable">
                                 <thead>
                                     <tr>
                                         <th>Product</th>

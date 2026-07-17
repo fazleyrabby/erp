@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <x-filter-bar route="{{ route('journalView') }}" searchPlaceholder="Search journals..." :sortOptions="['id' => 'ID', 'transaction_date' => 'Date', 'reference' => 'Reference']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <div class="table-responsive">
-                        <table class="table table-vcenter table-bordered" id="manageJournalTable" width="100%">
+                        <table class="table table-vcenter table-bordered table-hover" id="manageJournalTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <th width="5%" class="text-center">Sl</th>

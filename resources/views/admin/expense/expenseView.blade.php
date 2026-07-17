@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <x-filter-bar route="{{ route('expenseView') }}" searchPlaceholder="Search expenses..." :sortOptions="['id' => 'ID', 'transaction_date' => 'Date', 'tbl_acc_expenses.particulars' => 'Particulars', 'amount' => 'Amount']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <div class="table-responsive">
-                        <table class="table table-vcenter table-bordered" id="manageExpenseTable" width="100%">
+                        <table class="table table-vcenter table-bordered table-hover" id="manageExpenseTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <th width="5%" class="text-center">Sl</th>

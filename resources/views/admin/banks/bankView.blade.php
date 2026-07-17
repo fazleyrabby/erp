@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <x-filter-bar route="{{ route('bankView') }}" searchPlaceholder="Search banks..." :sortOptions="['id' => 'ID', 'name' => 'Name']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <div class="table-responsive">
-                        <table class="table table-vcenter table-bordered" id="manageBankTable" width="100%">
+                        <table class="table table-vcenter table-bordered table-hover" id="manageBankTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>

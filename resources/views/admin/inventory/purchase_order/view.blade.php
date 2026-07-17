@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped table-hover">
                     <thead class="bg-light">
                         <tr>
                             <th>SL</th>

@@ -19,7 +19,7 @@
                     <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
                 <div class="table-responsive">
-                    <table class="table table-bordered table-vcenter">
+                    <table class="table table-bordered table-vcenter table-hover">
                         <thead>
                             <tr>
                                 <th>GRN #</th>

@@ -41,7 +41,7 @@
                                         </div>
                                         <div class="form-group mb-3 col-md-6">
                                             <label class="form-label"><strong>Daily Ledger Details:</strong></label>
-                                            <table class="table table-bordered table-vcenter table-sm w-100">
+                                            <table class="table table-bordered table-vcenter table-sm w-100 table-hover">
                                                 <tbody class="text-center" id="manageReportTable">
                                                     <th>Type</th>
                                                     <th>Amount</th>

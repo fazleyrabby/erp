@@ -29,7 +29,7 @@
                     />
                     <div class="col-md-12">
                         <div class="table-responsive">
-                            <table class="table table-vcenter table-bordered">
+                            <table class="table table-vcenter table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>SL</th>

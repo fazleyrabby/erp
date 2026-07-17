@@ -30,7 +30,7 @@
         />
 
         <div class="table-responsive">
-            <table class="table table-vcenter card-table table-striped">
+            <table class="table table-vcenter card-table table-striped table-hover">
                 <thead>
                     <tr>
                         <th width="8%">SL.</th>

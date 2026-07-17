@@ -21,7 +21,7 @@ Admin COA List
             <div class="card-body">
                 <x-filter-bar route="{{ route('chartOfAccounts') }}" searchPlaceholder="Search chart of accounts..." :sortOptions="['code' => 'Code', 'name' => 'Name', 'id' => 'ID']" :defaultSort="'code'" :defaultDirection="'ASC'" />
                 <div class="table-responsive">
-                    <table class="table table-vcenter table-bordered" id="manageCoaTable" width="100%">
+                    <table class="table table-vcenter table-bordered table-hover" id="manageCoaTable" width="100%">
                         <thead>
                             <tr class="bg-light">
                                 <th width="5%" class="text-center">Sl</th>

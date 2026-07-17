@@ -17,7 +17,7 @@ Admin Time Schedule Group -View
                 <!-- /.card-body -->
                 <div class="card-body">
                     <x-filter-bar route="{{ route('userTimeGroupIndex') }}" searchPlaceholder="Search user schedules..." :sortOptions="['id' => 'ID']" :defaultSort="'id'" :defaultDirection="'DESC'" />
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered table-striped table-hover">
                         <thead>
                             <tr>
                                 <th>SL</th>

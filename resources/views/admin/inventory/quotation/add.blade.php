@@ -28,7 +28,7 @@
                     </div>
                     
                     <h4>Products</h4>
-                    <table class="table table-bordered" id="product_table">
+                    <table class="table table-bordered table-hover" id="product_table">
                         <thead>
                             <tr>
                                 <th>Product</th>

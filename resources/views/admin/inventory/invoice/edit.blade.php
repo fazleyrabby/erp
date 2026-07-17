@@ -41,7 +41,7 @@
                             <button type="button" class="btn btn-success btn-sm" onclick="addItemRow()"><i class="fa fa-plus me-1"></i> Add Item</button>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="itemsTable">
+                            <table class="table table-bordered table-hover" id="itemsTable">
                                 <thead>
                                     <tr>
                                         <th style="width:5%">SL</th>

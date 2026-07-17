@@ -15,7 +15,7 @@
                 @if(session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
-                <table class="table table-bordered table-vcenter">
+                <table class="table table-bordered table-vcenter table-hover">
                     <thead>
                         <tr>
                             <th>Quotation No</th>

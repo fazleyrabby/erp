@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <x-filter-bar route="{{ route('billView') }}" searchPlaceholder="Search bills..." :sortOptions="['id' => 'ID', 'amount' => 'Amount', 'transaction_date' => 'Date']" :defaultSort="'id'" :defaultDirection="'DESC'" />
                     <div class="table-responsive">
-                        <table class="table table-vcenter table-bordered" id="manageBillTable" width="100%">
+                        <table class="table table-vcenter table-bordered table-hover" id="manageBillTable" width="100%">
                             <thead>
                                 <tr class="bg-light">
                                     <td width="5%" class="text-center">Sl</td>

@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <x-filter-bar route="{{ route('parties.view', $type) }}" searchPlaceholder="Search {{ $type }}..." :sortOptions="['id' => 'ID', 'name' => 'Name', 'email' => 'Email', 'contact' => 'Contact']" :defaultSort="'id'" :defaultDirection="'DESC'" :params="['type' => $type]" />
                     <div class="table-responsive">
-                        <table class="table table-vcenter table-bordered">
+                        <table class="table table-vcenter table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th width="5%">SL#</th>

@@ -48,7 +48,7 @@
                     :defaultDirection="'DESC'"
                 />
                 <div class="table-responsive">
-                    <table class="table table-vcenter table-bordered">
+                    <table class="table table-vcenter table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th width="5%" class="text-center">SL</th>

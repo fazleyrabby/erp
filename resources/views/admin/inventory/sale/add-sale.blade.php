@@ -231,7 +231,7 @@
                                     <div class="form-group mb-3 col-md-12">
                                         <label>Cart Details: </label>
                                         <div class="table-responsive pos-cart">
-                                        <table class="table table-vcenter table-bordered text-nowrap">
+                                        <table class="table table-vcenter table-bordered text-nowrap table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>SL</th>

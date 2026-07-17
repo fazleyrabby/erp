@@ -18,7 +18,7 @@
                 @if(session('error'))
                     <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
-                <table class="table table-bordered table-vcenter">
+                <table class="table table-bordered table-vcenter table-hover">
                     <thead>
                         <tr>
                             <th>PO Number</th>

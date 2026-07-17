@@ -108,7 +108,7 @@
                             <div class="form-group mb-3 col-md-12"><br>
                                 <label>Cart Details: </label>
                                 <div class="table-responsive">
-                                <table class="table table-vcenter table-bordered text-nowrap">
+                                <table class="table table-vcenter table-bordered text-nowrap table-hover">
                                     <thead>
                                         <tr>
                                             <th>SL</th>

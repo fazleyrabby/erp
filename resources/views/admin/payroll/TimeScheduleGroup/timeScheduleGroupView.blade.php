@@ -47,7 +47,7 @@ Admin Time Schedule -Add
                     </form>
 
                     <div class="table" style="padding-top:10px;">
-                        <table class="table table-bordered table-striped" >
+                        <table class="table table-bordered table-striped table-hover" >
                             <thead>
                                 <tr>
                                     <th>SL</th>
