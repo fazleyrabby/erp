@@ -1445,6 +1445,23 @@
             loadPosProducts($(this).data('cat'));
         });
 
+        // Qty +/- buttons
+        $(document).on('click', '.qty-down', function() {
+            var pid = $(this).data('pid');
+            var wid = $(this).data('wid');
+            var input = $('#quantity_' + pid + '_' + wid);
+            var val = parseInt(input.val()) || 1;
+            if (val > 1) input.val(val - 1);
+            loadCartandUpdate(pid, wid);
+        });
+        $(document).on('click', '.qty-up', function() {
+            var pid = $(this).data('pid');
+            var wid = $(this).data('wid');
+            var input = $('#quantity_' + pid + '_' + wid);
+            input.val((parseInt(input.val()) || 1) + 1);
+            loadCartandUpdate(pid, wid);
+        });
+
         @if ($type == 'walkin_sale')
             $("#warehouse").on('change', function() {
                 loadPosProducts($("#posCatTabs a.active").data('cat'));
@@ -1503,6 +1520,14 @@
         .pos-tile-price { color: #198754; font-weight: 700; font-size: .95rem; margin-top: .15rem; }
         .pos-tile-stock { color: #6c757d; font-size: .75rem; }
         .pos-cart table input { min-height: 44px; }
+        .pos-cart .qty-down, .pos-cart .qty-up {
+            min-height: 44px;
+            width: 40px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        .pos-cart .input-group { flex-wrap: nowrap; }
         @media (max-width: 768px) {
             .pos-product-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
         }
