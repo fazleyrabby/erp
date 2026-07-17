@@ -31,7 +31,8 @@
                                 @if($todayAttendence->time_out)
                                     - {{ $todayAttendence->time_out }}
                                 @else
-                                    <span class="text-warning">(Clocked In)</span>
+                                    <span class="text-warning" id="liveTimerLabel">(Clocked In)</span>
+                                    <div id="liveTimer" class="fs-3 fw-bold text-success" data-time-in="{{ $todayAttendence->time_in }}">00:00:00</div>
                                 @endif
                             @else
                                 <span class="text-muted">Not Clocked In</span>
@@ -156,4 +157,29 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+<script>
+$(function() {
+    var $timer = $('#liveTimer');
+    if ($timer.length) {
+        var timeIn = $timer.data('time-in');
+        if (timeIn) {
+            var parts = timeIn.split(':');
+            var clockIn = new Date();
+            clockIn.setHours(parseInt(parts[0]), parseInt(parts[1]), parseInt(parts[2] || 0), 0);
+            function tick() {
+                var now = new Date();
+                var diff = Math.floor((now - clockIn) / 1000);
+                var h = String(Math.floor(diff / 3600)).padStart(2, '0');
+                var m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+                var s = String(diff % 60).padStart(2, '0');
+                $('#liveTimer').text(h + ':' + m + ':' + s);
+            }
+            tick();
+            setInterval(tick, 1000);
+        }
+    });
+</script>
 @endsection

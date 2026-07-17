@@ -46,9 +46,6 @@
                         <a class="dropdown-item {{ request()->routeIs('employee.apply-leave') ? 'active' : '' }}" href="{{ route('employee.apply-leave') }}">
                             <i class="fa fa-plus-circle icon-inline me-1"></i> Apply for Leave
                         </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> My Payslips
-                        </a>
                         <a class="dropdown-item {{ request()->routeIs('employee.my-attendance') ? 'active' : '' }}" href="{{ route('employee.my-attendance') }}">
                             <i class="fa fa-check-circle icon-inline me-1"></i> My Attendance
                         </a>
