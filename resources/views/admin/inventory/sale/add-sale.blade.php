@@ -1328,9 +1328,11 @@
                     $('#loading').hide();
                 },
                 error: function(response) {
-                    
-                    Swal.fire('Error!', 'Error: Please check again or contact with administrator',
-                        'error');
+                    let msg = 'Error: Please check again or contact with administrator';
+                    if (response.responseJSON && response.responseJSON.error) {
+                        msg = response.responseJSON.error;
+                    }
+                    Swal.fire('Error!', msg, 'error');
                     $('#partyPhoneNumberError').text(response.responseJSON.errors.partyPhoneNumber);
                     $('#customerNameError').text(response.responseJSON.errors.customerName);
                     $('#customerAddressError').text(response.responseJSON.errors.customerAddress);

@@ -480,7 +480,6 @@ class SaleController extends Controller
             $sale->discount = floatval($request->discount);
             $sale->carrying_cost = floatval($request->carrying_cost);
             $sale->vat = floatval($request->vat);
-            $sale->type = 'walkin';
             $sale->ait = floatval($request->ait);
             $sale->grand_total = floatval($request->grand_total);
             $sale->previous_due = floatval($request->previous_due);
