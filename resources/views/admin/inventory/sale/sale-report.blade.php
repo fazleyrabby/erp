@@ -181,7 +181,7 @@
         
     </footer>
     <main>
-        @if ($sale->deleted == 'No')
+        @if ($sale && $sale->deleted == 'No')
             <!-- Content Wrapper. Contains page content -->
             <div>
                 <div style="text-align: center;">

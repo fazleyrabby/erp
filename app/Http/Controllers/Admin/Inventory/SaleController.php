@@ -475,7 +475,6 @@ class SaleController extends Controller
             $sale = new Sale;
             $sale->customer_id = $customerId;
             $sale->sale_no = $saleNo;
-            $sale->coa_id = $request->category;
             $sale->date = $request->date;
             $sale->total_amount = floatval($request->total_amount);
             $sale->discount = floatval($request->discount);
@@ -686,7 +685,7 @@ class SaleController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return response()->json(['error' => $e->getMessage()]);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
@@ -842,6 +841,11 @@ class SaleController extends Controller
 
     public function createPDF($id)
     {
+        $sale = DB::table('sales')->where('id', $id)->where('deleted', 'No')->first();
+        if (!$sale) {
+            abort(404, 'Sale not found');
+        }
+
         $invoice = DB::table('sale_products')
             ->join('sales', 'sale_products.sale_id', '=', 'sales.id')
             ->join('parties', 'sales.customer_id', '=', 'parties.id')
@@ -883,10 +887,6 @@ class SaleController extends Controller
             )
             ->get();
 
-        $saleId = $id;
-        $sale = DB::table('sales')
-            ->where('id', $saleId)
-            ->first();
         $serviceCenter = SaleOrder::where('sale_id', '=', $id)->first();
 
         $pdf = PDF::loadView('admin.inventory.sale.sale-report', ['invoice' => $invoice, 'sale' => $sale, 'serviceCenter' => $serviceCenter]);
@@ -896,6 +896,11 @@ class SaleController extends Controller
 
     public function createChallanPDF($id)
     {
+        $sale = DB::table('sales')->where('id', $id)->where('deleted', 'No')->first();
+        if (!$sale) {
+            abort(404, 'Sale not found');
+        }
+
         $invoice = DB::table('sale_products')
             ->join('sales', 'sale_products.sale_id', '=', 'sales.id')
             ->join('parties', 'sales.customer_id', '=', 'parties.id')
@@ -939,11 +944,6 @@ class SaleController extends Controller
                 'brands.name'
             )
             ->get();
-
-        $saleId = $id;
-        $sale = DB::table('sales')
-            ->where('id', $saleId)
-            ->first();
 
         $userId = auth()->user()->id;
         $userName = User::where('id', $userId)->pluck('name')->first();

@@ -1298,6 +1298,10 @@
                     calculateTotal();
                     // Redirect After Click OK--//
                     let saleId = result['saleId'];
+                    if (!saleId) {
+                        Swal.fire('Error!', result.error || 'Sale ID not found.', 'error');
+                        return;
+                    }
                     Swal.fire({
                         title: "Saved !",
                         text: result.success,
