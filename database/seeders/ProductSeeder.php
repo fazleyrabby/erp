@@ -81,6 +81,18 @@ class ProductSeeder extends Seeder
             ['name' => 'Repair Service', 'code' => 'SVC-002', 'category_id' => $catIds['Services'], 'brand_id' => $brandIds['Apple'], 'unit_id' => $unitIds['Pcs'], 'purchase_price' => 0, 'sale_price' => 1500, 'opening_stock' => 0, 'type' => 'service'],
         ];
 
+        foreach ($products as $prod) {
+            Product::firstOrCreate(
+                ['name' => $prod['name']],
+                array_merge($prod, [
+                    'status' => 'Active',
+                    'deleted' => 'No',
+                    'created_by' => 1,
+                    'current_stock' => $prod['opening_stock'],
+                ])
+            );
+        }
+
         $warehouses = Warehouse::pluck('id');
         $allProducts = Product::all();
 
