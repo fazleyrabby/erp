@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\inventory\DamageProduct;
 use App\Models\inventory\Invoice;
 use App\Models\inventory\InvoiceItem;
 use App\Models\inventory\Party;
@@ -14,6 +15,8 @@ use App\Models\inventory\PurchaseProduct;
 use App\Models\inventory\Quotation;
 use App\Models\inventory\QuotationProduct;
 use App\Models\inventory\Sale;
+use App\Models\inventory\SaleOrder;
+use App\Models\inventory\SaleOrderProduct;
 use App\Models\inventory\SaleProduct;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -183,6 +186,77 @@ class TransactionSeeder extends Seeder
                 'unit_price' => $products[0]->sale_price ?: 52000,
                 'total_price' => $products[0]->sale_price ?: 52000,
             ]);
+        }
+
+        // Damage products
+        if ($products->count() >= 2 && $warehouse) {
+            DamageProduct::create([
+                'products_id' => $products[0]->id,
+                'warehouse_id' => $warehouse->id,
+                'damage_quantity' => 3,
+                'remarks' => 'Damaged during handling',
+                'damage_date' => now()->subDays(10),
+                'status' => 'Active',
+                'deleted' => 'No',
+                'created_by' => $user ? $user->id : 1,
+            ]);
+            DamageProduct::create([
+                'products_id' => $products[1]->id,
+                'warehouse_id' => $warehouse->id,
+                'damage_quantity' => 1,
+                'remarks' => 'Defective unit',
+                'damage_date' => now()->subDays(5),
+                'status' => 'Active',
+                'deleted' => 'No',
+                'created_by' => $user ? $user->id : 1,
+            ]);
+        }
+
+        // Sale orders
+        if ($customers->count() > 0 && $products->count() > 0) {
+            $statuses = [
+                ['order_status' => 'Pending', 'sale_no' => 'SO-2024-001', 'total_amount' => 52000],
+                ['order_status' => 'Servicing', 'sale_no' => 'SO-2024-002', 'total_amount' => 35000],
+                ['order_status' => 'Cancelled', 'sale_no' => 'SO-2024-003', 'total_amount' => 12000],
+                ['order_status' => 'Delivered', 'sale_no' => 'SO-2024-004', 'total_amount' => 75000],
+                ['order_status' => 'ReadyToDeliverd', 'sale_no' => 'SO-2024-005', 'total_amount' => 48000],
+                ['order_status' => 'Completed', 'sale_no' => 'SO-2024-006', 'total_amount' => 95000],
+            ];
+
+            foreach ($statuses as $sData) {
+                $so = SaleOrder::firstOrCreate(
+                    ['sale_no' => $sData['sale_no']],
+                    [
+                        'customer_id' => $customers[0]->id,
+                        'sale_no' => $sData['sale_no'],
+                        'date' => now()->subDays(rand(1, 30))->format('Y-m-d'),
+                        'total_amount' => $sData['total_amount'],
+                        'grand_total' => $sData['total_amount'],
+                        'previous_due' => 0,
+                        'total_with_due' => $sData['total_amount'],
+                        'current_balance' => 0,
+                        'sales_type' => 'walkin_sale',
+                        'order_status' => $sData['order_status'],
+                        'status' => 'Active',
+                        'deleted' => 'No',
+                        'created_by' => $user ? $user->id : 1,
+                    ]
+                );
+
+                if ($so->wasRecentlyCreated) {
+                    SaleOrderProduct::create([
+                        'tbl_sale_orders_id' => $so->id,
+                        'product_id' => $products[0]->id,
+                        'warehouse_id' => $warehouse ? $warehouse->id : 1,
+                        'unit_id' => $products[0]->unit_id,
+                        'lot_no' => 0,
+                        'unit_price' => $products[0]->sale_price ?: 52000,
+                        'quantity' => rand(1, 3),
+                        'subtotal' => $products[0]->sale_price ?: 52000,
+                        'sale_price' => $products[0]->sale_price ?: 52000,
+                    ]);
+                }
+            }
         }
     }
 }

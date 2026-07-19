@@ -42,7 +42,7 @@ class CreateSaleOrdersTable extends Migration
             $table->string('model')->nullable();
             $table->string('item')->nullable();
             // Common Fields
-            $table->enum('order_status', ['Pending', 'Completed'])->default('Pending');
+            $table->enum('order_status', ['Pending', 'Servicing', 'Cancelled', 'Delivered', 'ReadyToDeliverd', 'Completed'])->default('Pending');
             $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->enum('sale_status', ['Incomplete', 'Completed'])->default('Incomplete');
             $table->enum('deleted', ['Yes', 'No'])->default('No');
