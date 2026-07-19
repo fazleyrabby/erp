@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\inventory\Brand;
 use App\Models\inventory\Category;
+use App\Models\inventory\Currentstock;
 use App\Models\inventory\Product;
 use App\Models\inventory\Unit;
 use App\Models\inventory\Warehouse;
@@ -80,16 +81,30 @@ class ProductSeeder extends Seeder
             ['name' => 'Repair Service', 'code' => 'SVC-002', 'category_id' => $catIds['Services'], 'brand_id' => $brandIds['Apple'], 'unit_id' => $unitIds['Pcs'], 'purchase_price' => 0, 'sale_price' => 1500, 'opening_stock' => 0, 'type' => 'service'],
         ];
 
-        foreach ($products as $prod) {
-            Product::firstOrCreate(
-                ['name' => $prod['name']],
-                array_merge($prod, [
-                    'status' => 'Active',
-                    'deleted' => 'No',
-                    'created_by' => 1,
-                    'current_stock' => $prod['opening_stock'],
-                ])
-            );
+        $warehouses = Warehouse::pluck('id');
+        $allProducts = Product::all();
+
+        foreach ($allProducts as $product) {
+            if ($product->opening_stock > 0) {
+                foreach ($warehouses as $whId) {
+                    Currentstock::create([
+                        'tbl_productsId' => $product->id,
+                        'tbl_wareHouseId' => $whId,
+                        'currentStock' => ($whId == $warehouses->first()) ? $product->opening_stock : 0,
+                        'initialStock' => ($whId == $warehouses->first()) ? $product->opening_stock : 0,
+                        'purchaseStock' => ($whId == $warehouses->first()) ? $product->opening_stock : 0,
+                        'salesStock' => 0,
+                        'purchaseReturnStock' => 0,
+                        'salesReturnStock' => 0,
+                        'purchaseDelete' => 0,
+                        'salesDelete' => 0,
+                        'transferFrom' => 0,
+                        'transferTo' => 0,
+                        'transferFromDelete' => 0,
+                        'transferToDelete' => 0,
+                    ]);
+                }
+            }
         }
     }
 }
