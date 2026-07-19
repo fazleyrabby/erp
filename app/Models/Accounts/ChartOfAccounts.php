@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ChartOfAccounts extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'tbl_acc_coas';
 

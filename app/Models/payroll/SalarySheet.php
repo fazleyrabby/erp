@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class SalarySheet extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 }

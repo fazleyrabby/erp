@@ -22,6 +22,7 @@
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3">
 
+                {{-- Dashboard --}}
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-home"></i></span>
@@ -53,17 +54,18 @@
                 </li>
                 @endif
 
-                @if (Auth::guard('web')->user()->can('Inventory'))
+                {{-- Products & Inventory --}}
+                @if (Auth::guard('web')->user()->can('Inventory') || Auth::guard('web')->user()->can('Categories') || Auth::guard('web')->user()->can('Brands') || Auth::guard('web')->user()->can('units.view') || Auth::guard('web')->user()->can('warehouse.view'))
                 @php
-                    $invRoutes = ['products.*', 'damage.*', 'warehouse.*', 'purchase.*', 'purchase_orders.*', 'sale.*', 'sale.service.*', 'quotations.*'];
-                    $invActive = request()->routeIs($invRoutes);
+                    $prodRoutes = ['products.*', 'damage.*', 'warehouse.*', 'categories.*', 'brands.*', 'units.*'];
+                    $prodActive = request()->routeIs($prodRoutes);
                 @endphp
-                <li class="nav-item dropdown {{ $invActive ? 'show' : '' }}">
-                    <a class="nav-link dropdown-toggle {{ $invActive ? 'active' : '' }}" href="#navbar-inventory" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $invActive ? 'true' : 'false' }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-cart-plus"></i></span>
-                        <span class="nav-link-title">Inventory</span>
+                <li class="nav-item dropdown {{ $prodActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $prodActive ? 'active' : '' }}" href="#navbar-products" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $prodActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-cubes"></i></span>
+                        <span class="nav-link-title">Products & Inventory</span>
                     </a>
-                    <div class="dropdown-menu {{ $invActive ? 'show' : '' }}">
+                    <div class="dropdown-menu {{ $prodActive ? 'show' : '' }}">
                         @if (Auth::guard('web')->user()->can('Products'))
                         <a class="dropdown-item {{ request()->routeIs('products.*') ? 'active' : '' }}" href="{{ route('products.view') }}">
                             <i class="fa fa-check-circle icon-inline me-1"></i> Products
@@ -74,186 +76,138 @@
                             <i class="fa fa-check-circle icon-inline me-1"></i> Damage Products
                         </a>
                         @endif
-                        @if (Auth::guard('web')->user()->can('Warehouse'))
+                        @if (Auth::guard('web')->user()->can('Categories'))
+                        <a class="dropdown-item {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Categories
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('Brands'))
+                        <a class="dropdown-item {{ request()->routeIs('brands.*') ? 'active' : '' }}" href="{{ route('brands.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Brands
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('units.view'))
+                        <a class="dropdown-item {{ request()->routeIs('units.*') ? 'active' : '' }}" href="{{ route('units.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Units
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('warehouse.view'))
+                        <a class="dropdown-item {{ request()->routeIs('warehouse.*') ? 'active' : '' }}" href="{{ route('warehouse.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Warehouse
+                        </a>
                         <a class="dropdown-item d-none" href="{{ url('warehouse/transfer/') }}">
                             <i class="fa fa-check-circle icon-inline me-1"></i> Warehouse Transfer
                         </a>
                         @endif
-
-                        @if (Auth::guard('web')->user()->can('Purchase'))
-                        @php $purchActive = request()->routeIs(['purchase.*', 'purchase_orders.*', 'goods_receipts.*']); @endphp
-                        <div class="dropend {{ $purchActive ? 'show' : '' }}">
-                            <a class="dropdown-item dropdown-toggle {{ $purchActive ? 'active' : '' }}" href="#navbar-purchase" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $purchActive ? 'true' : 'false' }}">
-                                <i class="fa fa-shopping-cart icon-inline me-1"></i> Purchase Management
-                            </a>
-                            <div class="dropdown-menu {{ $purchActive ? 'show' : '' }}">
-                                <a class="dropdown-item {{ request()->routeIs('purchase_orders.*') ? 'active' : '' }}" href="{{ route('purchase_orders.index') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Orders
-                                </a>
-                                @if (Auth::guard('web')->user()->can('purchase.view'))
-                                <a class="dropdown-item {{ request()->routeIs('purchase.index') ? 'active' : '' }}" href="{{ route('purchase.index') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase
-                                </a>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('Purchase.return'))
-                                <a class="dropdown-item {{ request()->routeIs('purchase.return.list') ? 'active' : '' }}" href="{{ route('purchase.return.list') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Return
-                                </a>
-                                @endif
-                                <a class="dropdown-item {{ request()->routeIs('goods_receipts.*') ? 'active' : '' }}" href="{{ route('goods_receipts.index') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Goods Receipt Notes
-                                </a>
-                            </div>
-                        </div>
-                        @endif
-
-                        @if (Auth::guard('web')->user()->can('Sale'))
-                        @php $saleActive = request()->routeIs(['sale.*', 'sale.service.*', 'quotations.*']); @endphp
-                        <div class="dropend {{ $saleActive ? 'show' : '' }}">
-                            <a class="dropdown-item dropdown-toggle {{ $saleActive ? 'active' : '' }}" href="#navbar-sale" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $saleActive ? 'true' : 'false' }}">
-                                <i class="fa fa-shopping-bag icon-inline me-1"></i> Sale Management
-                            </a>
-                            <div class="dropdown-menu {{ $saleActive ? 'show' : '' }}">
-                                <a class="dropdown-item {{ request()->routeIs('quotations.*') ? 'active' : '' }}" href="{{ route('quotations.index') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Quotations
-                                </a>
-                                @if (Auth::guard('web')->user()->can('sale.service.view'))
-                                <a class="dropdown-item {{ request()->routeIs('sale.service.*') ? 'active' : '' }}" href="{{ route('sale.service.SaleOrders') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Service Orders
-                                </a>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('walking.sale.view'))
-                                <a class="dropdown-item {{ request()->routeIs('sale.sales') && request('type') === 'walkin_sale' ? 'active' : '' }}" href="{{ route('sale.sales', ['type' => 'walkin_sale']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> WI Sale
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('sale.return.list') && request('type') === 'walkin_sale' ? 'active' : '' }}" href="{{ route('sale.return.list', ['type' => 'walkin_sale']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Sale Return
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('sale.sales') && request('type') === 'service' ? 'active' : '' }}" href="{{ route('sale.sales', ['type' => 'service']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Order Sale View
-                                </a>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('party.sale.view'))
-                                <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'party_sale']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Party Sale
-                                </a>
-                                <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'party_sale']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Party Sale Return
-                                </a>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('TS.sale.view'))
-                                <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'ts']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> TS
-                                </a>
-                                <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'ts']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> TS Return
-                                </a>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('final.sale.view'))
-                                <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'FS']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Final Sale
-                                </a>
-                                <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'FS']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> FS Return
-                                </a>
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-
-                        @if (Auth::guard('web')->user()->can('invoices.view'))
-                        @php $invActive = request()->routeIs('invoices.*'); @endphp
-                        <div class="dropend {{ $invActive ? 'show' : '' }}">
-                            <a class="dropdown-item dropdown-toggle {{ $invActive ? 'active' : '' }}" href="#navbar-invoice" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $invActive ? 'true' : 'false' }}">
-                                <i class="fa fa-file-text icon-inline me-1"></i> Invoicing & Billing
-                            </a>
-                            <div class="dropdown-menu {{ $invActive ? 'show' : '' }}">
-                                <a class="dropdown-item {{ request()->routeIs('invoices.index') && request('type') === 'Sales' ? 'active' : '' }}" href="{{ route('invoices.index', ['type' => 'Sales']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Sales Invoices
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('invoices.index') && request('type') === 'Purchase' ? 'active' : '' }}" href="{{ route('invoices.index', ['type' => 'Purchase']) }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Bills
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('invoices.add') ? 'active' : '' }}" href="{{ route('invoices.add') }}">
-                                    <i class="fa fa-plus-circle icon-inline me-1"></i> New Invoice
-                                </a>
-                            </div>
-                        </div>
-                        @endif
                     </div>
                 </li>
                 @endif
 
-                @php $voucherActive = request()->is('voucher/*'); @endphp
-                <li class="nav-item dropdown {{ $voucherActive ? 'show' : '' }}">
-                    <a class="nav-link dropdown-toggle {{ $voucherActive ? 'active' : '' }}" href="#navbar-voucher" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $voucherActive ? 'true' : 'false' }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-credit-card"></i></span>
-                        <span class="nav-link-title">Voucher</span>
-                    </a>
-                    <div class="dropdown-menu {{ $voucherActive ? 'show' : '' }}">
-                        <a class="dropdown-item {{ request()->is('voucher/payment') ? 'active' : '' }}" href="{{url('voucher/payment')}}">
-                            <i class="fa fa-bars icon-inline me-1"></i> Payment Voucher
-                        </a>
-                        <a class="dropdown-item {{ request()->is('voucher/payment*') ? 'active' : '' }}" href="{{url('voucher/payment Received')}}">
-                            <i class="fa fa-bars icon-inline me-1"></i> Received Voucher
-                        </a>
-                        <a class="dropdown-item {{ request()->is('voucher/Discount') ? 'active' : '' }}" href="{{url('voucher/Discount')}}">
-                            <i class="fa fa-bars icon-inline me-1"></i> Discount Voucher
-                        </a>
-                    </div>
-                </li>
-
-                @if (Auth::guard('web')->user()->can('user.view'))
+                {{-- Purchase Management --}}
+                @if (Auth::guard('web')->user()->can('Purchase') || Auth::guard('web')->user()->can('invoices.view'))
                 @php
-                    $userRoutes = ['rolesView', 'permissionView', 'permissionToRoleList', 'users.*', 'changePassword'];
-                    $userActive = request()->routeIs($userRoutes);
+                    $purchRoutes = ['purchase.*', 'purchase_orders.*', 'goods_receipts.*'];
+                    $purchActive = request()->routeIs($purchRoutes) || (request()->routeIs('invoices.index') && request('type') === 'Purchase');
                 @endphp
-                <li class="nav-item dropdown {{ $userActive ? 'show' : '' }}">
-                    <a class="nav-link dropdown-toggle {{ $userActive ? 'active' : '' }}" href="#navbar-users" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $userActive ? 'true' : 'false' }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-user-plus"></i></span>
-                        <span class="nav-link-title">User Management</span>
+                <li class="nav-item dropdown {{ $purchActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $purchActive ? 'active' : '' }}" href="#navbar-purchase" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $purchActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-shopping-cart"></i></span>
+                        <span class="nav-link-title">Purchase Management</span>
                     </a>
-                    <div class="dropdown-menu {{ $userActive ? 'show' : '' }}">
-                        @php
-                            $rolesRoutes = ['rolesView', 'permissionView', 'permissionToRoleList'];
-                            $rolesActive = request()->routeIs($rolesRoutes);
-                        @endphp
-                        <div class="dropend {{ $rolesActive ? 'show' : '' }}">
-                            <a class="dropdown-item dropdown-toggle {{ $rolesActive ? 'active' : '' }}" href="#navbar-roles" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $rolesActive ? 'true' : 'false' }}">
-                                <i class="fa fa-tasks icon-inline me-1"></i> Roles & Permissions
-                            </a>
-                            <div class="dropdown-menu {{ $rolesActive ? 'show' : '' }}">
-                                @if (Auth::guard('web')->user()->can('role.view'))
-                                <a class="dropdown-item {{ request()->routeIs('rolesView') ? 'active' : '' }}" href="{{ route('rolesView') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Roles
-                                </a>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('permission.view'))
-                                <a class="dropdown-item {{ request()->routeIs('permissionView') ? 'active' : '' }}" href="{{ route('permissionView') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Permissions
-                                </a>
-                                @endif
-                                @if (Auth::guard('web')->user()->can('permissionToRole.view'))
-                                <a class="dropdown-item {{ request()->routeIs('permissionToRoleList') ? 'active' : '' }}" href="{{ route('permissionToRoleList') }}">
-                                    <i class="fa fa-check-circle icon-inline me-1"></i> Give Permission to Role
-                                </a>
-                                @endif
-                            </div>
-                        </div>
-                        @if (Auth::guard('web')->user()->can('user.view'))
-                        <a class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.') }}">
-                            <i class="fa fa-tasks icon-inline me-1"></i> View Users
+                    <div class="dropdown-menu {{ $purchActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->routeIs('purchase_orders.*') ? 'active' : '' }}" href="{{ route('purchase_orders.index') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Orders
+                        </a>
+                        @if (Auth::guard('web')->user()->can('purchase.view'))
+                        <a class="dropdown-item {{ request()->routeIs('purchase.index') ? 'active' : '' }}" href="{{ route('purchase.index') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Purchase
                         </a>
                         @endif
-                        @if (Auth::guard('web')->user()->can('user.changePassword'))
-                        <a class="dropdown-item" onclick="ChangePasswordModal()" href="#">
-                            <i class="fa fa-tasks icon-inline me-1"></i> Change Password
+                        @if (Auth::guard('web')->user()->can('Purchase.return'))
+                        <a class="dropdown-item {{ request()->routeIs('purchase.return.list') ? 'active' : '' }}" href="{{ route('purchase.return.list') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Return
+                        </a>
+                        @endif
+                        <a class="dropdown-item {{ request()->routeIs('goods_receipts.*') ? 'active' : '' }}" href="{{ route('goods_receipts.index') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Goods Receipt Notes
+                        </a>
+                        @if (Auth::guard('web')->user()->can('invoices.view'))
+                        <a class="dropdown-item {{ request()->routeIs('invoices.index') && request('type') === 'Purchase' ? 'active' : '' }}" href="{{ route('invoices.index', ['type' => 'Purchase']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Purchase Bills
                         </a>
                         @endif
                     </div>
                 </li>
                 @endif
 
+                {{-- Sales & Invoicing --}}
+                @if (Auth::guard('web')->user()->can('Sale') || Auth::guard('web')->user()->can('invoices.view'))
+                @php
+                    $saleRoutes = ['sale.*', 'sale.service.*', 'quotations.*', 'invoices.*'];
+                    $saleActive = request()->routeIs($saleRoutes);
+                @endphp
+                <li class="nav-item dropdown {{ $saleActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $saleActive ? 'active' : '' }}" href="#navbar-sales" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $saleActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-shopping-bag"></i></span>
+                        <span class="nav-link-title">Sales & Invoicing</span>
+                    </a>
+                    <div class="dropdown-menu {{ $saleActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->routeIs('quotations.*') ? 'active' : '' }}" href="{{ route('quotations.index') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Quotations
+                        </a>
+                        @if (Auth::guard('web')->user()->can('sale.service.view'))
+                        <a class="dropdown-item {{ request()->routeIs('sale.service.*') ? 'active' : '' }}" href="{{ route('sale.service.SaleOrders') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Service Orders
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('walking.sale.view'))
+                        <a class="dropdown-item {{ request()->routeIs('sale.sales') && request('type') === 'walkin_sale' ? 'active' : '' }}" href="{{ route('sale.sales', ['type' => 'walkin_sale']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> WI Sale
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('sale.return.list') && request('type') === 'walkin_sale' ? 'active' : '' }}" href="{{ route('sale.return.list', ['type' => 'walkin_sale']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Sale Return
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('sale.sales') && request('type') === 'service' ? 'active' : '' }}" href="{{ route('sale.sales', ['type' => 'service']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Order Sale View
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('party.sale.view'))
+                        <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'party_sale']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Party Sale
+                        </a>
+                        <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'party_sale']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Party Sale Return
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('TS.sale.view'))
+                        <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'ts']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> TS
+                        </a>
+                        <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'ts']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> TS Return
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('final.sale.view'))
+                        <a class="dropdown-item d-none" href="{{ route('sale.sales', ['type' => 'FS']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Final Sale
+                        </a>
+                        <a class="dropdown-item d-none" href="{{ route('sale.return.list', ['type' => 'FS']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> FS Return
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('invoices.view'))
+                        <a class="dropdown-item {{ request()->routeIs('invoices.index') && request('type') === 'Sales' ? 'active' : '' }}" href="{{ route('invoices.index', ['type' => 'Sales']) }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Sales Invoices
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('invoices.add') ? 'active' : '' }}" href="{{ route('invoices.add') }}">
+                            <i class="fa fa-plus-circle icon-inline me-1"></i> New Invoice
+                        </a>
+                        @endif
+                    </div>
+                </li>
+                @endif
+
+                {{-- CRM --}}
                 @if (Auth::guard('web')->user()->can('CRM'))
                 @php $crmActive = request()->is('parties/view/*'); @endphp
                 <li class="nav-item dropdown {{ $crmActive ? 'show' : '' }}">
@@ -281,6 +235,27 @@
                 </li>
                 @endif
 
+                {{-- Voucher --}}
+                @php $voucherActive = request()->is('voucher/*'); @endphp
+                <li class="nav-item dropdown {{ $voucherActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $voucherActive ? 'active' : '' }}" href="#navbar-voucher" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $voucherActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-credit-card"></i></span>
+                        <span class="nav-link-title">Voucher</span>
+                    </a>
+                    <div class="dropdown-menu {{ $voucherActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->is('voucher/payment') ? 'active' : '' }}" href="{{url('voucher/payment')}}">
+                            <i class="fa fa-bars icon-inline me-1"></i> Payment Voucher
+                        </a>
+                        <a class="dropdown-item {{ request()->is('voucher/payment*') ? 'active' : '' }}" href="{{url('voucher/payment Received')}}">
+                            <i class="fa fa-bars icon-inline me-1"></i> Received Voucher
+                        </a>
+                        <a class="dropdown-item {{ request()->is('voucher/Discount') ? 'active' : '' }}" href="{{url('voucher/Discount')}}">
+                            <i class="fa fa-bars icon-inline me-1"></i> Discount Voucher
+                        </a>
+                    </div>
+                </li>
+
+                {{-- Accounts --}}
                 @if (Auth::guard('web')->user()->can('Accounts'))
                 @php
                     $acctRoutes = ['chartOfAccounts', 'journalView', 'addJournal', 'expenseView', 'addExpense', 'billView', 'addBills', 'bankView'];
@@ -321,6 +296,106 @@
                 </li>
                 @endif
 
+                {{-- Employees --}}
+                @if (Auth::guard('web')->user()->can('Payroll'))
+                @php
+                    $empRoutes = ['ourTeam', 'gradeIndex', 'stepsIndex', 'groupIndex', 'facilityIndex'];
+                    $empActive = request()->routeIs($empRoutes);
+                @endphp
+                <li class="nav-item dropdown {{ $empActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $empActive ? 'active' : '' }}" href="#navbar-employees" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $empActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-id-card"></i></span>
+                        <span class="nav-link-title">Employees</span>
+                    </a>
+                    <div class="dropdown-menu {{ $empActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->routeIs('ourTeam') ? 'active' : '' }}" href="{{ route('ourTeam') }}">
+                            <i class="fas fa-id-card icon-inline me-1"></i> Employees
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('gradeIndex') ? 'active' : '' }}" href="{{ route('gradeIndex') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Grades
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('stepsIndex') ? 'active' : '' }}" href="{{ route('stepsIndex') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Steps
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('groupIndex') ? 'active' : '' }}" href="{{ route('groupIndex') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Groups
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('facilityIndex') ? 'active' : '' }}" href="{{ route('facilityIndex') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Facilities
+                        </a>
+                    </div>
+                </li>
+                @endif
+
+                {{-- Payroll --}}
+                @if (Auth::guard('web')->user()->can('Payroll'))
+                @php
+                    $salaryRoutes = ['SalarySheetView', 'finalSheetIndex', 'SalaryInstructionView', 'bonusListView', 'monthlyAmountIndex', 'loanIndex'];
+                    $salaryActive = request()->routeIs($salaryRoutes);
+                @endphp
+                <li class="nav-item dropdown {{ $salaryActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $salaryActive ? 'active' : '' }}" href="#navbar-salary" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $salaryActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-cubes"></i></span>
+                        <span class="nav-link-title">Payroll</span>
+                    </a>
+                    <div class="dropdown-menu {{ $salaryActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->routeIs('SalarySheetView') ? 'active' : '' }}" href="{{ route('SalarySheetView') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Salary Sheet
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('finalSheetIndex') ? 'active' : '' }}" href="{{route('finalSheetIndex')}}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Final Salary Sheet
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('SalaryInstructionView') ? 'active' : '' }}" href="{{ route('SalaryInstructionView') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Salary Instruction
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('bonusListView') ? 'active' : '' }}" href="{{ route('bonusListView') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Bonus List
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('monthlyAmountIndex') ? 'active' : '' }}" href="{{route('monthlyAmountIndex')}}">
+                            <i class="fas fa-exchange-alt icon-inline me-1"></i> Adjust/Deduct
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('loanIndex') ? 'active' : '' }}" href="{{route('loanIndex')}}">
+                            <i class='fas fa-hand-holding-usd icon-inline me-1'></i> Loan Salary
+                        </a>
+                    </div>
+                </li>
+                @endif
+
+                {{-- Attendance --}}
+                @if (Auth::guard('web')->user()->can('Payroll'))
+                @php
+                    $attRoutes = ['attendenceIndex', 'monthlyAttendence', 'groupAttendence', 'timeScheduleGroupIndex', 'userTimeGroupIndex', 'leaveIndex'];
+                    $attActive = request()->routeIs($attRoutes);
+                @endphp
+                <li class="nav-item dropdown {{ $attActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $attActive ? 'active' : '' }}" href="#navbar-attendance" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $attActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-calendar-check"></i></span>
+                        <span class="nav-link-title">Attendance</span>
+                    </a>
+                    <div class="dropdown-menu {{ $attActive ? 'show' : '' }}">
+                        <a class="dropdown-item {{ request()->routeIs('attendenceIndex') ? 'active' : '' }}" href="{{route('attendenceIndex')}}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Attendance
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('monthlyAttendence') ? 'active' : '' }}" href="{{route('monthlyAttendence')}}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Employee Attendance
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('groupAttendence') ? 'active' : '' }}" href="{{route('groupAttendence')}}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Group Attendance
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('timeScheduleGroupIndex') ? 'active' : '' }}" href="{{ route('timeScheduleGroupIndex') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Time Schedule Group
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('userTimeGroupIndex') ? 'active' : '' }}" href="{{ route('userTimeGroupIndex') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> User Time Group
+                        </a>
+                        <a class="dropdown-item {{ request()->routeIs('leaveIndex') ? 'active' : '' }}" href="{{ route('leaveIndex') }}">
+                            <i class="fas fa-th-list icon-inline me-1"></i> Leave Management
+                        </a>
+                    </div>
+                </li>
+                @endif
+
+                {{-- Reports --}}
                 @if (Auth::guard('web')->user()->can('Reports'))
                 @php
                     $reportRoutes = ['partyLedger', 'accountsLedgerDatewise', 'dailyAccountsLedger', 'dailyServiceLedgerReport'];
@@ -355,152 +430,62 @@
                 </li>
                 @endif
 
-                @if (Auth::guard('web')->user()->can('Payroll'))
+                {{-- User Management --}}
+                @if (Auth::guard('web')->user()->can('user.view'))
                 @php
-                    $payrollRoutes = [
-                        'ourTeam', 'gradeIndex', 'stepsIndex', 'groupIndex', 'facilityIndex',
-                        'SalarySheetView', 'finalSheetIndex', 'SalaryInstructionView', 'bonusListView',
-                        'monthlyAmountIndex', 'loanIndex',
-                        'attendenceIndex', 'monthlyAttendence', 'groupAttendence',
-                        'timeScheduleGroupIndex', 'userTimeGroupIndex', 'leaveIndex',
-                    ];
-                    $payrollActive = request()->routeIs($payrollRoutes);
+                    $userRoutes = ['rolesView', 'permissionView', 'permissionToRoleList', 'users.*', 'changePassword'];
+                    $userActive = request()->routeIs($userRoutes);
                 @endphp
-                <li class="nav-item dropdown {{ $payrollActive ? 'show' : '' }}">
-                    <a class="nav-link dropdown-toggle {{ $payrollActive ? 'active' : '' }}" href="#navbar-payroll" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $payrollActive ? 'true' : 'false' }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-cubes"></i></span>
-                        <span class="nav-link-title">Payroll</span>
+                <li class="nav-item dropdown {{ $userActive ? 'show' : '' }}">
+                    <a class="nav-link dropdown-toggle {{ $userActive ? 'active' : '' }}" href="#navbar-users" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $userActive ? 'true' : 'false' }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-user-plus"></i></span>
+                        <span class="nav-link-title">User Management</span>
                     </a>
-                    <div class="dropdown-menu {{ $payrollActive ? 'show' : '' }}">
-                        @php
-                            $empRoutes = ['ourTeam', 'gradeIndex', 'stepsIndex', 'groupIndex', 'facilityIndex'];
-                            $empActive = request()->routeIs($empRoutes);
-                        @endphp
-                        <div class="dropend {{ $empActive ? 'show' : '' }}">
-                            <a class="dropdown-item dropdown-toggle {{ $empActive ? 'active' : '' }}" href="#navbar-employees" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $empActive ? 'true' : 'false' }}">
-                                <i class="fas fa-user icon-inline me-1"></i> Employee Informations
-                            </a>
-                            <div class="dropdown-menu {{ $empActive ? 'show' : '' }}">
-                                <a class="dropdown-item {{ request()->routeIs('ourTeam') ? 'active' : '' }}" href="{{ route('ourTeam') }}">
-                                    <i class="fas fa-id-card icon-inline me-1"></i> Employee's
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('gradeIndex') ? 'active' : '' }}" href="{{ route('gradeIndex') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Grades
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('stepsIndex') ? 'active' : '' }}" href="{{ route('stepsIndex') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Steps
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('groupIndex') ? 'active' : '' }}" href="{{ route('groupIndex') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Groups
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('facilityIndex') ? 'active' : '' }}" href="{{ route('facilityIndex') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Facilites
-                                </a>
-                            </div>
-                        </div>
-
-                        @php
-                            $salaryRoutes = ['SalarySheetView', 'finalSheetIndex', 'SalaryInstructionView', 'bonusListView', 'monthlyAmountIndex', 'loanIndex'];
-                            $salaryActive = request()->routeIs($salaryRoutes);
-                        @endphp
-                        <div class="dropend {{ $salaryActive ? 'show' : '' }}">
-                            <a class="dropdown-item dropdown-toggle {{ $salaryActive ? 'active' : '' }}" href="#navbar-salary" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $salaryActive ? 'true' : 'false' }}">
-                                <i class="fa fa-table icon-inline me-1"></i> Salary Sheet
-                            </a>
-                            <div class="dropdown-menu {{ $salaryActive ? 'show' : '' }}">
-                                <a class="dropdown-item {{ request()->routeIs('SalarySheetView') ? 'active' : '' }}" href="{{ route('SalarySheetView') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Salary Sheet
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('finalSheetIndex') ? 'active' : '' }}" href="{{route('finalSheetIndex')}}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Final Salary Sheet
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('SalaryInstructionView') ? 'active' : '' }}" href="{{ route('SalaryInstructionView') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Salary Instruction
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('bonusListView') ? 'active' : '' }}" href="{{ route('bonusListView') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Bonus List
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('monthlyAmountIndex') ? 'active' : '' }}" href="{{route('monthlyAmountIndex')}}">
-                                    <i class="fas fa-exchange-alt icon-inline me-1"></i> Adjust/Deduct
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('loanIndex') ? 'active' : '' }}" href="{{route('loanIndex')}}">
-                                    <i class='fas fa-hand-holding-usd icon-inline me-1'></i> Loan Salary
-                                </a>
-                            </div>
-                        </div>
-
-                        @php
-                            $attRoutes = ['attendenceIndex', 'monthlyAttendence', 'groupAttendence', 'timeScheduleGroupIndex', 'userTimeGroupIndex', 'leaveIndex'];
-                            $attActive = request()->routeIs($attRoutes);
-                        @endphp
-                        <div class="dropend {{ $attActive ? 'show' : '' }}">
-                            <a class="dropdown-item dropdown-toggle {{ $attActive ? 'active' : '' }}" href="#navbar-attendance" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $attActive ? 'true' : 'false' }}">
-                                <i class="fas fa-user icon-inline me-1"></i> Attendence Management
-                            </a>
-                            <div class="dropdown-menu {{ $attActive ? 'show' : '' }}">
-                                <a class="dropdown-item {{ request()->routeIs('attendenceIndex') ? 'active' : '' }}" href="{{route('attendenceIndex')}}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Attendence
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('monthlyAttendence') ? 'active' : '' }}" href="{{route('monthlyAttendence')}}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Employee Attendence
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('groupAttendence') ? 'active' : '' }}" href="{{route('groupAttendence')}}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Group Attendence
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('timeScheduleGroupIndex') ? 'active' : '' }}" href="{{ route('timeScheduleGroupIndex') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Time Schedule Group
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('userTimeGroupIndex') ? 'active' : '' }}" href="{{ route('userTimeGroupIndex') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> User Time Group
-                                </a>
-                                <a class="dropdown-item {{ request()->routeIs('leaveIndex') ? 'active' : '' }}" href="{{ route('leaveIndex') }}">
-                                    <i class="fas fa-th-list icon-inline me-1"></i> Leave Management
-                                </a>
-                            </div>
-                        </div>
+                    <div class="dropdown-menu {{ $userActive ? 'show' : '' }}">
+                        @if (Auth::guard('web')->user()->can('user.view'))
+                        <a class="dropdown-item {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.') }}">
+                            <i class="fa fa-tasks icon-inline me-1"></i> View Users
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('role.view'))
+                        <a class="dropdown-item {{ request()->routeIs('rolesView') ? 'active' : '' }}" href="{{ route('rolesView') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Roles
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('permission.view'))
+                        <a class="dropdown-item {{ request()->routeIs('permissionView') ? 'active' : '' }}" href="{{ route('permissionView') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Permissions
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('permissionToRole.view'))
+                        <a class="dropdown-item {{ request()->routeIs('permissionToRoleList') ? 'active' : '' }}" href="{{ route('permissionToRoleList') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Give Permission to Role
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('user.changePassword'))
+                        <a class="dropdown-item" onclick="ChangePasswordModal()" href="#">
+                            <i class="fa fa-tasks icon-inline me-1"></i> Change Password
+                        </a>
+                        @endif
                     </div>
                 </li>
                 @endif
 
+                {{-- Settings --}}
                 @if (Auth::guard('web')->user()->can('Setting'))
                 @php
-                    $settingRoutes = ['company.settings.*', 'categories.*', 'brands.*', 'units.*', 'warehouse.*', 'transport.*', 'accountSettingView', 'settingIndex'];
+                    $settingRoutes = ['company.settings.*', 'accountSettingView', 'settingIndex'];
                     $settingActive = request()->routeIs($settingRoutes);
                 @endphp
                 <li class="nav-item dropdown {{ $settingActive ? 'show' : '' }}">
                     <a class="nav-link dropdown-toggle {{ $settingActive ? 'active' : '' }}" href="#navbar-settings" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $settingActive ? 'true' : 'false' }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-cogs"></i></span>
-                        <span class="nav-link-title">Setting</span>
+                        <span class="nav-link-title">Settings</span>
                     </a>
                     <div class="dropdown-menu {{ $settingActive ? 'show' : '' }}">
                         @if (Auth::guard('web')->user()->can('companySetting.view'))
                         <a class="dropdown-item {{ request()->routeIs('company.settings.*') ? 'active' : '' }}" href="{{ route('company.settings.view') }}">
                             <i class="fa fa-check-circle icon-inline me-1"></i> Shop Settings
-                        </a>
-                        @endif
-                        @if (Auth::guard('web')->user()->can('Categories'))
-                        <a class="dropdown-item {{ request()->routeIs('categories.*') ? 'active' : '' }}" href="{{ route('categories.view') }}">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> Category
-                        </a>
-                        @endif
-                        @if (Auth::guard('web')->user()->can('Brands'))
-                        <a class="dropdown-item {{ request()->routeIs('brands.*') ? 'active' : '' }}" href="{{ route('brands.view') }}">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> Brand
-                        </a>
-                        @endif
-                        @if (Auth::guard('web')->user()->can('units.view'))
-                        <a class="dropdown-item {{ request()->routeIs('units.*') ? 'active' : '' }}" href="{{ route('units.view') }}">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> Unit
-                        </a>
-                        @endif
-                        @if (Auth::guard('web')->user()->can('warehouse.view'))
-                        <a class="dropdown-item {{ request()->routeIs('warehouse.*') ? 'active' : '' }}" href="{{ route('warehouse.view') }}">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> Warehouse
-                        </a>
-                        @endif
-                        @if (Auth::guard('web')->user()->can('transport.view'))
-                        <a class="dropdown-item d-none" href="{{ route('transport.view') }}">
-                            <i class="fa fa-check-circle icon-inline me-1"></i> Transport
                         </a>
                         @endif
                         @if (Auth::guard('web')->user()->can('accounts.setting'))
@@ -511,6 +496,11 @@
                         @if (Auth::guard('web')->user()->can('payroll.settings'))
                         <a class="dropdown-item {{ request()->routeIs('settingIndex') ? 'active' : '' }}" href="{{Route('settingIndex')}}">
                             <i class="fa fa-check-circle icon-inline me-1"></i> Payroll Setting
+                        </a>
+                        @endif
+                        @if (Auth::guard('web')->user()->can('transport.view'))
+                        <a class="dropdown-item d-none" href="{{ route('transport.view') }}">
+                            <i class="fa fa-check-circle icon-inline me-1"></i> Transport
                         </a>
                         @endif
                     </div>

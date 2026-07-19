@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class SaleOrder extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'sale_orders';
 

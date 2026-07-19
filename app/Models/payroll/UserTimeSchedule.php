@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserTimeSchedule extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'tbl_payroll_user_time_schedules';
 }

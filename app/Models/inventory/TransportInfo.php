@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TransportInfo extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'tbl_transportinfo';
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Steps extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $primaryKey = 'id';
 }

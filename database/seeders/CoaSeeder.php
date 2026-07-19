@@ -7,130 +7,32 @@ use Illuminate\Database\Seeder;
 
 class CoaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $names = [
-            'Asset',
-            'Liability',
-            'Income',
-            'Expense',
-            'Bank',
-            'Sales',
-            'Purchase',
-            'Cash',
-            'Cash Amount',
-            'Discount',
+        $coas = [
+            ['name' => 'Asset', 'slug' => 'Asset', 'code' => 100000000, 'limit_from' => 100000000, 'limit_to' => 199999999, 'parent_id' => 0, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Liability', 'slug' => 'Liability', 'code' => 200000000, 'limit_from' => 200000000, 'limit_to' => 299999999, 'parent_id' => 0, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Income', 'slug' => 'Income', 'code' => 300000000, 'limit_from' => 300000000, 'limit_to' => 399999999, 'parent_id' => 0, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Expense', 'slug' => 'Expense', 'code' => 400000000, 'limit_from' => 400000000, 'limit_to' => 499999999, 'parent_id' => 0, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Bank', 'slug' => 'Bank', 'code' => 500000000, 'limit_from' => 500000000, 'limit_to' => 599999999, 'parent_id' => 0, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Cash', 'slug' => 'cash', 'code' => 501000000, 'limit_from' => 501000000, 'limit_to' => 509900000, 'parent_id' => 5, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Cash Amount', 'slug' => 'cash-amount', 'code' => 501010000, 'limit_from' => 501010000, 'limit_to' => 501099000, 'parent_id' => 6, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Sales Income', 'slug' => 'sales-income', 'code' => 301000000, 'limit_from' => 301000000, 'limit_to' => 309900000, 'parent_id' => 3, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Purchase Expense', 'slug' => 'purchase-expense', 'code' => 401000000, 'limit_from' => 401000000, 'limit_to' => 409900000, 'parent_id' => 4, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 0],
+            ['name' => 'Service Income', 'slug' => 'service-income', 'code' => 302000000, 'limit_from' => 302000000, 'limit_to' => 309900000, 'parent_id' => 3, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 1],
+            ['name' => 'Salary Expense', 'slug' => 'salary-expense', 'code' => 402000000, 'limit_from' => 402000000, 'limit_to' => 409900000, 'parent_id' => 4, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 1],
+            ['name' => 'Utility Expense', 'slug' => 'utility-expense', 'code' => 403000000, 'limit_from' => 403000000, 'limit_to' => 409900000, 'parent_id' => 4, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 1],
+            ['name' => 'Rent Expense', 'slug' => 'rent-expense', 'code' => 404000000, 'limit_from' => 404000000, 'limit_to' => 409900000, 'parent_id' => 4, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 1],
+            ['name' => 'Transport Expense', 'slug' => 'transport-expense', 'code' => 405000000, 'limit_from' => 405000000, 'limit_to' => 409900000, 'parent_id' => 4, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 1],
+            ['name' => 'Office Expense', 'slug' => 'office-expense', 'code' => 406000000, 'limit_from' => 406000000, 'limit_to' => 409900000, 'parent_id' => 4, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 1],
+            ['name' => 'Discount', 'slug' => 'discount', 'code' => 502000000, 'limit_from' => 502000000, 'limit_to' => 509900000, 'parent_id' => 5, 'status' => 'Active', 'deleted' => 'No', 'created_by' => 1],
         ];
 
-        $slugs = [
-            'Asset',
-            'Liability',
-            'Income',
-            'Expense',
-            'Bank',
-            'Sales',
-            'Purchase',
-            'cash',
-            'cash-amount',
-            'Discount',
-        ];
-
-        $ourcodes = [
-            '100000000',
-            '200000000',
-            '300000000',
-            '400000000',
-            '500000000',
-            '301000000',
-            '401000000',
-            '501000000',
-            '501010000',
-            '502000000',
-        ];
-
-        $limitTo = [
-            '199999999',
-            '299999999',
-            '399999999',
-            '499999999',
-            '599999999',
-            '309900000',
-            '409900000',
-            '509900000',
-            '501099000',
-            '509900000',
-        ];
-
-        $parentId = [
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '3',
-            '4',
-            '5',
-            '8',
-            '5',
-        ];
-
-        $status = [
-            'Active',
-            'Active',
-            'Active',
-            'Active',
-            'Active',
-            'Active',
-            'Active',
-            'Active',
-            'Active',
-            'Active',
-        ];
-
-        $deleted = [
-            'No',
-            'No',
-            'No',
-            'No',
-            'No',
-            'No',
-            'No',
-            'No',
-            'No',
-            'No',
-        ];
-
-        $created_by = [
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-            '0',
-        ];
-        // create permissions
-        for ($i = 0; $i < count($names); $i++) {
-            $coas = ChartOfAccounts::create(['name' => $names[$i],
-                'slug' => $slugs[$i],
-                'code' => $ourcodes[$i],
-                'our_code' => $ourcodes[$i],
-                'limit_from' => $ourcodes[$i],
-                'limit_to' => $limitTo[$i],
-                'parent_id' => $parentId[$i],
-                'status' => $status[$i],
-                'deleted' => $deleted[$i],
-                'created_by' => $created_by[$i],
-            ]);
+        foreach ($coas as $coa) {
+            ChartOfAccounts::firstOrCreate(
+                ['name' => $coa['name']],
+                $coa
+            );
         }
-
     }
 }

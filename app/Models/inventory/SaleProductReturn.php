@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SaleProductReturn extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'sale_product_returns';
 }

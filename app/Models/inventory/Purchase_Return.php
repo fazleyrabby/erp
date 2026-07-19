@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase_Return extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'purchase_returns';
 

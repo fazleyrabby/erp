@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseProduct extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'purchase_products';
 

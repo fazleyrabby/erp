@@ -11,33 +11,56 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        $admin = User::where('email', 'super.admin@gmail.com')->first();
+        $admin = User::where('email', 'super.admin@demo.com')->first();
         if (is_null($admin)) {
-            $admin = new User;
-            $admin->name = 'Super Admin';
-            $admin->email = 'super.admin@gmail.com';
-            $admin->password = Hash::make('12345678');
-            $admin->role = 'Super Admin';
-            $admin->save();
+            $admin = User::create([
+                'name' => 'Super Admin',
+                'email' => 'super.admin@demo.com',
+                'password' => Hash::make('12345678'),
+                'role' => 'Super Admin',
+                'status' => 'Active',
+                'deleted' => 'No',
+            ]);
             $admin->assignRole('Super Admin');
         }
 
-        $empUser = User::where('email', 'employee@demo.com')->first();
-        if (is_null($empUser)) {
-            $empUser = new User;
-            $empUser->name = 'John Doe (Employee)';
-            $empUser->email = 'employee@demo.com';
-            $empUser->password = Hash::make('12345678');
-            $empUser->role = 'Employee';
-            $empUser->save();
-            $empUser->assignRole('Employee');
+        $manager = User::where('email', 'manager@demo.com')->first();
+        if (is_null($manager)) {
+            $manager = User::create([
+                'name' => 'Jane Manager',
+                'email' => 'manager@demo.com',
+                'password' => Hash::make('12345678'),
+                'role' => 'Manager',
+                'status' => 'Active',
+                'deleted' => 'No',
+            ]);
+            $manager->assignRole('Manager');
+        }
 
-            $team = new \App\Models\payroll\OurTeam;
-            $team->member_name = $empUser->name;
-            $team->user_id = $empUser->id;
-            $team->status = 'Active';
-            $team->deleted = 'No';
-            $team->save();
+        $salesman = User::where('email', 'sales@demo.com')->first();
+        if (is_null($salesman)) {
+            $salesman = User::create([
+                'name' => 'Bob Sales',
+                'email' => 'sales@demo.com',
+                'password' => Hash::make('12345678'),
+                'role' => 'Sales Man',
+                'status' => 'Active',
+                'deleted' => 'No',
+            ]);
+            $salesman->assignRole('Sales Man');
+        }
+
+        $employee = User::where('email', 'employee@demo.com')->first();
+        if (is_null($employee)) {
+            $employee = User::create([
+                'name' => 'John Doe (Employee)',
+                'email' => 'employee@demo.com',
+                'password' => Hash::make('12345678'),
+                'role' => 'Employee',
+                'status' => 'Active',
+                'deleted' => 'No',
+            ]);
+            $employee->assignRole('Employee');
         }
     }
 }

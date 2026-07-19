@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class SerializeProduct extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'tbl_serialize_products';
 

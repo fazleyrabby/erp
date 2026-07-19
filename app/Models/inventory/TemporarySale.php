@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class TemporarySale extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $table = 'tbl_temporary_sale';
 
