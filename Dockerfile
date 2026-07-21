@@ -59,8 +59,9 @@ RUN composer install --no-interaction --no-dev --optimize-autoloader
 RUN apt-get update && apt-get install -y curl ca-certificates \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
-    && npm install --legacy-peer-deps \
-    && NODE_OPTIONS=--openssl-legacy-provider npm run production \
+    && npm install -g pnpm \
+    && pnpm install \
+    && NODE_OPTIONS=--openssl-legacy-provider pnpm run production \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Prepare storage & cache directories with correct permissions

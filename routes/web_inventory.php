@@ -77,8 +77,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/sale/fetchEMI', [VoucherController::class, 'fetchEMI']);
         Route::post('/emiPaymentStore', [VoucherController::class, 'emiPaymentStore']);
         Route::post('/sale/payEmiStore', [VoucherController::class, 'payEmiStore']);
-        Route::get('work/order/get/project', [WorkOrderController::class, 'getProjects'])->name('getProjects');
-        Route::get('work/order/get/edit/project', [WorkOrderController::class, 'getEditProjects'])->name('getEditProjects');
+        // Route::get('work/order/get/project', [WorkOrderController::class, 'getProjects'])->name('getProjects');
+        // Route::get('work/order/get/edit/project', [WorkOrderController::class, 'getEditProjects'])->name('getEditProjects');
 
     });
 

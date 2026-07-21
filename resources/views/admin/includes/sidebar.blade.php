@@ -30,6 +30,14 @@
                     </a>
                 </li>
 
+                {{-- Project Management --}}
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fa fa-tasks"></i></span>
+                        <span class="nav-link-title">Project Management</span>
+                    </a>
+                </li>
+
                 @if (Auth::user()->hasRole('Employee'))
                 @php
                     $essRoutes = ['employee.my-leaves', 'employee.apply-leave', 'employee.leave-store'];
