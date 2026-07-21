@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\Reports\ReportController;
 use App\Http\Controllers\Admin\Setup\AccountSettingController;
 use Illuminate\Support\Facades\Route;
 
-Auth::routes();
+// Auth::routes();
 
 Route::group(['middleware' => ['auth']], function () {
 
