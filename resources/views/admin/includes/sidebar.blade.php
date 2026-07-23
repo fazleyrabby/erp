@@ -215,15 +215,20 @@
                 </li>
                 @endif
 
-                {{-- CRM --}}
-                @if (Auth::guard('web')->user()->can('CRM'))
-                @php $crmActive = request()->is('parties/view/*'); @endphp
+                {{-- CRM / Marketing --}}
+                @if (Auth::guard('web')->user()->can('CRM') || Auth::guard('web')->user()->can('leads.view'))
+                @php $crmActive = request()->is('parties/view/*') || request()->routeIs('leads.*'); @endphp
                 <li class="nav-item dropdown {{ $crmActive ? 'show' : '' }}">
                     <a class="nav-link dropdown-toggle {{ $crmActive ? 'active' : '' }}" href="#navbar-crm" data-bs-toggle="dropdown" data-bs-auto-close="false" role="button" aria-expanded="{{ $crmActive ? 'true' : 'false' }}">
                         <span class="nav-link-icon d-md-none d-lg-inline-block"><i class="fas fa-users"></i></span>
-                        <span class="nav-link-title">CRM</span>
+                        <span class="nav-link-title">CRM & Marketing</span>
                     </a>
                     <div class="dropdown-menu {{ $crmActive ? 'show' : '' }}">
+                        @if (Auth::guard('web')->user()->can('leads.view'))
+                        <a class="dropdown-item {{ request()->routeIs('leads.*') ? 'active' : '' }}" href="{{ route('leads.index') }}">
+                            <i class="fas fa-filter icon-inline me-1"></i> Leads
+                        </a>
+                        @endif
                         @if (Auth::guard('web')->user()->can('Supplier'))
                         <a class="dropdown-item {{ request()->is('parties/view/Supplier') ? 'active' : '' }}" href="{{url('parties/view/Supplier')}}">
                             <i class="fa fa-check-circle icon-inline me-1"></i> Supplier

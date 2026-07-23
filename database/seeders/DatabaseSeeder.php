@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PayrollSeeder::class);
         $this->call(TransactionSeeder::class);
         $this->call(ProjectSeeder::class);
+        $this->call(LeadSeeder::class);
 
         Model::reguard();
     }

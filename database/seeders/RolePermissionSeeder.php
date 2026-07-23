@@ -31,6 +31,7 @@ class RolePermissionSeeder extends Seeder
             'permission.create', 'permission.view', 'permission.edit', 'permission.update', 'permission.store', 'permission.delete',
 
             'permissionToRole.create', 'permissionToRole.view', 'permissionToRole.store', 'permissionToRole.delete',
+            'Marketing',
 
             'companySetting.view', 'companySetting.edit', 'companySetting.update',
 
@@ -63,6 +64,7 @@ class RolePermissionSeeder extends Seeder
             'accounts.setting',
 
             'Supplier', 'Customer', 'Walkin Customer',
+            'leads.view', 'leads.create', 'leads.edit', 'leads.update', 'leads.delete',
             'Inventory', 'Products', 'Damage', 'Warehouse', 'Purchase', 'Sale',
             'CRM', 'Accounts', 'Reports', 'Payroll', 'Setting',
 
@@ -94,6 +96,7 @@ class RolePermissionSeeder extends Seeder
             'categories.view', 'brands.view', 'units.view',
             'warehouse.view',
             'Supplier', 'Customer',
+            'leads.view', 'leads.create',
             'invoices.view', 'invoices.add',
             'PaymentVoucher.view', 'PaymentReceiveVoucher.view',
         ];

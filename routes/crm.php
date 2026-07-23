@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CRM\LeadController;
 use App\Http\Controllers\Admin\CRM\PartyController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +19,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('parties/updatePartyOpeningDue', [PartyController::class, 'updatePartyOpeningDue'])->name('updatePartyOpeningDue');
 
     // ----- End party party Web page links -------//
+
+    // Leads Routes
+    Route::get('leads', [LeadController::class, 'index'])->name('leads.index');
+    Route::post('leads/store', [LeadController::class, 'store'])->name('leads.store');
+    Route::get('leads/edit', [LeadController::class, 'edit'])->name('leads.edit');
+    Route::post('leads/update', [LeadController::class, 'update'])->name('leads.update');
+    Route::post('leads/delete', [LeadController::class, 'delete'])->name('leads.delete');
 
 });
