@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, linux, laravel]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify runner
+        run: |
+          echo "Hostname: $(hostname)"
+          echo "Docker: $(docker --version)"
+
+      - name: Deploy
+        run: |
+          rsync -a --delete \
+            --exclude '.env' \
+            --exclude '.git' \
+            --exclude 'vendor' \
+            --exclude 'node_modules' \
+            --exclude 'public/build' \
+            --exclude 'storage' \
+            --exclude 'bootstrap/cache' \
+            "$GITHUB_WORKSPACE/" \
+            /home/fazley/apps/erp/
+          cd /home/fazley/apps/erp
+          docker compose -f docker-compose.prod.yml down || true
+          docker compose -f docker-compose.prod.yml up -d
+
+      - name: Post-deploy
+        run: |
+          docker exec erp_app php artisan key:generate --force || true
+          docker exec erp_app php artisan migrate --force
+          docker exec erp_app php artisan config:cache
+          docker exec erp_app php artisan route:cache
+          docker exec erp_app php artisan view:cache
+
+      - name: Health check
+        run: |
+          docker compose -f /home/fazley/apps/erp/docker-compose.prod.yml ps
