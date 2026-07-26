@@ -35,7 +35,9 @@ jobs:
       - name: Post-deploy
         run: |
           docker exec erp_app php artisan migrate --force
-          docker exec erp_app php artisan optimize
+          docker exec erp_app php artisan optimize:clear
+          docker exec erp_app php artisan config:cache
+          docker exec erp_app php artisan view:cache
 
       - name: Health check
         run: |
