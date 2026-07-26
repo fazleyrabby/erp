@@ -9,17 +9,11 @@ jobs:
     runs-on: [self-hosted, linux, laravel]
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Verify runner
+      - name: Deploy via rsync
         run: |
-          echo "Hostname: $(hostname)"
-          echo "Docker: $(docker --version)"
-
-      - name: Deploy
-        run: |
-          rsync -a --delete \
+          rsync -az --delete \
             --exclude '.env' \
             --exclude '.git' \
             --exclude 'vendor' \
@@ -29,18 +23,21 @@ jobs:
             --exclude 'bootstrap/cache' \
             "$GITHUB_WORKSPACE/" \
             /home/fazley/apps/erp/
+
+      - name: Install PHP deps
+        run: docker exec erp_app composer install --no-dev --optimize-autoloader
+
+      - name: Deploy & restart
+        run: |
           cd /home/fazley/apps/erp
-          docker compose -f docker-compose.prod.yml down || true
-          docker compose -f docker-compose.prod.yml up -d
+          docker compose up -d --no-deps --build app
 
       - name: Post-deploy
         run: |
-          docker exec erp_app php artisan key:generate --force || true
           docker exec erp_app php artisan migrate --force
-          docker exec erp_app php artisan config:cache
-          docker exec erp_app php artisan route:cache
-          docker exec erp_app php artisan view:cache
+          docker exec erp_app php artisan optimize
 
       - name: Health check
         run: |
-          docker compose -f /home/fazley/apps/erp/docker-compose.prod.yml ps
+          docker exec erp_app php artisan about --only=environment 2>/dev/null || true
+          docker ps --filter name=erp_app --format "{{.Names}} {{.Status}}"
