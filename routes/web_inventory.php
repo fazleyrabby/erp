@@ -60,7 +60,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('voucher')->group(function () {
 
-        Route::get('/{type}', [VoucherController::class, 'index']);
         Route::get('/add', [VoucherController::class, 'add'])->name('voucher.add');
         Route::post('/store', [VoucherController::class, 'store']);
         Route::post('/delete', [VoucherController::class, 'voucherDelete'])->name('voucher.delete');
@@ -79,6 +78,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/sale/payEmiStore', [VoucherController::class, 'payEmiStore']);
         Route::get('work/order/get/project', [VoucherController::class, 'getProjects'])->name('getProjects');
         // Route::get('work/order/get/edit/project', [WorkOrderController::class, 'getEditProjects'])->name('getEditProjects');
+        Route::get('/{type}', [VoucherController::class, 'index']);
 
     });
 

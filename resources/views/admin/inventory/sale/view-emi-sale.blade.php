@@ -148,7 +148,7 @@
 
 	function confirmDelete(id) {
         confirmDeleteSwal({
-            url      : "{{route('saleDelete')}}",
+            url      : "{{route('sale.delete')}}",
             id       : id,
             itemName : 'Sale',
             onSuccess: function(result) {
