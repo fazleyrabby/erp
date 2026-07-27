@@ -6,7 +6,7 @@ set -e
 # Configuration
 REMOTE_HOST="homelab"
 REMOTE_DIR="/home/fazley/apps/erp"
-BRANCH="rabbi"
+BRANCH="main"
 
 echo "=================================================="
 echo "🚀 Starting Deployment to Homelab ($REMOTE_HOST) via Git"
@@ -47,8 +47,8 @@ ssh "$REMOTE_HOST" "cd $REMOTE_DIR && \
 # 3. Build and restart Docker services, run migrations & clear cache
 echo "👉 3/3 Rebuilding remote container and clearing cache..."
 ssh "$REMOTE_HOST" "cd $REMOTE_DIR && \
-  docker compose -f docker-compose.yml build app && \
-  docker compose -f docker-compose.yml up -d && \
+  docker compose -f docker-compose.prod.yml build app && \
+  docker compose -f docker-compose.prod.yml up -d --remove-orphans && \
   docker exec erp_app php artisan migrate --force && \
   docker exec erp_app php artisan config:clear && \
   docker exec erp_app php artisan cache:clear && \

@@ -122,6 +122,17 @@ class VoucherController extends Controller
         return view('admin.inventory.voucher.view-voucher', compact('type', 'parties', 'suppliers', 'vouchers', 'voucherType', 'amountStatus'));
     }
 
+    public function getProjects(Request $request)
+    {
+        $projects = DB::table('projects')->get();
+        $data = "<option value='0' selected>Select Project</option>";
+        foreach ($projects as $project) {
+            $data .= "<option value='".$project->id."'>".$project->name.'</option>';
+        }
+
+        return $data;
+    }
+
     public function loadWorkOrder(Request $request)
     {
         $getorders = WorkOrder::where('project_id', '=', $request->project_id)->where('deleted', '=', 'No')->get();
