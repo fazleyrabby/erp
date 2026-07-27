@@ -188,7 +188,7 @@
 		$("#editNameError").text("");
 		$("#editStatusError").text("");
 		$.ajax({
-			url:"{{route('editUsertype')}}",
+			url:"{{ Route::has('editUsertype') ? route('editUsertype') : '#' }}",
 			method:"GET",
 			data:{"id":id},
 			datatype:"json",

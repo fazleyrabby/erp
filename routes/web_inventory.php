@@ -60,7 +60,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('voucher')->group(function () {
 
-        Route::get('/add', [VoucherController::class, 'add'])->name('voucher.add');
         Route::post('/store', [VoucherController::class, 'store']);
         Route::post('/delete', [VoucherController::class, 'voucherDelete'])->name('voucher.delete');
         Route::get('/view/load/workOrder', [VoucherController::class, 'loadWorkOrder'])->name('loadWorkOrder');
