@@ -219,7 +219,7 @@
 		fd.append('id',id);
 		fd.append('_token',_token);
 		$.ajax({
-			url:"{{route('updateUserType')}}",
+			url:"{{ Route::has('updateUserType') ? route('updateUserType') : '#' }}",
 			method:"POST",
 			data:fd,
 			contentType: false,
@@ -245,7 +245,7 @@
 
 	function confirmDelete(id) {
         confirmDeleteSwal({
-            url      : "{{route('userTypeDelete')}}",
+            url      : "{{ Route::has('userTypeDelete') ? route('userTypeDelete') : '#' }}",
             id       : id,
             itemName : 'Usertype',
             onError  : function(response) {
